@@ -55,3 +55,17 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Android release signing (never commit)
+/android/key.properties
+*.jks
+*.keystore
+**/upload-keystore.*
+
+# Apple App Store Connect keys (never commit)
+*.p8
+SubscriptionKey_*.p8
+AuthKey_*.p8
+
+# Local store / IAP credentials (never commit)
+/secrets/
