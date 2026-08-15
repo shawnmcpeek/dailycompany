@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "regions": [
+    {
+      "id": "cspb",
+      "label": "C S P B",
+      "expansion": "Crux Sancti Patris Benedicti",
+      "meaning": "The Cross of the Holy Father Benedict."
+    },
+    {
+      "id": "cssml",
+      "label": "C S S M L",
+      "expansion": "Crux Sacra Sit Mihi Lux",
+      "meaning": "May the Holy Cross be my light."
+    },
+    {
+      "id": "ndsmd",
+      "label": "N D S M D",
+      "expansion": "Non Draco Sit Mihi Dux",
+      "meaning": "Let not the dragon be my guide."
+    },
+    {
+      "id": "vrsnsmv_smqlivb",
+      "label": "V R S N S M V · S M Q L I V B",
+      "expansion": "Vade Retro Satana, Nunquam Suade Mihi Vana; Sunt Mala Quae Libas, Ipse Venena Bibas",
+      "meaning": "Begone, Satan! Never tempt me with your vanities. What you offer is evil; drink your own poison."
+    },
+    {
+      "id": "pax",
+      "label": "PAX",
+      "expansion": "Pax",
+      "meaning": "Peace."
+    }
+  ],
+  "blessing": {
+    "latin": "V. Adjutorium nostrum in nomine Domini.\nR. Qui fecit caelum et terram.\n\nV. Dominus vobiscum.\nR. Et cum spiritu tuo.\n\nOremus.\nOmnipotens sempiterne Deus, qui B. Benedicti famuli tui meritis atque pietate innumerabilia in nos contulisti beneficia: concede propitius; ut quicumque haec sancta numismata, B. Benedicti nominis et imaginis impressione signata, secum gestaverint, omnes diaboli tentationes et fraudes a se repellant, et in tua sancta gratia perseverantes, vitae aeternae mereantur esse participes. Per Christum Dominum nostrum. Amen.\n\n(Sacerdos aspergit numismata aqua benedicta.)",
+    "english": "V. Our help is in the name of the Lord.\nR. Who made heaven and earth.\n\nV. The Lord be with you.\nR. And with your spirit.\n\nLet us pray.\nO Almighty God, the giver of all good things, we humbly beseech You that through the intercession of St. Benedict You would pour out Your blessing upon these medals. May all who wear them with devotion be strengthened against the snares of the enemy, protected in danger, and grow in holiness. Through Christ our Lord. Amen.\n\n(The priest sprinkles the medals with holy water.)",
+    "note": "Reserved to a priest."
+  },
+  "litany": [
+    {
+      "invocation": "Lord, have mercy on us.",
+      "response": "Christ, have mercy on us."
+    },
+    {
+      "invocation": "Christ, hear us.",
+      "response": "Christ, graciously hear us."
+    },
+    {
+      "invocation": "God the Father of Heaven,",
+      "response": "Have mercy on us."
+    },
+    {
+      "invocation": "God the Son, Redeemer of the world,",
+      "response": "Have mercy on us."
+    },
+    {
+      "invocation": "God the Holy Spirit,",
+      "response": "Have mercy on us."
+    },
+    {
+      "invocation": "Holy Trinity, one God,",
+      "response": "Have mercy on us."
+    },
+    {
+      "invocation": "Holy Mary,",
+      "response": "Pray for us."
+    },
+    {
+      "invocation": "Holy Mother of God,",
+      "response": "Pray for us."
+    },
+    {
+      "invocation": "Holy Virgin of virgins,",
+      "response": "Pray for us."
+    },
+    {
+      "invocation": "Holy Father Benedict,",
+      "response": "Pray for us."
+    },
+    {
+      "invocation": "Father of monks and nuns,",
+      "response": "Pray for us."
+    },
+    {
+      "invocation": "Patriarch of Western monasticism,",
+      "response": "Pray for us."
+    },
+    {
+      "invocation": "Mirror of abstinence,",
+      "response": "Pray for us."
+    },
+    {
+      "invocation": "Star of chastity,",
+      "response": "Pray for us."
+    },
+    {
+      "invocation": "Vessel of holy poverty,",
+      "response": "Pray for us."
+    },
+    {
+      "invocation": "Example of obedience,",
+      "response": "Pray for us."
+    },
+    {
+      "invocation": "Light of discretion,",
+      "response": "Pray for us."
+    },
+    {
+      "invocation": "Master of the Rule,",
+      "response": "Pray for us."
+    },
+    {
+      "invocation": "Terror of evil spirits,",
+      "response": "Pray for us."
+    },
+    {
+      "invocation": "Comfort of the dying,",
+      "response": "Pray for us."
+    },
+    {
+      "invocation": "Lamb of God, who takes away the sins of the world,",
+      "response": "Spare us, O Lord."
+    },
+    {
+      "invocation": "Lamb of God, who takes away the sins of the world,",
+      "response": "Graciously hear us, O Lord."
+    },
+    {
+      "invocation": "Lamb of God, who takes away the sins of the world,",
+      "response": "Have mercy on us."
+    }
+  ],
+  "history": "The medal associated with St. Benedict grew from older cross and formula traditions used for protection and blessing. Its best-known form is the Jubilee Medal struck in 1880 for the fourteenth centenary of Benedict's birth, prepared at Monte Cassino. That design fixed the familiar arrangement: the cross with the letters C S P B, the circular petition Crux Sacra Sit Mihi Lux / Non Draco Sit Mihi Dux, the Vade Retro Satana verse on the rim, and PAX above. Earlier medals and manuscript charms carried related initials; the 1880 type became the standard visual reference thereafter."
+}

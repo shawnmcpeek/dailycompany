@@ -1,0 +1,366 @@
+{
+  "version": 1,
+  "source": "Rule of St. Benedict, ch. 4 (Verheyen), from rule_readings.json",
+  "tools": [
+    {
+      "number": 1,
+      "text": "In the first place to love the Lord God with the whole heart, the whole soul, the whole strength.",
+      "gloss": null
+    },
+    {
+      "number": 2,
+      "text": "Then, one's neighbor as one's self.",
+      "gloss": null
+    },
+    {
+      "number": 3,
+      "text": "Then, not to kill.",
+      "gloss": null
+    },
+    {
+      "number": 4,
+      "text": "Not to commit adultery.",
+      "gloss": null
+    },
+    {
+      "number": 5,
+      "text": "Not to steal.",
+      "gloss": null
+    },
+    {
+      "number": 6,
+      "text": "Not to covet.",
+      "gloss": null
+    },
+    {
+      "number": 7,
+      "text": "Not to bear false witness.",
+      "gloss": null
+    },
+    {
+      "number": 8,
+      "text": "To honor all men.",
+      "gloss": null
+    },
+    {
+      "number": 9,
+      "text": "And what one would not have done to himself, not to do to another.",
+      "gloss": null
+    },
+    {
+      "number": 10,
+      "text": "To deny one's self in order to follow Christ.",
+      "gloss": null
+    },
+    {
+      "number": 11,
+      "text": "To chastise the body.",
+      "gloss": null
+    },
+    {
+      "number": 12,
+      "text": "Not to seek after pleasures.",
+      "gloss": null
+    },
+    {
+      "number": 13,
+      "text": "To love fasting.",
+      "gloss": null
+    },
+    {
+      "number": 14,
+      "text": "To relieve the poor.",
+      "gloss": null
+    },
+    {
+      "number": 15,
+      "text": "To clothe the naked.",
+      "gloss": null
+    },
+    {
+      "number": 16,
+      "text": "To visit the sick.",
+      "gloss": null
+    },
+    {
+      "number": 17,
+      "text": "To bury the dead.",
+      "gloss": null
+    },
+    {
+      "number": 18,
+      "text": "To help in trouble.",
+      "gloss": null
+    },
+    {
+      "number": 19,
+      "text": "To console the sorrowing.",
+      "gloss": null
+    },
+    {
+      "number": 20,
+      "text": "To hold one's self aloof from worldly ways.",
+      "gloss": null
+    },
+    {
+      "number": 21,
+      "text": "To prefer nothing to the love of Christ.",
+      "gloss": null
+    },
+    {
+      "number": 22,
+      "text": "Not to give way to anger.",
+      "gloss": null
+    },
+    {
+      "number": 23,
+      "text": "Not to foster a desire for revenge.",
+      "gloss": null
+    },
+    {
+      "number": 24,
+      "text": "Not to entertain deceit in the heart.",
+      "gloss": null
+    },
+    {
+      "number": 25,
+      "text": "Not to make a false peace.",
+      "gloss": null
+    },
+    {
+      "number": 26,
+      "text": "Not to forsake charity.",
+      "gloss": null
+    },
+    {
+      "number": 27,
+      "text": "Not to swear, lest perchance one swear falsely.",
+      "gloss": null
+    },
+    {
+      "number": 28,
+      "text": "To speak the truth with heart and tongue.",
+      "gloss": null
+    },
+    {
+      "number": 29,
+      "text": "Not to return evil for evil.",
+      "gloss": null
+    },
+    {
+      "number": 30,
+      "text": "To do no injury, yea, even patiently to bear the injury done us.",
+      "gloss": null
+    },
+    {
+      "number": 31,
+      "text": "To love one's enemies.",
+      "gloss": null
+    },
+    {
+      "number": 32,
+      "text": "Not to curse them that curse us, but rather to bless them.",
+      "gloss": null
+    },
+    {
+      "number": 33,
+      "text": "To bear persecution for justice sake.",
+      "gloss": null
+    },
+    {
+      "number": 34,
+      "text": "Not to be proud.",
+      "gloss": null
+    },
+    {
+      "number": 35,
+      "text": "Not to be given to wine.",
+      "gloss": null
+    },
+    {
+      "number": 36,
+      "text": "Not to be a great eater.",
+      "gloss": null
+    },
+    {
+      "number": 37,
+      "text": "Not to be drowsy.",
+      "gloss": null
+    },
+    {
+      "number": 38,
+      "text": "Not to be slothful.",
+      "gloss": null
+    },
+    {
+      "number": 39,
+      "text": "Not to be a murmurer.",
+      "gloss": null
+    },
+    {
+      "number": 40,
+      "text": "Not to be a detractor.",
+      "gloss": null
+    },
+    {
+      "number": 41,
+      "text": "To put one's trust in God.",
+      "gloss": null
+    },
+    {
+      "number": 42,
+      "text": "To refer what good one sees in himself, not to self, but to God.",
+      "gloss": null
+    },
+    {
+      "number": 43,
+      "text": "But as to any evil in himself, let him be convinced that it is his own and charge it to himself.",
+      "gloss": null
+    },
+    {
+      "number": 44,
+      "text": "To fear the day of judgment.",
+      "gloss": null
+    },
+    {
+      "number": 45,
+      "text": "To be in dread of hell.",
+      "gloss": null
+    },
+    {
+      "number": 46,
+      "text": "To desire eternal life with all spiritual longing.",
+      "gloss": null
+    },
+    {
+      "number": 47,
+      "text": "To keep death before one's eyes daily.",
+      "gloss": null
+    },
+    {
+      "number": 48,
+      "text": "To keep a constant watch over the actions of our life.",
+      "gloss": null
+    },
+    {
+      "number": 49,
+      "text": "To hold as certain that God sees us everywhere.",
+      "gloss": null
+    },
+    {
+      "number": 50,
+      "text": "To dash at once against Christ the evil thoughts which rise in one's heart.",
+      "gloss": null
+    },
+    {
+      "number": 51,
+      "text": "And to disclose them to our spiritual father.",
+      "gloss": null
+    },
+    {
+      "number": 52,
+      "text": "To guard one's tongue against bad and wicked speech.",
+      "gloss": null
+    },
+    {
+      "number": 53,
+      "text": "Not to love much speaking.",
+      "gloss": null
+    },
+    {
+      "number": 54,
+      "text": "Not to speak useless words and such as provoke laughter.",
+      "gloss": null
+    },
+    {
+      "number": 55,
+      "text": "Not to love much or boisterous laughter.",
+      "gloss": null
+    },
+    {
+      "number": 56,
+      "text": "To listen willingly to holy reading.",
+      "gloss": null
+    },
+    {
+      "number": 57,
+      "text": "To apply one's self often to prayer.",
+      "gloss": null
+    },
+    {
+      "number": 58,
+      "text": "To confess one's past sins to God daily in prayer with sighs and tears, and to amend them for the future.",
+      "gloss": null
+    },
+    {
+      "number": 59,
+      "text": "Not to fulfil the desires of the flesh.",
+      "gloss": null
+    },
+    {
+      "number": 60,
+      "text": "To hate one's own will.",
+      "gloss": null
+    },
+    {
+      "number": 61,
+      "text": "To obey the commands of the Abbot in all things, even though he himself (which Heaven forbid) act otherwise, mindful of that precept of the Lord: \"What they say, do ye; what they do, do ye not\".",
+      "gloss": null
+    },
+    {
+      "number": 62,
+      "text": "Not to desire to be called holy before one is; but to be holy first, that one may be truly so called.",
+      "gloss": null
+    },
+    {
+      "number": 63,
+      "text": "To fulfil daily the commandments of God by works.",
+      "gloss": null
+    },
+    {
+      "number": 64,
+      "text": "To love chastity.",
+      "gloss": null
+    },
+    {
+      "number": 65,
+      "text": "To hate no one.",
+      "gloss": null
+    },
+    {
+      "number": 66,
+      "text": "Not to be jealous; not to entertain envy.",
+      "gloss": null
+    },
+    {
+      "number": 67,
+      "text": "Not to love strife.",
+      "gloss": null
+    },
+    {
+      "number": 68,
+      "text": "Not to love pride.",
+      "gloss": null
+    },
+    {
+      "number": 69,
+      "text": "To honor the aged.",
+      "gloss": null
+    },
+    {
+      "number": 70,
+      "text": "To love the younger.",
+      "gloss": null
+    },
+    {
+      "number": 71,
+      "text": "To pray for one's enemies in the love of Christ.",
+      "gloss": null
+    },
+    {
+      "number": 72,
+      "text": "To make peace with an adversary before the setting of the sun. And never to despair of God's mercy.",
+      "gloss": null
+    }
+  ]
+}

@@ -1,0 +1,158 @@
+{
+  "version": 1,
+  "psalterNote": "Psalm numbers follow the Vulgate (Douay-Rheims). RB's Psalm 90 is modern Psalm 91.",
+  "offices": [
+    {
+      "id": "compline",
+      "label": "Compline",
+      "defaultTime": "21:00",
+      "haptic": "compline",
+      "opening": {
+        "latin": "Deus, in adiutorium meum intende.",
+        "english": "O God, come to my assistance."
+      },
+      "response": {
+        "latin": "Domine, ad adiuvandum me festina.",
+        "english": "O Lord, make haste to help me."
+      },
+      "gloryBe": {
+        "latin": "Gloria Patri, et Filio, et Spiritui Sancto. Sicut erat in principio, et nunc, et semper, et in saecula saeculorum. Amen.",
+        "english": "Glory be to the Father, and to the Son, and to the Holy Spirit. As it was in the beginning, is now, and ever shall be, world without end. Amen."
+      },
+      "psalmNumbers": [
+        4,
+        90,
+        133
+      ],
+      "closing": {
+        "latin": "Noctem quietam et finem perfectum concedat nobis Dominus omnipotens. Amen.",
+        "english": "May the all-powerful Lord grant us a restful night and a perfect end. Amen."
+      }
+    },
+    {
+      "id": "lauds",
+      "label": "Lauds",
+      "defaultTime": "07:00",
+      "haptic": "major",
+      "opening": {
+        "latin": "Deus, in adiutorium meum intende.",
+        "english": "O God, come to my assistance."
+      },
+      "response": {
+        "latin": "Domine, ad adiuvandum me festina.",
+        "english": "O Lord, make haste to help me."
+      },
+      "gloryBe": {
+        "latin": "Gloria Patri, et Filio, et Spiritui Sancto. Sicut erat in principio, et nunc, et semper, et in saecula saeculorum. Amen.",
+        "english": "Glory be to the Father, and to the Son, and to the Holy Spirit. As it was in the beginning, is now, and ever shall be, world without end. Amen."
+      },
+      "psalmNumbers": [
+        66
+      ],
+      "closing": {
+        "latin": "Benedicamus Domino.",
+        "english": "Let us bless the Lord."
+      }
+    },
+    {
+      "id": "terce",
+      "label": "Terce",
+      "defaultTime": "09:00",
+      "haptic": "little",
+      "opening": {
+        "latin": "Deus, in adiutorium meum intende.",
+        "english": "O God, come to my assistance."
+      },
+      "response": {
+        "latin": "Domine, ad adiuvandum me festina.",
+        "english": "O Lord, make haste to help me."
+      },
+      "gloryBe": {
+        "latin": "Gloria Patri, et Filio, et Spiritui Sancto. Sicut erat in principio, et nunc, et semper, et in saecula saeculorum. Amen.",
+        "english": "Glory be to the Father, and to the Son, and to the Holy Spirit. As it was in the beginning, is now, and ever shall be, world without end. Amen."
+      },
+      "psalmNumbers": [
+        119
+      ],
+      "closing": {
+        "latin": "Benedicamus Domino.",
+        "english": "Let us bless the Lord."
+      }
+    },
+    {
+      "id": "sext",
+      "label": "Sext",
+      "defaultTime": "12:00",
+      "haptic": "little",
+      "opening": {
+        "latin": "Deus, in adiutorium meum intende.",
+        "english": "O God, come to my assistance."
+      },
+      "response": {
+        "latin": "Domine, ad adiuvandum me festina.",
+        "english": "O Lord, make haste to help me."
+      },
+      "gloryBe": {
+        "latin": "Gloria Patri, et Filio, et Spiritui Sancto. Sicut erat in principio, et nunc, et semper, et in saecula saeculorum. Amen.",
+        "english": "Glory be to the Father, and to the Son, and to the Holy Spirit. As it was in the beginning, is now, and ever shall be, world without end. Amen."
+      },
+      "psalmNumbers": [
+        50
+      ],
+      "closing": {
+        "latin": "Benedicamus Domino.",
+        "english": "Let us bless the Lord."
+      }
+    },
+    {
+      "id": "none",
+      "label": "None",
+      "defaultTime": "15:00",
+      "haptic": "little",
+      "opening": {
+        "latin": "Deus, in adiutorium meum intende.",
+        "english": "O God, come to my assistance."
+      },
+      "response": {
+        "latin": "Domine, ad adiuvandum me festina.",
+        "english": "O Lord, make haste to help me."
+      },
+      "gloryBe": {
+        "latin": "Gloria Patri, et Filio, et Spiritui Sancto. Sicut erat in principio, et nunc, et semper, et in saecula saeculorum. Amen.",
+        "english": "Glory be to the Father, and to the Son, and to the Holy Spirit. As it was in the beginning, is now, and ever shall be, world without end. Amen."
+      },
+      "psalmNumbers": [
+        129
+      ],
+      "closing": {
+        "latin": "Benedicamus Domino.",
+        "english": "Let us bless the Lord."
+      }
+    },
+    {
+      "id": "vespers",
+      "label": "Vespers",
+      "defaultTime": "18:00",
+      "haptic": "major",
+      "opening": {
+        "latin": "Deus, in adiutorium meum intende.",
+        "english": "O God, come to my assistance."
+      },
+      "response": {
+        "latin": "Domine, ad adiuvandum me festina.",
+        "english": "O Lord, make haste to help me."
+      },
+      "gloryBe": {
+        "latin": "Gloria Patri, et Filio, et Spiritui Sancto. Sicut erat in principio, et nunc, et semper, et in saecula saeculorum. Amen.",
+        "english": "Glory be to the Father, and to the Son, and to the Holy Spirit. As it was in the beginning, is now, and ever shall be, world without end. Amen."
+      },
+      "psalmNumbers": [
+        140
+      ],
+      "closing": {
+        "latin": "Benedicamus Domino.",
+        "english": "Let us bless the Lord."
+      }
+    }
+  ]
+}
