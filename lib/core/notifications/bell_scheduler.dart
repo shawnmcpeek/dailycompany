@@ -177,7 +177,7 @@ class BellScheduler {
         body: 'The signal for the Work of God.',
         scheduledDate: when,
         notificationDetails: details,
-        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
         matchDateTimeComponents: DateTimeComponents.time,
         payload: id,
       );
