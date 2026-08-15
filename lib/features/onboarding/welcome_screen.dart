@@ -9,44 +9,63 @@ class WelcomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final height = MediaQuery.sizeOf(context).height;
+    final logoHeight = height < 700 ? 120.0 : 160.0;
+
     return Scaffold(
       backgroundColor: const Color(0xFF640F0C),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(28, 36, 28, 32),
+          padding: const EdgeInsets.fromLTRB(28, 24, 28, 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Spacer(),
-              Image.asset(
-                'assets/branding/app_logo.png',
-                height: 160,
-                fit: BoxFit.contain,
-              ),
-              const SizedBox(height: 28),
-              const Text(
-                'Benedict Daily',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'EBGaramond',
-                  fontSize: 40,
-                  height: 1.1,
-                  color: Color(0xFFF3EDE1),
+              Expanded(
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return SingleChildScrollView(
+                      child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                          minHeight: constraints.maxHeight,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/branding/app_logo.png',
+                              height: logoHeight,
+                              fit: BoxFit.contain,
+                            ),
+                            const SizedBox(height: 24),
+                            const Text(
+                              'Benedict Daily',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: 'EBGaramond',
+                                fontSize: 40,
+                                height: 1.1,
+                                color: Color(0xFFF3EDE1),
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            const Text(
+                              'The Rule, read as monks read it.',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontFamily: 'EBGaramond',
+                                fontSize: 18,
+                                height: 1.4,
+                                fontStyle: FontStyle.italic,
+                                color: Color(0xFFD9CFBE),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ),
-              const SizedBox(height: 12),
-              const Text(
-                'The Rule, read as monks read it.',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'EBGaramond',
-                  fontSize: 18,
-                  height: 1.4,
-                  fontStyle: FontStyle.italic,
-                  color: Color(0xFFD9CFBE),
-                ),
-              ),
-              const Spacer(),
               FilledButton(
                 style: FilledButton.styleFrom(
                   backgroundColor: Vellum.gold,
@@ -72,31 +91,40 @@ class WelcomeHowScreen extends ConsumerWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(28, 24, 28, 32),
+          padding: const EdgeInsets.fromLTRB(28, 20, 28, 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                'How this works',
-                style: Theme.of(context).textTheme.headlineMedium,
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        'How this works',
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      ),
+                      const SizedBox(height: 20),
+                      const _HowLine(
+                        title: 'The day is already chosen',
+                        body:
+                            'Open the app on any date and the Rule portion is waiting. There is no plan to start.',
+                      ),
+                      const _HowLine(
+                        title: 'Depth is optional',
+                        body:
+                            'Hours, Lectio, Life, and the Tools are here when you want them — never as guilt.',
+                      ),
+                      const _HowLine(
+                        title: 'A quiet signal',
+                        body:
+                            'Bells and haptics can mark the hours. You can change display and sound anytime in More.',
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              const SizedBox(height: 28),
-              const _HowLine(
-                title: 'The day is already chosen',
-                body:
-                    'Open the app on any date and the Rule portion is waiting. There is no plan to start.',
-              ),
-              const _HowLine(
-                title: 'Depth is optional',
-                body:
-                    'Hours, Lectio, Life, and the Tools are here when you want them — never as guilt.',
-              ),
-              const _HowLine(
-                title: 'A quiet signal',
-                body:
-                    'Bells and haptics can mark the hours. You can change display and sound anytime in More.',
-              ),
-              const Spacer(),
+              const SizedBox(height: 12),
               FilledButton(
                 onPressed: () async {
                   await ref
@@ -123,7 +151,7 @@ class _HowLine extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 24),
+      padding: const EdgeInsets.only(bottom: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

@@ -18,7 +18,6 @@ class TodayScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final catalogAsync = ref.watch(contentCatalogProvider);
     final day = ref.watch(selectedDayProvider);
-    final settings = ref.watch(settingsProvider);
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
 
     return catalogAsync.when(
@@ -91,9 +90,7 @@ class TodayScreen extends ConsumerWidget {
               _ReadingBlock(
                 text: readings[i].textEn,
                 commentary: readings[i].commentary,
-                latin: (ref.watch(oblateUnlockedProvider) && settings.showLatin)
-                    ? readings[i].textLa
-                    : null,
+                latin: readings[i].textLa,
                 litColor: litColor,
                 animate: i == 0 && !reduceMotion,
                 readingId: readings[i].id,
@@ -136,6 +133,8 @@ class _ReadingBlockState extends ConsumerState<_ReadingBlock> {
   @override
   void initState() {
     super.initState();
+    final unlocked = ref.read(oblateUnlockedProvider);
+    _showLatin = unlocked && ref.read(settingsProvider).showLatin;
     if (!widget.animate) {
       _doAnimate = false;
     } else {
@@ -223,7 +222,7 @@ class _ReadingBlockState extends ConsumerState<_ReadingBlock> {
                 ),
           ),
         ],
-        if (_showLatin && widget.latin != null) ...[
+        if (_showLatin && widget.latin?.trim().isNotEmpty == true) ...[
           const SizedBox(height: 20),
           ChromeLabel('Latin'),
           const SizedBox(height: 8),

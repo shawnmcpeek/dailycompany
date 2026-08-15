@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 /// Illuminated drop cap — stroke then fill once per day.
+///
+/// Laid out as inline [TextSpan]s (not a fixed-size [WidgetSpan]) so the
+/// initial keeps normal kerning with the next letter and body line height.
 class DropCapText extends StatefulWidget {
   const DropCapText({
     super.key,
@@ -53,13 +56,69 @@ class _DropCapTextState extends State<DropCapText>
     super.dispose();
   }
 
+  TextStyle _capStyle(TextStyle base, double bodySize) {
+    final capSize = bodySize * 1.85;
+    final fill = _fill.value;
+    final stroke = _stroke.value;
+
+    TextStyle sized({Color? color, Paint? foreground, List<Shadow>? shadows}) {
+      // Build without inheriting base.color when using foreground (mutually exclusive).
+      return TextStyle(
+        inherit: false,
+        fontFamily: base.fontFamily,
+        fontFamilyFallback: base.fontFamilyFallback,
+        fontSize: capSize,
+        fontWeight: base.fontWeight,
+        fontStyle: base.fontStyle,
+        letterSpacing: base.letterSpacing,
+        wordSpacing: base.wordSpacing,
+        height: base.height,
+        locale: base.locale,
+        color: color,
+        foreground: foreground,
+        shadows: shadows,
+      );
+    }
+
+    if (fill >= 0.99) {
+      return sized(color: widget.color);
+    }
+
+    if (fill > 0) {
+      return sized(
+        color: widget.color.withValues(alpha: fill),
+        shadows: [
+          Shadow(
+            color: widget.color.withValues(alpha: (1 - fill) * stroke),
+            blurRadius: 0.4,
+          ),
+        ],
+      );
+    }
+
+    return sized(
+      shadows: [
+        Shadow(
+          color: widget.color.withValues(alpha: stroke),
+          blurRadius: 0.4,
+        ),
+      ],
+      foreground: Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.2
+        ..color = widget.color.withValues(alpha: stroke),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final trimmed = widget.text.trimLeft();
     if (trimmed.isEmpty) return const SizedBox.shrink();
 
     final first = trimmed.characters.first;
-    final rest = trimmed.characters.skip(1).toString().trimLeft();
+    // Keep the rest intact so spacing/kerning after the initial stays natural.
+    final rest = trimmed.characters.skip(1).toString();
+    final bodySize = widget.style.fontSize ?? 16;
 
     return AnimatedBuilder(
       animation: _controller,
@@ -67,58 +126,16 @@ class _DropCapTextState extends State<DropCapText>
         return Text.rich(
           TextSpan(
             children: [
-              WidgetSpan(
-                alignment: PlaceholderAlignment.middle,
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 8, top: 2),
-                  child: SizedBox(
-                    width: 42,
-                    height: 52,
-                    child: Stack(
-                      children: [
-                        Opacity(
-                          opacity: (1 - _fill.value).clamp(0, 1),
-                          child: Text(
-                            first,
-                            style: widget.style.copyWith(
-                              fontSize: 46,
-                              height: 0.85,
-                              color: widget.color.withValues(alpha: 0),
-                              shadows: [
-                                Shadow(
-                                  color: widget.color.withValues(
-                                    alpha: _stroke.value,
-                                  ),
-                                  blurRadius: 0.4,
-                                ),
-                              ],
-                              foreground: Paint()
-                                ..style = PaintingStyle.stroke
-                                ..strokeWidth = 1.2
-                                ..color = widget.color.withValues(
-                                  alpha: _stroke.value,
-                                ),
-                            ),
-                          ),
-                        ),
-                        Opacity(
-                          opacity: _fill.value,
-                          child: Text(
-                            first,
-                            style: widget.style.copyWith(
-                              fontSize: 46,
-                              height: 0.85,
-                              color: widget.color,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+              TextSpan(
+                text: first,
+                style: _capStyle(widget.style, bodySize),
               ),
               TextSpan(text: rest, style: widget.style),
             ],
+          ),
+          strutStyle: StrutStyle.fromTextStyle(
+            widget.style,
+            forceStrutHeight: true,
           ),
         );
       },
