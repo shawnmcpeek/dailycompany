@@ -1,6 +1,14 @@
 # Project-level configuration.
 cmake_minimum_required(VERSION 3.13)
-project(runner LANGUAGES CXX)
+# Include C so native plugins (sentry-native) compile under an explicit C standard.
+project(runner LANGUAGES C CXX)
+
+# sentry-native uses C11 (_Generic). Its own CMake defaults to C99 when unset,
+# which makes Clang emit -Wc11-extensions. Compile as gnu11 (C11 + POSIX)
+# before plugins are included so _Generic is standard and Linux APIs remain available.
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_C_EXTENSIONS ON)
 
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.

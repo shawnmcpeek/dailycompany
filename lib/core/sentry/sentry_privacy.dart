@@ -41,8 +41,11 @@ SentryEvent? scrubSentryEvent(SentryEvent event, Hint hint) {
     event.culprit = JournalPrivacyVault.redact(event.culprit!);
   }
 
+  // Defensive: scrub legacy Additional Data if present on inbound events.
+  // ignore: deprecated_member_use
   final extras = event.extra;
   if (extras != null && extras.isNotEmpty) {
+    // ignore: deprecated_member_use
     event.extra = _redactMap(Map<String, dynamic>.from(extras));
   }
 

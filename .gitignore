@@ -55,6 +55,9 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+*.aab
+*.apk
+*.ap_
 
 # Android release signing (never commit)
 /android/key.properties
@@ -69,3 +72,6 @@ AuthKey_*.p8
 
 # Local store / IAP credentials (never commit)
 /secrets/
+
+# Sentry native crashpad / runtime state (never commit)
+.sentry-native/

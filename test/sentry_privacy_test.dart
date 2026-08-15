@@ -28,11 +28,13 @@ void main() {
           ),
         ),
       ],
-      extra: {
-        'character_count': secret.length,
-        'text': secret,
-        'reading_id': 42,
-      },
+      contexts: Contexts(
+        // Custom bag exercised by redaction.
+      )..['journal_ops'] = {
+          'character_count': secret.length,
+          'text': secret,
+          'reading_id': 42,
+        },
       breadcrumbs: [
         Breadcrumb(message: 'Draft: $secret', category: 'ui'),
       ],
@@ -45,15 +47,18 @@ void main() {
     expect(out.exceptions!.first.type, 'StateError');
     expect(out.exceptions!.first.value, isNot(contains(secret)));
     expect(out.exceptions!.first.value, contains('[redacted]'));
-    expect(out.exceptions!.first.stackTrace!.frames.first.function,
-        'JournalController.add');
+    expect(
+      out.exceptions!.first.stackTrace!.frames.first.function,
+      'JournalController.add',
+    );
     expect(
       out.exceptions!.first.stackTrace!.frames.first.contextLine,
       isNot(contains(secret)),
     );
-    expect(out.extra!['character_count'], secret.length);
-    expect(out.extra!['reading_id'], 42);
-    expect(out.extra!['text'], '[redacted]');
+    final ops = out.contexts['journal_ops'] as Map;
+    expect(ops['character_count'], secret.length);
+    expect(ops['reading_id'], 42);
+    expect(ops['text'], '[redacted]');
     expect(out.breadcrumbs!.first.message, isNot(contains(secret)));
   });
 
@@ -78,8 +83,10 @@ void main() {
 
     final out = scrubSentryEvent(event, Hint());
     expect(out, same(event));
-    expect(out!.exceptions!.first.value,
-        'Benedict Daily Sentry verification crash');
+    expect(
+      out!.exceptions!.first.value,
+      'Benedict Daily Sentry verification crash',
+    );
   });
 
   test('redacts sensitive breadcrumb data keys', () {

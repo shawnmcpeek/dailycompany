@@ -20,9 +20,9 @@ abstract final class JournalFailureReporter {
     final freeBytes = await freeDiskBytes();
     final meta = <String, Object?>{
       'character_count': characterCount,
-      if (readingId != null) 'reading_id': readingId,
+      'reading_id': ?readingId,
       'isar_open': AppIsar.isOpen,
-      if (freeBytes != null) 'free_disk_bytes': freeBytes,
+      'free_disk_bytes': ?freeBytes,
       'retry_count': retryCount,
       if (error != null) 'error_type': error.runtimeType.toString(),
     };
