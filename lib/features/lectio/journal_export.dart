@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:benedictdaily/core/diagnostics/diagnostics_log.dart';
+import 'package:benedictdaily/core/diagnostics/journal_failure_reporter.dart';
 import 'package:benedictdaily/data/content_catalog.dart';
 import 'package:benedictdaily/data/providers.dart';
 import 'package:flutter/material.dart';
@@ -23,30 +25,49 @@ abstract final class JournalExport {
       return;
     }
 
-    final body = format(entries, catalog: catalog);
-    final dir = await getTemporaryDirectory();
-    final stamp = DateFormat('yyyyMMdd').format(DateTime.now());
-    final file = File('${dir.path}/benedict_lectio_journal_$stamp.txt');
-    await file.writeAsString(body);
+    try {
+      final body = format(entries, catalog: catalog);
+      final dir = await getTemporaryDirectory();
+      final stamp = DateFormat('yyyyMMdd').format(DateTime.now());
+      final file = File('${dir.path}/benedict_lectio_journal_$stamp.txt');
+      await file.writeAsString(body);
 
-    if (!context.mounted) return;
-    final box = context.findRenderObject() as RenderBox?;
-    final origin =
-        box == null ? null : box.localToGlobal(Offset.zero) & box.size;
+      if (!context.mounted) return;
+      final box = context.findRenderObject() as RenderBox?;
+      final origin =
+          box == null ? null : box.localToGlobal(Offset.zero) & box.size;
 
-    await SharePlus.instance.share(
-      ShareParams(
-        files: [
-          XFile(
-            file.path,
-            mimeType: 'text/plain',
-            name: 'benedict_lectio_journal_$stamp.txt',
-          ),
-        ],
-        text: 'Benedict Daily · Lectio journal',
-        sharePositionOrigin: origin,
-      ),
-    );
+      await SharePlus.instance.share(
+        ShareParams(
+          files: [
+            XFile(
+              file.path,
+              mimeType: 'text/plain',
+              name: 'benedict_lectio_journal_$stamp.txt',
+            ),
+          ],
+          text: 'Benedict Daily · Lectio journal',
+          sharePositionOrigin: origin,
+        ),
+      );
+      await DiagnosticsLog.instance.record(
+        operation: 'journal_export_ok',
+        metadata: {'entry_count': entries.length},
+      );
+    } catch (e, st) {
+      await JournalFailureReporter.report(
+        key: 'journal_export_failed',
+        characterCount: 0,
+        error: e,
+        stackTrace: st,
+        asException: true,
+      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Could not export journal.')),
+        );
+      }
+    }
   }
 
   static String format(

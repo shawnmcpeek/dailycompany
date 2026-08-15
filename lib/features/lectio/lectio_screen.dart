@@ -42,11 +42,13 @@ class _LectioScreenState extends ConsumerState<LectioScreen> {
   Timer? _timer;
   bool _running = false;
   final _journalCtrl = TextEditingController();
+  bool _hydratedDraft = false;
 
   @override
   void initState() {
     super.initState();
     _remaining = 4 * 60;
+    _journalCtrl.addListener(_onJournalChanged);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       final settings = ref.read(settingsProvider);
@@ -55,12 +57,31 @@ class _LectioScreenState extends ConsumerState<LectioScreen> {
           _remaining = _minutesFor(_movement, settings) * 60;
         });
       }
+      _restoreDraft();
     });
+  }
+
+  void _restoreDraft() {
+    if (_hydratedDraft) return;
+    _hydratedDraft = true;
+    final draft = ref.read(journalDraftProvider);
+    if (draft.text.isNotEmpty && _journalCtrl.text != draft.text) {
+      _journalCtrl.text = draft.text;
+    }
+  }
+
+  void _onJournalChanged() {
+    final readingId = ref.read(journalDraftProvider).readingId;
+    ref.read(journalDraftProvider.notifier).updateText(
+          _journalCtrl.text,
+          readingId: readingId,
+        );
   }
 
   @override
   void dispose() {
     _timer?.cancel();
+    _journalCtrl.removeListener(_onJournalChanged);
     _journalCtrl.dispose();
     super.dispose();
   }
@@ -113,6 +134,25 @@ class _LectioScreenState extends ConsumerState<LectioScreen> {
     return '${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
   }
 
+  Future<void> _saveJournal(int readingId) async {
+    ref.read(journalDraftProvider.notifier).bindReading(readingId);
+    ref.read(journalDraftProvider.notifier).updateText(
+          _journalCtrl.text,
+          readingId: readingId,
+        );
+    final ok = await ref
+        .read(journalDraftProvider.notifier)
+        .save(readingId: readingId);
+    if (!mounted) return;
+    if (ok) {
+      _journalCtrl.clear();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Journal saved.')),
+      );
+    }
+    // On failure the persistent banner stays via draft.saveFailed.
+  }
+
   @override
   Widget build(BuildContext context) {
     final catalogAsync = ref.watch(contentCatalogProvider);
@@ -121,6 +161,19 @@ class _LectioScreenState extends ConsumerState<LectioScreen> {
     final settings = ref.watch(settingsProvider);
     final ctrl = ref.read(settingsProvider.notifier);
     final unlocked = ref.watch(oblateUnlockedProvider);
+    final draft = ref.watch(journalDraftProvider);
+
+    // Keep field in sync when returning with a held draft.
+    if (draft.text.isNotEmpty &&
+        _journalCtrl.text.isEmpty &&
+        draft.saveFailed) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        if (_journalCtrl.text.isEmpty) {
+          _journalCtrl.text = draft.text;
+        }
+      });
+    }
 
     return catalogAsync.when(
       loading: () => const EmptyLoading(),
@@ -128,186 +181,233 @@ class _LectioScreenState extends ConsumerState<LectioScreen> {
       data: (catalog) {
         final readings = catalog.calendar.resolveFor(day);
         final reading = readings.isEmpty ? null : readings.first;
+        if (reading != null) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!mounted) return;
+            ref.read(journalDraftProvider.notifier).bindReading(reading.id);
+          });
+        }
         final priorAsync = reading == null
             ? null
             : ref.watch(priorJournalProvider(reading.id));
         final prior = priorAsync?.valueOrNull;
 
-        return ListView(
-          padding: const EdgeInsets.fromLTRB(24, 16, 24, 48),
+        return Column(
           children: [
-            Text('Lectio Divina', style: Theme.of(context).textTheme.headlineMedium),
-            const SizedBox(height: 8),
-            Text(
-              reading == null
-                  ? 'No reading today.'
-                  : catalog.calendar.readingHeadline(reading),
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            const SizedBox(height: 24),
-            Text(
-              _movement.label.toUpperCase(),
-              style: Theme.of(context).textTheme.labelSmall,
-            ),
-            const SizedBox(height: 6),
-            Text(_movement.prompt, style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: 20),
-            Text(
-              _fmt(_remaining),
-              style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                    fontFamily: 'IBMPlexSans',
-                    fontSize: 56,
-                    height: 1,
-                  ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                FilledButton(
-                  onPressed: reading == null
-                      ? null
-                      : (_running ? _pause : _start),
-                  child: Text(_running ? 'Pause' : 'Begin'),
-                ),
-                const SizedBox(width: 12),
-                OutlinedButton(
-                  onPressed: _running || _remaining == 0 ? null : _advance,
-                  child: const Text('Next movement'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 28),
-            ChromeLabel('Durations'),
-            const SizedBox(height: 8),
-            Text(
-              _running
-                  ? 'Pause to adjust movement lengths.'
-                  : 'Defaults are 4 / 4 / 4 / 8 minutes.',
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-            const SizedBox(height: 8),
-            _DurationSlider(
-              label: 'Lectio',
-              value: settings.lectioMinutes,
-              enabled: !_running,
-              onChanged: (v) async {
-                await ctrl.setLectioMinutes(lectio: v);
-                if (_movement == LectioMovement.lectio && mounted) {
-                  setState(() => _remaining = v * 60);
-                }
-              },
-            ),
-            _DurationSlider(
-              label: 'Meditatio',
-              value: settings.meditatioMinutes,
-              enabled: !_running,
-              onChanged: (v) async {
-                await ctrl.setLectioMinutes(meditatio: v);
-                if (_movement == LectioMovement.meditatio && mounted) {
-                  setState(() => _remaining = v * 60);
-                }
-              },
-            ),
-            _DurationSlider(
-              label: 'Oratio',
-              value: settings.oratioMinutes,
-              enabled: !_running,
-              onChanged: (v) async {
-                await ctrl.setLectioMinutes(oratio: v);
-                if (_movement == LectioMovement.oratio && mounted) {
-                  setState(() => _remaining = v * 60);
-                }
-              },
-            ),
-            _DurationSlider(
-              label: 'Contemplatio',
-              value: settings.contemplatioMinutes,
-              enabled: !_running,
-              onChanged: (v) async {
-                await ctrl.setLectioMinutes(contemplatio: v);
-                if (_movement == LectioMovement.contemplatio && mounted) {
-                  setState(() => _remaining = v * 60);
-                }
-              },
-            ),
-            const SizedBox(height: 20),
-            if (reading != null) ...[
-              ChromeLabel('Today\'s passage'),
-              const SizedBox(height: 10),
-              ReadingBody(text: reading.textEn),
-            ],
-            if (prior != null && unlocked) ...[
-              const SizedBox(height: 20),
-              ChromeLabel('From a past cycle'),
-              const SizedBox(height: 8),
-              Text(
-                '"${prior.text}"',
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontStyle: FontStyle.italic,
+            if (draft.saveFailed)
+              Material(
+                color: Theme.of(context).colorScheme.errorContainer,
+                child: SafeArea(
+                  bottom: false,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 12, 8, 12),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            'Journal not saved. Your words are still here — tap Retry.',
+                            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onErrorContainer,
+                                ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: reading == null
+                              ? null
+                              : () => _saveJournal(reading.id),
+                          child: Text(
+                            'Retry',
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onErrorContainer,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-              ),
-            ],
-            const SizedBox(height: 28),
-            ChromeLabel('Journal'),
-            const SizedBox(height: 8),
-            if (!unlocked) ...[
-              Text(
-                'Saving a journal and hearing past-cycle notes unlocks with Oblate. '
-                'The Lectio timer stays free.',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 12),
-              OutlinedButton(
-                onPressed: () => openOblatePaywall(context),
-                child: const Text('Unlock journal · Oblate'),
-              ),
-            ] else ...[
-              TextField(
-                controller: _journalCtrl,
-                maxLines: 5,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'A word, a prayer, a notice…',
+                  ),
                 ),
               ),
-              const SizedBox(height: 12),
-              OutlinedButton(
-                onPressed: reading == null
-                    ? null
-                    : () async {
-                        await ref
-                            .read(journalProvider.notifier)
-                            .add(reading.id, _journalCtrl.text);
-                        _journalCtrl.clear();
-                        if (context.mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Journal saved.')),
+            Expanded(
+              child: ListView(
+                padding: const EdgeInsets.fromLTRB(24, 16, 24, 48),
+                children: [
+                  Text(
+                    'Lectio Divina',
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    reading == null
+                        ? 'No reading today.'
+                        : catalog.calendar.readingHeadline(reading),
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  const SizedBox(height: 24),
+                  Text(
+                    _movement.label.toUpperCase(),
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    _movement.prompt,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    _fmt(_remaining),
+                    style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                          fontFamily: 'IBMPlexSans',
+                          fontSize: 56,
+                          height: 1,
+                        ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      FilledButton(
+                        onPressed: reading == null
+                            ? null
+                            : (_running ? _pause : _start),
+                        child: Text(_running ? 'Pause' : 'Begin'),
+                      ),
+                      const SizedBox(width: 12),
+                      OutlinedButton(
+                        onPressed:
+                            _running || _remaining == 0 ? null : _advance,
+                        child: const Text('Next movement'),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 28),
+                  ChromeLabel('Durations'),
+                  const SizedBox(height: 8),
+                  Text(
+                    _running
+                        ? 'Pause to adjust movement lengths.'
+                        : 'Defaults are 4 / 4 / 4 / 8 minutes.',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  const SizedBox(height: 8),
+                  _DurationSlider(
+                    label: 'Lectio',
+                    value: settings.lectioMinutes,
+                    enabled: !_running,
+                    onChanged: (v) async {
+                      await ctrl.setLectioMinutes(lectio: v);
+                      if (_movement == LectioMovement.lectio && mounted) {
+                        setState(() => _remaining = v * 60);
+                      }
+                    },
+                  ),
+                  _DurationSlider(
+                    label: 'Meditatio',
+                    value: settings.meditatioMinutes,
+                    enabled: !_running,
+                    onChanged: (v) async {
+                      await ctrl.setLectioMinutes(meditatio: v);
+                      if (_movement == LectioMovement.meditatio && mounted) {
+                        setState(() => _remaining = v * 60);
+                      }
+                    },
+                  ),
+                  _DurationSlider(
+                    label: 'Oratio',
+                    value: settings.oratioMinutes,
+                    enabled: !_running,
+                    onChanged: (v) async {
+                      await ctrl.setLectioMinutes(oratio: v);
+                      if (_movement == LectioMovement.oratio && mounted) {
+                        setState(() => _remaining = v * 60);
+                      }
+                    },
+                  ),
+                  _DurationSlider(
+                    label: 'Contemplatio',
+                    value: settings.contemplatioMinutes,
+                    enabled: !_running,
+                    onChanged: (v) async {
+                      await ctrl.setLectioMinutes(contemplatio: v);
+                      if (_movement == LectioMovement.contemplatio &&
+                          mounted) {
+                        setState(() => _remaining = v * 60);
+                      }
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  if (reading != null) ...[
+                    ChromeLabel('Today\'s passage'),
+                    const SizedBox(height: 10),
+                    ReadingBody(text: reading.textEn),
+                  ],
+                  if (prior != null && unlocked) ...[
+                    const SizedBox(height: 20),
+                    ChromeLabel('From a past cycle'),
+                    const SizedBox(height: 8),
+                    Text(
+                      '"${prior.text}"',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontStyle: FontStyle.italic,
+                          ),
+                    ),
+                  ],
+                  const SizedBox(height: 28),
+                  ChromeLabel('Journal'),
+                  const SizedBox(height: 8),
+                  if (!unlocked) ...[
+                    Text(
+                      'Saving a journal and hearing past-cycle notes unlocks with Oblate. '
+                      'The Lectio timer stays free.',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(height: 12),
+                    OutlinedButton(
+                      onPressed: () => openOblatePaywall(context),
+                      child: const Text('Unlock journal · Oblate'),
+                    ),
+                  ] else ...[
+                    TextField(
+                      controller: _journalCtrl,
+                      maxLines: 5,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'A word, a prayer, a notice…',
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    OutlinedButton(
+                      onPressed: reading == null
+                          ? null
+                          : () => _saveJournal(reading.id),
+                      child: const Text('Save entry'),
+                    ),
+                    if (journal.isNotEmpty) ...[
+                      const SizedBox(height: 24),
+                      Text(
+                        '${journal.length} saved entries',
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      const SizedBox(height: 10),
+                      OutlinedButton(
+                        onPressed: () async {
+                          final catalog =
+                              ref.read(contentCatalogProvider).valueOrNull;
+                          await JournalExport.share(
+                            context,
+                            entries: journal,
+                            catalog: catalog,
                           );
-                        }
-                      },
-                child: const Text('Save entry'),
+                        },
+                        child: const Text('Export journal'),
+                      ),
+                    ],
+                  ],
+                ],
               ),
-              if (journal.isNotEmpty) ...[
-                const SizedBox(height: 24),
-                Text(
-                  '${journal.length} saved entries',
-                  style: Theme.of(context).textTheme.bodySmall,
-                ),
-                const SizedBox(height: 10),
-                OutlinedButton(
-                  onPressed: () async {
-                    final catalog =
-                        ref.read(contentCatalogProvider).valueOrNull;
-                    await JournalExport.share(
-                      context,
-                      entries: journal,
-                      catalog: catalog,
-                    );
-                  },
-                  child: const Text('Export journal'),
-                ),
-              ],
-            ],
+            ),
           ],
         );
       },

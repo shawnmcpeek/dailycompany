@@ -22,6 +22,8 @@ dependencies:
   isar_community: ^3.3.2
   isar_community_flutter_libs: ^3.3.2
   purchases_flutter: ^10.9.0
+  sentry_flutter: ^9.6.0
+  package_info_plus: ^10.2.1
 
 dev_dependencies:
   flutter_test:
@@ -31,6 +33,7 @@ dev_dependencies:
   flutter_native_splash: ^2.4.6
   isar_community_generator: ^3.3.2
   build_runner: ^2.15.1
+  sentry_dart_plugin: ^3.4.0
 
 flutter:
   uses-material-design: true
@@ -89,3 +92,10 @@ flutter_native_splash:
   ios: true
   web: true
   android: true
+
+sentry:
+  project: benedict_daily
+  org: daddoo-dev
+  # Auth token: set SENTRY_AUTH_TOKEN in the environment (never commit).
+  upload_debug_symbols: true
+  upload_source_maps: false

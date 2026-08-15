@@ -1,5 +1,6 @@
 import 'package:benedictdaily/app/brand.dart';
 import 'package:benedictdaily/app/theme/palette.dart';
+import 'package:benedictdaily/core/diagnostics/diagnostics_log.dart';
 import 'package:benedictdaily/core/iap/iap_controller.dart';
 import 'package:benedictdaily/core/iap/iap_flags.dart';
 import 'package:benedictdaily/data/providers.dart';
@@ -50,6 +51,20 @@ class MoreScreen extends ConsumerWidget {
               entries: entries,
               catalog: catalog,
             );
+          },
+        ),
+        const SectionRule(),
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          title: const Text('Export diagnostics'),
+          subtitle: const Text(
+            'Local technical log only — shared when you choose',
+          ),
+          onTap: () async {
+            final box = context.findRenderObject() as RenderBox?;
+            final origin =
+                box == null ? null : box.localToGlobal(Offset.zero) & box.size;
+            await DiagnosticsLog.instance.share(sharePositionOrigin: origin);
           },
         ),
         const SectionRule(),

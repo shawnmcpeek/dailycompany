@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:benedictdaily/core/diagnostics/diagnostics_log.dart';
+import 'package:benedictdaily/core/diagnostics/journal_failure_reporter.dart';
 import 'package:benedictdaily/data/isar/lectio_journal_entry.dart';
 import 'package:benedictdaily/data/isar/reading_completion.dart';
 import 'package:isar_community/isar.dart';
@@ -8,6 +10,8 @@ import 'package:path_provider/path_provider.dart';
 
 abstract final class AppIsar {
   static Isar? _instance;
+
+  static bool get isOpen => _instance != null && _instance!.isOpen;
 
   static Isar get instance {
     final isar = _instance;
@@ -59,7 +63,18 @@ abstract final class AppIsar {
         }
       });
       await file.rename('${file.path}.migrated');
-    } catch (_) {
+      await DiagnosticsLog.instance.record(
+        operation: 'journal_migrate_ok',
+        metadata: {'imported_count': raw.length},
+      );
+    } catch (e, st) {
+      await JournalFailureReporter.report(
+        key: 'journal_migrate_failed',
+        characterCount: 0,
+        error: e,
+        stackTrace: st,
+        asException: true,
+      );
       // Leave the JSON in place if migration fails; Isar stays usable empty.
     }
   }

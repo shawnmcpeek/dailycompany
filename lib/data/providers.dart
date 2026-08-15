@@ -1,3 +1,5 @@
+import 'package:benedictdaily/core/diagnostics/diagnostics_log.dart';
+import 'package:benedictdaily/core/diagnostics/journal_failure_reporter.dart';
 import 'package:benedictdaily/core/iap/iap_controller.dart';
 import 'package:benedictdaily/core/notifications/bell_scheduler.dart';
 import 'package:benedictdaily/data/content_catalog.dart';
@@ -282,6 +284,94 @@ class JournalEntry {
       );
 }
 
+/// Unsaved journal draft held across navigation after a failed save.
+class JournalDraftState {
+  const JournalDraftState({
+    this.text = '',
+    this.readingId,
+    this.saveFailed = false,
+    this.retryCount = 0,
+    this.lastErrorCode,
+  });
+
+  final String text;
+  final int? readingId;
+  final bool saveFailed;
+  final int retryCount;
+  final String? lastErrorCode;
+
+  bool get hasUnsavedText => text.trim().isNotEmpty;
+
+  JournalDraftState copyWith({
+    String? text,
+    int? readingId,
+    bool? saveFailed,
+    int? retryCount,
+    String? lastErrorCode,
+    bool clearError = false,
+  }) {
+    return JournalDraftState(
+      text: text ?? this.text,
+      readingId: readingId ?? this.readingId,
+      saveFailed: saveFailed ?? this.saveFailed,
+      retryCount: retryCount ?? this.retryCount,
+      lastErrorCode:
+          clearError ? null : (lastErrorCode ?? this.lastErrorCode),
+    );
+  }
+}
+
+final journalDraftProvider =
+    StateNotifierProvider<JournalDraftController, JournalDraftState>((ref) {
+  return JournalDraftController(ref);
+});
+
+class JournalDraftController extends StateNotifier<JournalDraftState> {
+  JournalDraftController(this._ref) : super(const JournalDraftState());
+
+  final Ref _ref;
+
+  void updateText(String text, {int? readingId}) {
+    JournalFailureReporter.rememberDraft(text);
+    state = state.copyWith(
+      text: text,
+      readingId: readingId ?? state.readingId,
+    );
+  }
+
+  void bindReading(int readingId) {
+    if (state.readingId == readingId) return;
+    // Keep failed draft text when returning to the same session reading.
+    state = state.copyWith(readingId: readingId);
+  }
+
+  Future<bool> save({required int readingId}) async {
+    JournalFailureReporter.rememberDraft(state.text);
+    final ok = await _ref.read(journalProvider.notifier).add(
+          readingId,
+          state.text,
+          retryCount: state.retryCount,
+        );
+    if (ok) {
+      state = const JournalDraftState();
+      return true;
+    }
+    state = state.copyWith(
+      readingId: readingId,
+      saveFailed: true,
+      retryCount: state.retryCount + 1,
+      lastErrorCode: 'journal_save_failed',
+    );
+    return false;
+  }
+
+  Future<bool> retry() async {
+    final readingId = state.readingId;
+    if (readingId == null) return false;
+    return save(readingId: readingId);
+  }
+}
+
 final isarProvider = Provider<Isar>((ref) => AppIsar.instance);
 
 final journalProvider =
@@ -297,46 +387,110 @@ final priorJournalProvider =
 
 class JournalController extends StateNotifier<List<JournalEntry>> {
   JournalController(this._isar, this._ref) : super(const []) {
+    // Fire-and-forget load; failures are reported, UI stays empty.
     _load();
   }
 
   final Isar _isar;
   final Ref _ref;
 
+  static const _forceSaveFail =
+      bool.fromEnvironment('JOURNAL_FORCE_SAVE_FAIL', defaultValue: false);
+
   Future<void> _load() async {
-    final rows = await _isar.lectioJournalEntrys
-        .where()
-        .sortByCreatedAtDesc()
-        .findAll();
-    state = rows.map(JournalEntry.fromIsar).toList();
+    try {
+      final rows = await _isar.lectioJournalEntrys
+          .where()
+          .sortByCreatedAtDesc()
+          .findAll();
+      state = rows.map(JournalEntry.fromIsar).toList();
+    } catch (e, st) {
+      await JournalFailureReporter.report(
+        key: 'journal_load_failed',
+        characterCount: 0,
+        error: e,
+        stackTrace: st,
+        asException: true,
+      );
+    }
   }
 
-  Future<void> add(int readingId, String text) async {
+  /// Returns `true` when the entry is persisted. Never swallows failures.
+  Future<bool> add(
+    int readingId,
+    String text, {
+    int retryCount = 0,
+  }) async {
     final trimmed = text.trim();
-    if (trimmed.isEmpty) return;
-    final entry = LectioJournalEntry()
-      ..readingId = readingId
-      ..text = trimmed
-      ..createdAt = DateTime.now();
-    await _isar.writeTxn(() async {
-      await _isar.lectioJournalEntrys.put(entry);
-    });
-    await _load();
-    _ref.invalidate(priorJournalProvider(readingId));
+    if (trimmed.isEmpty) return true;
+    JournalFailureReporter.rememberDraft(trimmed);
+
+    try {
+      if (_forceSaveFail) {
+        throw StateError('Forced journal save failure');
+      }
+      if (!AppIsar.isOpen) {
+        throw StateError('Isar is not open');
+      }
+
+      final entry = LectioJournalEntry()
+        ..readingId = readingId
+        ..text = trimmed
+        ..createdAt = DateTime.now();
+      await _isar.writeTxn(() async {
+        await _isar.lectioJournalEntrys.put(entry);
+      });
+      await _load();
+      _ref.invalidate(priorJournalProvider(readingId));
+      await DiagnosticsLog.instance.record(
+        operation: 'journal_save_ok',
+        metadata: {
+          'character_count': trimmed.length,
+          'reading_id': readingId,
+          'retry_count': retryCount,
+        },
+      );
+      return true;
+    } catch (e, st) {
+      await JournalFailureReporter.report(
+        key: 'journal_save_failed',
+        characterCount: trimmed.length,
+        readingId: readingId,
+        retryCount: retryCount,
+        error: e,
+        stackTrace: st,
+        asException: true,
+      );
+      return false;
+    }
   }
 
   /// Cross-cycle resurfacing: older than ~30 days for the same reading.
   Future<JournalEntry?> previousFor(int readingId, {DateTime? before}) async {
-    final cutoff = (before ?? DateTime.now()).subtract(const Duration(days: 30));
-    final found = await _isar.lectioJournalEntrys
-        .filter()
-        .readingIdEqualTo(readingId)
-        .createdAtLessThan(cutoff)
-        .sortByCreatedAtDesc()
-        .findFirst();
-    return found == null ? null : JournalEntry.fromIsar(found);
+    try {
+      final cutoff =
+          (before ?? DateTime.now()).subtract(const Duration(days: 30));
+      final found = await _isar.lectioJournalEntrys
+          .filter()
+          .readingIdEqualTo(readingId)
+          .createdAtLessThan(cutoff)
+          .sortByCreatedAtDesc()
+          .findFirst();
+      return found == null ? null : JournalEntry.fromIsar(found);
+    } catch (e, st) {
+      await JournalFailureReporter.report(
+        key: 'journal_prior_lookup_failed',
+        characterCount: 0,
+        readingId: readingId,
+        error: e,
+        stackTrace: st,
+        asException: true,
+      );
+      return null;
+    }
   }
 }
+
 
 final completionProvider =
     StateNotifierProvider<CompletionController, Set<String>>((ref) {

@@ -1,4 +1,3 @@
-import 'package:benedictdaily/app/brand.dart';
 import 'package:benedictdaily/app/theme/palette.dart';
 import 'package:benedictdaily/data/providers.dart';
 import 'package:flutter/material.dart';
@@ -18,15 +17,6 @@ class WelcomeScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Text(
-                Brand.studio.toUpperCase(),
-                style: const TextStyle(
-                  fontFamily: 'IBMPlexSans',
-                  fontSize: 11,
-                  letterSpacing: 0.1,
-                  color: Color(0xFFD9CFBE),
-                ),
-              ),
               const Spacer(),
               Image.asset(
                 'assets/branding/app_logo.png',
