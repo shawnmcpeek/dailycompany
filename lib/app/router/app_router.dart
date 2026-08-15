@@ -1,10 +1,13 @@
+import 'package:benedictdaily/app/router/page_turn.dart';
 import 'package:benedictdaily/data/providers.dart';
 import 'package:benedictdaily/features/hours/hours_screen.dart';
 import 'package:benedictdaily/features/hub/hub_screen.dart';
+import 'package:benedictdaily/features/iap/oblate_paywall_screen.dart';
 import 'package:benedictdaily/features/lectio/lectio_screen.dart';
 import 'package:benedictdaily/features/life/life_screen.dart';
 import 'package:benedictdaily/features/medal/medal_screen.dart';
 import 'package:benedictdaily/features/more/more_screen.dart';
+import 'package:benedictdaily/features/more/sources_screen.dart';
 import 'package:benedictdaily/features/onboarding/welcome_screen.dart';
 import 'package:benedictdaily/features/today/today_screen.dart';
 import 'package:benedictdaily/features/tools/tools_screen.dart';
@@ -12,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-final _rootKey = GlobalKey<NavigatorState>();
+final rootNavigatorKey = GlobalKey<NavigatorState>();
 
 final routerProvider = Provider<GoRouter>((ref) {
   final refresh = ValueNotifier(0);
@@ -22,7 +25,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   ref.onDispose(refresh.dispose);
 
   return GoRouter(
-    navigatorKey: _rootKey,
+    navigatorKey: rootNavigatorKey,
     initialLocation: '/hub',
     refreshListenable: refresh,
     redirect: (context, state) {
@@ -42,13 +45,21 @@ final routerProvider = Provider<GoRouter>((ref) {
     },
     routes: [
       GoRoute(
-        parentNavigatorKey: _rootKey,
+        parentNavigatorKey: rootNavigatorKey,
         path: '/welcome',
-        builder: (context, state) => const WelcomeScreen(),
+        pageBuilder: (context, state) => PageTurn.of(
+          key: state.pageKey,
+          name: state.name,
+          child: const WelcomeScreen(),
+        ),
         routes: [
           GoRoute(
             path: 'how',
-            builder: (context, state) => const WelcomeHowScreen(),
+            pageBuilder: (context, state) => PageTurn.of(
+              key: state.pageKey,
+              name: state.name,
+              child: const WelcomeHowScreen(),
+            ),
           ),
         ],
       ),
@@ -61,7 +72,10 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/hub',
-                builder: (context, state) => const HubScreen(),
+                pageBuilder: (context, state) => PageTurn.of(
+                  key: state.pageKey,
+                  child: const HubScreen(),
+                ),
               ),
             ],
           ),
@@ -69,7 +83,10 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/today',
-                builder: (context, state) => const TodayScreen(),
+                pageBuilder: (context, state) => PageTurn.of(
+                  key: state.pageKey,
+                  child: const TodayScreen(),
+                ),
               ),
             ],
           ),
@@ -77,12 +94,18 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/hours',
-                builder: (context, state) => const HoursScreen(),
+                pageBuilder: (context, state) => PageTurn.of(
+                  key: state.pageKey,
+                  child: const HoursScreen(),
+                ),
                 routes: [
                   GoRoute(
                     path: ':id',
-                    builder: (context, state) => OfficeScreen(
-                      officeId: state.pathParameters['id']!,
+                    pageBuilder: (context, state) => PageTurn.of(
+                      key: state.pageKey,
+                      child: OfficeScreen(
+                        officeId: state.pathParameters['id']!,
+                      ),
                     ),
                   ),
                 ],
@@ -93,12 +116,18 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/life',
-                builder: (context, state) => const LifeScreen(),
+                pageBuilder: (context, state) => PageTurn.of(
+                  key: state.pageKey,
+                  child: const LifeScreen(),
+                ),
                 routes: [
                   GoRoute(
                     path: ':chapter',
-                    builder: (context, state) => LifeEpisodeScreen(
-                      chapter: int.parse(state.pathParameters['chapter']!),
+                    pageBuilder: (context, state) => PageTurn.of(
+                      key: state.pageKey,
+                      child: LifeEpisodeScreen(
+                        chapter: int.parse(state.pathParameters['chapter']!),
+                      ),
                     ),
                   ),
                 ],
@@ -109,34 +138,68 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/tools',
-                builder: (context, state) => const ToolsScreen(),
+                pageBuilder: (context, state) => PageTurn.of(
+                  key: state.pageKey,
+                  child: const ToolsScreen(),
+                ),
               ),
             ],
           ),
         ],
       ),
       GoRoute(
-        parentNavigatorKey: _rootKey,
+        parentNavigatorKey: rootNavigatorKey,
         path: '/more',
-        builder: (context, state) => Scaffold(
-          appBar: AppBar(title: const Text('More')),
-          body: const MoreScreen(),
+        pageBuilder: (context, state) => PageTurn.of(
+          key: state.pageKey,
+          child: Scaffold(
+            appBar: AppBar(title: const Text('More')),
+            body: const MoreScreen(),
+          ),
         ),
       ),
       GoRoute(
-        parentNavigatorKey: _rootKey,
+        parentNavigatorKey: rootNavigatorKey,
         path: '/lectio',
-        builder: (context, state) => Scaffold(
-          appBar: AppBar(title: const Text('Lectio')),
-          body: const LectioScreen(),
+        pageBuilder: (context, state) => PageTurn.of(
+          key: state.pageKey,
+          child: Scaffold(
+            appBar: AppBar(title: const Text('Lectio')),
+            body: const LectioScreen(),
+          ),
         ),
       ),
       GoRoute(
-        parentNavigatorKey: _rootKey,
+        parentNavigatorKey: rootNavigatorKey,
         path: '/medal',
-        builder: (context, state) => Scaffold(
-          appBar: AppBar(title: const Text('The Medal')),
-          body: const MedalScreen(),
+        pageBuilder: (context, state) => PageTurn.of(
+          key: state.pageKey,
+          child: Scaffold(
+            appBar: AppBar(title: const Text('The Medal')),
+            body: const MedalScreen(),
+          ),
+        ),
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: '/sources',
+        pageBuilder: (context, state) => PageTurn.of(
+          key: state.pageKey,
+          child: Scaffold(
+            appBar: AppBar(title: const Text('Sources')),
+            body: const SourcesScreen(),
+          ),
+        ),
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: '/oblate',
+        pageBuilder: (context, state) => PageTurn.of(
+          key: state.pageKey,
+          child: Scaffold(
+            appBar: AppBar(title: const Text('Oblate')),
+            body: const OblatePaywallScreen(),
+          ),
         ),
       ),
     ],

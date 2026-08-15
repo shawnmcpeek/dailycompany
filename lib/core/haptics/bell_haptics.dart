@@ -1,10 +1,22 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:vibration/vibration.dart';
 
 enum BellKind { little, major, compline, lectioTick, complete }
 
 abstract final class BellHaptics {
+  static const _channel = MethodChannel('pro.daddoodev.benedictdaily/haptics');
+
   static Future<void> play(BellKind kind) async {
+    if (!kIsWeb && defaultTargetPlatform == TargetPlatform.iOS) {
+      try {
+        await _channel.invokeMethod<void>('play', kind.name);
+        return;
+      } catch (_) {
+        // Fall through to Flutter feedback if the channel is unavailable.
+      }
+    }
+
     switch (kind) {
       case BellKind.little:
         await HapticFeedback.lightImpact();

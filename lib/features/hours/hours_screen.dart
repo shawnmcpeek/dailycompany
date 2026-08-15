@@ -1,6 +1,8 @@
 import 'package:benedictdaily/core/haptics/bell_haptics.dart';
+import 'package:benedictdaily/core/iap/iap_controller.dart';
 import 'package:benedictdaily/data/content_catalog.dart';
 import 'package:benedictdaily/data/providers.dart';
+import 'package:benedictdaily/features/iap/oblate_paywall_screen.dart';
 import 'package:benedictdaily/shared/widgets/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,13 +15,17 @@ class HoursScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final catalogAsync = ref.watch(contentCatalogProvider);
     final settings = ref.watch(settingsProvider);
+    final ctrl = ref.read(settingsProvider.notifier);
+    final unlocked = ref.watch(oblateUnlockedProvider);
 
     return catalogAsync.when(
       loading: () => const EmptyLoading(),
       error: (e, _) => Center(child: Text('$e')),
       data: (catalog) {
         var offices = catalog.offices;
-        if (settings.oraEtLabora) {
+        if (!unlocked) {
+          offices = offices.where((o) => o.id == 'compline').toList();
+        } else if (settings.oraEtLabora) {
           offices = offices
               .where((o) => {'terce', 'sext', 'none'}.contains(o.id))
               .toList();
@@ -30,14 +36,35 @@ class HoursScreen extends ConsumerWidget {
             Text('The Hours', style: Theme.of(context).textTheme.headlineMedium),
             const SizedBox(height: 8),
             Text(
-              settings.oraEtLabora
-                  ? 'Ora et Labora — the little hours only.'
-                  : 'A lay-scaled horarium. Compline is the anchor.',
+              !unlocked
+                  ? 'Compline is free. The full horarium unlocks with Oblate.'
+                  : settings.oraEtLabora
+                      ? 'Ora et Labora — the little hours only.'
+                      : 'A lay-scaled horarium. Compline is the anchor.',
               style: Theme.of(context).textTheme.bodySmall,
             ),
+            if (!unlocked) ...[
+              const SizedBox(height: 12),
+              OutlinedButton(
+                onPressed: () => openOblatePaywall(context),
+                child: const Text('Unlock full Hours · Oblate'),
+              ),
+            ],
             const SizedBox(height: 12),
             Text(catalog.psalterNote, style: Theme.of(context).textTheme.bodySmall),
-            const SizedBox(height: 24),
+            const SizedBox(height: 8),
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('Bell notifications'),
+              subtitle: Text(
+                unlocked
+                    ? 'Daily signal at each office time. Tap the clock to change.'
+                    : 'Compline bell only until Oblate is unlocked.',
+              ),
+              value: settings.bellsEnabled,
+              onChanged: ctrl.setBellsEnabled,
+            ),
+            const SizedBox(height: 8),
             for (final office in offices) ...[
               ListTile(
                 contentPadding: EdgeInsets.zero,
@@ -46,10 +73,20 @@ class HoursScreen extends ConsumerWidget {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 subtitle: Text(
-                  '${office.defaultTime} · ${office.psalmNumbers.map((n) => 'Ps $n').join(', ')}',
+                  '${settings.timeForOffice(office.id)} · ${office.psalmNumbers.map((n) => 'Ps $n').join(', ')}',
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
-                trailing: const Icon(Icons.chevron_right, size: 20),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      tooltip: 'Set time',
+                      icon: const Icon(Icons.schedule, size: 20),
+                      onPressed: () => _pickTime(context, ref, office.id),
+                    ),
+                    const Icon(Icons.chevron_right, size: 20),
+                  ],
+                ),
                 onTap: () => context.push('/hours/${office.id}'),
               ),
               const SectionRule(),
@@ -58,6 +95,28 @@ class HoursScreen extends ConsumerWidget {
         );
       },
     );
+  }
+
+  Future<void> _pickTime(
+    BuildContext context,
+    WidgetRef ref,
+    String officeId,
+  ) async {
+    final settings = ref.read(settingsProvider);
+    final raw = settings.timeForOffice(officeId).split(':');
+    final initial = TimeOfDay(
+      hour: int.tryParse(raw[0]) ?? 12,
+      minute: int.tryParse(raw.length > 1 ? raw[1] : '0') ?? 0,
+    );
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: initial,
+    );
+    if (picked == null) return;
+    await ref.read(settingsProvider.notifier).setOfficeTime(
+          officeId,
+          TimeOfDayCompat(hour: picked.hour, minute: picked.minute),
+        );
   }
 }
 
@@ -68,6 +127,35 @@ class OfficeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final unlocked = ref.watch(oblateUnlockedProvider);
+    if (!unlocked && officeId != 'compline') {
+      return Scaffold(
+        appBar: AppBar(title: const Text('Hours')),
+        body: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'This office is part of Oblate.',
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Compline remains free. Unlock the full horarium when you are ready.',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              const SizedBox(height: 24),
+              FilledButton(
+                onPressed: () => openOblatePaywall(context),
+                child: const Text('Unlock Oblate'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
     final catalogAsync = ref.watch(contentCatalogProvider);
     final settings = ref.watch(settingsProvider);
 
@@ -88,7 +176,15 @@ class OfficeScreen extends ConsumerWidget {
         ];
 
         return Scaffold(
-          appBar: AppBar(title: Text(office.label)),
+          appBar: AppBar(
+            title: Text(office.label),
+            actions: [
+              TextButton(
+                onPressed: () => _pickTime(context, ref, officeId),
+                child: Text(settings.timeForOffice(officeId)),
+              ),
+            ],
+          ),
           body: ListView(
             padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
             children: [
@@ -119,9 +215,6 @@ class OfficeScreen extends ConsumerWidget {
                   if (settings.hapticsEnabled) {
                     await BellHaptics.play(_bellFor(office.haptic));
                   }
-                  if (officeId == 'compline' && settings.oraEtLabora == false) {
-                    // closing bell
-                  }
                   if (context.mounted) {
                     if (settings.oraEtLabora &&
                         {'terce', 'sext', 'none'}.contains(officeId)) {
@@ -146,6 +239,28 @@ class OfficeScreen extends ConsumerWidget {
         );
       },
     );
+  }
+
+  Future<void> _pickTime(
+    BuildContext context,
+    WidgetRef ref,
+    String officeId,
+  ) async {
+    final settings = ref.read(settingsProvider);
+    final raw = settings.timeForOffice(officeId).split(':');
+    final initial = TimeOfDay(
+      hour: int.tryParse(raw[0]) ?? 12,
+      minute: int.tryParse(raw.length > 1 ? raw[1] : '0') ?? 0,
+    );
+    final picked = await showTimePicker(
+      context: context,
+      initialTime: initial,
+    );
+    if (picked == null) return;
+    await ref.read(settingsProvider.notifier).setOfficeTime(
+          officeId,
+          TimeOfDayCompat(hour: picked.hour, minute: picked.minute),
+        );
   }
 
   BellKind _bellFor(String haptic) {

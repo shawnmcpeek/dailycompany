@@ -1,6 +1,11 @@
 import 'package:benedictdaily/app/brand.dart';
 import 'package:benedictdaily/app/theme/palette.dart';
+import 'package:benedictdaily/core/iap/iap_controller.dart';
+import 'package:benedictdaily/core/iap/iap_flags.dart';
 import 'package:benedictdaily/data/providers.dart';
+import 'package:benedictdaily/features/iap/oblate_paywall_screen.dart';
+import 'package:benedictdaily/features/lectio/journal_export.dart';
+import 'package:benedictdaily/features/more/reading_heatmap.dart';
 import 'package:benedictdaily/shared/widgets/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,6 +18,7 @@ class MoreScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final settings = ref.watch(settingsProvider);
     final ctrl = ref.read(settingsProvider.notifier);
+    final unlocked = ref.watch(oblateUnlockedProvider);
     final ink = Theme.of(context).colorScheme.onSurface;
     final rule = Theme.of(context).dividerColor;
 
@@ -28,12 +34,45 @@ class MoreScreen extends ConsumerWidget {
         const SectionRule(),
         ListTile(
           contentPadding: EdgeInsets.zero,
+          title: const Text('Export journal'),
+          subtitle: const Text('Plain text file via the share sheet'),
+          onTap: () async {
+            final unlocked = ref.read(oblateUnlockedProvider);
+            if (!unlocked) {
+              await openOblatePaywall(context);
+              return;
+            }
+            final entries = ref.read(journalProvider);
+            final catalog = ref.read(contentCatalogProvider).valueOrNull;
+            if (!context.mounted) return;
+            await JournalExport.share(
+              context,
+              entries: entries,
+              catalog: catalog,
+            );
+          },
+        ),
+        const SectionRule(),
+        ListTile(
+          contentPadding: EdgeInsets.zero,
           title: const Text('The Medal'),
           subtitle: const Text('Letters, blessing, litany, history'),
           onTap: () => context.push('/medal'),
         ),
         const SectionRule(),
         const SizedBox(height: 20),
+        const ReadingHeatmap(),
+        const SizedBox(height: 8),
+        SwitchListTile(
+          contentPadding: EdgeInsets.zero,
+          title: const Text('Show reading run'),
+          subtitle: const Text(
+            'Present and longest consecutive days — under this calendar only',
+          ),
+          value: settings.showReadingRun,
+          onChanged: ctrl.setShowReadingRun,
+        ),
+        const SizedBox(height: 16),
         ChromeLabel('Reading display'),
         const SizedBox(height: 14),
         Text(
@@ -135,16 +174,41 @@ class MoreScreen extends ConsumerWidget {
         ),
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
+          title: const Text('Bell notifications'),
+          subtitle: const Text('Scheduled office bells — times live under Hours'),
+          value: settings.bellsEnabled,
+          onChanged: ctrl.setBellsEnabled,
+        ),
+        SwitchListTile(
+          contentPadding: EdgeInsets.zero,
           title: const Text('Ora et Labora mode'),
-          subtitle: const Text('Weekday little hours only'),
+          subtitle: const Text('Weekday little hours only · Oblate'),
           value: settings.oraEtLabora,
-          onChanged: ctrl.setOraEtLabora,
+          onChanged: unlocked
+              ? ctrl.setOraEtLabora
+              : (_) => openOblatePaywall(context),
         ),
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
           title: const Text('Prefer Latin side-by-side'),
-          value: settings.showLatin,
-          onChanged: ctrl.setShowLatin,
+          subtitle: const Text('Oblate'),
+          value: settings.showLatin && unlocked,
+          onChanged: unlocked
+              ? ctrl.setShowLatin
+              : (_) => openOblatePaywall(context),
+        ),
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          title: const Text('Oblate'),
+          subtitle: Text(
+            unlocked
+                ? (IapFlags.enabled
+                    ? 'Unlocked'
+                    : 'Billing flagged off — all features open in this build')
+                : 'One-time unlock for Hours, Life, journal, Latin',
+          ),
+          trailing: const Icon(Icons.chevron_right, size: 20),
+          onTap: () => openOblatePaywall(context),
         ),
         ListTile(
           contentPadding: EdgeInsets.zero,
@@ -164,14 +228,15 @@ class MoreScreen extends ConsumerWidget {
           'the Order of Saint Benedict.',
           style: Theme.of(context).textTheme.bodyMedium,
         ),
-        const SizedBox(height: 16),
-        Text(
-          'Sources include Verheyen (Rule), Gardner (Dialogues II), '
-          'Douay-Rheims Challoner (Psalter), Delatte/McCann (commentary research), '
-          'and traditional medal texts. Doyle (Gutenberg #50040) supplied the date table only.',
-          style: Theme.of(context).textTheme.bodySmall,
+        const SizedBox(height: 12),
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          title: const Text('Sources'),
+          subtitle: const Text('Editions, translators, and what we do not use'),
+          trailing: const Icon(Icons.chevron_right, size: 20),
+          onTap: () => context.push('/sources'),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
         Text(
           Brand.copyrightNotice,
           style: Theme.of(context).textTheme.bodySmall,

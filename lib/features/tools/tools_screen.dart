@@ -1,4 +1,5 @@
 import 'package:benedictdaily/data/providers.dart';
+import 'package:benedictdaily/features/tools/tool_share.dart';
 import 'package:benedictdaily/shared/widgets/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -42,6 +43,15 @@ class ToolsScreen extends ConsumerWidget {
                   ),
             ),
             const SizedBox(height: 28),
+            FilledButton(
+              onPressed: () => ToolShare.showAndShare(
+                context,
+                tool: today,
+                total: catalog.tools.length,
+              ),
+              child: const Text('Share image'),
+            ),
+            const SizedBox(height: 10),
             OutlinedButton(
               onPressed: () async {
                 final share =
@@ -55,7 +65,7 @@ class ToolsScreen extends ConsumerWidget {
                   );
                 }
               },
-              child: const Text('Copy card'),
+              child: const Text('Copy text'),
             ),
             const SizedBox(height: 36),
             ChromeLabel('All 72'),

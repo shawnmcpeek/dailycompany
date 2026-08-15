@@ -1,11 +1,16 @@
 import 'package:benedictdaily/app/router/app_router.dart';
 import 'package:benedictdaily/app/theme/app_theme.dart';
+import 'package:benedictdaily/core/iap/iap_controller.dart';
+import 'package:benedictdaily/core/notifications/bell_scheduler.dart';
+import 'package:benedictdaily/data/isar/app_isar.dart';
 import 'package:benedictdaily/data/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await AppIsar.open();
+  await BellScheduler.instance.init();
   runApp(const ProviderScope(child: BenedictDailyApp()));
 }
 
@@ -17,6 +22,8 @@ class BenedictDailyApp extends ConsumerWidget {
     final settings = ref.watch(settingsProvider);
     final day = ref.watch(selectedDayProvider);
     final router = ref.watch(routerProvider);
+    ref.watch(bellSyncProvider);
+    ref.watch(iapControllerProvider);
     final platformBrightness =
         WidgetsBinding.instance.platformDispatcher.platformBrightness;
 

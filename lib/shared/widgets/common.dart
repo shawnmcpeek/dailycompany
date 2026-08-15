@@ -66,3 +66,64 @@ class ReadingBody extends StatelessWidget {
     );
   }
 }
+
+/// Full-width hub destination — reads as navigation, not a checklist item.
+class HubNavButton extends StatelessWidget {
+  const HubNavButton({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.onPressed,
+  });
+
+  final String title;
+  final String subtitle;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final rule = Theme.of(context).dividerColor;
+    final secondary = Theme.of(context).textTheme.bodySmall?.color;
+
+    return OutlinedButton(
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.fromLTRB(18, 16, 14, 16),
+        side: BorderSide(color: rule),
+        foregroundColor: Theme.of(context).colorScheme.onSurface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          Text(
+            'Open',
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  color: secondary,
+                ),
+          ),
+          Icon(Icons.chevron_right, size: 20, color: secondary),
+        ],
+      ),
+    );
+  }
+}

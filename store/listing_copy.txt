@@ -1,0 +1,95 @@
+Benedict Daily — Store listing copy
+Studio: Daddoo Dev
+Bundle ID: pro.daddoodev.benedictdaily
+Subtitle / short tagline: The Rule, read as monks read it.
+
+
+================================================================================
+APPLE APP STORE
+================================================================================
+
+App Name (30):
+Benedict Daily
+
+Subtitle (30):
+The Rule, as monks read it
+
+Promotional Text (170) — optional:
+Open any day and the Rule portion is already waiting — the thrice-yearly Benedictine calendar, a lay horarium, Lectio, and Gregory’s Life of Benedict.
+
+Description:
+Benedict Daily is a formation app, not a meditation playlist with a saint badge.
+
+Every day of the year already has its place in the Rule of St. Benedict — the same thrice-yearly calendar Benedictines have used for centuries. Open the app and today’s portion is waiting. There is no plan to start, and no streak to break.
+
+What you get
+• Today’s Rule reading in a quiet, breviary-like page — with optional commentary and Latin
+• A lay-scaled Hours: short offices from Lauds to Compline, with optional bell reminders
+• Lectio Divina over the day’s passage, with a private journal that can resurface next cycle
+• The Life of St. Benedict (Gregory the Great, Dialogues II) as a serialized season
+• The Tools of Good Works — RB 4’s seventy-two instruments, one card a day, shareable as an image
+• The Medal — letters, blessing (reserved to a priest), litany, and history
+
+Offline-first. No account. No subscription in this version. Depth is optional; the calendar is the app.
+
+An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by any Benedictine monastery, abbey, congregation, or the Order of Saint Benedict.
+
+Keywords (100 chars, comma-separated, no spaces after commas preferred by Apple tooling):
+benedict,rule,lectio,divine office,compline,catholic,formation,breviary,gregory,psalm
+
+What’s New (1.0):
+First release. The Rule on the thrice-yearly calendar, Hours with Compline, Lectio, Life of Benedict, Tools of Good Works, and the Medal.
+
+
+================================================================================
+GOOGLE PLAY
+================================================================================
+
+App name (30):
+Benedict Daily
+
+Short description (80):
+The Rule of St. Benedict, read as monks read it — daily, offline, without streaks.
+
+Full description:
+Benedict Daily is a formation app, not a meditation playlist with a saint badge.
+
+Every day of the year already has its place in the Rule of St. Benedict — the same thrice-yearly calendar Benedictines have used for centuries. Open the app and today’s portion is waiting. There is no plan to start, and no streak to break.
+
+WHAT YOU GET
+
+• Today’s Rule reading on a quiet page — optional commentary and Latin
+• A lay-scaled Hours: short offices from Lauds to Compline, with optional bell reminders
+• Lectio Divina over the day’s passage, with a private journal
+• The Life of St. Benedict (Gregory the Great) as a serialized season
+• Tools of Good Works — RB chapter 4, one instrument a day, shareable as an image
+• The Medal — letters, blessing (reserved to a priest), litany, and history
+
+Offline-first. No account required. Depth is optional; the calendar is the app.
+
+DISCLAIMER
+
+An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by any Benedictine monastery, abbey, congregation, or the Order of Saint Benedict.
+
+
+================================================================================
+SHARED — CATEGORY / AUDIENCE NOTES
+================================================================================
+
+Primary category: Books / Lifestyle / Education (Books preferred if available; Lifestyle if Books is crowded)
+Content rating: Everyone
+Age: 12+ is fine; no user-generated social feed
+
+Screenshot captions (suggested):
+1. Today’s portion is already chosen
+2. The Rule, set like a breviary
+3. Compline and the lay Hours
+4. Lectio over today’s reading
+5. Tools of Good Works — worth sharing
+
+Support URL: https://daddoodev.pro
+Marketing URL: https://daddoodev.pro
+Privacy policy: (use your existing Daddoo Dev privacy URL)
+
+Copyright / rights:
+© 2026 Daddoo Dev

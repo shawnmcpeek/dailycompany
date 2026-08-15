@@ -1,0 +1,82 @@
+import 'dart:io';
+
+import 'package:benedictdaily/data/content_catalog.dart';
+import 'package:benedictdaily/data/providers.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
+
+/// Plain-text Lectio journal export — file + system share sheet only.
+abstract final class JournalExport {
+  static Future<void> share(
+    BuildContext context, {
+    required List<JournalEntry> entries,
+    ContentCatalog? catalog,
+  }) async {
+    if (entries.isEmpty) {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('No journal entries to export.')),
+        );
+      }
+      return;
+    }
+
+    final body = format(entries, catalog: catalog);
+    final dir = await getTemporaryDirectory();
+    final stamp = DateFormat('yyyyMMdd').format(DateTime.now());
+    final file = File('${dir.path}/benedict_lectio_journal_$stamp.txt');
+    await file.writeAsString(body);
+
+    if (!context.mounted) return;
+    final box = context.findRenderObject() as RenderBox?;
+    final origin =
+        box == null ? null : box.localToGlobal(Offset.zero) & box.size;
+
+    await SharePlus.instance.share(
+      ShareParams(
+        files: [
+          XFile(
+            file.path,
+            mimeType: 'text/plain',
+            name: 'benedict_lectio_journal_$stamp.txt',
+          ),
+        ],
+        text: 'Benedict Daily · Lectio journal',
+        sharePositionOrigin: origin,
+      ),
+    );
+  }
+
+  static String format(
+    List<JournalEntry> entries, {
+    ContentCatalog? catalog,
+  }) {
+    final sorted = [...entries]
+      ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
+    final dateFmt = DateFormat('yyyy-MM-dd HH:mm');
+    final buf = StringBuffer()
+      ..writeln('Benedict Daily — Lectio journal')
+      ..writeln('Exported ${DateFormat('yyyy-MM-dd').format(DateTime.now())}')
+      ..writeln()
+      ..writeln('---')
+      ..writeln();
+
+    for (final e in sorted) {
+      final headline = catalog?.calendar.byId(e.readingId);
+      final label = headline == null
+          ? 'Reading ${e.readingId}'
+          : catalog!.calendar.readingHeadline(headline);
+      buf
+        ..writeln(dateFmt.format(e.createdAt.toLocal()))
+        ..writeln(label)
+        ..writeln()
+        ..writeln(e.text.trim())
+        ..writeln()
+        ..writeln('---')
+        ..writeln();
+    }
+    return buf.toString();
+  }
+}

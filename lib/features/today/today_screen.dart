@@ -1,6 +1,8 @@
 import 'package:benedictdaily/core/haptics/bell_haptics.dart';
+import 'package:benedictdaily/core/iap/iap_controller.dart';
 import 'package:benedictdaily/core/liturgical/liturgical_color.dart';
 import 'package:benedictdaily/data/providers.dart';
+import 'package:benedictdaily/features/iap/oblate_paywall_screen.dart';
 import 'package:benedictdaily/shared/widgets/common.dart';
 import 'package:benedictdaily/shared/widgets/drop_cap_text.dart';
 import 'package:benedictdaily/shared/widgets/reader_display_sheet.dart';
@@ -89,7 +91,9 @@ class TodayScreen extends ConsumerWidget {
               _ReadingBlock(
                 text: readings[i].textEn,
                 commentary: readings[i].commentary,
-                latin: settings.showLatin ? readings[i].textLa : null,
+                latin: (ref.watch(oblateUnlockedProvider) && settings.showLatin)
+                    ? readings[i].textLa
+                    : null,
                 litColor: litColor,
                 animate: i == 0 && !reduceMotion,
                 readingId: readings[i].id,
@@ -132,14 +136,16 @@ class _ReadingBlockState extends ConsumerState<_ReadingBlock> {
   @override
   void initState() {
     super.initState();
-    _prepareAnimation();
+    if (!widget.animate) {
+      _doAnimate = false;
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _prepareAnimation();
+      });
+    }
   }
 
   Future<void> _prepareAnimation() async {
-    if (!widget.animate) {
-      setState(() => _doAnimate = false);
-      return;
-    }
     final day = ref.read(selectedDayProvider);
     final should =
         await ref.read(illuminatedDateProvider.notifier).shouldIlluminate(day);
@@ -173,7 +179,14 @@ class _ReadingBlockState extends ConsumerState<_ReadingBlock> {
             ),
             ActionChip(
               label: Text(_showLatin ? 'Hide Latin' : 'Latin'),
-              onPressed: () => setState(() => _showLatin = !_showLatin),
+              onPressed: () {
+                final unlocked = ref.read(oblateUnlockedProvider);
+                if (!unlocked) {
+                  openOblatePaywall(context);
+                  return;
+                }
+                setState(() => _showLatin = !_showLatin);
+              },
             ),
             ActionChip(
               label: const Text('Lectio'),
@@ -182,6 +195,11 @@ class _ReadingBlockState extends ConsumerState<_ReadingBlock> {
             ActionChip(
               label: const Text('Mark read'),
               onPressed: () async {
+                final day = ref.read(selectedDayProvider);
+                await ref.read(completionProvider.notifier).markRead(
+                      day,
+                      readingId: widget.readingId,
+                    );
                 if (ref.read(settingsProvider).hapticsEnabled) {
                   await BellHaptics.play(BellKind.complete);
                 }

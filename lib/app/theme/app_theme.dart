@@ -194,6 +194,32 @@ ThemeData _base({
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
     ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: ink,
+        side: BorderSide(color: rule),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+        textStyle: const TextStyle(
+          fontFamily: 'IBMPlexSans',
+          fontSize: 13,
+          fontWeight: FontWeight.w500,
+          letterSpacing: 0.04,
+        ),
+      ),
+    ),
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(
+        backgroundColor: accent,
+        foregroundColor: bg,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+        textStyle: const TextStyle(
+          fontFamily: 'IBMPlexSans',
+          fontSize: 13,
+          fontWeight: FontWeight.w500,
+          letterSpacing: 0.04,
+        ),
+      ),
+    ),
     iconTheme: IconThemeData(color: secondary, size: 22),
   );
   return base;
