@@ -108,12 +108,12 @@ class WelcomeHowScreen extends ConsumerWidget {
                       const _HowLine(
                         title: 'The day is already chosen',
                         body:
-                            'Open the app on any date and the Rule portion is waiting. There is no plan to start.',
+                            'Open the app and today’s Life of Benedict is waiting — one chapter, in order. The Rule is there when you want the monastic cycle.',
                       ),
                       const _HowLine(
                         title: 'Depth is optional',
                         body:
-                            'Hours, Lectio, Life, and the Tools are here when you want them — never as guilt.',
+                            'Hours, Lectio, and the Tools are here when you want them — never as guilt.',
                       ),
                       const _HowLine(
                         title: 'A quiet signal',

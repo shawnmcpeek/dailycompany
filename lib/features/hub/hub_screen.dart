@@ -1,5 +1,10 @@
+import 'package:benedictdaily/core/cycle/life_track.dart';
+import 'package:benedictdaily/core/cycle/reading_calendar.dart';
+import 'package:benedictdaily/data/content_catalog.dart';
 import 'package:benedictdaily/data/providers.dart';
 import 'package:benedictdaily/shared/widgets/common.dart';
+import 'package:benedictdaily/shared/widgets/instrument_reading.dart';
+import 'package:benedictdaily/shared/widgets/medal_mark.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -20,39 +25,72 @@ class HubScreen extends ConsumerWidget {
       error: (e, _) => Center(child: Text('$e')),
       data: (catalog) {
         final readings = catalog.calendar.resolveFor(day);
-        final todaySubtitle = readings.isEmpty
-            ? catalog.calendar.cycleLabel(day)
-            : '${catalog.calendar.cycleLabel(day)} · ${catalog.calendar.readingHeadline(readings.first)}';
+        final todaySubtitle = _todaySubtitle(
+          catalog: catalog,
+          day: day,
+          settings: settings,
+          ruleReadings: readings,
+        );
         final tool = catalog.toolForDay(day);
         final lifeCount = catalog.life.where((e) => e.chapter > 0).length;
 
         return ListView(
+          clipBehavior: Clip.none,
           padding: const EdgeInsets.fromLTRB(24, 28, 24, 48),
           children: [
-            Text(
-              'Benedict Daily',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontSize: 34,
-                    height: 1.1,
+            Row(
+              children: [
+                SizedBox(
+                  width: kMinInteractiveDimension,
+                  height: kMinInteractiveDimension,
+                  child: Center(
+                    child: ExcludeSemantics(
+                      child: Image.asset(
+                        'assets/branding/app_logo.png',
+                        height: 36,
+                        fit: BoxFit.contain,
+                      ),
+                    ),
                   ),
+                ),
+                Expanded(
+                  child: Text(
+                    'Benedict Daily',
+                    style: Theme.of(context).textTheme.headlineMedium,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                SizedBox(
+                  width: kMinInteractiveDimension,
+                  height: kMinInteractiveDimension,
+                  child: MedalMark(
+                    invite: !settings.medalOpened,
+                    onTap: () {
+                      ref.read(settingsProvider.notifier).markMedalOpened();
+                      context.push('/medal');
+                    },
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 8),
             Text(
               'The Rule, read as monks read it.',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontStyle: FontStyle.italic,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(fontStyle: FontStyle.italic),
             ),
             const SizedBox(height: 6),
             Text(dateLabel, style: Theme.of(context).textTheme.bodySmall),
-            const SizedBox(height: 20),
-            Text(
-              'Go to',
-              style: Theme.of(context).textTheme.labelSmall,
-            ),
+            const SizedBox(height: 28),
+            InstrumentReading(tool: tool, total: catalog.tools.length),
+            const SizedBox(height: 32),
+            Text('Go to', style: Theme.of(context).textTheme.labelSmall),
             const SizedBox(height: 12),
             HubNavButton(
-              title: 'Today',
+              title: "Today's Rule",
               subtitle: todaySubtitle,
               onPressed: () => context.go('/today'),
             ),
@@ -73,13 +111,13 @@ class HubScreen extends ConsumerWidget {
             const SizedBox(height: 10),
             HubNavButton(
               title: 'Tools',
-              subtitle: 'Instrument ${tool.number} of ${catalog.tools.length}',
+              subtitle: 'All 72 instruments',
               onPressed: () => context.go('/tools'),
             ),
             const SizedBox(height: 10),
             HubNavButton(
               title: 'More',
-              subtitle: 'Lectio, Medal, display, Sources',
+              subtitle: 'Lectio, display, Sources',
               onPressed: () => context.push('/more'),
             ),
           ],
@@ -87,4 +125,31 @@ class HubScreen extends ConsumerWidget {
       },
     );
   }
+}
+
+String _todaySubtitle({
+  required ContentCatalog catalog,
+  required DateTime day,
+  required AppSettings settings,
+  required List<RuleReading> ruleReadings,
+}) {
+  final track = settings.dailyTrack;
+  String? lifeLine;
+  if (track.includesLife && catalog.life.isNotEmpty) {
+    final ep = LifeTrack.episodeFor(
+      episodes: catalog.life,
+      day: day,
+      start: settings.lifeStart,
+    );
+    final numbered = catalog.life.where((e) => e.chapter > 0).length;
+    lifeLine = 'Life · ${LifeTrack.headline(ep, numbered: numbered)}';
+  }
+  String? ruleLine;
+  if (track.includesRule) {
+    ruleLine = ruleReadings.isEmpty
+        ? catalog.calendar.cycleLabel(day)
+        : catalog.calendar.readingHeadline(ruleReadings.first);
+  }
+  if (lifeLine != null && ruleLine != null) return '$lifeLine · Rule';
+  return lifeLine ?? ruleLine ?? 'Today’s reading';
 }

@@ -72,10 +72,8 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/hub',
-                pageBuilder: (context, state) => PageTurn.of(
-                  key: state.pageKey,
-                  child: const HubScreen(),
-                ),
+                pageBuilder: (context, state) =>
+                    PageTurn.of(key: state.pageKey, child: const HubScreen()),
               ),
             ],
           ),
@@ -83,10 +81,8 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/today',
-                pageBuilder: (context, state) => PageTurn.of(
-                  key: state.pageKey,
-                  child: const TodayScreen(),
-                ),
+                pageBuilder: (context, state) =>
+                    PageTurn.of(key: state.pageKey, child: const TodayScreen()),
               ),
             ],
           ),
@@ -94,10 +90,8 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/hours',
-                pageBuilder: (context, state) => PageTurn.of(
-                  key: state.pageKey,
-                  child: const HoursScreen(),
-                ),
+                pageBuilder: (context, state) =>
+                    PageTurn.of(key: state.pageKey, child: const HoursScreen()),
                 routes: [
                   GoRoute(
                     path: ':id',
@@ -116,10 +110,8 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/life',
-                pageBuilder: (context, state) => PageTurn.of(
-                  key: state.pageKey,
-                  child: const LifeScreen(),
-                ),
+                pageBuilder: (context, state) =>
+                    PageTurn.of(key: state.pageKey, child: const LifeScreen()),
                 routes: [
                   GoRoute(
                     path: ':chapter',
@@ -138,10 +130,8 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: '/tools',
-                pageBuilder: (context, state) => PageTurn.of(
-                  key: state.pageKey,
-                  child: const ToolsScreen(),
-                ),
+                pageBuilder: (context, state) =>
+                    PageTurn.of(key: state.pageKey, child: const ToolsScreen()),
               ),
             ],
           ),

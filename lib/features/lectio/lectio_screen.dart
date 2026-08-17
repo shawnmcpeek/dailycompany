@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:benedictdaily/core/cycle/life_track.dart';
 import 'package:benedictdaily/core/haptics/bell_haptics.dart';
 import 'package:benedictdaily/core/iap/iap_controller.dart';
 import 'package:benedictdaily/data/providers.dart';
@@ -179,17 +180,37 @@ class _LectioScreenState extends ConsumerState<LectioScreen> {
       loading: () => const EmptyLoading(),
       error: (e, _) => Center(child: Text('$e')),
       data: (catalog) {
-        final readings = catalog.calendar.resolveFor(day);
-        final reading = readings.isEmpty ? null : readings.first;
-        if (reading != null) {
+        final ruleReadings = catalog.calendar.resolveFor(day);
+        final numberedLife = catalog.life.where((e) => e.chapter > 0).length;
+        var passage = lectioPassageFor(
+          track: settings.dailyTrack,
+          life: catalog.life,
+          rule: ruleReadings,
+          day: day,
+          lifeStart: settings.lifeStart,
+          unlocked: unlocked,
+          numberedLife: numberedLife,
+        );
+        if (passage != null &&
+            passage.headline.isEmpty &&
+            ruleReadings.isNotEmpty) {
+          passage = LectioPassage(
+            journalId: passage.journalId,
+            headline: catalog.calendar.readingHeadline(ruleReadings.first),
+            textEn: passage.textEn,
+            locked: passage.locked,
+          );
+        }
+        final reading = passage;
+        if (reading != null && !reading.locked) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             if (!mounted) return;
-            ref.read(journalDraftProvider.notifier).bindReading(reading.id);
+            ref.read(journalDraftProvider.notifier).bindReading(reading.journalId);
           });
         }
-        final priorAsync = reading == null
+        final priorAsync = reading == null || reading.locked
             ? null
-            : ref.watch(priorJournalProvider(reading.id));
+            : ref.watch(priorJournalProvider(reading.journalId));
         final prior = priorAsync?.valueOrNull;
 
         return Column(
@@ -214,9 +235,9 @@ class _LectioScreenState extends ConsumerState<LectioScreen> {
                           ),
                         ),
                         TextButton(
-                          onPressed: reading == null
+                          onPressed: reading == null || reading.locked
                               ? null
-                              : () => _saveJournal(reading.id),
+                              : () => _saveJournal(reading.journalId),
                           child: Text(
                             'Retry',
                             style: TextStyle(
@@ -243,7 +264,9 @@ class _LectioScreenState extends ConsumerState<LectioScreen> {
                   Text(
                     reading == null
                         ? 'No reading today.'
-                        : catalog.calendar.readingHeadline(reading),
+                        : reading.locked
+                            ? 'Today’s Life episode unlocks with Oblate.'
+                            : reading.headline,
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                   const SizedBox(height: 24),
@@ -269,7 +292,7 @@ class _LectioScreenState extends ConsumerState<LectioScreen> {
                   Row(
                     children: [
                       FilledButton(
-                        onPressed: reading == null
+                        onPressed: reading == null || reading.locked
                             ? null
                             : (_running ? _pause : _start),
                         child: Text(_running ? 'Pause' : 'Begin'),
@@ -338,7 +361,19 @@ class _LectioScreenState extends ConsumerState<LectioScreen> {
                     },
                   ),
                   const SizedBox(height: 20),
-                  if (reading != null) ...[
+                  if (reading != null && reading.locked) ...[
+                    ChromeLabel('Today\'s passage'),
+                    const SizedBox(height: 10),
+                    Text(
+                      'The rest of Benedict’s life unlocks with Oblate.',
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    const SizedBox(height: 12),
+                    FilledButton(
+                      onPressed: () => openOblatePaywall(context),
+                      child: const Text('Unlock Oblate'),
+                    ),
+                  ] else if (reading != null) ...[
                     ChromeLabel('Today\'s passage'),
                     const SizedBox(height: 10),
                     ReadingBody(text: reading.textEn),
@@ -379,9 +414,9 @@ class _LectioScreenState extends ConsumerState<LectioScreen> {
                     ),
                     const SizedBox(height: 12),
                     OutlinedButton(
-                      onPressed: reading == null
+                      onPressed: reading == null || reading.locked
                           ? null
-                          : () => _saveJournal(reading.id),
+                          : () => _saveJournal(reading.journalId),
                       child: const Text('Save entry'),
                     ),
                     if (journal.isNotEmpty) ...[

@@ -8,6 +8,7 @@ import 'package:benedictdaily/features/iap/oblate_paywall_screen.dart';
 import 'package:benedictdaily/features/lectio/journal_export.dart';
 import 'package:benedictdaily/features/more/reading_heatmap.dart';
 import 'package:benedictdaily/shared/widgets/common.dart';
+import 'package:benedictdaily/shared/widgets/daily_track_toggle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -62,17 +63,11 @@ class MoreScreen extends ConsumerWidget {
           ),
           onTap: () async {
             final box = context.findRenderObject() as RenderBox?;
-            final origin =
-                box == null ? null : box.localToGlobal(Offset.zero) & box.size;
+            final origin = box == null
+                ? null
+                : box.localToGlobal(Offset.zero) & box.size;
             await DiagnosticsLog.instance.share(sharePositionOrigin: origin);
           },
-        ),
-        const SectionRule(),
-        ListTile(
-          contentPadding: EdgeInsets.zero,
-          title: const Text('The Medal'),
-          subtitle: const Text('Letters, blessing, litany, history'),
-          onTap: () => context.push('/medal'),
         ),
         const SectionRule(),
         const SizedBox(height: 20),
@@ -90,10 +85,7 @@ class MoreScreen extends ConsumerWidget {
         const SizedBox(height: 16),
         ChromeLabel('Reading display'),
         const SizedBox(height: 14),
-        Text(
-          'Page color',
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
+        Text('Page color', style: Theme.of(context).textTheme.bodySmall),
         const SizedBox(height: 12),
         Row(
           children: [
@@ -133,19 +125,16 @@ class MoreScreen extends ConsumerWidget {
           ],
         ),
         const SizedBox(height: 22),
-        Text(
-          'Text size',
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
+        Text('Text size', style: Theme.of(context).textTheme.bodySmall),
         const SizedBox(height: 4),
         Row(
           children: [
             Text(
               'A',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontSize: 14,
-                    fontFamily: 'EBGaramond',
-                  ),
+                fontSize: 14,
+                fontFamily: 'EBGaramond',
+              ),
             ),
             Expanded(
               child: Slider(
@@ -160,9 +149,9 @@ class MoreScreen extends ConsumerWidget {
             Text(
               'A',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontSize: 22,
-                    fontFamily: 'EBGaramond',
-                  ),
+                fontSize: 22,
+                fontFamily: 'EBGaramond',
+              ),
             ),
           ],
         ),
@@ -179,6 +168,31 @@ class MoreScreen extends ConsumerWidget {
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         const SizedBox(height: 24),
+        ChromeLabel('Daily reading'),
+        const SizedBox(height: 8),
+        Text(
+          'Life is one chapter a day from Gregory. The Rule follows the monastic calendar. Both shows each.',
+          style: Theme.of(context).textTheme.bodySmall,
+        ),
+        const SizedBox(height: 12),
+        DailyTrackToggle(
+          value: settings.dailyTrack,
+          onChanged: ctrl.setDailyTrack,
+        ),
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          title: const Text('Restart Life cycle'),
+          subtitle: const Text('Begin the book again from the Prologue'),
+          onTap: () async {
+            await ctrl.restartLifeTrack();
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Life cycle restarted.')),
+              );
+            }
+          },
+        ),
+        const SizedBox(height: 8),
         ChromeLabel('Settings'),
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
@@ -190,7 +204,9 @@ class MoreScreen extends ConsumerWidget {
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
           title: const Text('Bell notifications'),
-          subtitle: const Text('Scheduled office bells — times live under Hours'),
+          subtitle: const Text(
+            'Scheduled office bells — times live under Hours',
+          ),
           value: settings.bellsEnabled,
           onChanged: ctrl.setBellsEnabled,
         ),
@@ -218,8 +234,8 @@ class MoreScreen extends ConsumerWidget {
           subtitle: Text(
             unlocked
                 ? (IapFlags.enabled
-                    ? 'Unlocked'
-                    : 'Billing flagged off — all features open in this build')
+                      ? 'Unlocked'
+                      : 'Billing flagged off — all features open in this build')
                 : 'One-time unlock for Hours, Life, journal, Latin',
           ),
           trailing: const Icon(Icons.chevron_right, size: 20),
@@ -313,11 +329,9 @@ class _ThemeSwatch extends StatelessWidget {
         Text(
           label,
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                fontSize: 10,
-                color: selected
-                    ? Theme.of(context).colorScheme.primary
-                    : null,
-              ),
+            fontSize: 10,
+            color: selected ? Theme.of(context).colorScheme.primary : null,
+          ),
         ),
       ],
     );

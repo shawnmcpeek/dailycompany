@@ -70,11 +70,21 @@ class SourcesScreen extends StatelessWidget {
         const _SourceBlock(
           title: 'Rule, chapter 4',
           body:
-              'The seventy-two instruments as transmitted in Verheyen’s English Rule. Public domain.',
+              'The seventy-two instruments as transmitted in Verheyen’s English Rule. '
+              'When Benedict is quoting or clearly echoing Scripture, the verse is '
+              'Douay-Rheims (Challoner). Short glosses were written from Delatte/McCann; '
+              'they are not verbatim Delatte. Public domain.',
         ),
         const SizedBox(height: 20),
         ChromeLabel('The Medal'),
         const SizedBox(height: 10),
+        const _SourceBlock(
+          title: 'Drawings',
+          body:
+              'Obverse woodcut: Wikimedia Commons, File:Medalla San Benito.PNG. '
+              'Public domain. Reverse letter diagram: Openclipart / Justin Ternet, '
+              'Médaille de St Benoit. Public domain.',
+        ),
         const _SourceBlock(
           title: 'Traditional texts',
           body:

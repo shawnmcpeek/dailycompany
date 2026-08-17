@@ -1,6 +1,7 @@
 import 'package:benedictdaily/data/providers.dart';
 import 'package:benedictdaily/features/tools/tool_share.dart';
 import 'package:benedictdaily/shared/widgets/common.dart';
+import 'package:benedictdaily/shared/widgets/instrument_reading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -27,20 +28,14 @@ class ToolsScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              'Rule of St. Benedict, chapter 4 · instrument ${today.number} of ${catalog.tools.length}',
+              'Rule of St. Benedict, chapter 4',
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 36),
-            Text(
-              '№ ${today.number}',
-              style: Theme.of(context).textTheme.labelSmall,
-            ),
-            const SizedBox(height: 12),
-            Text(
-              today.text,
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    height: 1.35,
-                  ),
+            InstrumentReading(
+              tool: today,
+              total: catalog.tools.length,
+              showLabel: false,
             ),
             const SizedBox(height: 28),
             FilledButton(
@@ -54,8 +49,18 @@ class ToolsScreen extends ConsumerWidget {
             const SizedBox(height: 10),
             OutlinedButton(
               onPressed: () async {
-                final share =
-                    'Tool ${today.number} of Good Works\n\n${today.text}\n\n— Benedict Daily';
+                final share = [
+                  'Tool ${today.number} of Good Works',
+                  '',
+                  today.text,
+                  if (today.hasScripture) ...[
+                    '',
+                    today.scripture!,
+                    today.citation!,
+                  ],
+                  '',
+                  '— Benedict Daily',
+                ].join('\n');
                 await Clipboard.setData(ClipboardData(text: share));
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(

@@ -341,7 +341,30 @@ def extract_tools() -> list[dict]:
     return tools
 
 
+_TOOL_NOTES = ("gloss", "scripture", "citation")
+
+
+def _existing_tool_notes() -> dict[int, dict]:
+    if not TOOLS_OUT.is_file():
+        return {}
+    data = json.loads(TOOLS_OUT.read_text(encoding="utf-8"))
+    notes: dict[int, dict] = {}
+    for t in data.get("tools", []):
+        n = t.get("number")
+        if not n:
+            continue
+        kept = {k: t[k] for k in _TOOL_NOTES if t.get(k)}
+        if kept:
+            notes[int(n)] = kept
+    return notes
+
+
 def write_tools(tools: list[dict]) -> int:
+    notes = _existing_tool_notes()
+    for t in tools:
+        t.update(notes.get(t["number"], {}))
+        if not t.get("gloss"):
+            t["gloss"] = None
     payload = {
         "version": 1,
         "source": "Rule of St. Benedict, ch. 4 (Verheyen), from rule_readings.json",
@@ -359,25 +382,36 @@ def write_medal() -> None:
         "version": 1,
         "regions": [
             {
-                "id": "cspb",
-                "label": "C S P B",
-                "expansion": "Crux Sancti Patris Benedicti",
-                "meaning": "The Cross of the Holy Father Benedict.",
+                "id": "pax",
+                "face": "reverse",
+                "label": "PAX",
+                "expansion": "Pax",
+                "meaning": "Peace.",
             },
             {
                 "id": "cssml",
+                "face": "reverse",
                 "label": "C S S M L",
                 "expansion": "Crux Sacra Sit Mihi Lux",
                 "meaning": "May the Holy Cross be my light.",
             },
             {
                 "id": "ndsmd",
+                "face": "reverse",
                 "label": "N D S M D",
                 "expansion": "Non Draco Sit Mihi Dux",
                 "meaning": "Let not the dragon be my guide.",
             },
             {
+                "id": "cspb",
+                "face": "reverse",
+                "label": "C S P B",
+                "expansion": "Crux Sancti Patris Benedicti",
+                "meaning": "The Cross of the Holy Father Benedict.",
+            },
+            {
                 "id": "vrsnsmv_smqlivb",
+                "face": "reverse",
                 "label": "V R S N S M V · S M Q L I V B",
                 "expansion": (
                     "Vade Retro Satana, Nunquam Suade Mihi Vana; "
@@ -389,10 +423,51 @@ def write_medal() -> None:
                 ),
             },
             {
-                "id": "pax",
-                "label": "PAX",
-                "expansion": "Pax",
-                "meaning": "Peace.",
+                "id": "benedict",
+                "face": "obverse",
+                "label": "Saint Benedict",
+                "expansion": "S. Benedictus",
+                "meaning": (
+                    "Benedict holds the cross in his right hand "
+                    "and the Rule in his left."
+                ),
+            },
+            {
+                "id": "cup",
+                "face": "obverse",
+                "label": "CRUX S. PATRIS",
+                "expansion": "Crux Sancti Patris",
+                "meaning": (
+                    "The poisoned cup that shattered when he signed "
+                    "the cross over it."
+                ),
+            },
+            {
+                "id": "raven",
+                "face": "obverse",
+                "label": "BENEDICTI",
+                "expansion": "Benedicti",
+                "meaning": "The raven that carried off a loaf meant to poison him.",
+            },
+            {
+                "id": "casino",
+                "face": "obverse",
+                "label": "EX S M CASINO MDCCCLXXX",
+                "expansion": "Ex Sacro Monte Casino, 1880",
+                "meaning": (
+                    "Struck at Monte Cassino for the fourteenth "
+                    "centenary of Benedict's birth."
+                ),
+            },
+            {
+                "id": "obitu",
+                "face": "obverse",
+                "label": "EIUS IN OBITU NRO PRAESENTIA MUNIAMUR",
+                "expansion": "Eius in obitu nostro praesentia muniamur",
+                "meaning": (
+                    "May we be strengthened by his presence "
+                    "in the hour of our death."
+                ),
             },
         ],
         "blessing": {

@@ -26,17 +26,27 @@ class ToolOfGoodWorks {
     required this.number,
     required this.text,
     this.gloss,
+    this.scripture,
+    this.citation,
   });
 
   final int number;
   final String text;
   final String? gloss;
+  final String? scripture;
+  final String? citation;
+
+  bool get hasScripture =>
+      (scripture?.trim().isNotEmpty ?? false) &&
+      (citation?.trim().isNotEmpty ?? false);
 
   factory ToolOfGoodWorks.fromJson(Map<String, dynamic> json) =>
       ToolOfGoodWorks(
         number: json['number'] as int,
         text: json['text'] as String,
         gloss: json['gloss'] as String?,
+        scripture: json['scripture'] as String?,
+        citation: json['citation'] as String?,
       );
 }
 
@@ -123,18 +133,22 @@ class HourOffice {
 class MedalRegion {
   const MedalRegion({
     required this.id,
+    required this.face,
     required this.label,
     required this.expansion,
     required this.meaning,
   });
 
   final String id;
+  /// `obverse` (Benedict) or `reverse` (the cross of letters).
+  final String face;
   final String label;
   final String expansion;
   final String meaning;
 
   factory MedalRegion.fromJson(Map<String, dynamic> json) => MedalRegion(
         id: json['id'] as String,
+        face: json['face'] as String? ?? 'reverse',
         label: json['label'] as String,
         expansion: json['expansion'] as String,
         meaning: json['meaning'] as String,
@@ -157,6 +171,16 @@ class MedalContent {
   final String blessingNote;
   final List<({String invocation, String response})> litany;
   final String history;
+
+  List<MedalRegion> regionsFor(String face) =>
+      regions.where((r) => r.face == face).toList();
+
+  MedalRegion? regionById(String id) {
+    for (final r in regions) {
+      if (r.id == id) return r;
+    }
+    return null;
+  }
 
   factory MedalContent.fromJson(Map<String, dynamic> json) {
     final blessing = json['blessing'] as Map<String, dynamic>;

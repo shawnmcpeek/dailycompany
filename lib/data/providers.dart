@@ -1,3 +1,4 @@
+import 'package:benedictdaily/core/cycle/life_track.dart';
 import 'package:benedictdaily/core/diagnostics/diagnostics_log.dart';
 import 'package:benedictdaily/core/diagnostics/journal_failure_reporter.dart';
 import 'package:benedictdaily/core/iap/iap_controller.dart';
@@ -20,10 +21,11 @@ final selectedDayProvider = StateProvider<DateTime>((ref) {
   return DateTime(now.year, now.month, now.day);
 });
 
-final settingsProvider =
-    StateNotifierProvider<SettingsController, AppSettings>((ref) {
-  return SettingsController();
-});
+final settingsProvider = StateNotifierProvider<SettingsController, AppSettings>(
+  (ref) {
+    return SettingsController();
+  },
+);
 
 /// Keeps scheduled office bells aligned with settings and Oblate unlock.
 final bellSyncProvider = Provider<void>((ref) {
@@ -60,6 +62,9 @@ class AppSettings {
     this.oratioMinutes = 4,
     this.contemplatioMinutes = 8,
     this.showReadingRun = true,
+    this.medalOpened = false,
+    this.dailyTrack = DailyTrack.life,
+    this.lifeTrackStart = '',
   });
 
   /// False until SharedPreferences have been read.
@@ -86,16 +91,33 @@ class AppSettings {
   /// Quiet present/longest run under the reading calendar (never on Today).
   final bool showReadingRun;
 
+  /// True after the header medal has been opened once.
+  final bool medalOpened;
+
+  /// Life (default), Rule, or both on Today.
+  final DailyTrack dailyTrack;
+
+  /// `yyyy-MM-dd` the Life cycle began. Empty until prefs load.
+  final String lifeTrackStart;
+
+  DateTime get lifeStart {
+    if (lifeTrackStart.isEmpty) {
+      final n = DateTime.now();
+      return DateTime(n.year, n.month, n.day);
+    }
+    return LifeTrack.parseStart(lifeTrackStart);
+  }
+
   String timeForOffice(String id) =>
       officeTimes[id] ?? BellScheduler.defaultTimes[id] ?? '12:00';
 
   int minutesForMovement(String key) => switch (key) {
-        'lectio' => lectioMinutes,
-        'meditatio' => meditatioMinutes,
-        'oratio' => oratioMinutes,
-        'contemplatio' => contemplatioMinutes,
-        _ => 4,
-      };
+    'lectio' => lectioMinutes,
+    'meditatio' => meditatioMinutes,
+    'oratio' => oratioMinutes,
+    'contemplatio' => contemplatioMinutes,
+    _ => 4,
+  };
 
   AppSettings copyWith({
     bool? ready,
@@ -113,24 +135,29 @@ class AppSettings {
     int? oratioMinutes,
     int? contemplatioMinutes,
     bool? showReadingRun,
-  }) =>
-      AppSettings(
-        ready: ready ?? this.ready,
-        onboardingComplete: onboardingComplete ?? this.onboardingComplete,
-        hapticsEnabled: hapticsEnabled ?? this.hapticsEnabled,
-        bellsEnabled: bellsEnabled ?? this.bellsEnabled,
-        oraEtLabora: oraEtLabora ?? this.oraEtLabora,
-        showLatin: showLatin ?? this.showLatin,
-        themeMode: themeMode ?? this.themeMode,
-        fontScale: fontScale ?? this.fontScale,
-        boldReading: boldReading ?? this.boldReading,
-        officeTimes: officeTimes ?? this.officeTimes,
-        lectioMinutes: lectioMinutes ?? this.lectioMinutes,
-        meditatioMinutes: meditatioMinutes ?? this.meditatioMinutes,
-        oratioMinutes: oratioMinutes ?? this.oratioMinutes,
-        contemplatioMinutes: contemplatioMinutes ?? this.contemplatioMinutes,
-        showReadingRun: showReadingRun ?? this.showReadingRun,
-      );
+    bool? medalOpened,
+    DailyTrack? dailyTrack,
+    String? lifeTrackStart,
+  }) => AppSettings(
+    ready: ready ?? this.ready,
+    onboardingComplete: onboardingComplete ?? this.onboardingComplete,
+    hapticsEnabled: hapticsEnabled ?? this.hapticsEnabled,
+    bellsEnabled: bellsEnabled ?? this.bellsEnabled,
+    oraEtLabora: oraEtLabora ?? this.oraEtLabora,
+    showLatin: showLatin ?? this.showLatin,
+    themeMode: themeMode ?? this.themeMode,
+    fontScale: fontScale ?? this.fontScale,
+    boldReading: boldReading ?? this.boldReading,
+    officeTimes: officeTimes ?? this.officeTimes,
+    lectioMinutes: lectioMinutes ?? this.lectioMinutes,
+    meditatioMinutes: meditatioMinutes ?? this.meditatioMinutes,
+    oratioMinutes: oratioMinutes ?? this.oratioMinutes,
+    contemplatioMinutes: contemplatioMinutes ?? this.contemplatioMinutes,
+    showReadingRun: showReadingRun ?? this.showReadingRun,
+    medalOpened: medalOpened ?? this.medalOpened,
+    dailyTrack: dailyTrack ?? this.dailyTrack,
+    lifeTrackStart: lifeTrackStart ?? this.lifeTrackStart,
+  );
 }
 
 class SettingsController extends StateNotifier<AppSettings> {
@@ -153,6 +180,12 @@ class SettingsController extends StateNotifier<AppSettings> {
       }
     }
 
+    var lifeStart = prefs.getString('lifeTrackStart') ?? '';
+    if (lifeStart.isEmpty) {
+      lifeStart = CompletionController.keyFor(DateTime.now());
+      await prefs.setString('lifeTrackStart', lifeStart);
+    }
+
     state = AppSettings(
       ready: true,
       onboardingComplete: prefs.getBool('onboardingComplete') ?? false,
@@ -169,6 +202,9 @@ class SettingsController extends StateNotifier<AppSettings> {
       oratioMinutes: prefs.getInt('oratioMinutes') ?? 4,
       contemplatioMinutes: prefs.getInt('contemplatioMinutes') ?? 8,
       showReadingRun: prefs.getBool('showReadingRun') ?? true,
+      medalOpened: prefs.getBool('medalOpened') ?? false,
+      dailyTrack: DailyTrackX.fromStorage(prefs.getString('dailyTrack')),
+      lifeTrackStart: lifeStart,
     );
   }
 
@@ -179,7 +215,10 @@ class SettingsController extends StateNotifier<AppSettings> {
 
   Future<void> resetOnboarding() async {
     state = state.copyWith(onboardingComplete: false);
-    (await SharedPreferences.getInstance()).setBool('onboardingComplete', false);
+    (await SharedPreferences.getInstance()).setBool(
+      'onboardingComplete',
+      false,
+    );
   }
 
   Future<void> setHaptics(bool v) async {
@@ -207,6 +246,23 @@ class SettingsController extends StateNotifier<AppSettings> {
     (await SharedPreferences.getInstance()).setBool('showReadingRun', v);
   }
 
+  Future<void> markMedalOpened() async {
+    if (state.medalOpened) return;
+    state = state.copyWith(medalOpened: true);
+    (await SharedPreferences.getInstance()).setBool('medalOpened', true);
+  }
+
+  Future<void> setDailyTrack(DailyTrack v) async {
+    state = state.copyWith(dailyTrack: v);
+    (await SharedPreferences.getInstance()).setString('dailyTrack', v.name);
+  }
+
+  Future<void> restartLifeTrack() async {
+    final key = CompletionController.keyFor(DateTime.now());
+    state = state.copyWith(lifeTrackStart: key);
+    (await SharedPreferences.getInstance()).setString('lifeTrackStart', key);
+  }
+
   Future<void> setThemeMode(String v) async {
     state = state.copyWith(themeMode: v);
     (await SharedPreferences.getInstance()).setString('themeMode', v);
@@ -229,8 +285,10 @@ class SettingsController extends StateNotifier<AppSettings> {
     final next = Map<String, String>.from(state.officeTimes)
       ..[officeId] = '$hh:$mm';
     state = state.copyWith(officeTimes: next);
-    (await SharedPreferences.getInstance())
-        .setString('officeTimes', jsonEncode(next));
+    (await SharedPreferences.getInstance()).setString(
+      'officeTimes',
+      jsonEncode(next),
+    );
   }
 
   Future<void> setLectioMinutes({
@@ -277,11 +335,11 @@ class JournalEntry {
   final DateTime createdAt;
 
   factory JournalEntry.fromIsar(LectioJournalEntry e) => JournalEntry(
-        id: e.id,
-        readingId: e.readingId,
-        text: e.text,
-        createdAt: e.createdAt,
-      );
+    id: e.id,
+    readingId: e.readingId,
+    text: e.text,
+    createdAt: e.createdAt,
+  );
 }
 
 /// Unsaved journal draft held across navigation after a failed save.
@@ -315,16 +373,15 @@ class JournalDraftState {
       readingId: readingId ?? this.readingId,
       saveFailed: saveFailed ?? this.saveFailed,
       retryCount: retryCount ?? this.retryCount,
-      lastErrorCode:
-          clearError ? null : (lastErrorCode ?? this.lastErrorCode),
+      lastErrorCode: clearError ? null : (lastErrorCode ?? this.lastErrorCode),
     );
   }
 }
 
 final journalDraftProvider =
     StateNotifierProvider<JournalDraftController, JournalDraftState>((ref) {
-  return JournalDraftController(ref);
-});
+      return JournalDraftController(ref);
+    });
 
 class JournalDraftController extends StateNotifier<JournalDraftState> {
   JournalDraftController(this._ref) : super(const JournalDraftState());
@@ -333,10 +390,7 @@ class JournalDraftController extends StateNotifier<JournalDraftState> {
 
   void updateText(String text, {int? readingId}) {
     JournalFailureReporter.rememberDraft(text);
-    state = state.copyWith(
-      text: text,
-      readingId: readingId ?? state.readingId,
-    );
+    state = state.copyWith(text: text, readingId: readingId ?? state.readingId);
   }
 
   void bindReading(int readingId) {
@@ -347,11 +401,9 @@ class JournalDraftController extends StateNotifier<JournalDraftState> {
 
   Future<bool> save({required int readingId}) async {
     JournalFailureReporter.rememberDraft(state.text);
-    final ok = await _ref.read(journalProvider.notifier).add(
-          readingId,
-          state.text,
-          retryCount: state.retryCount,
-        );
+    final ok = await _ref
+        .read(journalProvider.notifier)
+        .add(readingId, state.text, retryCount: state.retryCount);
     if (ok) {
       state = const JournalDraftState();
       return true;
@@ -376,12 +428,14 @@ final isarProvider = Provider<Isar>((ref) => AppIsar.instance);
 
 final journalProvider =
     StateNotifierProvider<JournalController, List<JournalEntry>>((ref) {
-  return JournalController(ref.watch(isarProvider), ref);
-});
+      return JournalController(ref.watch(isarProvider), ref);
+    });
 
 /// Cross-cycle note for a reading, if one exists older than ~30 days.
-final priorJournalProvider =
-    FutureProvider.family<JournalEntry?, int>((ref, readingId) async {
+final priorJournalProvider = FutureProvider.family<JournalEntry?, int>((
+  ref,
+  readingId,
+) async {
   return ref.read(journalProvider.notifier).previousFor(readingId);
 });
 
@@ -394,8 +448,10 @@ class JournalController extends StateNotifier<List<JournalEntry>> {
   final Isar _isar;
   final Ref _ref;
 
-  static const _forceSaveFail =
-      bool.fromEnvironment('JOURNAL_FORCE_SAVE_FAIL', defaultValue: false);
+  static const _forceSaveFail = bool.fromEnvironment(
+    'JOURNAL_FORCE_SAVE_FAIL',
+    defaultValue: false,
+  );
 
   Future<void> _load() async {
     try {
@@ -416,11 +472,7 @@ class JournalController extends StateNotifier<List<JournalEntry>> {
   }
 
   /// Returns `true` when the entry is persisted. Never swallows failures.
-  Future<bool> add(
-    int readingId,
-    String text, {
-    int retryCount = 0,
-  }) async {
+  Future<bool> add(int readingId, String text, {int retryCount = 0}) async {
     final trimmed = text.trim();
     if (trimmed.isEmpty) return true;
     JournalFailureReporter.rememberDraft(trimmed);
@@ -468,8 +520,9 @@ class JournalController extends StateNotifier<List<JournalEntry>> {
   /// Cross-cycle resurfacing: older than ~30 days for the same reading.
   Future<JournalEntry?> previousFor(int readingId, {DateTime? before}) async {
     try {
-      final cutoff =
-          (before ?? DateTime.now()).subtract(const Duration(days: 30));
+      final cutoff = (before ?? DateTime.now()).subtract(
+        const Duration(days: 30),
+      );
       final found = await _isar.lectioJournalEntrys
           .filter()
           .readingIdEqualTo(readingId)
@@ -491,11 +544,10 @@ class JournalController extends StateNotifier<List<JournalEntry>> {
   }
 }
 
-
 final completionProvider =
     StateNotifierProvider<CompletionController, Set<String>>((ref) {
-  return CompletionController(ref.watch(isarProvider));
-});
+      return CompletionController(ref.watch(isarProvider));
+    });
 
 class CompletionController extends StateNotifier<Set<String>> {
   CompletionController(this._isar) : super(const {}) {
@@ -572,8 +624,8 @@ class CompletionController extends StateNotifier<Set<String>> {
 
 final illuminatedDateProvider =
     StateNotifierProvider<IlluminationController, String?>((ref) {
-  return IlluminationController();
-});
+      return IlluminationController();
+    });
 
 class IlluminationController extends StateNotifier<String?> {
   IlluminationController() : super(null) {
@@ -592,7 +644,10 @@ class IlluminationController extends StateNotifier<String?> {
     // Defer write so callers from post-frame / async paths stay safe.
     await Future<void>.delayed(Duration.zero);
     state = key;
-    (await SharedPreferences.getInstance()).setString('lastIlluminatedDate', key);
+    (await SharedPreferences.getInstance()).setString(
+      'lastIlluminatedDate',
+      key,
+    );
     return true;
   }
 }

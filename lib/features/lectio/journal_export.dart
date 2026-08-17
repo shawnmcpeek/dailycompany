@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:benedictdaily/core/cycle/life_track.dart';
 import 'package:benedictdaily/core/diagnostics/diagnostics_log.dart';
 import 'package:benedictdaily/core/diagnostics/journal_failure_reporter.dart';
 import 'package:benedictdaily/data/content_catalog.dart';
@@ -85,10 +86,29 @@ abstract final class JournalExport {
       ..writeln();
 
     for (final e in sorted) {
-      final headline = catalog?.calendar.byId(e.readingId);
-      final label = headline == null
-          ? 'Reading ${e.readingId}'
-          : catalog!.calendar.readingHeadline(headline);
+      final rule = catalog?.calendar.byId(e.readingId);
+      String label;
+      if (rule != null) {
+        label = catalog!.calendar.readingHeadline(rule);
+      } else if (LifeTrack.isJournalId(e.readingId) && catalog != null) {
+        final chapter = e.readingId - LifeTrack.journalIdBase;
+        LifeEpisode? ep;
+        for (final item in catalog.life) {
+          if (item.chapter == chapter) {
+            ep = item;
+            break;
+          }
+        }
+        if (ep == null) {
+          label = 'Life · chapter $chapter';
+        } else {
+          final numbered = catalog.life.where((x) => x.chapter > 0).length;
+          label =
+              'Life · ${LifeTrack.headline(ep, numbered: numbered)} · ${ep.title}';
+        }
+      } else {
+        label = 'Reading ${e.readingId}';
+      }
       buf
         ..writeln(dateFmt.format(e.createdAt.toLocal()))
         ..writeln(label)
