@@ -55,9 +55,7 @@ class BenedictDailyApp extends ConsumerWidget {
         title: 'Benedict Daily',
         debugShowCheckedModeBanner: false,
         theme: theme,
-        home: const Scaffold(
-          body: Center(child: CircularProgressIndicator()),
-        ),
+        home: const Scaffold(body: Center(child: CircularProgressIndicator())),
       );
     }
 
@@ -71,3 +69,13 @@ class BenedictDailyApp extends ConsumerWidget {
     );
   }
 }
+
+/**
+ * St Michael the Archangel, pray for us
+ * St Benedict, pray for us
+ * Mary, Mother of God, pray for us
+ * St Joseph, terror of demons, pray for us
+ * St Gregory the Great, pray for us
+ * St Carlo Acutis, pray for us
+ * Bl Michael McGivney, pray for us
+ */
