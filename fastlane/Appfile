@@ -1,0 +1,3 @@
+app_identifier("pro.daddoodev.dailycompany")
+package_name("pro.daddoodev.dailycompany")
+json_key_file(File.expand_path("../secrets/google/play-store.json", __dir__))

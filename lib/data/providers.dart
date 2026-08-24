@@ -1,12 +1,12 @@
-import 'package:benedictdaily/core/cycle/life_track.dart';
-import 'package:benedictdaily/core/diagnostics/diagnostics_log.dart';
-import 'package:benedictdaily/core/diagnostics/journal_failure_reporter.dart';
-import 'package:benedictdaily/core/iap/iap_controller.dart';
-import 'package:benedictdaily/core/notifications/bell_scheduler.dart';
-import 'package:benedictdaily/data/content_catalog.dart';
-import 'package:benedictdaily/data/isar/app_isar.dart';
-import 'package:benedictdaily/data/isar/lectio_journal_entry.dart';
-import 'package:benedictdaily/data/isar/reading_completion.dart';
+import 'package:dailycompany/core/cycle/life_track.dart';
+import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
+import 'package:dailycompany/core/diagnostics/journal_failure_reporter.dart';
+import 'package:dailycompany/core/iap/iap_controller.dart';
+import 'package:dailycompany/core/notifications/bell_scheduler.dart';
+import 'package:dailycompany/data/content_catalog.dart';
+import 'package:dailycompany/data/isar/app_isar.dart';
+import 'package:dailycompany/data/isar/lectio_journal_entry.dart';
+import 'package:dailycompany/data/isar/reading_completion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:isar_community/isar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,6 +63,7 @@ class AppSettings {
     this.contemplatioMinutes = 8,
     this.showReadingRun = true,
     this.medalOpened = false,
+    this.companionId = '',
     this.dailyTrack = DailyTrack.life,
     this.lifeTrackStart = '',
   });
@@ -93,6 +94,9 @@ class AppSettings {
 
   /// True after the header medal has been opened once.
   final bool medalOpened;
+
+  /// Chosen house in the hallway. Empty until the first enter.
+  final String companionId;
 
   /// Life (default), Rule, or both on Today.
   final DailyTrack dailyTrack;
@@ -136,6 +140,7 @@ class AppSettings {
     int? contemplatioMinutes,
     bool? showReadingRun,
     bool? medalOpened,
+    String? companionId,
     DailyTrack? dailyTrack,
     String? lifeTrackStart,
   }) => AppSettings(
@@ -155,6 +160,7 @@ class AppSettings {
     contemplatioMinutes: contemplatioMinutes ?? this.contemplatioMinutes,
     showReadingRun: showReadingRun ?? this.showReadingRun,
     medalOpened: medalOpened ?? this.medalOpened,
+    companionId: companionId ?? this.companionId,
     dailyTrack: dailyTrack ?? this.dailyTrack,
     lifeTrackStart: lifeTrackStart ?? this.lifeTrackStart,
   );
@@ -203,6 +209,7 @@ class SettingsController extends StateNotifier<AppSettings> {
       contemplatioMinutes: prefs.getInt('contemplatioMinutes') ?? 8,
       showReadingRun: prefs.getBool('showReadingRun') ?? true,
       medalOpened: prefs.getBool('medalOpened') ?? false,
+      companionId: prefs.getString('companionId') ?? '',
       dailyTrack: DailyTrackX.fromStorage(prefs.getString('dailyTrack')),
       lifeTrackStart: lifeStart,
     );
@@ -250,6 +257,11 @@ class SettingsController extends StateNotifier<AppSettings> {
     if (state.medalOpened) return;
     state = state.copyWith(medalOpened: true);
     (await SharedPreferences.getInstance()).setBool('medalOpened', true);
+  }
+
+  Future<void> setCompanion(String id) async {
+    state = state.copyWith(companionId: id);
+    (await SharedPreferences.getInstance()).setString('companionId', id);
   }
 
   Future<void> setDailyTrack(DailyTrack v) async {

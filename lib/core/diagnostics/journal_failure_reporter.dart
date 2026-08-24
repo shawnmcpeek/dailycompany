@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:benedictdaily/core/diagnostics/diagnostics_log.dart';
-import 'package:benedictdaily/core/sentry/journal_privacy_vault.dart';
-import 'package:benedictdaily/data/isar/app_isar.dart';
+import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
+import 'package:dailycompany/core/sentry/journal_privacy_vault.dart';
+import 'package:dailycompany/data/isar/app_isar.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 

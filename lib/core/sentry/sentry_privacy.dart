@@ -1,4 +1,4 @@
-import 'package:benedictdaily/core/sentry/journal_privacy_vault.dart';
+import 'package:dailycompany/core/sentry/journal_privacy_vault.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -184,7 +184,7 @@ bool _isSensitiveKey(String key) {
 }
 
 /// Applies privacy-constrained Sentry options shared by init.
-void configureBenedictSentryOptions(
+void configureDailyCompanySentryOptions(
   SentryFlutterOptions options, {
   required String release,
 }) {

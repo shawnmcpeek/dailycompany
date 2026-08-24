@@ -1,0 +1,6 @@
+app_identifier("pro.daddoodev.dailycompany")
+skip_binary_upload(true)
+skip_screenshots(true)
+force(true)
+metadata_path("./fastlane/metadata")
+ignore_language_directory_validation(true)

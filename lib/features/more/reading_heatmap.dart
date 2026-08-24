@@ -1,5 +1,5 @@
-import 'package:benedictdaily/data/providers.dart';
-import 'package:benedictdaily/shared/widgets/common.dart';
+import 'package:dailycompany/data/providers.dart';
+import 'package:dailycompany/shared/widgets/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';

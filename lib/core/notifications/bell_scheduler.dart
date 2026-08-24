@@ -1,5 +1,5 @@
-import 'package:benedictdaily/app/router/app_router.dart';
-import 'package:benedictdaily/data/providers.dart';
+import 'package:dailycompany/app/router/app_router.dart';
+import 'package:dailycompany/data/providers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';

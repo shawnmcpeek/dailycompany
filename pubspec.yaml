@@ -1,5 +1,5 @@
-name: benedictdaily
-description: "Benedict Daily — The Rule, read as monks read it."
+name: dailycompany
+description: "Daily Company — keep company with a saint and their writing."
 publish_to: 'none'
 version: 1.1.5+5
 
@@ -29,12 +29,18 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_driver:
+    sdk: flutter
+  integration_test:
+    sdk: flutter
+  screenshot: ^3.0.0
   flutter_lints: ^6.0.0
   flutter_launcher_icons: ^0.14.4
   flutter_native_splash: ^2.4.6
   isar_community_generator: ^3.3.2
   build_runner: ^2.15.1
   sentry_dart_plugin: ^3.4.0
+  image: ^4.5.4
 
 flutter:
   uses-material-design: true
@@ -64,13 +70,13 @@ flutter_launcher_icons:
   remove_alpha_ios: true
   image_path: assets/branding/app_icon.png
   min_sdk_android: 21
-  adaptive_icon_background: "#801418"
+  adaptive_icon_background: "#8A1D1D"
   adaptive_icon_foreground: assets/branding/app_icon_foreground.png
   web:
     generate: true
     image_path: assets/branding/app_icon.png
-    background_color: "#801418"
-    theme_color: "#801418"
+    background_color: "#8A1D1D"
+    theme_color: "#8A1D1D"
   windows:
     generate: true
     image_path: assets/branding/app_icon.png
@@ -80,23 +86,23 @@ flutter_launcher_icons:
     image_path: assets/branding/app_icon.png
 
 flutter_native_splash:
-  color: "#640F0C"
+  color: "#8A1D1D"
   image: assets/branding/app_logo.png
-  color_dark: "#640F0C"
+  color_dark: "#8A1D1D"
   image_dark: assets/branding/app_logo.png
   android_12:
-    color: "#640F0C"
-    icon_background_color: "#640F0C"
+    color: "#8A1D1D"
+    icon_background_color: "#8A1D1D"
     image: assets/branding/app_icon.png
-    color_dark: "#640F0C"
-    icon_background_color_dark: "#640F0C"
+    color_dark: "#8A1D1D"
+    icon_background_color_dark: "#8A1D1D"
     image_dark: assets/branding/app_icon.png
   ios: true
   web: true
   android: true
 
 sentry:
-  project: benedict_daily
+  project: daily_company
   org: daddoo-dev
   # Auth token: set SENTRY_AUTH_TOKEN in the environment (never commit).
   upload_debug_symbols: true

@@ -1,5 +1,5 @@
-import 'package:benedictdaily/data/content_catalog.dart';
-import 'package:benedictdaily/shared/widgets/common.dart';
+import 'package:dailycompany/data/content_catalog.dart';
+import 'package:dailycompany/shared/widgets/common.dart';
 import 'package:flutter/material.dart';
 
 /// Today's instrument: the work, then Scripture when Benedict is echoing it.

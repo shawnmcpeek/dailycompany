@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:benedictdaily/core/cycle/reading_calendar.dart';
+import 'package:dailycompany/core/cycle/reading_calendar.dart';
 import 'package:flutter/services.dart';
 
 class LifeEpisode {

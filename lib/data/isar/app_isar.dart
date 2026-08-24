@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:benedictdaily/core/diagnostics/diagnostics_log.dart';
-import 'package:benedictdaily/core/diagnostics/journal_failure_reporter.dart';
-import 'package:benedictdaily/data/isar/lectio_journal_entry.dart';
-import 'package:benedictdaily/data/isar/reading_completion.dart';
+import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
+import 'package:dailycompany/core/diagnostics/journal_failure_reporter.dart';
+import 'package:dailycompany/data/isar/lectio_journal_entry.dart';
+import 'package:dailycompany/data/isar/reading_completion.dart';
 import 'package:isar_community/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -27,7 +27,7 @@ abstract final class AppIsar {
     _instance = await Isar.open(
       [LectioJournalEntrySchema, ReadingCompletionSchema],
       directory: dir.path,
-      name: 'benedict_daily',
+      name: 'daily_company',
     );
     await _migrateJournalJsonIfNeeded(dir);
     return _instance!;

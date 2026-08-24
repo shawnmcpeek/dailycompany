@@ -1,5 +1,5 @@
-import 'package:benedictdaily/core/sentry/journal_privacy_vault.dart';
-import 'package:benedictdaily/core/sentry/sentry_privacy.dart';
+import 'package:dailycompany/core/sentry/journal_privacy_vault.dart';
+import 'package:dailycompany/core/sentry/sentry_privacy.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
@@ -68,7 +68,7 @@ void main() {
       exceptions: [
         SentryException(
           type: 'StateError',
-          value: 'Benedict Daily Sentry verification crash',
+          value: 'Daily Company Sentry verification crash',
           stackTrace: SentryStackTrace(
             frames: [
               SentryStackFrame(
@@ -85,7 +85,7 @@ void main() {
     expect(out, same(event));
     expect(
       out!.exceptions!.first.value,
-      'Benedict Daily Sentry verification crash',
+      'Daily Company Sentry verification crash',
     );
   });
 

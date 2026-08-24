@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:benedictdaily/core/cycle/life_track.dart';
-import 'package:benedictdaily/core/haptics/bell_haptics.dart';
-import 'package:benedictdaily/core/iap/iap_controller.dart';
-import 'package:benedictdaily/data/providers.dart';
-import 'package:benedictdaily/features/iap/oblate_paywall_screen.dart';
-import 'package:benedictdaily/features/lectio/journal_export.dart';
-import 'package:benedictdaily/shared/widgets/common.dart';
+import 'package:dailycompany/core/cycle/life_track.dart';
+import 'package:dailycompany/core/haptics/bell_haptics.dart';
+import 'package:dailycompany/core/iap/iap_controller.dart';
+import 'package:dailycompany/data/providers.dart';
+import 'package:dailycompany/features/iap/oblate_paywall_screen.dart';
+import 'package:dailycompany/features/lectio/journal_export.dart';
+import 'package:dailycompany/shared/widgets/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

@@ -1,16 +1,17 @@
-import 'package:benedictdaily/app/router/page_turn.dart';
-import 'package:benedictdaily/data/providers.dart';
-import 'package:benedictdaily/features/hours/hours_screen.dart';
-import 'package:benedictdaily/features/hub/hub_screen.dart';
-import 'package:benedictdaily/features/iap/oblate_paywall_screen.dart';
-import 'package:benedictdaily/features/lectio/lectio_screen.dart';
-import 'package:benedictdaily/features/life/life_screen.dart';
-import 'package:benedictdaily/features/medal/medal_screen.dart';
-import 'package:benedictdaily/features/more/more_screen.dart';
-import 'package:benedictdaily/features/more/sources_screen.dart';
-import 'package:benedictdaily/features/onboarding/welcome_screen.dart';
-import 'package:benedictdaily/features/today/today_screen.dart';
-import 'package:benedictdaily/features/tools/tools_screen.dart';
+import 'package:dailycompany/app/router/page_turn.dart';
+import 'package:dailycompany/data/providers.dart';
+import 'package:dailycompany/features/hallway/hallway_screen.dart';
+import 'package:dailycompany/features/hours/hours_screen.dart';
+import 'package:dailycompany/features/hub/hub_screen.dart';
+import 'package:dailycompany/features/iap/oblate_paywall_screen.dart';
+import 'package:dailycompany/features/lectio/lectio_screen.dart';
+import 'package:dailycompany/features/life/life_screen.dart';
+import 'package:dailycompany/features/medal/medal_screen.dart';
+import 'package:dailycompany/features/more/more_screen.dart';
+import 'package:dailycompany/features/more/sources_screen.dart';
+import 'package:dailycompany/features/onboarding/welcome_screen.dart';
+import 'package:dailycompany/features/today/today_screen.dart';
+import 'package:dailycompany/features/tools/tools_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -26,7 +27,7 @@ final routerProvider = Provider<GoRouter>((ref) {
 
   return GoRouter(
     navigatorKey: rootNavigatorKey,
-    initialLocation: '/hub',
+    initialLocation: '/hallway',
     refreshListenable: refresh,
     redirect: (context, state) {
       final settings = ref.read(settingsProvider);
@@ -34,12 +35,18 @@ final routerProvider = Provider<GoRouter>((ref) {
 
       final loc = state.matchedLocation;
       final onWelcome = loc.startsWith('/welcome');
+      final onHallway = loc == '/hallway';
 
       if (!settings.onboardingComplete && !onWelcome) {
         return '/welcome';
       }
       if (settings.onboardingComplete && onWelcome) {
-        return '/hub';
+        return settings.companionId.isEmpty ? '/hallway' : '/hub';
+      }
+      if (settings.onboardingComplete &&
+          settings.companionId.isEmpty &&
+          !onHallway) {
+        return '/hallway';
       }
       return null;
     },
@@ -62,6 +69,12 @@ final routerProvider = Provider<GoRouter>((ref) {
             ),
           ),
         ],
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: '/hallway',
+        pageBuilder: (context, state) =>
+            PageTurn.of(key: state.pageKey, child: const HallwayScreen()),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {

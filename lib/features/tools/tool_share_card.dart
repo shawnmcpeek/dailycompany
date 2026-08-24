@@ -1,6 +1,6 @@
-import 'package:benedictdaily/app/brand.dart';
-import 'package:benedictdaily/app/theme/palette.dart';
-import 'package:benedictdaily/data/content_catalog.dart';
+import 'package:dailycompany/app/brand.dart';
+import 'package:dailycompany/app/theme/palette.dart';
+import 'package:dailycompany/data/content_catalog.dart';
 import 'package:flutter/material.dart';
 
 /// Fixed share canvas — vellum, brand-first, one instrument.
@@ -42,7 +42,7 @@ class ToolShareCard extends StatelessWidget {
               ),
               const SizedBox(height: 18),
               const Text(
-                'Benedict Daily',
+                Brand.appName,
                 style: TextStyle(
                   fontFamily: 'EBGaramond',
                   fontSize: 56,

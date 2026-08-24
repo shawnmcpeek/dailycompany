@@ -1,14 +1,14 @@
-import 'package:benedictdaily/app/brand.dart';
-import 'package:benedictdaily/app/theme/palette.dart';
-import 'package:benedictdaily/core/diagnostics/diagnostics_log.dart';
-import 'package:benedictdaily/core/iap/iap_controller.dart';
-import 'package:benedictdaily/core/iap/iap_flags.dart';
-import 'package:benedictdaily/data/providers.dart';
-import 'package:benedictdaily/features/iap/oblate_paywall_screen.dart';
-import 'package:benedictdaily/features/lectio/journal_export.dart';
-import 'package:benedictdaily/features/more/reading_heatmap.dart';
-import 'package:benedictdaily/shared/widgets/common.dart';
-import 'package:benedictdaily/shared/widgets/daily_track_toggle.dart';
+import 'package:dailycompany/app/brand.dart';
+import 'package:dailycompany/app/theme/palette.dart';
+import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
+import 'package:dailycompany/core/iap/iap_controller.dart';
+import 'package:dailycompany/core/iap/iap_flags.dart';
+import 'package:dailycompany/data/providers.dart';
+import 'package:dailycompany/features/iap/oblate_paywall_screen.dart';
+import 'package:dailycompany/features/lectio/journal_export.dart';
+import 'package:dailycompany/features/more/reading_heatmap.dart';
+import 'package:dailycompany/shared/widgets/common.dart';
+import 'package:dailycompany/shared/widgets/daily_track_toggle.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -241,6 +241,13 @@ class MoreScreen extends ConsumerWidget {
           trailing: const Icon(Icons.chevron_right, size: 20),
           onTap: () => openOblatePaywall(context),
         ),
+        ListTile(
+          contentPadding: EdgeInsets.zero,
+          title: const Text('The hallway'),
+          subtitle: const Text('Choose whose house you keep'),
+          onTap: () => context.go('/hallway'),
+        ),
+        const SectionRule(),
         ListTile(
           contentPadding: EdgeInsets.zero,
           title: const Text('Replay welcome'),

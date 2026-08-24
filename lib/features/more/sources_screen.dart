@@ -1,4 +1,4 @@
-import 'package:benedictdaily/shared/widgets/common.dart';
+import 'package:dailycompany/shared/widgets/common.dart';
 import 'package:flutter/material.dart';
 
 class SourcesScreen extends StatelessWidget {
@@ -10,7 +10,7 @@ class SourcesScreen extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
       children: [
         Text(
-          'Every text in Benedict Daily is public-domain or traditional, '
+          'Every text in Daily Company is public-domain or traditional, '
           'chosen so the app can ship globally without a monastery’s imprimatur.',
           style: Theme.of(context).textTheme.bodyLarge,
         ),

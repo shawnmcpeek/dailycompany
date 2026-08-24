@@ -5,7 +5,7 @@ import 'package:vibration/vibration.dart';
 enum BellKind { little, major, compline, lectioTick, complete }
 
 abstract final class BellHaptics {
-  static const _channel = MethodChannel('pro.daddoodev.benedictdaily/haptics');
+  static const _channel = MethodChannel('pro.daddoodev.dailycompany/haptics');
 
   static Future<void> play(BellKind kind) async {
     if (!kIsWeb && defaultTargetPlatform == TargetPlatform.iOS) {

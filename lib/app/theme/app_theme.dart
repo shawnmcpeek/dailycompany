@@ -1,5 +1,5 @@
-import 'package:benedictdaily/app/theme/palette.dart';
-import 'package:benedictdaily/core/cycle/reading_calendar.dart';
+import 'package:dailycompany/app/theme/palette.dart';
+import 'package:dailycompany/core/cycle/reading_calendar.dart';
 import 'package:flutter/material.dart';
 
 ThemeData buildPaperTheme({

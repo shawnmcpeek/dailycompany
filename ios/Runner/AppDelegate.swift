@@ -17,7 +17,7 @@ import CoreHaptics
     GeneratedPluginRegistrant.register(with: engineBridge.pluginRegistry)
 
     let channel = FlutterMethodChannel(
-      name: "pro.daddoodev.benedictdaily/haptics",
+      name: "pro.daddoodev.dailycompany/haptics",
       binaryMessenger: engineBridge.applicationRegistrar.messenger()
     )
     channel.setMethodCallHandler { [weak self] call, result in

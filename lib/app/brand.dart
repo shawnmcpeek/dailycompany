@@ -1,5 +1,6 @@
 /// Studio identity shown in About and legal chrome.
 abstract final class Brand {
+  static const appName = 'Daily Company';
   static const studio = 'Daddoo Dev';
   static const foundedYear = 2026;
 

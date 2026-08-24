@@ -1,11 +1,12 @@
-import 'package:benedictdaily/app/router/app_router.dart';
-import 'package:benedictdaily/app/theme/app_theme.dart';
-import 'package:benedictdaily/core/diagnostics/diagnostics_log.dart';
-import 'package:benedictdaily/core/iap/iap_controller.dart';
-import 'package:benedictdaily/core/notifications/bell_scheduler.dart';
-import 'package:benedictdaily/core/sentry/sentry_privacy.dart';
-import 'package:benedictdaily/data/isar/app_isar.dart';
-import 'package:benedictdaily/data/providers.dart';
+import 'package:dailycompany/app/brand.dart';
+import 'package:dailycompany/app/router/app_router.dart';
+import 'package:dailycompany/app/theme/app_theme.dart';
+import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
+import 'package:dailycompany/core/iap/iap_controller.dart';
+import 'package:dailycompany/core/notifications/bell_scheduler.dart';
+import 'package:dailycompany/core/sentry/sentry_privacy.dart';
+import 'package:dailycompany/data/isar/app_isar.dart';
+import 'package:dailycompany/data/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -19,18 +20,18 @@ Future<void> main() async {
       '${packageInfo.packageName}@${packageInfo.version}+${packageInfo.buildNumber}';
 
   await SentryFlutter.init(
-    (options) => configureBenedictSentryOptions(options, release: release),
+    (options) => configureDailyCompanySentryOptions(options, release: release),
     appRunner: () async {
       await AppIsar.open();
       await DiagnosticsLog.instance.ensureLoaded();
       await BellScheduler.instance.init();
-      runApp(const ProviderScope(child: BenedictDailyApp()));
+      runApp(const ProviderScope(child: DailyCompanyApp()));
     },
   );
 }
 
-class BenedictDailyApp extends ConsumerWidget {
-  const BenedictDailyApp({super.key});
+class DailyCompanyApp extends ConsumerWidget {
+  const DailyCompanyApp({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -52,7 +53,7 @@ class BenedictDailyApp extends ConsumerWidget {
 
     if (!settings.ready) {
       return MaterialApp(
-        title: 'Benedict Daily',
+        title: Brand.appName,
         debugShowCheckedModeBanner: false,
         theme: theme,
         home: const Scaffold(body: Center(child: CircularProgressIndicator())),
@@ -60,7 +61,7 @@ class BenedictDailyApp extends ConsumerWidget {
     }
 
     return MaterialApp.router(
-      title: 'Benedict Daily',
+      title: Brand.appName,
       debugShowCheckedModeBanner: false,
       theme: theme,
       darkTheme: theme,

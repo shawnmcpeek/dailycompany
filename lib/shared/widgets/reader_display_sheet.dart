@@ -1,6 +1,6 @@
-import 'package:benedictdaily/app/theme/palette.dart';
-import 'package:benedictdaily/data/providers.dart';
-import 'package:benedictdaily/shared/widgets/common.dart';
+import 'package:dailycompany/app/theme/palette.dart';
+import 'package:dailycompany/data/providers.dart';
+import 'package:dailycompany/shared/widgets/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

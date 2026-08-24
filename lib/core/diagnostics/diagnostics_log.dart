@@ -67,7 +67,7 @@ class DiagnosticsLog {
 
   String exportText() {
     final buf = StringBuffer()
-      ..writeln('Benedict Daily — diagnostics')
+      ..writeln('Daily Company — diagnostics')
       ..writeln('Exported ${DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now())}')
       ..writeln('Events: ${_events.length} (max $_maxEvents)')
       ..writeln('No journal or prayer text is included.')
@@ -107,7 +107,7 @@ class DiagnosticsLog {
             name: 'benedict_diagnostics_$stamp.txt',
           ),
         ],
-        text: 'Benedict Daily · diagnostics',
+        text: 'Daily Company · diagnostics',
         sharePositionOrigin: sharePositionOrigin,
       ),
     );

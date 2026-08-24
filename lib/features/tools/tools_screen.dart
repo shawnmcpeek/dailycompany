@@ -1,7 +1,7 @@
-import 'package:benedictdaily/data/providers.dart';
-import 'package:benedictdaily/features/tools/tool_share.dart';
-import 'package:benedictdaily/shared/widgets/common.dart';
-import 'package:benedictdaily/shared/widgets/instrument_reading.dart';
+import 'package:dailycompany/data/providers.dart';
+import 'package:dailycompany/features/tools/tool_share.dart';
+import 'package:dailycompany/shared/widgets/common.dart';
+import 'package:dailycompany/shared/widgets/instrument_reading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -59,7 +59,7 @@ class ToolsScreen extends ConsumerWidget {
                     today.citation!,
                   ],
                   '',
-                  '— Benedict Daily',
+                  '— Daily Company',
                 ].join('\n');
                 await Clipboard.setData(ClipboardData(text: share));
                 if (context.mounted) {

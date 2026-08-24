@@ -1,4 +1,4 @@
-import 'package:benedictdaily/features/medal/medal_hotspots.dart';
+import 'package:dailycompany/features/medal/medal_hotspots.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

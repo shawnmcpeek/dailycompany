@@ -1,10 +1,10 @@
 import 'dart:io';
 
-import 'package:benedictdaily/core/cycle/life_track.dart';
-import 'package:benedictdaily/core/diagnostics/diagnostics_log.dart';
-import 'package:benedictdaily/core/diagnostics/journal_failure_reporter.dart';
-import 'package:benedictdaily/data/content_catalog.dart';
-import 'package:benedictdaily/data/providers.dart';
+import 'package:dailycompany/core/cycle/life_track.dart';
+import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
+import 'package:dailycompany/core/diagnostics/journal_failure_reporter.dart';
+import 'package:dailycompany/data/content_catalog.dart';
+import 'package:dailycompany/data/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -47,7 +47,7 @@ abstract final class JournalExport {
               name: 'benedict_lectio_journal_$stamp.txt',
             ),
           ],
-          text: 'Benedict Daily · Lectio journal',
+          text: 'Daily Company · Lectio journal',
           sharePositionOrigin: origin,
         ),
       );
@@ -79,7 +79,7 @@ abstract final class JournalExport {
       ..sort((a, b) => a.createdAt.compareTo(b.createdAt));
     final dateFmt = DateFormat('yyyy-MM-dd HH:mm');
     final buf = StringBuffer()
-      ..writeln('Benedict Daily — Lectio journal')
+      ..writeln('Daily Company — Lectio journal')
       ..writeln('Exported ${DateFormat('yyyy-MM-dd').format(DateTime.now())}')
       ..writeln()
       ..writeln('---')

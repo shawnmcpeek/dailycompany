@@ -73,5 +73,21 @@ AuthKey_*.p8
 # Local store / IAP credentials (never commit)
 /secrets/
 
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/test_output
+fastlane/README.md
+
+# Host-side captures from flutter drive; organized copies live under fastlane/
+screenshots/raw/
+
+# Play / ASC JSON key dumps (never commit)
+**/*service-account*.json
+**/play-store*.json
+**/api_key.json
+/benedict-daily-*.json
+/*-[a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9][a-f0-9].json
+
 # Sentry native crashpad / runtime state (never commit)
 .sentry-native/

@@ -1,4 +1,4 @@
-# Benedict Daily — Device QA
+# Daily Company — Device QA
 
 Use this checklist before a store build. Automate what you can on Linux; confirm bells and haptics on real phones.
 
@@ -60,8 +60,8 @@ Defaults: Lauds 07:00 · Terce 09:00 · Sext 12:00 · None 15:00 · Vespers 18:0
 ### Android-specific
 
 - [ ] After reboot, bells still fire (boot receiver)
-- [ ] If missed: OEM battery → allow unrestricted / disable battery optimization for Benedict Daily
-- [ ] Exact alarms: Settings → Apps → Benedict Daily → Alarms & reminders (Android 12+)
+- [ ] If missed: OEM battery → allow unrestricted / disable battery optimization for Daily Company
+- [ ] Exact alarms: Settings → Apps → Daily Company → Alarms & reminders (Android 12+)
 
 ### iOS-specific
 
@@ -99,7 +99,7 @@ Linux/Windows may skip exact zoned schedules; treat mobile as source of truth fo
 ## 7. Branding & chrome
 
 - [ ] Launcher icon / splash on Android and iOS
-- [ ] Display name: Benedict Daily
+- [ ] Display name: Daily Company
 - [ ] No Abbey / OSB / medal-as-icon branding
 
 ---

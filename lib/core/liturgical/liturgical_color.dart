@@ -1,4 +1,4 @@
-import 'package:benedictdaily/app/theme/palette.dart';
+import 'package:dailycompany/app/theme/palette.dart';
 import 'package:flutter/material.dart';
 
 /// v1 liturgical color resolver — seasons + a few fixed feasts. No full Ordo.

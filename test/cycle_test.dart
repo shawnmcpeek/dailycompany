@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:benedictdaily/core/cycle/reading_calendar.dart';
+import 'package:dailycompany/core/cycle/reading_calendar.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 ReadingCalendar loadFixture() {

@@ -7,10 +7,7 @@ class SectionRule extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 1,
-      color: color ?? Theme.of(context).dividerColor,
-    );
+    return Container(height: 1, color: color ?? Theme.of(context).dividerColor);
   }
 }
 
@@ -73,12 +70,14 @@ class HubNavButton extends StatelessWidget {
     super.key,
     required this.title,
     required this.subtitle,
-    required this.onPressed,
+    this.onPressed,
+    this.actionLabel = 'Open',
   });
 
   final String title;
   final String subtitle;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
+  final String actionLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -100,10 +99,7 @@ class HubNavButton extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
+                Text(title, style: Theme.of(context).textTheme.titleMedium),
                 const SizedBox(height: 4),
                 Text(
                   subtitle,
@@ -116,10 +112,10 @@ class HubNavButton extends StatelessWidget {
           ),
           const SizedBox(width: 12),
           Text(
-            'Open',
-            style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                  color: secondary,
-                ),
+            actionLabel,
+            style: Theme.of(
+              context,
+            ).textTheme.labelLarge?.copyWith(color: secondary),
           ),
           Icon(Icons.chevron_right, size: 20, color: secondary),
         ],

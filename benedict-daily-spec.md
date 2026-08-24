@@ -1,9 +1,9 @@
-# Benedict Daily — Build Spec
+# Daily Company — Build Spec
 
 **Studio:** Daddoo Dev
-**Bundle ID:** `pro.daddoodev.benedictdaily`
+**Bundle ID:** `pro.daddoodev.dailycompany`
 **Platform:** Flutter · Android + iOS · offline-first
-**Store subtitle:** *The Rule, read as monks read it.*
+**Store subtitle:** *Keep company with a saint.*
 
 Drop this file at the repo root as `SPEC.md` and reference it from `.cursorrules`.
 
@@ -11,7 +11,7 @@ Drop this file at the repo root as `SPEC.md` and reference it from `.cursorrules
 
 ## 0. Brief
 
-Hallow and its competitors are meditation apps with saint content bolted on. Benedict Daily is a **formation app**: it runs the actual Benedictine daily cycle — the whole Rule of St. Benedict read three times a year, on the calendar Benedictines have used for centuries — plus a lay-scaled horarium and a lectio divina practice.
+Hallow and its competitors are meditation apps with saint content bolted on. Daily Company is a **formation app**: it runs the actual Benedictine daily cycle — the whole Rule of St. Benedict read three times a year, on the calendar Benedictines have used for centuries — plus a lay-scaled horarium and a lectio divina practice.
 
 Three constraints that everything else follows from:
 

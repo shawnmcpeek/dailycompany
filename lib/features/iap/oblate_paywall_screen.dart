@@ -1,6 +1,6 @@
-import 'package:benedictdaily/core/iap/iap_controller.dart';
-import 'package:benedictdaily/core/iap/iap_flags.dart';
-import 'package:benedictdaily/shared/widgets/common.dart';
+import 'package:dailycompany/core/iap/iap_controller.dart';
+import 'package:dailycompany/core/iap/iap_flags.dart';
+import 'package:dailycompany/shared/widgets/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';

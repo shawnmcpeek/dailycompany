@@ -1,5 +1,5 @@
-import 'package:benedictdaily/core/cycle/life_track.dart';
-import 'package:benedictdaily/data/content_catalog.dart';
+import 'package:dailycompany/core/cycle/life_track.dart';
+import 'package:dailycompany/data/content_catalog.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 LifeEpisode ep(int chapter) => LifeEpisode(

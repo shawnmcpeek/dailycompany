@@ -1,4 +1,4 @@
-import 'package:benedictdaily/core/cycle/life_track.dart';
+import 'package:dailycompany/core/cycle/life_track.dart';
 import 'package:flutter/material.dart';
 
 class DailyTrackToggle extends StatelessWidget {

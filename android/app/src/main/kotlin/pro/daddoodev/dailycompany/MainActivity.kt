@@ -1,4 +1,4 @@
-package pro.daddoodev.benedictdaily
+package pro.daddoodev.dailycompany
 
 import io.flutter.embedding.android.FlutterActivity
 

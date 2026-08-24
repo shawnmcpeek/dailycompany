@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "benedictdaily" "\0"
+            VALUE "FileDescription", "Daily Company" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "benedictdaily" "\0"
+            VALUE "InternalName", "dailycompany" "\0"
             VALUE "LegalCopyright", "Copyright \251 2026-present Daddoo Dev. All rights reserved." "\0"
-            VALUE "OriginalFilename", "benedictdaily.exe" "\0"
-            VALUE "ProductName", "benedictdaily" "\0"
+            VALUE "OriginalFilename", "dailycompany.exe" "\0"
+            VALUE "ProductName", "Daily Company" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

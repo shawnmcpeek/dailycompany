@@ -1,3 +1,5 @@
-# benedictdaily
+# Daily Company
 
-A new Flutter project.
+Keep company with a saint and their writing.
+
+Bundle / application ID: `pro.daddoodev.dailycompany`

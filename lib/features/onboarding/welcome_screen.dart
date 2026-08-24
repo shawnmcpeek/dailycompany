@@ -1,5 +1,6 @@
-import 'package:benedictdaily/app/theme/palette.dart';
-import 'package:benedictdaily/data/providers.dart';
+import 'package:dailycompany/app/brand.dart';
+import 'package:dailycompany/app/theme/palette.dart';
+import 'package:dailycompany/data/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -37,10 +38,10 @@ class WelcomeScreen extends ConsumerWidget {
                               fit: BoxFit.contain,
                             ),
                             const SizedBox(height: 24),
-                            const Text(
-                              'Benedict Daily',
+                            Text(
+                              Brand.appName,
                               textAlign: TextAlign.center,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontFamily: 'EBGaramond',
                                 fontSize: 40,
                                 height: 1.1,
@@ -49,7 +50,7 @@ class WelcomeScreen extends ConsumerWidget {
                             ),
                             const SizedBox(height: 12),
                             const Text(
-                              'The Rule, read as monks read it.',
+                              'Keep company with a saint and their writing.',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontFamily: 'EBGaramond',
@@ -108,7 +109,7 @@ class WelcomeHowScreen extends ConsumerWidget {
                       const _HowLine(
                         title: 'The day is already chosen',
                         body:
-                            'Open the app and today’s Life of Benedict is waiting — one chapter, in order. The Rule is there when you want the monastic cycle.',
+                            'Open the app, walk the hallway, and enter a house. Benedict’s is open — one chapter of his Life, in order. The Rule is there when you want the monastic cycle.',
                       ),
                       const _HowLine(
                         title: 'Depth is optional',
@@ -130,9 +131,9 @@ class WelcomeHowScreen extends ConsumerWidget {
                   await ref
                       .read(settingsProvider.notifier)
                       .completeOnboarding();
-                  if (context.mounted) context.go('/hub');
+                  if (context.mounted) context.go('/hallway');
                 },
-                child: const Text('Enter Benedict Daily'),
+                child: const Text('Enter the hallway'),
               ),
             ],
           ),

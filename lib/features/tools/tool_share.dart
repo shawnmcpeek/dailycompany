@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:benedictdaily/data/content_catalog.dart';
-import 'package:benedictdaily/features/tools/tool_share_card.dart';
+import 'package:dailycompany/data/content_catalog.dart';
+import 'package:dailycompany/features/tools/tool_share_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:path_provider/path_provider.dart';
@@ -72,7 +72,7 @@ class _ToolShareSheetState extends State<_ToolShareSheet> {
             ),
           ],
           text:
-              'Tool ${widget.tool.number} of Good Works — Benedict Daily',
+              'Tool ${widget.tool.number} of Good Works — Daily Company',
           sharePositionOrigin: origin,
         ),
       );

@@ -1,10 +1,11 @@
-import 'package:benedictdaily/core/cycle/life_track.dart';
-import 'package:benedictdaily/core/cycle/reading_calendar.dart';
-import 'package:benedictdaily/data/content_catalog.dart';
-import 'package:benedictdaily/data/providers.dart';
-import 'package:benedictdaily/shared/widgets/common.dart';
-import 'package:benedictdaily/shared/widgets/instrument_reading.dart';
-import 'package:benedictdaily/shared/widgets/medal_mark.dart';
+import 'package:dailycompany/app/brand.dart';
+import 'package:dailycompany/core/cycle/life_track.dart';
+import 'package:dailycompany/core/cycle/reading_calendar.dart';
+import 'package:dailycompany/data/content_catalog.dart';
+import 'package:dailycompany/data/providers.dart';
+import 'package:dailycompany/shared/widgets/common.dart';
+import 'package:dailycompany/shared/widgets/instrument_reading.dart';
+import 'package:dailycompany/shared/widgets/medal_mark.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -43,19 +44,25 @@ class HubScreen extends ConsumerWidget {
                 SizedBox(
                   width: kMinInteractiveDimension,
                   height: kMinInteractiveDimension,
-                  child: Center(
-                    child: ExcludeSemantics(
-                      child: Image.asset(
-                        'assets/branding/app_logo.png',
-                        height: 36,
-                        fit: BoxFit.contain,
+                  child: Tooltip(
+                    message: 'The hallway',
+                    child: GestureDetector(
+                      onTap: () => context.go('/hallway'),
+                      child: Center(
+                        child: ExcludeSemantics(
+                          child: Image.asset(
+                            'assets/branding/app_logo.png',
+                            height: 36,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
                       ),
                     ),
                   ),
                 ),
                 Expanded(
                   child: Text(
-                    'Benedict Daily',
+                    Brand.appName,
                     style: Theme.of(context).textTheme.headlineMedium,
                     textAlign: TextAlign.center,
                     maxLines: 1,
@@ -89,6 +96,13 @@ class HubScreen extends ConsumerWidget {
             const SizedBox(height: 32),
             Text('Go to', style: Theme.of(context).textTheme.labelSmall),
             const SizedBox(height: 12),
+            HubNavButton(
+              title: 'The hallway',
+              subtitle: 'Choose whose house you keep',
+              actionLabel: 'Leave',
+              onPressed: () => context.go('/hallway'),
+            ),
+            const SizedBox(height: 10),
             HubNavButton(
               title: "Today's Rule",
               subtitle: todaySubtitle,

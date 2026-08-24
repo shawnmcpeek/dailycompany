@@ -1,6 +1,6 @@
-import 'package:benedictdaily/core/cycle/reading_calendar.dart';
-import 'package:benedictdaily/core/iap/iap_controller.dart';
-import 'package:benedictdaily/data/content_catalog.dart';
+import 'package:dailycompany/core/cycle/reading_calendar.dart';
+import 'package:dailycompany/core/iap/iap_controller.dart';
+import 'package:dailycompany/data/content_catalog.dart';
 
 enum DailyTrack { life, rule, both }
 
