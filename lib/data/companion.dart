@@ -1,16 +1,15 @@
+import 'package:dailycompany/data/models/portal.dart';
+
 /// A writer whose house you can keep. Only [open] houses have a daily cycle yet.
 class Companion {
-  const Companion({
-    required this.id,
-    required this.name,
-    required this.work,
-    this.open = false,
-  });
+  const Companion({required this.id, required this.name, required this.work});
 
   final String id;
   final String name;
   final String work;
-  final bool open;
+
+  /// True once this house has a [SaintPortal] in the registry.
+  bool get open => PortalRegistry.byId(id) != null;
 }
 
 abstract final class Companions {
@@ -18,7 +17,6 @@ abstract final class Companions {
     id: 'benedict',
     name: 'Benedict of Nursia',
     work: 'The Rule',
-    open: true,
   );
 
   static const all = <Companion>[
