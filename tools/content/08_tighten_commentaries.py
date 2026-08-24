@@ -13,7 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 WORK = ROOT / "work"
 REPO = ROOT.parent.parent
-ASSETS = REPO / "assets" / "content"
+ASSETS = REPO / "assets" / "content" / "benedict"
 REVIEW = ROOT / "review"
 
 

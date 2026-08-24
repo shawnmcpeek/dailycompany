@@ -45,8 +45,8 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/content/
-    - assets/content/medal/
+    - assets/content/benedict/
+    - assets/content/benedict/medal/
     - assets/branding/
   fonts:
     - family: EBGaramond

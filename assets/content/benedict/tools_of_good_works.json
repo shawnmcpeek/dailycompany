@@ -1,0 +1,504 @@
+{
+  "version": 1,
+  "source": "Rule of St. Benedict, ch. 4 (Verheyen), from rule_readings.json",
+  "tools": [
+    {
+      "number": 1,
+      "text": "In the first place to love the Lord God with the whole heart, the whole soul, the whole strength.",
+      "scripture": "Thou shalt love the Lord thy God with thy whole heart, and with thy whole soul, and with thy whole strength.",
+      "citation": "Deuteronomy 6:5",
+      "gloss": "Benedict starts where the Law and the Gospel start. Love of God is the first work, not a mood that arrives later."
+    },
+    {
+      "number": 2,
+      "text": "Then, one's neighbor as one's self.",
+      "scripture": "And the second is like to this: Thou shalt love thy neighbour as thyself.",
+      "citation": "Matthew 22:39",
+      "gloss": "The second commandment is not a sequel. You cannot keep the first while treating the person next to you as furniture."
+    },
+    {
+      "number": 3,
+      "text": "Then, not to kill.",
+      "scripture": "Thou shalt not kill.",
+      "citation": "Exodus 20:13",
+      "gloss": "The Decalogue follows the two loves because Benedict will not invent a holiness that skips the ordinary moral law."
+    },
+    {
+      "number": 4,
+      "text": "Not to commit adultery.",
+      "scripture": "Thou shalt not commit adultery.",
+      "citation": "Exodus 20:14",
+      "gloss": "Fidelity in the body is part of the same workshop as prayer. Benedict lists it among the tools, not among optional counsels."
+    },
+    {
+      "number": 5,
+      "text": "Not to steal.",
+      "scripture": "Thou shalt not steal.",
+      "citation": "Exodus 20:15",
+      "gloss": "Taking what is not yours — time, credit, goods — is the opposite of the common life the Rule is building."
+    },
+    {
+      "number": 6,
+      "text": "Not to covet.",
+      "scripture": "Thou shalt not covet thy neighbour's house: neither shalt thou desire his wife, nor his servant, nor his handmaid, nor his ox, nor his ass, nor any thing that is his.",
+      "citation": "Exodus 20:17",
+      "gloss": "Theft begins in the looking. Covetousness is wanting another person's lot instead of doing your own work."
+    },
+    {
+      "number": 7,
+      "text": "Not to bear false witness.",
+      "scripture": "Thou shalt not bear false witness against thy neighbour.",
+      "citation": "Exodus 20:16",
+      "gloss": "A community lives on speech that can be trusted. False witness is not only a court crime; it is everyday damage."
+    },
+    {
+      "number": 8,
+      "text": "To honor all men.",
+      "scripture": "Honour all men. Love the brotherhood. Fear God. Honour the king.",
+      "citation": "1 Peter 2:17",
+      "gloss": "Honour is not flattery. It is refusing to treat anyone as negligible — guest, brother, stranger, or difficult superior."
+    },
+    {
+      "number": 9,
+      "text": "And what one would not have done to himself, not to do to another.",
+      "scripture": "See thou never do to another what thou wouldst hate to have done to thee by another.",
+      "citation": "Tobit 4:16",
+      "gloss": "Benedict uses the older, negative form of the golden rule. Before you act, ask whether you would resent the same treatment."
+    },
+    {
+      "number": 10,
+      "text": "To deny one's self in order to follow Christ.",
+      "scripture": "If any man will come after me, let him deny himself, and take up his cross, and follow me.",
+      "citation": "Matthew 16:24",
+      "gloss": "Self-denial here is not self-erasure. It is stepping out of the centre so that following Christ is actually possible."
+    },
+    {
+      "number": 11,
+      "text": "To chastise the body.",
+      "scripture": "But I chastise my body, and bring it into subjection: lest perhaps, when I have preached to others, I myself should become a castaway.",
+      "citation": "1 Corinthians 9:27",
+      "gloss": "This is St. Paul's phrase: not harming the body, but refusing to let appetite run the house. Benedict is moderate about food and sleep elsewhere in the Rule; the point is training, not punishment."
+    },
+    {
+      "number": 12,
+      "text": "Not to seek after pleasures.",
+      "scripture": "For all that is in the world, is the concupiscence of the flesh, and the concupiscence of the eyes, and the pride of life, which is not of the Father, but is of the world.",
+      "citation": "1 John 2:16",
+      "gloss": "Comfort is not the enemy; making comfort the programme is. Benedict is warning against a life organised around pleasantness."
+    },
+    {
+      "number": 13,
+      "text": "To love fasting.",
+      "gloss": "Fasting is listed as something to love, not to grimace through. In the Rule it is a regular tool of attention, kept with discretion, not a contest in hardship."
+    },
+    {
+      "number": 14,
+      "text": "To relieve the poor.",
+      "scripture": "For I was hungry, and you gave me to eat; I was thirsty, and you gave me to drink; I was a stranger, and you took me in.",
+      "citation": "Matthew 25:35",
+      "gloss": "The poor are not a side project. What you do for them, the Gospel says you do for Christ — which is why this sits among the tools of the craft."
+    },
+    {
+      "number": 15,
+      "text": "To clothe the naked.",
+      "scripture": "Naked, and you covered me: sick, and you visited me: I was in prison, and you came to me.",
+      "citation": "Matthew 25:36",
+      "gloss": "Clothing the naked is one of the corporal works. Benedict puts it in the daily kit, not in a special season of charity."
+    },
+    {
+      "number": 16,
+      "text": "To visit the sick.",
+      "scripture": "Naked, and you covered me: sick, and you visited me: I was in prison, and you came to me.",
+      "citation": "Matthew 25:36",
+      "gloss": "Visit, do not merely send word. Presence is the work — the same presence the Rule demands for the guest and the infirm in the monastery."
+    },
+    {
+      "number": 17,
+      "text": "To bury the dead.",
+      "scripture": "When thou didst pray with tears, and didst bury the dead, and didst leave thy dinner, and hide the dead by day in thy house, and bury them by night, I offered thy prayer to the Lord.",
+      "citation": "Tobit 12:12",
+      "gloss": "Burying the dead is the work of mercy Matthew 25 does not name and Tobit does. It is care that continues when the person can give nothing back."
+    },
+    {
+      "number": 18,
+      "text": "To help in trouble.",
+      "scripture": "Bear ye one another's burdens; and so you shall fulfil the law of Christ.",
+      "citation": "Galatians 6:2",
+      "gloss": "Trouble is not a private embarrassment. The workshop of chapter 4 includes showing up when someone's load is too heavy."
+    },
+    {
+      "number": 19,
+      "text": "To console the sorrowing.",
+      "scripture": "Rejoice with them that rejoice; weep with them that weep.",
+      "citation": "Romans 12:15",
+      "gloss": "Consolation is not a speech. It is entering another person's sorrow without rushing them out of it."
+    },
+    {
+      "number": 20,
+      "text": "To hold one's self aloof from worldly ways.",
+      "scripture": "Love not the world, nor the things which are in the world. If any man love the world, the charity of the Father is not in him.",
+      "citation": "1 John 2:15",
+      "gloss": "Worldly ways here means the habits of display, advantage, and noise. Benedict wants a life that is in the world without taking its temperature as law."
+    },
+    {
+      "number": 21,
+      "text": "To prefer nothing to the love of Christ.",
+      "scripture": "He that loveth father or mother more than me, is not worthy of me; and he that loveth son or daughter more than me, is not worthy of me.",
+      "citation": "Matthew 10:37",
+      "gloss": "This is the centre of the Rule, said again in chapter 72. Preferring Christ is not contempt for other loves; it is the order that keeps them from becoming idols."
+    },
+    {
+      "number": 22,
+      "text": "Not to give way to anger.",
+      "scripture": "For the anger of man worketh not the justice of God.",
+      "citation": "James 1:20",
+      "gloss": "Anger will visit. The tool is not to give it the floor — not to let it finish what it starts in you."
+    },
+    {
+      "number": 23,
+      "text": "Not to foster a desire for revenge.",
+      "scripture": "Revenge not yourselves, my dearly beloved; but give place unto wrath, for it is written: Revenge is mine, I will repay, saith the Lord.",
+      "citation": "Romans 12:19",
+      "gloss": "Revenge is anger given a plan. Benedict will not let the injury keep working in you after the moment has passed."
+    },
+    {
+      "number": 24,
+      "text": "Not to entertain deceit in the heart.",
+      "scripture": "He that speaketh truth in his heart, who hath not used deceit in his tongue: nor hath done evil to his neighbour.",
+      "citation": "Psalm 14:3",
+      "gloss": "The Prologue already used this psalm of the one who may dwell in God's tent. Deceit in the heart is a lie you tell yourself before you tell anyone else."
+    },
+    {
+      "number": 25,
+      "text": "Not to make a false peace.",
+      "scripture": "Draw me not away together with the wicked; and with the workers of iniquity destroy me not: who speak peace with their neighbour, but evils are in their hearts.",
+      "citation": "Psalm 27:3",
+      "gloss": "A false peace is smoothness that leaves the wound untouched. Benedict wants real reconciliation, not a quiet that only protects the one who did the harm."
+    },
+    {
+      "number": 26,
+      "text": "Not to forsake charity.",
+      "scripture": "But before all things have a constant mutual charity among yourselves: for charity covereth a multitude of sins.",
+      "citation": "1 Peter 4:8",
+      "gloss": "Charity here is the will to stay for the other's good. Forsaking it is easier than a quarrel; it is simply letting love go cold."
+    },
+    {
+      "number": 27,
+      "text": "Not to swear, lest perchance one swear falsely.",
+      "scripture": "But I say to you not to swear at all, neither by heaven, for it is the throne of God.",
+      "citation": "Matthew 5:34",
+      "gloss": "If your ordinary yes and no can be trusted, you do not need oaths. Benedict fears the oath because it is already halfway to a lie."
+    },
+    {
+      "number": 28,
+      "text": "To speak the truth with heart and tongue.",
+      "scripture": "Wherefore putting away lying, speak ye the truth every man with his neighbour, for we are members one of another.",
+      "citation": "Ephesians 4:25",
+      "gloss": "Truth in the heart and on the tongue: no private reservation dressed as kindness. The community is one body; a lie in it is a wound."
+    },
+    {
+      "number": 29,
+      "text": "Not to return evil for evil.",
+      "scripture": "To no man rendering evil for evil. Providing good things, not only in the sight of God, but also in the sight of all men.",
+      "citation": "Romans 12:17",
+      "gloss": "The injury does not become yours to copy. Returning evil keeps you on the other person's terms."
+    },
+    {
+      "number": 30,
+      "text": "To do no injury, yea, even patiently to bear the injury done us.",
+      "scripture": "But I say to you not to resist evil: but if one strike thee on thy right cheek, turn to him also the other.",
+      "citation": "Matthew 5:39",
+      "gloss": "Do no injury — and when injured, do not make the next move. Patience here is strength that refuses to escalate."
+    },
+    {
+      "number": 31,
+      "text": "To love one's enemies.",
+      "scripture": "But I say to you, Love your enemies: do good to them that hate you: and pray for them that persecute and calumniate you.",
+      "citation": "Matthew 5:44",
+      "gloss": "Enemy-love is not a feeling you wait for. It is the decision not to wish them ill, and then the harder work of actually willing their good."
+    },
+    {
+      "number": 32,
+      "text": "Not to curse them that curse us, but rather to bless them.",
+      "scripture": "Bless them that persecute you: bless, and curse not.",
+      "citation": "Romans 12:14",
+      "gloss": "A curse is revenge in a sentence. Blessing the one who curses you breaks the exchange before it becomes a habit."
+    },
+    {
+      "number": 33,
+      "text": "To bear persecution for justice sake.",
+      "scripture": "Blessed are they that suffer persecution for justice' sake: for theirs is the kingdom of heaven.",
+      "citation": "Matthew 5:10",
+      "gloss": "Not every hardship is this. Benedict means the cost of doing right, borne without theatrical grievance."
+    },
+    {
+      "number": 34,
+      "text": "Not to be proud.",
+      "scripture": "God resisteth the proud, but to the humble he giveth grace.",
+      "citation": "1 Peter 5:5",
+      "gloss": "Pride is the tool that ruins the others. In the Rule, humility is not self-hatred; it is standing in the true size of things."
+    },
+    {
+      "number": 35,
+      "text": "Not to be given to wine.",
+      "scripture": "And be not drunk with wine, wherein is luxury; but be ye filled with the Holy Spirit.",
+      "citation": "Ephesians 5:18",
+      "gloss": "Benedict is not a teetotaler — the Rule allows wine. The tool is against the fog in which you stop being answerable."
+    },
+    {
+      "number": 36,
+      "text": "Not to be a great eater.",
+      "scripture": "Be not greedy in any feasting, and pour not out thyself upon any meat.",
+      "citation": "Ecclesiasticus 37:32",
+      "gloss": "A great eater is not someone who enjoys a meal. It is someone whose day is organised around appetite. The Rule later sets a measured table."
+    },
+    {
+      "number": 37,
+      "text": "Not to be drowsy.",
+      "gloss": "Drowsy here is the half-awake life: missing the hour, missing the person in front of you. Benedict's monastery keeps people up by rhythm, not by scolding sleep itself."
+    },
+    {
+      "number": 38,
+      "text": "Not to be slothful.",
+      "scripture": "In carefulness not slothful. In spirit fervent. Serving the Lord.",
+      "citation": "Romans 12:11",
+      "gloss": "Sloth is not rest. It is the refusal to begin. The Hours and the work of the house are how Benedict trains the will to show up."
+    },
+    {
+      "number": 39,
+      "text": "Not to be a murmurer.",
+      "scripture": "Neither do you murmur: as some of them murmured, and were destroyed by the destroyer.",
+      "citation": "1 Corinthians 10:10",
+      "gloss": "Murmuring is complaint that will not speak to the face that can answer. It poisons a house faster than open disagreement."
+    },
+    {
+      "number": 40,
+      "text": "Not to be a detractor.",
+      "scripture": "Detract not one another, my brethren. He that detracteth his brother, or he that judgeth his brother, detracteth the law and judgeth the law.",
+      "citation": "James 4:11",
+      "gloss": "Detraction is truth used as a weapon, or a half-truth passed along. Benedict will not let reputations be picked apart behind a closed door."
+    },
+    {
+      "number": 41,
+      "text": "To put one's trust in God.",
+      "scripture": "Trust in the Lord, and do good, and dwell in the land, and thou shalt be fed with its riches.",
+      "citation": "Psalm 36:3",
+      "gloss": "Trust is not passivity. The psalm pairs it with doing good. You work; you do not make yourself the last insurance."
+    },
+    {
+      "number": 42,
+      "text": "To refer what good one sees in himself, not to self, but to God.",
+      "scripture": "For who distinguisheth thee? Or what hast thou that thou hast not received? And if thou hast received, why dost thou glory, as if thou hadst not received it?",
+      "citation": "1 Corinthians 4:7",
+      "gloss": "The Prologue already taught this: not to us, O Lord. Whatever is sound in you is gift. Claiming it as self-made is the first theft."
+    },
+    {
+      "number": 43,
+      "text": "But as to any evil in himself, let him be convinced that it is his own and charge it to himself.",
+      "scripture": "If we say that we have no sin, we deceive ourselves, and the truth is not in us.",
+      "citation": "1 John 1:8",
+      "gloss": "Blame for evil stops at your own door. Delatte is blunt here: do not credit yourself with the good, and do not outsource the fault."
+    },
+    {
+      "number": 44,
+      "text": "To fear the day of judgment.",
+      "scripture": "For we must all be manifested before the judgement seat of Christ, that every one may receive the proper things of the body, according as he hath done, whether it be good or evil.",
+      "citation": "2 Corinthians 5:10",
+      "gloss": "Fear of judgment is not panic. It is living as someone who will have to tell the truth about this day."
+    },
+    {
+      "number": 45,
+      "text": "To be in dread of hell.",
+      "scripture": "And fear ye not them that kill the body, and are not able to kill the soul: but rather fear him that can destroy both soul and body in hell.",
+      "citation": "Matthew 10:28",
+      "gloss": "Benedict will not edit hell out of the Gospel. Dread here is meant to sober you, not to crush you — the last instrument will forbid despair."
+    },
+    {
+      "number": 46,
+      "text": "To desire eternal life with all spiritual longing.",
+      "scripture": "But I am straitened between two: having a desire to be dissolved and to be with Christ, a thing by far the better.",
+      "citation": "Philippians 1:23",
+      "gloss": "Longing for eternal life is not a death wish. It is wanting the thing the whole Rule is for, with the heat the other loves already know."
+    },
+    {
+      "number": 47,
+      "text": "To keep death before one's eyes daily.",
+      "scripture": "In all thy works remember thy last end, and thou shalt never sin.",
+      "citation": "Ecclesiasticus 7:40",
+      "gloss": "Death before the eyes is a clearing of proportion. Most vanities do not survive the question: would I still want this at the end?"
+    },
+    {
+      "number": 48,
+      "text": "To keep a constant watch over the actions of our life.",
+      "scripture": "Be sober and watch: because your adversary the devil, as a roaring lion, goeth about seeking whom he may devour.",
+      "citation": "1 Peter 5:8",
+      "gloss": "Watchfulness is attention to what you are actually doing, not a hunt for drama. The day has a grain; stay with it."
+    },
+    {
+      "number": 49,
+      "text": "To hold as certain that God sees us everywhere.",
+      "scripture": "The eyes of the Lord in every place behold the good and the evil.",
+      "citation": "Proverbs 15:3",
+      "gloss": "God sees: not as a spy, as the one before whom the hidden life is already public. It makes secrecy a poorer strategy."
+    },
+    {
+      "number": 50,
+      "text": "To dash at once against Christ the evil thoughts which rise in one's heart.",
+      "scripture": "Blessed be he that shall take and dash thy little ones against the rock.",
+      "citation": "Psalm 136:9",
+      "gloss": "The Fathers read this psalm of Babylon so: the little ones are evil thoughts while they are still small, and the rock is Christ. Catch them early. Do not let them grow."
+    },
+    {
+      "number": 51,
+      "text": "And to disclose them to our spiritual father.",
+      "scripture": "Confess therefore your sins one to another: and pray one for another, that you may be saved.",
+      "citation": "James 5:16",
+      "gloss": "Thoughts that stay only in the head get bigger. Telling a spiritual father is how the Rule keeps you from fighting in the dark."
+    },
+    {
+      "number": 52,
+      "text": "To guard one's tongue against bad and wicked speech.",
+      "scripture": "For he that will love life, and see good days, let him refrain his tongue from evil, and his lips that they speak no guile.",
+      "citation": "1 Peter 3:10",
+      "gloss": "Wicked speech is not only blasphemy. It is the cheap cut, the story that makes someone smaller. Guard the tongue as you would a tool that can wreck a house."
+    },
+    {
+      "number": 53,
+      "text": "Not to love much speaking.",
+      "scripture": "In the multitude of words there shall not want sin: but he that refraineth his lips is most wise.",
+      "citation": "Proverbs 10:19",
+      "gloss": "Much speaking is not conversation. It is talk that has to keep going. Silence in the Rule is space for the word that is actually needed."
+    },
+    {
+      "number": 54,
+      "text": "Not to speak useless words and such as provoke laughter.",
+      "scripture": "Or obscenity, or foolish talking, or scurrility, which is to no purpose; but rather giving of thanks.",
+      "citation": "Ephesians 5:4",
+      "gloss": "Useless words and words that exist only to raise a laugh. Benedict is not against joy; he is against making the room cheaper."
+    },
+    {
+      "number": 55,
+      "text": "Not to love much or boisterous laughter.",
+      "scripture": "A fool lifteth up his voice in laughter: but a wise man will scarce laugh low to himself.",
+      "citation": "Ecclesiasticus 21:23",
+      "gloss": "Boisterous laughter is the kind that takes over the house. The Rule wants gladness that still leaves room for the person who is not in on the joke."
+    },
+    {
+      "number": 56,
+      "text": "To listen willingly to holy reading.",
+      "scripture": "Till I come, attend unto reading, to exhortation, and to doctrine.",
+      "citation": "1 Timothy 4:13",
+      "gloss": "Holy reading is listened to, not consumed. Lectio in the Rule is an ear trained on Scripture, so the day is not only your own thoughts."
+    },
+    {
+      "number": 57,
+      "text": "To apply one's self often to prayer.",
+      "scripture": "Pray without ceasing.",
+      "citation": "1 Thessalonians 5:17",
+      "gloss": "Often, not only at the Hours. The tools include returning to God in the gaps, before the mind fills them with something else."
+    },
+    {
+      "number": 58,
+      "text": "To confess one's past sins to God daily in prayer with sighs and tears, and to amend them for the future.",
+      "scripture": "For I know my iniquity, and my sin is always before me.",
+      "citation": "Psalm 50:5",
+      "gloss": "Daily confession to God is not rumination. It is naming what was wrong, with grief enough to change, and then amending the next round."
+    },
+    {
+      "number": 59,
+      "text": "Not to fulfil the desires of the flesh.",
+      "scripture": "I say then, walk in the spirit, and you shall not fulfil the lusts of the flesh.",
+      "citation": "Galatians 5:16",
+      "gloss": "The flesh here is not the body as such. It is desire that will not be ruled. Walking in the Spirit is how the want loses the vote."
+    },
+    {
+      "number": 60,
+      "text": "To hate one's own will.",
+      "scripture": "Father, if thou wilt, remove this chalice from me: but yet not my will, but thine be done.",
+      "citation": "Luke 22:42",
+      "gloss": "Not self-hatred. It means not making your preference the law — the same turn Christ makes in Gethsemane, when the will is offered rather than enthroned."
+    },
+    {
+      "number": 61,
+      "text": "To obey the commands of the Abbot in all things, even though he himself (which Heaven forbid) act otherwise, mindful of that precept of the Lord: \"What they say, do ye; what they do, do ye not\".",
+      "scripture": "All things therefore whatsoever they shall say to you, observe and do: but according to their works do ye not; for they say, and do not.",
+      "citation": "Matthew 23:3",
+      "gloss": "Obedience is to the office and the command, not to a personality cult. If the abbot fails the Rule, you still keep it — and you do not copy the failure."
+    },
+    {
+      "number": 62,
+      "text": "Not to desire to be called holy before one is; but to be holy first, that one may be truly so called.",
+      "gloss": "Do not collect the name before the thing. Holiness in the Rule is a life, then perhaps a word for it — never a brand you put on first."
+    },
+    {
+      "number": 63,
+      "text": "To fulfil daily the commandments of God by works.",
+      "scripture": "But be ye doers of the word, and not hearers only, deceiving your own selves.",
+      "citation": "James 1:22",
+      "gloss": "The commandments are daily work. Hearing the Rule, or even loving it, is not the same as keeping it this afternoon."
+    },
+    {
+      "number": 64,
+      "text": "To love chastity.",
+      "scripture": "For this is the will of God, your sanctification; that you should abstain from fornication.",
+      "citation": "1 Thessalonians 4:3",
+      "gloss": "Chastity is listed as something to love, like fasting. In Benedict it is a wholehearted belonging of the body, not a grim private war."
+    },
+    {
+      "number": 65,
+      "text": "To hate no one.",
+      "scripture": "If any man say, I love God, and hateth his brother; he is a liar. For he that loveth not his brother, whom he seeth, how can he love God, whom he seeth not?",
+      "citation": "1 John 4:20",
+      "gloss": "Hate is not allowed a righteous costume. The person you cannot stand is still included in the first two tools."
+    },
+    {
+      "number": 66,
+      "text": "Not to be jealous; not to entertain envy.",
+      "scripture": "Let us not be made desirous of vain glory, provoking one another, envying one another.",
+      "citation": "Galatians 5:26",
+      "gloss": "Jealousy measures your life against someone else's portion. Envy goes further: it is sad that they have it. Both break the common table."
+    },
+    {
+      "number": 67,
+      "text": "Not to love strife.",
+      "scripture": "But the servant of the Lord must not wrangle: but be mild towards all men, apt to teach, patient.",
+      "citation": "2 Timothy 2:24",
+      "gloss": "Strife is conflict kept for its own sake. The Rule allows hard truth; it does not allow you to love the fight."
+    },
+    {
+      "number": 68,
+      "text": "Not to love pride.",
+      "scripture": "Pride goeth before destruction: and the spirit is lifted up before a fall.",
+      "citation": "Proverbs 16:18",
+      "gloss": "Pride again, because it is the root that keeps growing back. Love of pride is enjoying the lift before the fall arrives."
+    },
+    {
+      "number": 69,
+      "text": "To honor the aged.",
+      "scripture": "Rise up before the hoary head, and honour the person of the aged man: and fear the Lord thy God. I am the Lord.",
+      "citation": "Leviticus 19:32",
+      "gloss": "Honour the aged: not as a courtesy style, as a recognition that they have carried the house longer than you have."
+    },
+    {
+      "number": 70,
+      "text": "To love the younger.",
+      "scripture": "An ancient man rebuke not, but entreat him as a father: young men, as brethren: Old women, as mothers: young women, as sisters, in all chastity.",
+      "citation": "1 Timothy 5:1–2",
+      "gloss": "Love of the younger is not indulgence and not rivalry. It is making room for the ones who have not yet learned the house."
+    },
+    {
+      "number": 71,
+      "text": "To pray for one's enemies in the love of Christ.",
+      "scripture": "But I say to you, Love your enemies: do good to them that hate you: and pray for them that persecute and calumniate you.",
+      "citation": "Matthew 5:44",
+      "gloss": "Prayer for enemies is love with the will when the feelings will not come. In the love of Christ means you do not have to like them first."
+    },
+    {
+      "number": 72,
+      "text": "To make peace with an adversary before the setting of the sun. And never to despair of God's mercy.",
+      "scripture": "Be angry, and sin not. Let not the sun go down upon your anger.",
+      "citation": "Ephesians 4:26",
+      "gloss": "End the quarrel the same day. And never despair of mercy: if you have broken every other tool, this last one is still in your hand."
+    }
+  ]
+}

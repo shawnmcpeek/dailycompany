@@ -111,7 +111,7 @@ def main() -> None:
     raw = (RAW / "delatte_mccann.txt").read_text(encoding="utf-8", errors="replace")
     chapters = parse_delatte(raw)
     readings = json.loads(
-        (ROOT.parent.parent / "assets/content/rule_readings.json").read_text()
+        (ROOT.parent.parent / "assets/content/benedict/rule_readings.json").read_text()
     )["readings"]
 
     packets = []

@@ -1,0 +1,15 @@
+{
+  "id": "benedict",
+  "displayName": "Benedict of Nursia",
+  "tagline": "Keep company with a saint.",
+  "provenance": "traditional",
+  "spine": {
+    "type": "cycle",
+    "entries": 122,
+    "repeatsPerYear": 3
+  },
+  "anchor": "compline",
+  "modules": ["today", "hours", "life", "tools", "medal", "lectio"],
+  "disclaimer": "An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by any Benedictine monastery, abbey, congregation, or the Order of Saint Benedict.",
+  "unlockSku": "benedict_daily_oblate"
+}

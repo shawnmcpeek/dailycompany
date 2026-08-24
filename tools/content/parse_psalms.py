@@ -6,8 +6,8 @@ Source: tools/content/raw/douay_psalms.txt
   (Holy Bible, Douay-Rheims Version, Challoner Revision).
 
 Writes:
-  assets/content/psalms.json
-  assets/content/hours.json
+  assets/content/benedict/psalms.json
+  assets/content/benedict/hours.json
 """
 
 from __future__ import annotations

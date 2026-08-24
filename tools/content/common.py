@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parent
 RAW = ROOT / "raw"
 WORK = ROOT / "work"
 REVIEW = ROOT / "review"
-ASSETS = ROOT.parent.parent / "assets" / "content"
+ASSETS = ROOT.parent.parent / "assets" / "content" / "benedict"
 
 MONTHS = {
     "Jan": 1,
