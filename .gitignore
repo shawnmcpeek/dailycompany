@@ -8,14 +8,16 @@
 .env.*
 !.env.example
 
-# Content pipeline raw downloads (large / regenerable)
-tools/content/raw/
-tools/content/work/
+# Content pipeline raw downloads (large / regenerable) — matches both
+# tools/content/raw|work/ and each portal's tools/content/<id>/raw|work/
+tools/content/**/raw/
+tools/content/**/work/
 __pycache__/
 *.mp3
 
 # Generated review artifacts are fine to commit for human QA
 # tools/content/review/
+# tools/content/desales/review/
 .atom/
 .build/
 .buildlog/
