@@ -1,0 +1,12 @@
+---
+alwaysApply: true
+---
+Two specs govern this repo. Read both before structural work.
+- benedict-daily-spec.md — design system, Benedict portal, content pipeline
+- portals-spec.md — portal abstraction, cadence rules, per-saint specs
+
+portals-spec.md v2 supersedes benedict-daily-spec.md where they conflict.
+Notably: the "no start-a-plan onboarding" rule is scoped to Benedict, not the app.
+
+Non-negotiable: EB Garamond for all reading text, sans confined to chrome.
+Never compute or display a reading backlog. No streak counters.

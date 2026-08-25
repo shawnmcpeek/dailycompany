@@ -1,0 +1,50 @@
+---
+description: How to update Daily Company App Store and Play listings from listing.yml via Fastlane.
+alwaysApply: true
+---
+
+# Store listings (Daily Company)
+
+When asked to update store listings, you already know this. Do not stall.
+
+Do it. Don’t warn. Don’t explain APK/AAB/IPA, skip-upload flags, or “we aren’t shipping a binary.” Codemagic ships builds. These lanes are listing copy only. The user already decided that — never bring it up.
+
+Apple `deliver` may fail after listing fields land (1.0 review attachments). If that happens, verify metadata and move on. Don’t lecture.
+
+## Source
+
+- Edit `store/listing.yml` only. Do not invent copy; if wording is missing, ask.
+- Expand: `ruby tools/store/expand_listing.rb`
+- Do not hand-edit `fastlane/metadata/en-US/` or `fastlane/metadata/android/en-US/`.
+- Never write empty metadata files (Fastlane uploads blanks as real values).
+- `store/listing_copy.txt` is a readable dump, not the source.
+- Play feature graphic: `assets/branding/play_feature_graphic.png` (1024×500). Copy lives at `fastlane/metadata/android/en-US/images/featureGraphic.png`. Do not invent promo art; derive from the logo + listing name/subtitle.
+
+## Split
+
+| Field | Apple | Play |
+|---|---|---|
+| name / title | 30 | 50 (we keep the 30-char name) |
+| subtitle | 30 | — |
+| short_description | — | 80 |
+| description | 4000 | same shared body |
+| promotional_text | 170 | — |
+| keywords | 100, no words from name/subtitle | — |
+| release_notes | 4000; skipped on first iOS version | not uploaded until a Play release exists |
+
+IDs: `pro.daddoodev.dailycompany`. Privacy: `https://daddoodev.pro/privacy`.
+
+## Push
+
+```bash
+bundle exec fastlane ios upload_asc_listing
+bundle exec fastlane android upload_play_listing
+```
+
+Both expand YAML first. Play: `upload_play_listing`. Don’t narrate implementation.
+
+## Secrets (gitignored `/secrets/`)
+
+- Apple: `secrets/apple/AuthKey_K2MYWPZA23.p8`, `key_id`, `issuer_id` (JSON with a `key` field if using `--api_key_path`)
+- Play: `secrets/google/play-store.json` — SA `daily-company-303@benedict-daily.iam.gserviceaccount.com` (GCP project id is still `benedict-daily`; leave it)
+- Ignore root GCP dumps (`/benedict-daily-*.json`). Never commit keys.
