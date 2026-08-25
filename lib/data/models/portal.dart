@@ -25,7 +25,7 @@ class SaintPortal {
     this.unlockSku,
   });
 
-  /// Matches the folder name under `assets/content/`.
+  /// Matches this portal's content folder name (see the loader).
   final String id;
   final String displayName;
   final String tagline;
