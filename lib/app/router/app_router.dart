@@ -1,4 +1,5 @@
 import 'package:dailycompany/app/router/page_turn.dart';
+import 'package:dailycompany/app/router/portal_routes.dart';
 import 'package:dailycompany/data/providers.dart';
 import 'package:dailycompany/features/hallway/hallway_screen.dart';
 import 'package:dailycompany/features/hours/hours_screen.dart';
@@ -24,6 +25,11 @@ final routerProvider = Provider<GoRouter>((ref) {
     refresh.value++;
   });
   ref.onDispose(refresh.dispose);
+
+  // Read (not watched) once at construction — there's one portal and no
+  // way to switch it mid-session yet, so the branches' fallback locations
+  // don't need to react to changes. Revisit once portal-switching exists.
+  final portalId = ref.read(currentPortalIdProvider);
 
   return GoRouter(
     navigatorKey: rootNavigatorKey,
@@ -76,6 +82,12 @@ final routerProvider = Provider<GoRouter>((ref) {
         pageBuilder: (context, state) =>
             PageTurn.of(key: state.pageKey, child: const HallwayScreen()),
       ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: '/',
+        redirect: (context, state) =>
+            PortalRoutes.today(ref.read(currentPortalIdProvider)),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return AppShell(navigationShell: navigationShell);
@@ -91,18 +103,20 @@ final routerProvider = Provider<GoRouter>((ref) {
             ],
           ),
           StatefulShellBranch(
+            initialLocation: PortalRoutes.today(portalId),
             routes: [
               GoRoute(
-                path: '/today',
+                path: '/p/:portalId/today',
                 pageBuilder: (context, state) =>
                     PageTurn.of(key: state.pageKey, child: const TodayScreen()),
               ),
             ],
           ),
           StatefulShellBranch(
+            initialLocation: PortalRoutes.hours(portalId),
             routes: [
               GoRoute(
-                path: '/hours',
+                path: '/p/:portalId/hours',
                 pageBuilder: (context, state) =>
                     PageTurn.of(key: state.pageKey, child: const HoursScreen()),
                 routes: [
@@ -120,9 +134,10 @@ final routerProvider = Provider<GoRouter>((ref) {
             ],
           ),
           StatefulShellBranch(
+            initialLocation: PortalRoutes.life(portalId),
             routes: [
               GoRoute(
-                path: '/life',
+                path: '/p/:portalId/life',
                 pageBuilder: (context, state) =>
                     PageTurn.of(key: state.pageKey, child: const LifeScreen()),
                 routes: [
@@ -140,9 +155,10 @@ final routerProvider = Provider<GoRouter>((ref) {
             ],
           ),
           StatefulShellBranch(
+            initialLocation: PortalRoutes.tools(portalId),
             routes: [
               GoRoute(
-                path: '/tools',
+                path: '/p/:portalId/tools',
                 pageBuilder: (context, state) =>
                     PageTurn.of(key: state.pageKey, child: const ToolsScreen()),
               ),
@@ -163,7 +179,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         parentNavigatorKey: rootNavigatorKey,
-        path: '/lectio',
+        path: '/p/:portalId/lectio',
         pageBuilder: (context, state) => PageTurn.of(
           key: state.pageKey,
           child: Scaffold(
@@ -174,7 +190,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         parentNavigatorKey: rootNavigatorKey,
-        path: '/medal',
+        path: '/p/:portalId/medal',
         pageBuilder: (context, state) => PageTurn.of(
           key: state.pageKey,
           child: Scaffold(
@@ -185,7 +201,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         parentNavigatorKey: rootNavigatorKey,
-        path: '/sources',
+        path: '/p/:portalId/sources',
         pageBuilder: (context, state) => PageTurn.of(
           key: state.pageKey,
           child: Scaffold(
@@ -196,7 +212,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         parentNavigatorKey: rootNavigatorKey,
-        path: '/oblate',
+        path: '/p/:portalId/oblate',
         pageBuilder: (context, state) => PageTurn.of(
           key: state.pageKey,
           child: Scaffold(

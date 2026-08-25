@@ -1,4 +1,5 @@
 import 'package:dailycompany/app/brand.dart';
+import 'package:dailycompany/app/router/portal_routes.dart';
 import 'package:dailycompany/core/cycle/life_track.dart';
 import 'package:dailycompany/core/cycle/reading_calendar.dart';
 import 'package:dailycompany/data/content_catalog.dart';
@@ -19,6 +20,7 @@ class HubScreen extends ConsumerWidget {
     final catalogAsync = ref.watch(contentCatalogProvider);
     final day = ref.watch(selectedDayProvider);
     final settings = ref.watch(settingsProvider);
+    final portalId = ref.watch(currentPortalIdProvider);
     final dateLabel = DateFormat('EEEE, MMMM d').format(day);
 
     return catalogAsync.when(
@@ -77,7 +79,7 @@ class HubScreen extends ConsumerWidget {
                     invite: !settings.medalOpened,
                     onTap: () {
                       ref.read(settingsProvider.notifier).markMedalOpened();
-                      context.push('/medal');
+                      context.push(PortalRoutes.medal(portalId));
                     },
                   ),
                 ),
@@ -107,7 +109,7 @@ class HubScreen extends ConsumerWidget {
             HubNavButton(
               title: "Today's Rule",
               subtitle: todaySubtitle,
-              onPressed: () => context.go('/today'),
+              onPressed: () => context.go(PortalRoutes.today(portalId)),
             ),
             const SizedBox(height: 10),
             HubNavButton(
@@ -115,19 +117,19 @@ class HubScreen extends ConsumerWidget {
               subtitle: settings.oraEtLabora
                   ? 'Ora et Labora · Terce ${settings.timeForOffice('terce')}'
                   : 'Compline · ${settings.timeForOffice('compline')}',
-              onPressed: () => context.go('/hours'),
+              onPressed: () => context.go(PortalRoutes.hours(portalId)),
             ),
             const SizedBox(height: 10),
             HubNavButton(
               title: 'Life',
               subtitle: 'Gregory · $lifeCount episodes',
-              onPressed: () => context.go('/life'),
+              onPressed: () => context.go(PortalRoutes.life(portalId)),
             ),
             const SizedBox(height: 10),
             HubNavButton(
               title: 'Tools',
               subtitle: 'All 72 instruments',
-              onPressed: () => context.go('/tools'),
+              onPressed: () => context.go(PortalRoutes.tools(portalId)),
             ),
             const SizedBox(height: 10),
             HubNavButton(

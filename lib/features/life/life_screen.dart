@@ -1,3 +1,4 @@
+import 'package:dailycompany/app/router/portal_routes.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
 import 'package:dailycompany/data/content_catalog.dart';
 import 'package:dailycompany/data/providers.dart';
@@ -14,6 +15,7 @@ class LifeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final catalogAsync = ref.watch(contentCatalogProvider);
     final unlocked = ref.watch(oblateUnlockedProvider);
+    final portalId = ref.watch(currentPortalIdProvider);
 
     return catalogAsync.when(
       loading: () => const EmptyLoading(),
@@ -61,7 +63,7 @@ class LifeScreen extends ConsumerWidget {
                     openOblatePaywall(context);
                     return;
                   }
-                  context.push('/life/${ep.chapter}');
+                  context.push(PortalRoutes.lifeEpisode(portalId, ep.chapter));
                 },
               ),
               const SectionRule(),

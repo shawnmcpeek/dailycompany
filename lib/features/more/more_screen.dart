@@ -1,4 +1,5 @@
 import 'package:dailycompany/app/brand.dart';
+import 'package:dailycompany/app/router/portal_routes.dart';
 import 'package:dailycompany/app/theme/palette.dart';
 import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
@@ -21,6 +22,7 @@ class MoreScreen extends ConsumerWidget {
     final settings = ref.watch(settingsProvider);
     final ctrl = ref.read(settingsProvider.notifier);
     final unlocked = ref.watch(oblateUnlockedProvider);
+    final portalId = ref.watch(currentPortalIdProvider);
     final ink = Theme.of(context).colorScheme.onSurface;
     final rule = Theme.of(context).dividerColor;
 
@@ -31,7 +33,7 @@ class MoreScreen extends ConsumerWidget {
           contentPadding: EdgeInsets.zero,
           title: const Text('Lectio Divina'),
           subtitle: const Text('Guided timer over today’s reading'),
-          onTap: () => context.push('/lectio'),
+          onTap: () => context.push(PortalRoutes.lectio(portalId)),
         ),
         const SectionRule(),
         ListTile(
@@ -272,7 +274,7 @@ class MoreScreen extends ConsumerWidget {
           title: const Text('Sources'),
           subtitle: const Text('Editions, translators, and what we do not use'),
           trailing: const Icon(Icons.chevron_right, size: 20),
-          onTap: () => context.push('/sources'),
+          onTap: () => context.push(PortalRoutes.sources(portalId)),
         ),
         const SizedBox(height: 8),
         Text(

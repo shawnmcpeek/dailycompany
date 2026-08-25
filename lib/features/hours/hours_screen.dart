@@ -1,3 +1,4 @@
+import 'package:dailycompany/app/router/portal_routes.dart';
 import 'package:dailycompany/core/haptics/bell_haptics.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
 import 'package:dailycompany/data/content_catalog.dart';
@@ -17,6 +18,7 @@ class HoursScreen extends ConsumerWidget {
     final settings = ref.watch(settingsProvider);
     final ctrl = ref.read(settingsProvider.notifier);
     final unlocked = ref.watch(oblateUnlockedProvider);
+    final portalId = ref.watch(currentPortalIdProvider);
 
     return catalogAsync.when(
       loading: () => const EmptyLoading(),
@@ -87,7 +89,8 @@ class HoursScreen extends ConsumerWidget {
                     const Icon(Icons.chevron_right, size: 20),
                   ],
                 ),
-                onTap: () => context.push('/hours/${office.id}'),
+                onTap: () =>
+                    context.push(PortalRoutes.office(portalId, office.id)),
               ),
               const SectionRule(),
             ],

@@ -12,9 +12,16 @@ import 'package:isar_community/isar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
+/// The one portal in play right now. Derives from the chosen house until
+/// there's a picker that can set it to something other than 'benedict'.
+final currentPortalIdProvider = Provider<String>((ref) {
+  final companionId = ref.watch(settingsProvider).companionId;
+  return companionId.isEmpty ? 'benedict' : companionId;
+});
+
 final contentCatalogProvider = FutureProvider<ContentCatalog>((ref) async {
-  // Hardcoded until routing carries a portalId (next commit).
-  return ContentCatalog.load('benedict');
+  final portalId = ref.watch(currentPortalIdProvider);
+  return ContentCatalog.load(portalId);
 });
 
 final selectedDayProvider = StateProvider<DateTime>((ref) {

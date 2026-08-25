@@ -1,3 +1,4 @@
+import 'package:dailycompany/app/router/portal_routes.dart';
 import 'package:dailycompany/core/cycle/life_track.dart';
 import 'package:dailycompany/core/haptics/bell_haptics.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
@@ -308,7 +309,8 @@ class _ReadingBlockState extends ConsumerState<_ReadingBlock> {
               ),
             ActionChip(
               label: const Text('Lectio'),
-              onPressed: () => context.push('/lectio'),
+              onPressed: () => context
+                  .push(PortalRoutes.lectio(ref.read(currentPortalIdProvider))),
             ),
             ActionChip(
               label: const Text('Mark read'),

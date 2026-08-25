@@ -1,7 +1,9 @@
 import 'package:dailycompany/app/router/app_router.dart';
+import 'package:dailycompany/app/router/portal_routes.dart';
 import 'package:dailycompany/data/providers.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timezone/data/latest_all.dart' as tzdata;
@@ -107,7 +109,11 @@ class BellScheduler {
     if (officeId == null || officeId.isEmpty) return;
     final ctx = rootNavigatorKey.currentContext;
     if (ctx == null) return;
-    GoRouter.of(ctx).go('/hours/$officeId');
+    final portalId = ProviderScope.containerOf(
+      ctx,
+      listen: false,
+    ).read(currentPortalIdProvider);
+    GoRouter.of(ctx).go(PortalRoutes.office(portalId, officeId));
   }
 
   Future<void> reschedule(
