@@ -65,12 +65,13 @@ class ReadingCalendar {
   final Map<String, List<int>> _byDateLeap;
   final Map<int, RuleReading> _byId;
 
-  static Future<ReadingCalendar> loadFromAssets() async {
+  static Future<ReadingCalendar> loadFromAssets(String portalId) async {
+    final base = 'assets/content/$portalId';
     final readingsRaw = await rootBundle.loadString(
-      'assets/content/rule_readings.json',
+      '$base/rule_readings.json',
     );
     final calendarRaw = await rootBundle.loadString(
-      'assets/content/reading_calendar.json',
+      '$base/reading_calendar.json',
     );
     return ReadingCalendar.fromJson(
       jsonDecode(readingsRaw) as Map<String, dynamic>,

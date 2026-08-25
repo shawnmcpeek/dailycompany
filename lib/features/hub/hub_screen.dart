@@ -73,6 +73,7 @@ class HubScreen extends ConsumerWidget {
                   width: kMinInteractiveDimension,
                   height: kMinInteractiveDimension,
                   child: MedalMark(
+                    asset: catalog.medalReverseAsset,
                     invite: !settings.medalOpened,
                     onTap: () {
                       ref.read(settingsProvider.notifier).markMedalOpened();

@@ -214,6 +214,8 @@ class ContentCatalog {
     required this.offices,
     required this.psalterNote,
     required this.medal,
+    required this.medalObverseAsset,
+    required this.medalReverseAsset,
   });
 
   final ReadingCalendar calendar;
@@ -223,18 +225,24 @@ class ContentCatalog {
   final List<HourOffice> offices;
   final String psalterNote;
   final MedalContent medal;
+  final String medalObverseAsset;
+  final String medalReverseAsset;
 
-  static Future<ContentCatalog> load() async {
-    final calendar = await ReadingCalendar.loadFromAssets();
+  /// Every content asset for this portal lives under this one prefix — the
+  /// only place in the app that knows that path shape.
+  static Future<ContentCatalog> load(String portalId) async {
+    final base = 'assets/content/$portalId';
+    final calendar = await ReadingCalendar.loadFromAssets(portalId);
 
-    Future<Map<String, dynamic>> loadJson(String path) async =>
-        jsonDecode(await rootBundle.loadString(path)) as Map<String, dynamic>;
+    Future<Map<String, dynamic>> loadJson(String name) async =>
+        jsonDecode(await rootBundle.loadString('$base/$name'))
+            as Map<String, dynamic>;
 
-    final lifeJson = await loadJson('assets/content/life_episodes.json');
-    final toolsJson = await loadJson('assets/content/tools_of_good_works.json');
-    final psalmsJson = await loadJson('assets/content/psalms.json');
-    final hoursJson = await loadJson('assets/content/hours.json');
-    final medalJson = await loadJson('assets/content/medal.json');
+    final lifeJson = await loadJson('life_episodes.json');
+    final toolsJson = await loadJson('tools_of_good_works.json');
+    final psalmsJson = await loadJson('psalms.json');
+    final hoursJson = await loadJson('hours.json');
+    final medalJson = await loadJson('medal.json');
 
     final psalms = <int, Psalm>{
       for (final e in (psalmsJson['psalms'] as List))
@@ -257,6 +265,8 @@ class ContentCatalog {
           .toList(),
       psalterNote: hoursJson['psalterNote'] as String? ?? '',
       medal: MedalContent.fromJson(medalJson),
+      medalObverseAsset: '$base/medal/obverse.png',
+      medalReverseAsset: '$base/medal/reverse.svg',
     );
   }
 

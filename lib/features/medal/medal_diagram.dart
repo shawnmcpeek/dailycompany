@@ -8,11 +8,15 @@ class MedalDiagram extends StatelessWidget {
     required this.face,
     required this.selectedId,
     required this.onSelect,
+    required this.obverseAsset,
+    required this.reverseAsset,
   });
 
   final MedalFace face;
   final String? selectedId;
   final ValueChanged<String> onSelect;
+  final String obverseAsset;
+  final String reverseAsset;
 
   @override
   Widget build(BuildContext context) {
@@ -44,12 +48,9 @@ class MedalDiagram extends StatelessWidget {
                 widgetSize: widgetSize,
               ),
               child: face == MedalFace.reverse
-                  ? SvgPicture.asset(
-                      MedalHotspots.assetFor(face),
-                      fit: BoxFit.contain,
-                    )
+                  ? SvgPicture.asset(reverseAsset, fit: BoxFit.contain)
                   : Image.asset(
-                      MedalHotspots.assetFor(face),
+                      obverseAsset,
                       fit: BoxFit.contain,
                       filterQuality: FilterQuality.high,
                     ),

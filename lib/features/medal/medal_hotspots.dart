@@ -11,10 +11,6 @@ abstract final class MedalHotspots {
   static Size sizeFor(MedalFace face) =>
       face == MedalFace.reverse ? reverseSize : obverseSize;
 
-  static String assetFor(MedalFace face) => face == MedalFace.reverse
-      ? 'assets/content/medal/reverse.svg'
-      : 'assets/content/medal/obverse.png';
-
   static String? hitTest(MedalFace face, Offset p) {
     if (face == MedalFace.reverse) return _hitReverse(p);
     return _hitObverse(p);

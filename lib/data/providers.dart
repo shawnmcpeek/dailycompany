@@ -13,7 +13,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 final contentCatalogProvider = FutureProvider<ContentCatalog>((ref) async {
-  return ContentCatalog.load();
+  // Hardcoded until routing carries a portalId (next commit).
+  return ContentCatalog.load('benedict');
 });
 
 final selectedDayProvider = StateProvider<DateTime>((ref) {

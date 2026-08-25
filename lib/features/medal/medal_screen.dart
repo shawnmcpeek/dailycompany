@@ -82,6 +82,8 @@ class _MedalScreenState extends ConsumerState<MedalScreen> {
               face: _face,
               selectedId: _selectedId,
               onSelect: _select,
+              obverseAsset: catalog.medalObverseAsset,
+              reverseAsset: catalog.medalReverseAsset,
             ),
             if (selected != null) ...[
               const SizedBox(height: 24),

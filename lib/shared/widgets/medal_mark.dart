@@ -1,11 +1,17 @@
-import 'package:dailycompany/features/medal/medal_hotspots.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 /// Reverse of the medal (letter side). Reads at small sizes; invert on dark paper.
 class MedalMark extends StatelessWidget {
-  const MedalMark({super.key, this.size = 36, this.onTap, this.invite = false});
+  const MedalMark({
+    super.key,
+    required this.asset,
+    this.size = 36,
+    this.onTap,
+    this.invite = false,
+  });
 
+  final String asset;
   final double size;
   final VoidCallback? onTap;
   final bool invite;
@@ -22,7 +28,7 @@ class MedalMark extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget mark = SvgPicture.asset(
-      MedalHotspots.assetFor(MedalFace.reverse),
+      asset,
       width: size,
       height: size,
       fit: BoxFit.contain,
