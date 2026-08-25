@@ -1,3 +1,4 @@
+import 'package:dailycompany/data/models/portal.dart';
 import 'package:dailycompany/shared/widgets/common.dart';
 import 'package:flutter/material.dart';
 
@@ -35,6 +36,10 @@ class SourcesScreen extends StatelessWidget {
               'Portion breakpoints for the thrice-yearly cycle were taken from the date table in '
               'Doyle’s English Rule (Collegeville; Gutenberg #50040). Only the dates were used — '
               'Doyle’s wording is not displayed. The Jan / May / Sept division is a long monastic custom.',
+        ),
+        _SourceBlock(
+          title: PortalRegistry.benedict.provenanceTitle,
+          body: PortalRegistry.benedict.provenanceParagraphs.join('\n\n'),
         ),
         const SizedBox(height: 20),
         ChromeLabel('Commentary'),

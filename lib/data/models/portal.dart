@@ -18,6 +18,8 @@ class SaintPortal {
     required this.displayName,
     required this.tagline,
     required this.provenance,
+    required this.provenanceTitle,
+    required this.provenanceParagraphs,
     required this.disclaimer,
     required this.modules,
     this.unlockSku,
@@ -28,6 +30,13 @@ class SaintPortal {
   final String displayName;
   final String tagline;
   final CycleProvenance provenance;
+
+  /// Heading for the "about this reading cycle" sheet — spec §4.
+  final String provenanceTitle;
+
+  /// Body paragraphs for that sheet, verbatim, already substituted for
+  /// this portal's saint/work/translator.
+  final List<String> provenanceParagraphs;
 
   /// Verbatim, store description + About.
   final String disclaimer;
@@ -41,6 +50,14 @@ abstract final class PortalRegistry {
     displayName: 'Benedict of Nursia',
     tagline: 'Keep company with a saint.',
     provenance: CycleProvenance.traditional,
+    provenanceTitle: 'About this reading cycle',
+    provenanceParagraphs: [
+      'This cycle is traditional. The Rule has been read in this '
+          'division — the whole of it three times a year, on these '
+          'dates — in monastic houses for centuries. The dates are '
+          'that custom’s, not ours.',
+      'The translation is Boniface Verheyen’s, 1902.',
+    ],
     disclaimer:
         'An independent app from Daddoo Dev. Not affiliated with, endorsed '
         'by, or produced by any Benedictine monastery, abbey, congregation, '

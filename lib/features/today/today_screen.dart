@@ -3,9 +3,11 @@ import 'package:dailycompany/core/cycle/life_track.dart';
 import 'package:dailycompany/core/haptics/bell_haptics.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
 import 'package:dailycompany/core/liturgical/liturgical_color.dart';
+import 'package:dailycompany/data/models/portal.dart';
 import 'package:dailycompany/data/providers.dart';
 import 'package:dailycompany/features/iap/oblate_paywall_screen.dart';
 import 'package:dailycompany/shared/widgets/common.dart';
+import 'package:dailycompany/shared/widgets/cycle_provenance.dart';
 import 'package:dailycompany/shared/widgets/daily_track_toggle.dart';
 import 'package:dailycompany/shared/widgets/drop_cap_text.dart';
 import 'package:dailycompany/shared/widgets/reader_display_sheet.dart';
@@ -24,6 +26,7 @@ class TodayScreen extends ConsumerWidget {
     final settings = ref.watch(settingsProvider);
     final unlocked = ref.watch(oblateUnlockedProvider);
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
+    final portal = PortalRegistry.byId(ref.watch(currentPortalIdProvider))!;
 
     return catalogAsync.when(
       loading: () => const EmptyLoading(),
@@ -125,11 +128,13 @@ class TodayScreen extends ConsumerWidget {
                     style: Theme.of(context).textTheme.bodyMedium,
                   )
                 else ...[
-                  Text(
-                    catalog.calendar.cycleLabel(day),
+                  CycleProvenanceLine(
+                    label: catalog.calendar.cycleLabel(day),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           color: accent,
                         ),
+                    sheetTitle: portal.provenanceTitle,
+                    sheetParagraphs: portal.provenanceParagraphs,
                   ),
                   const SizedBox(height: 8),
                   Text(
