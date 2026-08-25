@@ -29,8 +29,56 @@ abstract final class AppIsar {
       directory: dir.path,
       name: 'daily_company',
     );
+    await _backfillPortalId();
     await _migrateJournalJsonIfNeeded(dir);
     return _instance!;
+  }
+
+  /// Rows written before the portal split have no `portalId` — Isar reads
+  /// that back as `''`, not a null we could distinguish from "not set" any
+  /// other way. Every one of them is Benedict's, since Benedict was the
+  /// only portal that existed when they were written.
+  static Future<void> _backfillPortalId() async {
+    final isar = instance;
+    try {
+      final journalRows = await isar.lectioJournalEntrys
+          .filter()
+          .portalIdEqualTo('')
+          .findAll();
+      final completionRows = await isar.readingCompletions
+          .filter()
+          .portalIdEqualTo('')
+          .findAll();
+      if (journalRows.isEmpty && completionRows.isEmpty) return;
+
+      await isar.writeTxn(() async {
+        for (final row in journalRows) {
+          row.portalId = 'benedict';
+          await isar.lectioJournalEntrys.put(row);
+        }
+        for (final row in completionRows) {
+          row.portalId = 'benedict';
+          await isar.readingCompletions.put(row);
+        }
+      });
+      await DiagnosticsLog.instance.record(
+        operation: 'portal_id_backfill_ok',
+        metadata: {
+          'journal_rows': journalRows.length,
+          'completion_rows': completionRows.length,
+        },
+      );
+    } catch (e, st) {
+      await JournalFailureReporter.report(
+        key: 'portal_id_backfill_failed',
+        characterCount: 0,
+        error: e,
+        stackTrace: st,
+        asException: true,
+      );
+      // Leave rows as they are; nothing filters on portalId yet, so an
+      // unbackfilled '' row is inert rather than a visible bug.
+    }
   }
 
   /// One-shot import from the old `lectio_journal.json` file.
@@ -56,6 +104,7 @@ abstract final class AppIsar {
         for (final e in raw) {
           final map = e as Map<String, dynamic>;
           final entry = LectioJournalEntry()
+            ..portalId = 'benedict'
             ..readingId = map['readingId'] as int
             ..text = map['text'] as String
             ..createdAt = DateTime.parse(map['createdAt'] as String);

@@ -7,6 +7,9 @@ part 'reading_completion.g.dart';
 class ReadingCompletion {
   Id id = Isar.autoIncrement;
 
+  @Index(composite: [CompositeIndex('dateKey')])
+  late String portalId;
+
   /// `yyyy-MM-dd`
   @Index()
   late String dateKey;

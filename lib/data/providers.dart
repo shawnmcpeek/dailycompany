@@ -506,6 +506,7 @@ class JournalController extends StateNotifier<List<JournalEntry>> {
       }
 
       final entry = LectioJournalEntry()
+        ..portalId = _ref.read(currentPortalIdProvider)
         ..readingId = readingId
         ..text = trimmed
         ..createdAt = DateTime.now();
@@ -566,15 +567,16 @@ class JournalController extends StateNotifier<List<JournalEntry>> {
 
 final completionProvider =
     StateNotifierProvider<CompletionController, Set<String>>((ref) {
-      return CompletionController(ref.watch(isarProvider));
+      return CompletionController(ref.watch(isarProvider), ref);
     });
 
 class CompletionController extends StateNotifier<Set<String>> {
-  CompletionController(this._isar) : super(const {}) {
+  CompletionController(this._isar, this._ref) : super(const {}) {
     _load();
   }
 
   final Isar _isar;
+  final Ref _ref;
 
   Future<void> _load() async {
     final rows = await _isar.readingCompletions.where().findAll();
@@ -598,6 +600,7 @@ class CompletionController extends StateNotifier<Set<String>> {
         await _isar.readingCompletions.put(existing);
       } else {
         final row = ReadingCompletion()
+          ..portalId = _ref.read(currentPortalIdProvider)
           ..dateKey = key
           ..completedAt = DateTime.now()
           ..readingId = readingId;

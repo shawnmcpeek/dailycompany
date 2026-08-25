@@ -23,12 +23,17 @@ const LectioJournalEntrySchema = CollectionSchema(
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
-    r'readingId': PropertySchema(
+    r'portalId': PropertySchema(
       id: 1,
+      name: r'portalId',
+      type: IsarType.string,
+    ),
+    r'readingId': PropertySchema(
+      id: 2,
       name: r'readingId',
       type: IsarType.long,
     ),
-    r'text': PropertySchema(id: 2, name: r'text', type: IsarType.string),
+    r'text': PropertySchema(id: 3, name: r'text', type: IsarType.string),
   },
 
   estimateSize: _lectioJournalEntryEstimateSize,
@@ -37,6 +42,24 @@ const LectioJournalEntrySchema = CollectionSchema(
   deserializeProp: _lectioJournalEntryDeserializeProp,
   idName: r'id',
   indexes: {
+    r'portalId_readingId': IndexSchema(
+      id: -6960062007533392109,
+      name: r'portalId_readingId',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'portalId',
+          type: IndexType.hash,
+          caseSensitive: true,
+        ),
+        IndexPropertySchema(
+          name: r'readingId',
+          type: IndexType.value,
+          caseSensitive: false,
+        ),
+      ],
+    ),
     r'readingId': IndexSchema(
       id: -8529686247939572077,
       name: r'readingId',
@@ -79,6 +102,7 @@ int _lectioJournalEntryEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.portalId.length * 3;
   bytesCount += 3 + object.text.length * 3;
   return bytesCount;
 }
@@ -90,8 +114,9 @@ void _lectioJournalEntrySerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeDateTime(offsets[0], object.createdAt);
-  writer.writeLong(offsets[1], object.readingId);
-  writer.writeString(offsets[2], object.text);
+  writer.writeString(offsets[1], object.portalId);
+  writer.writeLong(offsets[2], object.readingId);
+  writer.writeString(offsets[3], object.text);
 }
 
 LectioJournalEntry _lectioJournalEntryDeserialize(
@@ -103,8 +128,9 @@ LectioJournalEntry _lectioJournalEntryDeserialize(
   final object = LectioJournalEntry();
   object.createdAt = reader.readDateTime(offsets[0]);
   object.id = id;
-  object.readingId = reader.readLong(offsets[1]);
-  object.text = reader.readString(offsets[2]);
+  object.portalId = reader.readString(offsets[1]);
+  object.readingId = reader.readLong(offsets[2]);
+  object.text = reader.readString(offsets[3]);
   return object;
 }
 
@@ -118,8 +144,10 @@ P _lectioJournalEntryDeserializeProp<P>(
     case 0:
       return (reader.readDateTime(offset)) as P;
     case 1:
-      return (reader.readLong(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 2:
+      return (reader.readLong(offset)) as P;
+    case 3:
       return (reader.readString(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -234,6 +262,173 @@ extension LectioJournalEntryQueryWhere
           lower: lowerId,
           includeLower: includeLower,
           upper: upperId,
+          includeUpper: includeUpper,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterWhereClause>
+  portalIdEqualToAnyReadingId(String portalId) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(
+          indexName: r'portalId_readingId',
+          value: [portalId],
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterWhereClause>
+  portalIdNotEqualToAnyReadingId(String portalId) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'portalId_readingId',
+                lower: [],
+                upper: [portalId],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'portalId_readingId',
+                lower: [portalId],
+                includeLower: false,
+                upper: [],
+              ),
+            );
+      } else {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'portalId_readingId',
+                lower: [portalId],
+                includeLower: false,
+                upper: [],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'portalId_readingId',
+                lower: [],
+                upper: [portalId],
+                includeUpper: false,
+              ),
+            );
+      }
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterWhereClause>
+  portalIdReadingIdEqualTo(String portalId, int readingId) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(
+          indexName: r'portalId_readingId',
+          value: [portalId, readingId],
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterWhereClause>
+  portalIdEqualToReadingIdNotEqualTo(String portalId, int readingId) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'portalId_readingId',
+                lower: [portalId],
+                upper: [portalId, readingId],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'portalId_readingId',
+                lower: [portalId, readingId],
+                includeLower: false,
+                upper: [portalId],
+              ),
+            );
+      } else {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'portalId_readingId',
+                lower: [portalId, readingId],
+                includeLower: false,
+                upper: [portalId],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'portalId_readingId',
+                lower: [portalId],
+                upper: [portalId, readingId],
+                includeUpper: false,
+              ),
+            );
+      }
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterWhereClause>
+  portalIdEqualToReadingIdGreaterThan(
+    String portalId,
+    int readingId, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'portalId_readingId',
+          lower: [portalId, readingId],
+          includeLower: include,
+          upper: [portalId],
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterWhereClause>
+  portalIdEqualToReadingIdLessThan(
+    String portalId,
+    int readingId, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'portalId_readingId',
+          lower: [portalId],
+          upper: [portalId, readingId],
+          includeUpper: include,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterWhereClause>
+  portalIdEqualToReadingIdBetween(
+    String portalId,
+    int lowerReadingId,
+    int upperReadingId, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.between(
+          indexName: r'portalId_readingId',
+          lower: [portalId, lowerReadingId],
+          includeLower: includeLower,
+          upper: [portalId, upperReadingId],
           includeUpper: includeUpper,
         ),
       );
@@ -554,6 +749,147 @@ extension LectioJournalEntryQueryFilter
   }
 
   QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterFilterCondition>
+  portalIdEqualTo(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'portalId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterFilterCondition>
+  portalIdGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'portalId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterFilterCondition>
+  portalIdLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'portalId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterFilterCondition>
+  portalIdBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'portalId',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterFilterCondition>
+  portalIdStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'portalId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterFilterCondition>
+  portalIdEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'portalId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterFilterCondition>
+  portalIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'portalId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterFilterCondition>
+  portalIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'portalId',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterFilterCondition>
+  portalIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'portalId', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterFilterCondition>
+  portalIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'portalId', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterFilterCondition>
   readingIdEqualTo(int value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -773,6 +1109,20 @@ extension LectioJournalEntryQuerySortBy
   }
 
   QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterSortBy>
+  sortByPortalId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'portalId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterSortBy>
+  sortByPortalIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'portalId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterSortBy>
   sortByReadingId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'readingId', Sort.asc);
@@ -832,6 +1182,20 @@ extension LectioJournalEntryQuerySortThenBy
   }
 
   QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterSortBy>
+  thenByPortalId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'portalId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterSortBy>
+  thenByPortalIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'portalId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QAfterSortBy>
   thenByReadingId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'readingId', Sort.asc);
@@ -870,6 +1234,13 @@ extension LectioJournalEntryQueryWhereDistinct
   }
 
   QueryBuilder<LectioJournalEntry, LectioJournalEntry, QDistinct>
+  distinctByPortalId({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'portalId', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, LectioJournalEntry, QDistinct>
   distinctByReadingId() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'readingId');
@@ -896,6 +1267,13 @@ extension LectioJournalEntryQueryProperty
   createdAtProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'createdAt');
+    });
+  }
+
+  QueryBuilder<LectioJournalEntry, String, QQueryOperations>
+  portalIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'portalId');
     });
   }
 

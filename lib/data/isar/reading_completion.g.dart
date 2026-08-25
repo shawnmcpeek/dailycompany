@@ -23,8 +23,13 @@ const ReadingCompletionSchema = CollectionSchema(
       type: IsarType.dateTime,
     ),
     r'dateKey': PropertySchema(id: 1, name: r'dateKey', type: IsarType.string),
-    r'readingId': PropertySchema(
+    r'portalId': PropertySchema(
       id: 2,
+      name: r'portalId',
+      type: IsarType.string,
+    ),
+    r'readingId': PropertySchema(
+      id: 3,
       name: r'readingId',
       type: IsarType.long,
     ),
@@ -36,6 +41,24 @@ const ReadingCompletionSchema = CollectionSchema(
   deserializeProp: _readingCompletionDeserializeProp,
   idName: r'id',
   indexes: {
+    r'portalId_dateKey': IndexSchema(
+      id: -2874239340639068280,
+      name: r'portalId_dateKey',
+      unique: false,
+      replace: false,
+      properties: [
+        IndexPropertySchema(
+          name: r'portalId',
+          type: IndexType.hash,
+          caseSensitive: true,
+        ),
+        IndexPropertySchema(
+          name: r'dateKey',
+          type: IndexType.hash,
+          caseSensitive: true,
+        ),
+      ],
+    ),
     r'dateKey': IndexSchema(
       id: 7975223786082927131,
       name: r'dateKey',
@@ -66,6 +89,7 @@ int _readingCompletionEstimateSize(
 ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.dateKey.length * 3;
+  bytesCount += 3 + object.portalId.length * 3;
   return bytesCount;
 }
 
@@ -77,7 +101,8 @@ void _readingCompletionSerialize(
 ) {
   writer.writeDateTime(offsets[0], object.completedAt);
   writer.writeString(offsets[1], object.dateKey);
-  writer.writeLong(offsets[2], object.readingId);
+  writer.writeString(offsets[2], object.portalId);
+  writer.writeLong(offsets[3], object.readingId);
 }
 
 ReadingCompletion _readingCompletionDeserialize(
@@ -90,7 +115,8 @@ ReadingCompletion _readingCompletionDeserialize(
   object.completedAt = reader.readDateTime(offsets[0]);
   object.dateKey = reader.readString(offsets[1]);
   object.id = id;
-  object.readingId = reader.readLongOrNull(offsets[2]);
+  object.portalId = reader.readString(offsets[2]);
+  object.readingId = reader.readLongOrNull(offsets[3]);
   return object;
 }
 
@@ -106,6 +132,8 @@ P _readingCompletionDeserializeProp<P>(
     case 1:
       return (reader.readString(offset)) as P;
     case 2:
+      return (reader.readString(offset)) as P;
+    case 3:
       return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -205,6 +233,116 @@ extension ReadingCompletionQueryWhere
           includeUpper: includeUpper,
         ),
       );
+    });
+  }
+
+  QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterWhereClause>
+  portalIdEqualToAnyDateKey(String portalId) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(
+          indexName: r'portalId_dateKey',
+          value: [portalId],
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterWhereClause>
+  portalIdNotEqualToAnyDateKey(String portalId) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'portalId_dateKey',
+                lower: [],
+                upper: [portalId],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'portalId_dateKey',
+                lower: [portalId],
+                includeLower: false,
+                upper: [],
+              ),
+            );
+      } else {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'portalId_dateKey',
+                lower: [portalId],
+                includeLower: false,
+                upper: [],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'portalId_dateKey',
+                lower: [],
+                upper: [portalId],
+                includeUpper: false,
+              ),
+            );
+      }
+    });
+  }
+
+  QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterWhereClause>
+  portalIdDateKeyEqualTo(String portalId, String dateKey) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addWhereClause(
+        IndexWhereClause.equalTo(
+          indexName: r'portalId_dateKey',
+          value: [portalId, dateKey],
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterWhereClause>
+  portalIdEqualToDateKeyNotEqualTo(String portalId, String dateKey) {
+    return QueryBuilder.apply(this, (query) {
+      if (query.whereSort == Sort.asc) {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'portalId_dateKey',
+                lower: [portalId],
+                upper: [portalId, dateKey],
+                includeUpper: false,
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'portalId_dateKey',
+                lower: [portalId, dateKey],
+                includeLower: false,
+                upper: [portalId],
+              ),
+            );
+      } else {
+        return query
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'portalId_dateKey',
+                lower: [portalId, dateKey],
+                includeLower: false,
+                upper: [portalId],
+              ),
+            )
+            .addWhereClause(
+              IndexWhereClause.between(
+                indexName: r'portalId_dateKey',
+                lower: [portalId],
+                upper: [portalId, dateKey],
+                includeUpper: false,
+              ),
+            );
+      }
     });
   }
 
@@ -515,6 +653,147 @@ extension ReadingCompletionQueryFilter
   }
 
   QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterFilterCondition>
+  portalIdEqualTo(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'portalId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterFilterCondition>
+  portalIdGreaterThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'portalId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterFilterCondition>
+  portalIdLessThan(
+    String value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'portalId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterFilterCondition>
+  portalIdBetween(
+    String lower,
+    String upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'portalId',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterFilterCondition>
+  portalIdStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'portalId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterFilterCondition>
+  portalIdEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'portalId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterFilterCondition>
+  portalIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'portalId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterFilterCondition>
+  portalIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'portalId',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterFilterCondition>
+  portalIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'portalId', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterFilterCondition>
+  portalIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'portalId', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterFilterCondition>
   readingIdIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
@@ -625,6 +904,20 @@ extension ReadingCompletionQuerySortBy
   }
 
   QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterSortBy>
+  sortByPortalId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'portalId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterSortBy>
+  sortByPortalIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'portalId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterSortBy>
   sortByReadingId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'readingId', Sort.asc);
@@ -683,6 +976,20 @@ extension ReadingCompletionQuerySortThenBy
   }
 
   QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterSortBy>
+  thenByPortalId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'portalId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterSortBy>
+  thenByPortalIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'portalId', Sort.desc);
+    });
+  }
+
+  QueryBuilder<ReadingCompletion, ReadingCompletion, QAfterSortBy>
   thenByReadingId() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'readingId', Sort.asc);
@@ -714,6 +1021,13 @@ extension ReadingCompletionQueryWhereDistinct
   }
 
   QueryBuilder<ReadingCompletion, ReadingCompletion, QDistinct>
+  distinctByPortalId({bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'portalId', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<ReadingCompletion, ReadingCompletion, QDistinct>
   distinctByReadingId() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'readingId');
@@ -739,6 +1053,12 @@ extension ReadingCompletionQueryProperty
   QueryBuilder<ReadingCompletion, String, QQueryOperations> dateKeyProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'dateKey');
+    });
+  }
+
+  QueryBuilder<ReadingCompletion, String, QQueryOperations> portalIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'portalId');
     });
   }
 
