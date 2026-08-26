@@ -7,26 +7,32 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 class IapState {
   const IapState({
     this.ready = false,
-    this.hasOblate = false,
-    this.priceLabel,
+    this.entitlements = const {},
+    this.priceLabels = const {},
     this.error,
   });
 
   final bool ready;
-  final bool hasOblate;
-  final String? priceLabel;
+
+  /// Active RevenueCat entitlement identifiers.
+  final Set<String> entitlements;
+
+  /// productId -> store price string, filled in as offerings load.
+  final Map<String, String> priceLabels;
   final String? error;
+
+  bool has(String entitlementId) => entitlements.contains(entitlementId);
 
   IapState copyWith({
     bool? ready,
-    bool? hasOblate,
-    String? priceLabel,
+    Set<String>? entitlements,
+    Map<String, String>? priceLabels,
     String? error,
   }) =>
       IapState(
         ready: ready ?? this.ready,
-        hasOblate: hasOblate ?? this.hasOblate,
-        priceLabel: priceLabel ?? this.priceLabel,
+        entitlements: entitlements ?? this.entitlements,
+        priceLabels: priceLabels ?? this.priceLabels,
         error: error,
       );
 }
@@ -39,7 +45,14 @@ final iapControllerProvider =
 /// Effective unlock: when IAP is flagged off, everything is unlocked.
 final oblateUnlockedProvider = Provider<bool>((ref) {
   if (!IapFlags.enabled) return true;
-  return ref.watch(iapControllerProvider).hasOblate;
+  return ref.watch(iapControllerProvider).has(IapFlags.entitlementId);
+});
+
+final desalesCompanionUnlockedProvider = Provider<bool>((ref) {
+  if (!IapFlags.enabled) return true;
+  return ref
+      .watch(iapControllerProvider)
+      .has(IapFlags.desalesEntitlementId);
 });
 
 class IapController extends StateNotifier<IapState> {
@@ -47,14 +60,16 @@ class IapController extends StateNotifier<IapState> {
 
   Future<void> bootstrap() async {
     if (!IapFlags.enabled) {
-      state = const IapState(ready: true, hasOblate: true);
+      state = const IapState(
+        ready: true,
+        entitlements: {IapFlags.entitlementId, IapFlags.desalesEntitlementId},
+      );
       return;
     }
 
     if (IapFlags.apiKey.isEmpty) {
       state = const IapState(
         ready: true,
-        hasOblate: false,
         error: 'REVENUECAT_API_KEY missing',
       );
       return;
@@ -63,7 +78,6 @@ class IapController extends StateNotifier<IapState> {
     if (kIsWeb) {
       state = const IapState(
         ready: true,
-        hasOblate: false,
         error: 'IAP not available on web',
       );
       return;
@@ -75,31 +89,34 @@ class IapController extends StateNotifier<IapState> {
       await refresh();
       await _loadOfferings();
     } catch (e) {
-      state = IapState(ready: true, hasOblate: false, error: '$e');
+      state = IapState(ready: true, error: '$e');
     }
   }
 
   void _onCustomerInfo(CustomerInfo info) {
     state = state.copyWith(
       ready: true,
-      hasOblate: _entitled(info),
+      entitlements: _activeEntitlements(info),
       error: null,
     );
   }
 
-  bool _entitled(CustomerInfo info) =>
-      info.entitlements.active.containsKey(IapFlags.entitlementId);
+  Set<String> _activeEntitlements(CustomerInfo info) =>
+      info.entitlements.active.keys.toSet();
 
   Future<void> refresh() async {
     if (!IapFlags.enabled) {
-      state = const IapState(ready: true, hasOblate: true);
+      state = const IapState(
+        ready: true,
+        entitlements: {IapFlags.entitlementId, IapFlags.desalesEntitlementId},
+      );
       return;
     }
     try {
       final info = await Purchases.getCustomerInfo();
       state = state.copyWith(
         ready: true,
-        hasOblate: _entitled(info),
+        entitlements: _activeEntitlements(info),
         error: null,
       );
     } catch (e) {
@@ -109,35 +126,39 @@ class IapController extends StateNotifier<IapState> {
 
   Future<void> _loadOfferings() async {
     try {
-      final pkg = await _oblatePackage();
-      final price = pkg?.storeProduct.priceString;
-      if (price != null) {
-        state = state.copyWith(priceLabel: price);
+      final offerings = await Purchases.getOfferings();
+      final packages = offerings.current?.availablePackages ?? const <Package>[];
+      final labels = <String, String>{};
+      for (final p in packages) {
+        labels[p.storeProduct.identifier] = p.storeProduct.priceString;
+      }
+      if (labels.isNotEmpty) {
+        state = state.copyWith(priceLabels: {...state.priceLabels, ...labels});
       }
     } catch (_) {}
   }
 
-  Future<Package?> _oblatePackage() async {
+  Future<Package?> _packageFor(String productId) async {
     final offerings = await Purchases.getOfferings();
     final packages = offerings.current?.availablePackages ?? const <Package>[];
     for (final p in packages) {
-      if (p.storeProduct.identifier == IapFlags.productId) return p;
+      if (p.storeProduct.identifier == productId) return p;
     }
-    return packages.isEmpty ? null : packages.first;
+    return null;
   }
 
-  Future<bool> purchaseOblate() async {
+  Future<bool> _purchase(String productId, String entitlementId) async {
     if (!IapFlags.enabled) return true;
     try {
-      final target = await _oblatePackage();
+      final target = await _packageFor(productId);
       if (target == null) {
-        state = state.copyWith(error: 'Oblate product not found in offerings');
+        state = state.copyWith(error: '$productId not found in offerings');
         return false;
       }
       final result = await Purchases.purchase(PurchaseParams.package(target));
-      final ok = _entitled(result.customerInfo);
-      state = state.copyWith(hasOblate: ok, error: null);
-      return ok;
+      final active = _activeEntitlements(result.customerInfo);
+      state = state.copyWith(entitlements: active, error: null);
+      return active.contains(entitlementId);
     } on PlatformException catch (e) {
       final code = PurchasesErrorHelper.getErrorCode(e);
       if (code == PurchasesErrorCode.purchaseCancelledError) return false;
@@ -149,13 +170,19 @@ class IapController extends StateNotifier<IapState> {
     }
   }
 
+  Future<bool> purchaseOblate() =>
+      _purchase(IapFlags.productId, IapFlags.entitlementId);
+
+  Future<bool> purchaseDesalesCompanion() =>
+      _purchase(IapFlags.desalesProductId, IapFlags.desalesEntitlementId);
+
   Future<bool> restore() async {
     if (!IapFlags.enabled) return true;
     try {
       final info = await Purchases.restorePurchases();
-      final ok = _entitled(info);
-      state = state.copyWith(hasOblate: ok, error: null);
-      return ok;
+      final active = _activeEntitlements(info);
+      state = state.copyWith(entitlements: active, error: null);
+      return active.isNotEmpty;
     } catch (e) {
       state = state.copyWith(error: '$e');
       return false;

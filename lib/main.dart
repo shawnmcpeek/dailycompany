@@ -41,6 +41,7 @@ class DailyCompanyApp extends ConsumerWidget {
     final day = ref.watch(selectedDayProvider);
     final router = ref.watch(routerProvider);
     ref.watch(bellSyncProvider);
+    ref.watch(desalesAspirationSyncProvider);
     ref.watch(iapControllerProvider);
     final platformBrightness =
         WidgetsBinding.instance.platformDispatcher.platformBrightness;

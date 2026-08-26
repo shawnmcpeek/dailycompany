@@ -5,7 +5,7 @@ import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
 import 'package:dailycompany/core/iap/iap_flags.dart';
 import 'package:dailycompany/data/providers.dart';
-import 'package:dailycompany/features/iap/oblate_paywall_screen.dart';
+import 'package:dailycompany/features/iap/paywall.dart';
 import 'package:dailycompany/features/lectio/journal_export.dart';
 import 'package:dailycompany/features/more/reading_heatmap.dart';
 import 'package:dailycompany/shared/widgets/common.dart';
@@ -43,7 +43,7 @@ class MoreScreen extends ConsumerWidget {
           onTap: () async {
             final unlocked = ref.read(oblateUnlockedProvider);
             if (!unlocked) {
-              await openOblatePaywall(context);
+              await openPaywall(context);
               return;
             }
             final entries = ref.read(journalProvider);
@@ -219,7 +219,7 @@ class MoreScreen extends ConsumerWidget {
           value: settings.oraEtLabora,
           onChanged: unlocked
               ? ctrl.setOraEtLabora
-              : (_) => openOblatePaywall(context),
+              : (_) => openPaywall(context),
         ),
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
@@ -228,7 +228,7 @@ class MoreScreen extends ConsumerWidget {
           value: settings.showLatin && unlocked,
           onChanged: unlocked
               ? ctrl.setShowLatin
-              : (_) => openOblatePaywall(context),
+              : (_) => openPaywall(context),
         ),
         ListTile(
           contentPadding: EdgeInsets.zero,
@@ -241,7 +241,7 @@ class MoreScreen extends ConsumerWidget {
                 : 'One-time unlock for Hours, Life, journal, Latin',
           ),
           trailing: const Icon(Icons.chevron_right, size: 20),
-          onTap: () => openOblatePaywall(context),
+          onTap: () => openPaywall(context),
         ),
         ListTile(
           contentPadding: EdgeInsets.zero,

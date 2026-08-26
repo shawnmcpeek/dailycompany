@@ -2,7 +2,7 @@ import 'package:dailycompany/app/router/portal_routes.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
 import 'package:dailycompany/data/content_catalog.dart';
 import 'package:dailycompany/data/providers.dart';
-import 'package:dailycompany/features/iap/oblate_paywall_screen.dart';
+import 'package:dailycompany/features/iap/paywall.dart';
 import 'package:dailycompany/shared/widgets/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -60,7 +60,7 @@ class LifeScreen extends ConsumerWidget {
                     : null,
                 onTap: () {
                   if (!unlocked && !IapController.lifeChapterFree(ep.chapter)) {
-                    openOblatePaywall(context);
+                    openPaywall(context);
                     return;
                   }
                   context.push(PortalRoutes.lifeEpisode(portalId, ep.chapter));
@@ -97,7 +97,7 @@ class LifeEpisodeScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 24),
               FilledButton(
-                onPressed: () => openOblatePaywall(context),
+                onPressed: () => openPaywall(context),
                 child: const Text('Unlock Oblate'),
               ),
             ],

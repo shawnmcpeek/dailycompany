@@ -1,4 +1,5 @@
 import 'package:dailycompany/app/brand.dart';
+import 'package:dailycompany/app/router/app_router.dart';
 import 'package:dailycompany/data/companion.dart';
 import 'package:dailycompany/data/providers.dart';
 import 'package:dailycompany/shared/widgets/common.dart';
@@ -42,7 +43,9 @@ class HallwayScreen extends ConsumerWidget {
                   await ref
                       .read(settingsProvider.notifier)
                       .setCompanion(house.id);
-                  if (context.mounted) context.go('/hub');
+                  if (context.mounted) {
+                    context.go(portalLandingRoute(house.id));
+                  }
                 },
               ),
               const SizedBox(height: 10),

@@ -100,13 +100,6 @@ class HubScreen extends ConsumerWidget {
             Text('Go to', style: Theme.of(context).textTheme.labelSmall),
             const SizedBox(height: 12),
             HubNavButton(
-              title: 'The hallway',
-              subtitle: 'Choose whose house you keep',
-              actionLabel: 'Leave',
-              onPressed: () => context.go('/hallway'),
-            ),
-            const SizedBox(height: 10),
-            HubNavButton(
               title: "Today's Rule",
               subtitle: todaySubtitle,
               onPressed: () => context.go(PortalRoutes.today(portalId)),
@@ -136,6 +129,13 @@ class HubScreen extends ConsumerWidget {
               title: 'More',
               subtitle: 'Lectio, display, Sources',
               onPressed: () => context.push('/more'),
+            ),
+            const SizedBox(height: 10),
+            HubNavButton(
+              title: 'The hallway',
+              subtitle: 'Choose whose house you keep',
+              actionLabel: 'Leave',
+              onPressed: () => context.go('/hallway'),
             ),
           ],
         );

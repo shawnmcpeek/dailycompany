@@ -102,6 +102,11 @@ final class BellHapticsController {
         transient(time: 0.00, intensity: 0.35, sharpness: 0.40),
         transient(time: 0.10, intensity: 0.25, sharpness: 0.30),
       ], parameters: [])
+    case "aspiration":
+      // One soft tap, low amplitude — a glance, not a summons.
+      return try CHHapticPattern(events: [
+        transient(time: 0.00, intensity: 0.18, sharpness: 0.25),
+      ], parameters: [])
     default:
       return try CHHapticPattern(events: [
         transient(time: 0.00, intensity: 0.40, sharpness: 0.40),

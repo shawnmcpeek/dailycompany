@@ -1,8 +1,11 @@
 import 'package:dailycompany/core/cycle/desales_calendar.dart';
 import 'package:dailycompany/core/cycle/life_track.dart';
+import 'package:dailycompany/data/models/desales_letter.dart';
+import 'package:dailycompany/data/models/desales_meditation.dart';
 import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
 import 'package:dailycompany/core/diagnostics/journal_failure_reporter.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
+import 'package:dailycompany/core/notifications/aspiration_scheduler.dart';
 import 'package:dailycompany/core/notifications/bell_scheduler.dart';
 import 'package:dailycompany/data/content_catalog.dart';
 import 'package:dailycompany/data/isar/app_isar.dart';
@@ -31,6 +34,16 @@ final contentCatalogProvider = FutureProvider<ContentCatalog>((ref) async {
 
 final desalesCalendarProvider = FutureProvider<DesalesCalendar>((ref) async {
   return DesalesCalendar.loadFromAssets();
+});
+
+final desalesMeditationsProvider =
+    FutureProvider<List<DesalesMeditation>>((ref) async {
+  return DesalesMeditation.loadFromAssets();
+});
+
+final desalesLettersProvider =
+    FutureProvider<List<DesalesLetterBook>>((ref) async {
+  return DesalesLetterBook.loadFromAssets();
 });
 
 final selectedDayProvider = StateProvider<DateTime>((ref) {
@@ -62,6 +75,22 @@ final bellSyncProvider = Provider<void>((ref) {
   ref.listen<bool>(oblateUnlockedProvider, (_, _) => sync());
 });
 
+/// Keeps de Sales' aspiration notifications topped up — see
+/// [AspirationScheduler] for why this reschedules a rolling window
+/// rather than one exact recurring time per slot.
+final desalesAspirationSyncProvider = Provider<void>((ref) {
+  void sync() {
+    final settings = ref.read(settingsProvider);
+    if (!settings.ready) return;
+    AspirationScheduler.instance.reschedule(settings);
+  }
+
+  ref.listen<AppSettings>(settingsProvider, (_, next) {
+    if (!next.ready) return;
+    sync();
+  });
+});
+
 class AppSettings {
   const AppSettings({
     this.ready = false,
@@ -83,6 +112,10 @@ class AppSettings {
     this.companionId = '',
     this.dailyTrack = DailyTrack.life,
     this.lifeTrackStart = '',
+    this.desalesReadThrough = false,
+    this.desalesReadThroughCursor = 1,
+    this.desalesAspirationsEnabled = false,
+    this.aspirationTimes = const {},
   });
 
   /// False until SharedPreferences have been read.
@@ -121,6 +154,21 @@ class AppSettings {
   /// `yyyy-MM-dd` the Life cycle began. Empty until prefs load.
   final String lifeTrackStart;
 
+  /// de Sales only — straight-through reading instead of the calendar.
+  /// Spec §3.4: switching modes never resets or penalises the other, so
+  /// this and the calendar's own day tracking are independent state.
+  final bool desalesReadThrough;
+
+  /// 1-indexed position in the 1..366 entry order, persisted per portal.
+  final int desalesReadThroughCursor;
+
+  /// de Sales only — three or four light "aspiration" reminders a day.
+  final bool desalesAspirationsEnabled;
+
+  /// Slot id (`a1`, `a2`, `a3`) → `HH:mm`. Missing keys fall back to
+  /// [AspirationScheduler.defaultTimes].
+  final Map<String, String> aspirationTimes;
+
   DateTime get lifeStart {
     if (lifeTrackStart.isEmpty) {
       final n = DateTime.now();
@@ -131,6 +179,9 @@ class AppSettings {
 
   String timeForOffice(String id) =>
       officeTimes[id] ?? BellScheduler.defaultTimes[id] ?? '12:00';
+
+  String timeForAspiration(String id) =>
+      aspirationTimes[id] ?? AspirationScheduler.defaultTimes[id] ?? '12:00';
 
   int minutesForMovement(String key) => switch (key) {
     'lectio' => lectioMinutes,
@@ -160,6 +211,10 @@ class AppSettings {
     String? companionId,
     DailyTrack? dailyTrack,
     String? lifeTrackStart,
+    bool? desalesReadThrough,
+    int? desalesReadThroughCursor,
+    bool? desalesAspirationsEnabled,
+    Map<String, String>? aspirationTimes,
   }) => AppSettings(
     ready: ready ?? this.ready,
     onboardingComplete: onboardingComplete ?? this.onboardingComplete,
@@ -180,6 +235,12 @@ class AppSettings {
     companionId: companionId ?? this.companionId,
     dailyTrack: dailyTrack ?? this.dailyTrack,
     lifeTrackStart: lifeTrackStart ?? this.lifeTrackStart,
+    desalesReadThrough: desalesReadThrough ?? this.desalesReadThrough,
+    desalesReadThroughCursor:
+        desalesReadThroughCursor ?? this.desalesReadThroughCursor,
+    desalesAspirationsEnabled:
+        desalesAspirationsEnabled ?? this.desalesAspirationsEnabled,
+    aspirationTimes: aspirationTimes ?? this.aspirationTimes,
   );
 }
 
@@ -200,6 +261,17 @@ class SettingsController extends StateNotifier<AppSettings> {
       final decoded = jsonDecode(rawTimes) as Map<String, dynamic>;
       for (final e in decoded.entries) {
         times[e.key] = e.value as String;
+      }
+    }
+
+    final aspTimes = Map<String, String>.from(
+      AspirationScheduler.defaultTimes,
+    );
+    final rawAspTimes = prefs.getString('aspirationTimes');
+    if (rawAspTimes != null) {
+      final decoded = jsonDecode(rawAspTimes) as Map<String, dynamic>;
+      for (final e in decoded.entries) {
+        aspTimes[e.key] = e.value as String;
       }
     }
 
@@ -229,6 +301,12 @@ class SettingsController extends StateNotifier<AppSettings> {
       companionId: prefs.getString('companionId') ?? '',
       dailyTrack: DailyTrackX.fromStorage(prefs.getString('dailyTrack')),
       lifeTrackStart: lifeStart,
+      desalesReadThrough: prefs.getBool('desalesReadThrough') ?? false,
+      desalesReadThroughCursor:
+          prefs.getInt('desalesReadThroughCursor') ?? 1,
+      desalesAspirationsEnabled:
+          prefs.getBool('desalesAspirationsEnabled') ?? false,
+      aspirationTimes: aspTimes,
     );
   }
 
@@ -290,6 +368,35 @@ class SettingsController extends StateNotifier<AppSettings> {
     final key = CompletionController.keyFor(DateTime.now());
     state = state.copyWith(lifeTrackStart: key);
     (await SharedPreferences.getInstance()).setString('lifeTrackStart', key);
+  }
+
+  Future<void> setDesalesReadThrough(bool v) async {
+    state = state.copyWith(desalesReadThrough: v);
+    (await SharedPreferences.getInstance()).setBool('desalesReadThrough', v);
+  }
+
+  Future<void> setDesalesReadThroughCursor(int v) async {
+    state = state.copyWith(desalesReadThroughCursor: v);
+    (await SharedPreferences.getInstance())
+        .setInt('desalesReadThroughCursor', v);
+  }
+
+  Future<void> setDesalesAspirationsEnabled(bool v) async {
+    state = state.copyWith(desalesAspirationsEnabled: v);
+    (await SharedPreferences.getInstance())
+        .setBool('desalesAspirationsEnabled', v);
+  }
+
+  Future<void> setAspirationTime(String slotId, TimeOfDayCompat time) async {
+    final hh = time.hour.toString().padLeft(2, '0');
+    final mm = time.minute.toString().padLeft(2, '0');
+    final next = Map<String, String>.from(state.aspirationTimes)
+      ..[slotId] = '$hh:$mm';
+    state = state.copyWith(aspirationTimes: next);
+    (await SharedPreferences.getInstance()).setString(
+      'aspirationTimes',
+      jsonEncode(next),
+    );
   }
 
   Future<void> setThemeMode(String v) async {

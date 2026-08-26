@@ -5,24 +5,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class OblatePaywallScreen extends ConsumerStatefulWidget {
-  const OblatePaywallScreen({super.key});
+class DesalesCompanionPaywallScreen extends ConsumerStatefulWidget {
+  const DesalesCompanionPaywallScreen({super.key});
 
   @override
-  ConsumerState<OblatePaywallScreen> createState() => _OblatePaywallScreenState();
+  ConsumerState<DesalesCompanionPaywallScreen> createState() =>
+      _DesalesCompanionPaywallScreenState();
 }
 
-class _OblatePaywallScreenState extends ConsumerState<OblatePaywallScreen> {
+class _DesalesCompanionPaywallScreenState
+    extends ConsumerState<DesalesCompanionPaywallScreen> {
   bool _busy = false;
 
   Future<void> _buy() async {
     setState(() => _busy = true);
-    final ok = await ref.read(iapControllerProvider.notifier).purchaseOblate();
+    final ok = await ref
+        .read(iapControllerProvider.notifier)
+        .purchaseDesalesCompanion();
     if (!mounted) return;
     setState(() => _busy = false);
     if (ok) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Oblate unlocked. Thank you.')),
+        const SnackBar(content: Text('Companion unlocked. Thank you.')),
       );
       context.pop();
     }
@@ -35,7 +39,7 @@ class _OblatePaywallScreenState extends ConsumerState<OblatePaywallScreen> {
     setState(() => _busy = false);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(ok ? 'Purchases restored.' : 'No Oblate purchase found.'),
+        content: Text(ok ? 'Purchases restored.' : 'No purchase found.'),
       ),
     );
     if (ok) context.pop();
@@ -44,12 +48,12 @@ class _OblatePaywallScreenState extends ConsumerState<OblatePaywallScreen> {
   @override
   Widget build(BuildContext context) {
     final iap = ref.watch(iapControllerProvider);
-    final price = iap.priceLabels[IapFlags.productId] ?? '\$4.99';
+    final price = iap.priceLabels[IapFlags.desalesProductId] ?? '\$4.99';
 
     return ListView(
       padding: const EdgeInsets.fromLTRB(24, 16, 24, 48),
       children: [
-        Text('Oblate', style: Theme.of(context).textTheme.headlineMedium),
+        Text('Companion', style: Theme.of(context).textTheme.headlineMedium),
         const SizedBox(height: 8),
         Text(
           'A one-time unlock. No subscription.',
@@ -57,14 +61,14 @@ class _OblatePaywallScreenState extends ConsumerState<OblatePaywallScreen> {
         ),
         const SizedBox(height: 24),
         Text(
-          'Includes the full lay horarium and bells, Life of Benedict beyond '
-          'the first five episodes, Lectio journal with cross-cycle memory, '
-          'Latin side-by-side, and offline audio when it ships.',
+          'Includes the year-long Devout Life cycle, Letters to Persons in '
+          'the World, and Read Through mode.',
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         const SizedBox(height: 16),
         Text(
-          'Compline, today’s Rule, Tools, and the Medal stay free.',
+          'The Bouquet, the Meditations, the Morning Exercise, and the '
+          'Evening Examination stay free.',
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         const SizedBox(height: 28),
@@ -77,7 +81,7 @@ class _OblatePaywallScreenState extends ConsumerState<OblatePaywallScreen> {
         ] else ...[
           FilledButton(
             onPressed: _busy ? null : _buy,
-            child: Text(_busy ? 'Working…' : 'Unlock Oblate · $price'),
+            child: Text(_busy ? 'Working…' : 'Unlock Companion · $price'),
           ),
           const SizedBox(height: 10),
           OutlinedButton(
@@ -98,8 +102,10 @@ class _OblatePaywallScreenState extends ConsumerState<OblatePaywallScreen> {
         const SectionRule(),
         const SizedBox(height: 16),
         Text(
-          'An independent app from Daddoo Dev. Not affiliated with any '
-          'Benedictine house or the Order of Saint Benedict.',
+          'An independent app from Daddoo Dev. Not affiliated with, '
+          'endorsed by, or produced by the Salesians of Don Bosco, the '
+          'Order of the Visitation, any Salesian or Visitandine province '
+          'or house, or any shrine or publisher associated with them.',
           style: Theme.of(context).textTheme.bodySmall,
         ),
       ],

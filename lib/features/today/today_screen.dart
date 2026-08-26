@@ -5,7 +5,7 @@ import 'package:dailycompany/core/iap/iap_controller.dart';
 import 'package:dailycompany/core/liturgical/liturgical_color.dart';
 import 'package:dailycompany/data/models/portal.dart';
 import 'package:dailycompany/data/providers.dart';
-import 'package:dailycompany/features/iap/oblate_paywall_screen.dart';
+import 'package:dailycompany/features/iap/paywall.dart';
 import 'package:dailycompany/shared/widgets/common.dart';
 import 'package:dailycompany/shared/widgets/cycle_provenance.dart';
 import 'package:dailycompany/shared/widgets/daily_track_toggle.dart';
@@ -202,7 +202,7 @@ class _LifeLockedBlock extends StatelessWidget {
         ),
         const SizedBox(height: 20),
         FilledButton(
-          onPressed: () => openOblatePaywall(context),
+          onPressed: () => openPaywall(context),
           child: const Text('Unlock Oblate'),
         ),
       ],
@@ -306,7 +306,7 @@ class _ReadingBlockState extends ConsumerState<_ReadingBlock> {
                 onPressed: () {
                   final unlocked = ref.read(oblateUnlockedProvider);
                   if (!unlocked) {
-                    openOblatePaywall(context);
+                    openPaywall(context);
                     return;
                   }
                   setState(() => _showLatin = !_showLatin);

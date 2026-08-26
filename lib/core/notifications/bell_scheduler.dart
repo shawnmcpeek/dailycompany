@@ -1,23 +1,16 @@
-import 'package:dailycompany/app/router/app_router.dart';
-import 'package:dailycompany/app/router/portal_routes.dart';
+import 'package:dailycompany/core/notifications/notification_plugin.dart';
 import 'package:dailycompany/data/providers.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_timezone/flutter_timezone.dart';
-import 'package:go_router/go_router.dart';
-import 'package:timezone/data/latest_all.dart' as tzdata;
 import 'package:timezone/timezone.dart' as tz;
 
-/// Schedules the six office bells. Payload is the office id (e.g. `compline`).
+/// Schedules the six office bells. Payload is `office:<id>` (e.g.
+/// `office:compline`) — see [SharedNotifications] for the single shared
+/// plugin/dispatcher this and [AspirationScheduler] both route through.
 class BellScheduler {
   BellScheduler._();
   static final BellScheduler instance = BellScheduler._();
 
-  final FlutterLocalNotificationsPlugin _plugin =
-      FlutterLocalNotificationsPlugin();
-
-  bool _ready = false;
+  FlutterLocalNotificationsPlugin get _plugin => SharedNotifications.plugin;
 
   static const _channelId = 'benedict_bells';
   static const _channelName = 'Office bells';
@@ -59,68 +52,13 @@ class BellScheduler {
     'compline': '21:00',
   };
 
-  Future<void> init() async {
-    if (_ready) return;
-
-    tzdata.initializeTimeZones();
-    try {
-      final info = await FlutterTimezone.getLocalTimezone();
-      tz.setLocalLocation(tz.getLocation(info.identifier));
-    } catch (_) {
-      tz.setLocalLocation(tz.getLocation('UTC'));
-    }
-
-    const android = AndroidInitializationSettings('@mipmap/ic_launcher');
-    const darwin = DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: false,
-      requestSoundPermission: true,
-    );
-    const linux = LinuxInitializationSettings(
-      defaultActionName: 'Open',
-    );
-    const initSettings = InitializationSettings(
-      android: android,
-      iOS: darwin,
-      macOS: darwin,
-      linux: linux,
-    );
-
-    await _plugin.initialize(
-      settings: initSettings,
-      onDidReceiveNotificationResponse: _onResponse,
-    );
-
-    await _plugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestNotificationsPermission();
-
-    await _plugin
-        .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(alert: true, badge: false, sound: true);
-
-    _ready = true;
-  }
-
-  void _onResponse(NotificationResponse response) {
-    final officeId = response.payload;
-    if (officeId == null || officeId.isEmpty) return;
-    final ctx = rootNavigatorKey.currentContext;
-    if (ctx == null) return;
-    final portalId = ProviderScope.containerOf(
-      ctx,
-      listen: false,
-    ).read(currentPortalIdProvider);
-    GoRouter.of(ctx).go(PortalRoutes.office(portalId, officeId));
-  }
+  Future<void> init() => SharedNotifications.ensureInit();
 
   Future<void> reschedule(
     AppSettings settings, {
     bool hasOblate = true,
   }) async {
-    if (!_ready) await init();
+    await SharedNotifications.ensureInit();
 
     for (final id in officeIds) {
       await _plugin.cancel(id: _notifIds[id]!);
@@ -129,11 +67,7 @@ class BellScheduler {
     if (!settings.bellsEnabled) return;
 
     // Exact recurring schedule is mobile/macOS-focused.
-    if (!kIsWeb &&
-        (defaultTargetPlatform == TargetPlatform.linux ||
-            defaultTargetPlatform == TargetPlatform.windows)) {
-      return;
-    }
+    if (notificationSchedulingUnsupportedHere) return;
 
     var ids = settings.oraEtLabora
         ? const ['terce', 'sext', 'none']
@@ -144,15 +78,11 @@ class BellScheduler {
     }
 
     for (final id in ids) {
-      final time = settings.timeForOffice(id);
-      final parts = time.split(':');
-      if (parts.length != 2) continue;
-      final hour = int.tryParse(parts[0]);
-      final minute = int.tryParse(parts[1]);
-      if (hour == null || minute == null) continue;
+      final parsed = parseHHmm(settings.timeForOffice(id));
+      if (parsed == null) continue;
 
       final label = labels[id] ?? id;
-      final when = _nextInstance(hour, minute);
+      final when = _nextInstance(parsed.hour, parsed.minute);
 
       final details = NotificationDetails(
         android: AndroidNotificationDetails(
@@ -185,7 +115,7 @@ class BellScheduler {
         notificationDetails: details,
         androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
         matchDateTimeComponents: DateTimeComponents.time,
-        payload: id,
+        payload: 'office:$id',
       );
     }
   }

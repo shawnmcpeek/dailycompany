@@ -4,7 +4,7 @@ import 'package:dailycompany/core/cycle/life_track.dart';
 import 'package:dailycompany/core/haptics/bell_haptics.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
 import 'package:dailycompany/data/providers.dart';
-import 'package:dailycompany/features/iap/oblate_paywall_screen.dart';
+import 'package:dailycompany/features/iap/paywall.dart';
 import 'package:dailycompany/features/lectio/journal_export.dart';
 import 'package:dailycompany/shared/widgets/common.dart';
 import 'package:flutter/material.dart';
@@ -370,7 +370,7 @@ class _LectioScreenState extends ConsumerState<LectioScreen> {
                     ),
                     const SizedBox(height: 12),
                     FilledButton(
-                      onPressed: () => openOblatePaywall(context),
+                      onPressed: () => openPaywall(context),
                       child: const Text('Unlock Oblate'),
                     ),
                   ] else if (reading != null) ...[
@@ -400,7 +400,7 @@ class _LectioScreenState extends ConsumerState<LectioScreen> {
                     ),
                     const SizedBox(height: 12),
                     OutlinedButton(
-                      onPressed: () => openOblatePaywall(context),
+                      onPressed: () => openPaywall(context),
                       child: const Text('Unlock journal · Oblate'),
                     ),
                   ] else ...[
