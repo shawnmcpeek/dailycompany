@@ -34,6 +34,26 @@ abstract final class CycleAccent {
   static const autumn = Color(0xFF7A3A2C); // Sep 1 – Dec 31
 }
 
+/// Accent shifts with the Part of the Devout Life being read — spec §6.
+/// Distinct hues from CycleAccent/LiturgicalColor so a glance never
+/// confuses which portal you're in.
+abstract final class DesalesAccent {
+  static const partI = Color(0xFF564264); // Purification — muted plum
+  static const partII = Color(0xFF8C6A2C); // Prayer & sacraments — amber
+  static const partIII = Color(0xFF5C6B4A); // Practice of virtue — sage
+  static const partIV = Color(0xFF8C4A2C); // Temptations — muted rust
+  static const partV = Color(0xFF3A6B6E); // Renewal — teal
+
+  static Color forPart(int part) => switch (part) {
+        1 => partI,
+        2 => partII,
+        3 => partIII,
+        4 => partIV,
+        5 => partV,
+        _ => partI,
+      };
+}
+
 /// Drop-cap liturgical colors (v1 resolver).
 abstract final class LiturgicalColor {
   static const green = Color(0xFF4F6146);

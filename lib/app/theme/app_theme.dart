@@ -1,13 +1,11 @@
 import 'package:dailycompany/app/theme/palette.dart';
-import 'package:dailycompany/core/cycle/reading_calendar.dart';
 import 'package:flutter/material.dart';
 
 ThemeData buildPaperTheme({
-  required DateTime day,
+  required Color accent,
   double fontScale = 1,
   bool boldReading = false,
 }) {
-  final accent = ReadingCalendar.accentForStatic(day);
   return _base(
     brightness: Brightness.light,
     bg: Paper.bg,
@@ -22,11 +20,10 @@ ThemeData buildPaperTheme({
 }
 
 ThemeData buildVellumTheme({
-  required DateTime day,
+  required Color accent,
   double fontScale = 1,
   bool boldReading = false,
 }) {
-  final accent = ReadingCalendar.accentForStatic(day);
   return _base(
     brightness: Brightness.light,
     bg: Vellum.bg,
@@ -41,11 +38,10 @@ ThemeData buildVellumTheme({
 }
 
 ThemeData buildComplineTheme({
-  required DateTime day,
+  required Color accent,
   double fontScale = 1,
   bool boldReading = false,
 }) {
-  final accent = ReadingCalendar.accentForStatic(day);
   return _base(
     brightness: Brightness.dark,
     bg: Compline.bg,
@@ -59,9 +55,11 @@ ThemeData buildComplineTheme({
   );
 }
 
+/// [accent] is resolved by the caller — date-driven for Benedict, Part-
+/// driven for de Sales (see main.dart) — so this stays portal-agnostic.
 ThemeData themeForReadingSurface({
   required String surface,
-  required DateTime day,
+  required Color accent,
   required double fontScale,
   required bool boldReading,
   required Brightness platformBrightness,
@@ -75,17 +73,17 @@ ThemeData themeForReadingSurface({
   };
   return switch (resolved) {
     'paper' => buildPaperTheme(
-        day: day,
+        accent: accent,
         fontScale: fontScale,
         boldReading: boldReading,
       ),
     'compline' => buildComplineTheme(
-        day: day,
+        accent: accent,
         fontScale: fontScale,
         boldReading: boldReading,
       ),
     _ => buildVellumTheme(
-        day: day,
+        accent: accent,
         fontScale: fontScale,
         boldReading: boldReading,
       ),

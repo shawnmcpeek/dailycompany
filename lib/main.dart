@@ -1,6 +1,8 @@
 import 'package:dailycompany/app/brand.dart';
 import 'package:dailycompany/app/router/app_router.dart';
 import 'package:dailycompany/app/theme/app_theme.dart';
+import 'package:dailycompany/app/theme/palette.dart';
+import 'package:dailycompany/core/cycle/reading_calendar.dart';
 import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
 import 'package:dailycompany/core/notifications/bell_scheduler.dart';
@@ -43,9 +45,24 @@ class DailyCompanyApp extends ConsumerWidget {
     final platformBrightness =
         WidgetsBinding.instance.platformDispatcher.platformBrightness;
 
+    // Accent driver is per-portal (spec §6): Benedict's is date-driven,
+    // de Sales' is Part-driven. Falls back to Part I while the de Sales
+    // calendar is still loading, rather than blocking the first frame.
+    final portalId = ref.watch(currentPortalIdProvider);
+    Color accent;
+    if (portalId == 'desales') {
+      final todaysEntries =
+          ref.watch(desalesCalendarProvider).valueOrNull?.resolveFor(day) ??
+              const [];
+      final part = todaysEntries.isEmpty ? 1 : todaysEntries.first.part;
+      accent = DesalesAccent.forPart(part);
+    } else {
+      accent = ReadingCalendar.accentForStatic(day);
+    }
+
     final theme = themeForReadingSurface(
       surface: settings.themeMode,
-      day: day,
+      accent: accent,
       fontScale: settings.fontScale,
       boldReading: settings.boldReading,
       platformBrightness: platformBrightness,
@@ -77,6 +94,21 @@ class DailyCompanyApp extends ConsumerWidget {
  * Mary, Mother of God, pray for us
  * St Joseph, terror of demons, pray for us
  * St Gregory the Great, pray for us
+ * St Ignatius of Loyola, pray for us
+ * St Augustine, pray for us
+ * St Francis of Assisi, pray for us
+ * St Teresa of Avila, pray for us
+ * St Francis de Sales, pray for us
+ * St Alphonsus Liguori, pray for us
+ * St Thérèse of Lisieux, pray for us
+ * St John of the Cross, pray for us
+ * St Catherine of Siena, pray for us
+ * St Louis de Montfort, pray for us
+ * St John Cassian, pray for us
+ * Thomas à Kempis, pray for us
+ * Lorenzo Scupoli, pray for us
+ * Brother Lawrence, pray for us
  * St Carlo Acutis, pray for us
  * Bl Michael McGivney, pray for us
+ * Ven Fulton Sheen, pray for us
  */

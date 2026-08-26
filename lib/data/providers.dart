@@ -1,3 +1,4 @@
+import 'package:dailycompany/core/cycle/desales_calendar.dart';
 import 'package:dailycompany/core/cycle/life_track.dart';
 import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
 import 'package:dailycompany/core/diagnostics/journal_failure_reporter.dart';
@@ -20,9 +21,16 @@ final currentPortalIdProvider = Provider<String>((ref) {
   return companionId.isEmpty ? 'benedict' : companionId;
 });
 
+/// Benedict's content only — RuleReading/Latin/Life/Tools/Hours/Medal don't
+/// apply to any other portal. de Sales screens use [desalesCalendarProvider]
+/// instead.
 final contentCatalogProvider = FutureProvider<ContentCatalog>((ref) async {
   final portalId = ref.watch(currentPortalIdProvider);
   return ContentCatalog.load(portalId);
+});
+
+final desalesCalendarProvider = FutureProvider<DesalesCalendar>((ref) async {
+  return DesalesCalendar.loadFromAssets();
 });
 
 final selectedDayProvider = StateProvider<DateTime>((ref) {
