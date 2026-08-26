@@ -1,5 +1,5 @@
-/// Cycle arithmetic for the de Sales daily entries (233 entries, ~1.57
-/// repeats/yr — see portals-spec.md discussion for why this isn't 365 x 1).
+/// Cycle arithmetic for the de Sales daily entries (366 entries — see
+/// portals-spec.md discussion for why this isn't 365 x 1).
 ///
 /// Nothing in the app reads this yet — no Today screen, no spine resolver.
 /// It exists so the emitted content can be verified: every day resolves,
@@ -53,8 +53,8 @@ class DesalesCalendar {
   }) : _byId = {for (final e in entries) e.id: e};
 
   final List<DesalesEntry> entries;
-  final Map<String, int> _byDateCommon;
-  final Map<String, int> _byDateLeap;
+  final Map<String, List<int>> _byDateCommon;
+  final Map<String, List<int>> _byDateLeap;
   final Map<int, DesalesEntry> _byId;
 
   static Future<DesalesCalendar> loadFromAssets() async {
@@ -77,9 +77,12 @@ class DesalesCalendar {
     final entries = (entriesJson['entries'] as List)
         .map((e) => DesalesEntry.fromJson(e as Map<String, dynamic>))
         .toList();
-    Map<String, int> parseMap(String key) {
+    Map<String, List<int>> parseMap(String key) {
       final raw = calendarJson[key] as Map<String, dynamic>;
-      return {for (final e in raw.entries) e.key: e.value as int};
+      return {
+        for (final e in raw.entries)
+          e.key: (e.value as List).cast<int>(),
+      };
     }
 
     return DesalesCalendar(
@@ -95,15 +98,13 @@ class DesalesCalendar {
   static String dateKey(DateTime d) =>
       '${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
 
-  int? resolveIdFor(DateTime d) {
+  List<int> resolveIdsFor(DateTime d) {
     final table = isLeapYear(d.year) ? _byDateLeap : _byDateCommon;
-    return table[dateKey(d)];
+    return List<int>.from(table[dateKey(d)] ?? const <int>[]);
   }
 
-  DesalesEntry? resolveFor(DateTime d) {
-    final id = resolveIdFor(d);
-    return id == null ? null : _byId[id];
-  }
+  List<DesalesEntry> resolveFor(DateTime d) =>
+      resolveIdsFor(d).map((id) => _byId[id]!).toList();
 
   DesalesEntry? byId(int id) => _byId[id];
 }

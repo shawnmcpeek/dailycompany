@@ -69,11 +69,16 @@ abstract final class PortalRegistry {
 
   /// Content is real (assets/content/desales/), cut from the CCEL text by
   /// tools/content/desales/. Translator attribution is UNVERIFIED — see
-  /// portal.json's sourceNote. Cadence is 233 entries (not 365): the
-  /// spec's ~120k-word estimate for this text was wrong (it's 78,600),
-  /// and packing to 365 x 1 without splitting paragraphs isn't possible
-  /// at that word count. No Today screen or spine resolver reads this
-  /// yet — see the library comment above.
+  /// portal.json's sourceNote. Cadence is 366 entries, not 365 x 1 as the
+  /// spec's table states: the spec's ~120k-word estimate for this text was
+  /// wrong (it's 78,600), and packing to 365 without splitting paragraphs
+  /// meant accepting some entries under the 150-word hard minimum — a
+  /// deliberate call for daily freshness over merging thin days into their
+  /// neighbor. 366 lands a clean 1:1 on a leap year; common years merge the
+  /// last two entries onto Dec 31 (see calendar.json), mirroring Benedict's
+  /// own leap-day handling with the common/leap roles swapped. No Today
+  /// screen or spine resolver reads this yet — see the library comment
+  /// above.
   static const desales = SaintPortal(
     id: 'desales',
     displayName: 'Francis de Sales',
@@ -85,7 +90,7 @@ abstract final class PortalRegistry {
           'traditional division of the text: Francis de Sales did not '
           'write the Devout Life to be read a page a day, and no '
           'religious order or published edition assigns these passages '
-          'to these dates. We cut the book into 233 readings at '
+          'to these dates. We cut the book into 366 readings at '
           'paragraph and chapter boundaries so it could be kept company '
           'with daily.',
       'The text itself is unaltered — an English translation from the '

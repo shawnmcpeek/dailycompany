@@ -5,8 +5,9 @@
   "provenance": "constructed",
   "spine": {
     "type": "cycle",
-    "entries": 233,
-    "repeatsPerYear": 1.57
+    "entries": 366,
+    "repeatsPerYear": 1.0,
+    "note": "366, not 365 x 1 as spec's table states — see sourceNote and portals-spec.md discussion. Maps 1:1 onto a leap year; common years merge the last two entries onto Dec 31 (mirrors Benedict's own leap-day handling, common/leap roles swapped)."
   },
   "anchor": "bouquet",
   "modules": ["today", "meditations", "practice", "letters"],

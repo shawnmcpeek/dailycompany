@@ -38,19 +38,31 @@ def main() -> None:
     print("=== cadence candidates ===")
     cadence_candidates(total_words)
 
-    # A literal 365 x 1 doesn't survive contact with this text's real word
-    # count and paragraph lengths (see portals-spec.md discussion — the
-    # spec's ~120k-word estimate was off; this text is 78,600). Target the
-    # per-entry word count that a clean 365-day spread implies (words /
-    # 365); paragraph-atomic overshoot then naturally lands the *actual*
-    # average within spec's stated 250-400 words/day band anyway (337
-    # here) while keeping entry count close enough to 365 that only a
-    # minority of days share an entry with its neighbor.
-    target = round(total_words / 365)
-    print(f"\ntarget {target} words/entry; entry count and true average TBD")
+    # The spec's ~120k-word estimate for this text was off (real count:
+    # 78,600), so a target derived from spec's 250-400 words/day band
+    # doesn't land on a clean 365 or 366. Accepting some entries under the
+    # 150-word hard minimum (a deliberate call — thin days over multi-day
+    # entries, to keep true daily freshness) makes one reachable: search for
+    # the target word count that yields exactly 366 entries — that maps 1:1
+    # onto a leap year, with common years merging the last two entries onto
+    # Dec 31 (see the date-mapping section below), the same shape as
+    # Benedict's own leap-day handling, just the common/leap roles swapped.
+    exact_target = None
+    for want in (366, 365):
+        for candidate in range(50, 300):
+            if len(cut(parts, target_words=candidate)) == want:
+                exact_target = candidate
+                exact_n = want
+                break
+        if exact_target is not None:
+            break
+    target = exact_target if exact_target is not None else round(total_words / 365)
+    print(f"\ntarget {target} words/entry (searched for exactly 366, then 365)")
 
     entries = cut(parts, target_words=target)
     print(f"cutter produced {len(entries)} entries")
+    if len(entries) not in (365, 366):
+        print("WARNING: no target in range yields exactly 365 or 366; using closest")
 
     flagged = [e for e in entries if e["flags"]]
     if flagged:
@@ -72,41 +84,46 @@ def main() -> None:
     )
     print("round-trip check: OK (entries reconstruct source exactly, ws-normalized)")
 
-    # --- Date-key mapping: N entries distributed across 365 days --------
+    # --- Date-key mapping ---------------------------------------------
     # de Sales's own text has no calendar of its own — this is our
-    # construction (.constructed provenance). Entries are spread evenly
-    # across the year in reading order; a handful (N < 365) cover two
-    # consecutive calendar days rather than splitting a paragraph or
-    # padding with filler. 2025 is an arbitrary non-leap reference year,
-    # used only to turn a day-of-year ordinal into an "MM-DD" key.
+    # construction (.constructed provenance). 2024 (leap) and 2025 (common)
+    # are arbitrary reference years, used only to turn a day-of-year
+    # ordinal into an "MM-DD" key.
     n = len(entries)
-    ref_year = 2025
-    by_date_common: dict[str, int] = {}
-    for i, e in enumerate(entries):
-        start_ordinal = round((i / n) * 365) + 1
-        end_ordinal = (
-            round(((i + 1) / n) * 365) if i + 1 < n else 365
+
+    def mmdd(year: int, ordinal: int) -> str:
+        date = datetime.date(year, 1, 1) + datetime.timedelta(days=ordinal - 1)
+        return f"{date.month:02d}-{date.day:02d}"
+
+    if n == 366:
+        # Straight 1:1 onto the leap year; common years merge the last
+        # two entries onto Dec 31 rather than dropping one or padding.
+        by_date_leap = {mmdd(2024, i + 1): [e["id"]] for i, e in enumerate(entries)}
+        by_date_common = {
+            mmdd(2025, i + 1): [e["id"]] for i, e in enumerate(entries[:-2])
+        }
+        by_date_common["12-31"] = [entries[-2]["id"], entries[-1]["id"]]
+    elif n == 365:
+        # Straight 1:1 onto the common year; the leap day shares Feb 28's
+        # entry rather than getting unique content.
+        by_date_common = {mmdd(2025, i + 1): [e["id"]] for i, e in enumerate(entries)}
+        by_date_leap = dict(by_date_common)
+        by_date_leap["02-29"] = by_date_common["02-28"]
+    else:
+        raise SystemExit(
+            f"cutter produced {n} entries; date-mapping only handles 365 or 366"
         )
-        end_ordinal = max(end_ordinal, start_ordinal)
-        for ordinal in range(start_ordinal, end_ordinal + 1):
-            date = datetime.date(ref_year, 1, 1) + datetime.timedelta(
-                days=ordinal - 1
-            )
-            by_date_common[f"{date.month:02d}-{date.day:02d}"] = e["id"]
 
-    missing = {
-        f"{(datetime.date(ref_year, 1, 1) + datetime.timedelta(days=d)).month:02d}"
-        f"-{(datetime.date(ref_year, 1, 1) + datetime.timedelta(days=d)).day:02d}"
-        for d in range(365)
-    } - set(by_date_common)
-    assert not missing, f"days with no entry: {sorted(missing)}"
-    print(f"coverage check: OK (every day 1..365 covered, {n} unique entries)")
-
-    # Leap day shares Feb 28's entry rather than getting unique content,
-    # matching Benedict's own precedent of not giving the leap day a
-    # standalone slot.
-    by_date_leap = dict(by_date_common)
-    by_date_leap["02-29"] = by_date_common["02-28"]
+    missing_common = {mmdd(2025, d) for d in range(1, 366)} - set(by_date_common)
+    missing_leap = {mmdd(2024, d) for d in range(1, 367)} - set(by_date_leap)
+    assert not missing_common, f"common-year days with no entry: {sorted(missing_common)}"
+    assert not missing_leap, f"leap-year days with no entry: {sorted(missing_leap)}"
+    reachable_common = {i for ids in by_date_common.values() for i in ids}
+    reachable_leap = {i for ids in by_date_leap.values() for i in ids}
+    assert reachable_common | reachable_leap == set(range(1, n + 1)), (
+        "some entry is unreachable in both calendar types"
+    )
+    print(f"coverage check: OK (every day covered in both year types, {n} entries)")
 
     # --- Emit -------------------------------------------------------------
     ASSETS.mkdir(parents=True, exist_ok=True)

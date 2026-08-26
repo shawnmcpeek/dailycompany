@@ -15,8 +15,10 @@ Algorithm:
   flagged 'oversized_paragraph'.
 - Prefer to close an entry at a chapter's last paragraph if the entry's
   word count is within +/-35% of target.
-- Force a close if the entry would otherwise exceed 1.35x target, or if
-  adding the next paragraph would pull in a third distinct chapter.
+- Force a close if the entry would otherwise exceed 1.35x target, if
+  adding the next paragraph would pull in a third distinct chapter, or
+  if it would cross into a new Part — an entry always belongs to exactly
+  one Part, never split across the book's major divisions.
 """
 
 from __future__ import annotations
@@ -53,26 +55,26 @@ def cut(
                 )
 
     entries: list[dict] = []
-    cur_meta: list[tuple[int, str, str, int]] = []  # (chapter, chapter_title, text, words)
-    cur_part = None
-    cur_part_title = None
+    # each item: (part, part_title, chapter, chapter_title, text, words)
+    cur_meta: list[tuple[int, str, int, str, str, int]] = []
     cur_flags: list[str] = []
 
     def cur_words() -> int:
-        return sum(m[3] for m in cur_meta)
+        return sum(m[5] for m in cur_meta)
 
     def cur_chapters() -> list[int]:
         seen = []
-        for ch, *_ in cur_meta:
+        for _, _, ch, *_ in cur_meta:
             if ch not in seen:
                 seen.append(ch)
         return seen
 
     def close():
-        nonlocal cur_meta, cur_flags, cur_part, cur_part_title
+        nonlocal cur_meta, cur_flags
         if not cur_meta:
             return
-        first_ch, first_title = cur_meta[0][0], cur_meta[0][1]
+        first_part, first_part_title = cur_meta[0][0], cur_meta[0][1]
+        first_ch, first_title = cur_meta[0][2], cur_meta[0][3]
         wc = cur_words()
         flags = list(cur_flags)
         if wc < hard_min:
@@ -82,15 +84,15 @@ def cut(
         entries.append(
             {
                 "id": len(entries) + 1,
-                "part": cur_part,
-                "partTitle": cur_part_title,
+                "part": first_part,
+                "partTitle": first_part_title,
                 "chapter": first_ch,
                 "chapterTitle": first_title,
-                "spansChapters": sorted(set(m[0] for m in cur_meta)),
+                "spansChapters": sorted(set(m[2] for m in cur_meta)),
                 "portionInChapter": None,  # filled in a post-pass below
                 "wordCount": wc,
                 "flags": flags,
-                "textEn": "\n\n".join(m[2] for m in cur_meta),
+                "textEn": "\n\n".join(m[4] for m in cur_meta),
             }
         )
         cur_meta = []
@@ -98,26 +100,26 @@ def cut(
 
     for part, part_title, chapter, chapter_title, text, is_last_in_chapter in flat:
         words = len(text.split())
-        if cur_part is None:
-            cur_part, cur_part_title = part, part_title
 
         if words > hard_max:
             close()
-            cur_part, cur_part_title = part, part_title
-            cur_meta = [(chapter, chapter_title, text, words)]
+            cur_meta = [(part, part_title, chapter, chapter_title, text, words)]
             cur_flags = ["oversized_paragraph"]
             close()
-            cur_part, cur_part_title = part, part_title
             continue
 
+        would_be_new_part = cur_meta and cur_meta[0][0] != part
         would_be_third_chapter = (
             chapter not in cur_chapters() and len(cur_chapters()) >= 2
         )
-        if would_be_third_chapter or (cur_meta and cur_words() + words > hard_max):
+        if (
+            would_be_new_part
+            or would_be_third_chapter
+            or (cur_meta and cur_words() + words > hard_max)
+        ):
             close()
-            cur_part, cur_part_title = part, part_title
 
-        cur_meta.append((chapter, chapter_title, text, words))
+        cur_meta.append((part, part_title, chapter, chapter_title, text, words))
 
         wc = cur_words()
         if is_last_in_chapter and lo <= wc <= hi:
