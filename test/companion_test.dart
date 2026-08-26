@@ -2,11 +2,11 @@ import 'package:dailycompany/data/companion.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('Benedict is the only open house', () {
-    final open = Companions.openHouses;
-    expect(open, hasLength(1));
-    expect(open.single.id, 'benedict');
+  test('Benedict and de Sales are the open houses', () {
+    final open = Companions.openHouses.map((c) => c.id).toSet();
+    expect(open, {'benedict', 'desales'});
     expect(Companions.byId('benedict')?.open, isTrue);
+    expect(Companions.byId('desales')?.open, isTrue);
   });
 
   test('every companion has a unique id', () {

@@ -27,7 +27,7 @@ abstract final class Companions {
       work: 'The Imitation of Christ',
     ),
     Companion(
-      id: 'de-sales',
+      id: 'desales',
       name: 'Francis de Sales',
       work: 'Introduction to the Devout Life',
     ),

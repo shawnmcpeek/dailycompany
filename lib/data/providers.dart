@@ -5,6 +5,7 @@ import 'package:dailycompany/core/iap/iap_controller.dart';
 import 'package:dailycompany/core/notifications/bell_scheduler.dart';
 import 'package:dailycompany/data/content_catalog.dart';
 import 'package:dailycompany/data/isar/app_isar.dart';
+import 'package:dailycompany/data/isar/bouquet.dart';
 import 'package:dailycompany/data/isar/lectio_journal_entry.dart';
 import 'package:dailycompany/data/isar/reading_completion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -463,6 +464,9 @@ class JournalController extends StateNotifier<List<JournalEntry>> {
   JournalController(this._isar, this._ref) : super(const []) {
     // Fire-and-forget load; failures are reported, UI stays empty.
     _load();
+    // Re-load when the active portal changes, so a Benedict lectio note
+    // never lingers on screen inside a different portal's journal list.
+    _ref.listen<String>(currentPortalIdProvider, (_, _) => _load());
   }
 
   final Isar _isar;
@@ -476,7 +480,8 @@ class JournalController extends StateNotifier<List<JournalEntry>> {
   Future<void> _load() async {
     try {
       final rows = await _isar.lectioJournalEntrys
-          .where()
+          .filter()
+          .portalIdEqualTo(_ref.read(currentPortalIdProvider))
           .sortByCreatedAtDesc()
           .findAll();
       state = rows.map(JournalEntry.fromIsar).toList();
@@ -546,6 +551,7 @@ class JournalController extends StateNotifier<List<JournalEntry>> {
       );
       final found = await _isar.lectioJournalEntrys
           .filter()
+          .portalIdEqualTo(_ref.read(currentPortalIdProvider))
           .readingIdEqualTo(readingId)
           .createdAtLessThan(cutoff)
           .sortByCreatedAtDesc()
@@ -672,5 +678,73 @@ class IlluminationController extends StateNotifier<String?> {
       key,
     );
     return true;
+  }
+}
+
+/// de Sales' Bouquet — see lib/data/isar/bouquet.dart.
+final bouquetProvider =
+    StateNotifierProvider<BouquetController, List<Bouquet>>((ref) {
+      return BouquetController(ref.watch(isarProvider), ref);
+    });
+
+class BouquetController extends StateNotifier<List<Bouquet>> {
+  BouquetController(this._isar, this._ref) : super(const []) {
+    _load();
+    _ref.listen<String>(currentPortalIdProvider, (_, _) => _load());
+  }
+
+  final Isar _isar;
+  final Ref _ref;
+
+  static String keyFor(DateTime day) =>
+      '${day.month.toString().padLeft(2, '0')}-${day.day.toString().padLeft(2, '0')}';
+
+  Future<void> _load() async {
+    final rows = await _isar.bouquets
+        .filter()
+        .portalIdEqualTo(_ref.read(currentPortalIdProvider))
+        .sortByCreatedAtDesc()
+        .findAll();
+    state = rows;
+  }
+
+  Future<void> keep(DateTime day, String text) async {
+    final trimmed = text.trim();
+    if (trimmed.isEmpty) return;
+    final row = Bouquet()
+      ..portalId = _ref.read(currentPortalIdProvider)
+      ..dateKey = keyFor(day)
+      ..text = trimmed
+      ..createdAt = DateTime.now();
+    await _isar.writeTxn(() async {
+      await _isar.bouquets.put(row);
+    });
+    await _load();
+  }
+
+  /// The line kept today, if any — pins to the top of Today.
+  Bouquet? forToday(DateTime day) {
+    for (final b in state) {
+      if (b.dateKey == keyFor(day) &&
+          b.createdAt.year == day.year &&
+          b.createdAt.month == day.month &&
+          b.createdAt.day == day.day) {
+        return b;
+      }
+    }
+    return null;
+  }
+
+  /// A bouquet kept on this same calendar day in a prior year.
+  Future<Bouquet?> fromLastYear(DateTime day) async {
+    final cutoff = DateTime(day.year, day.month, day.day);
+    final rows = await _isar.bouquets
+        .filter()
+        .portalIdEqualTo(_ref.read(currentPortalIdProvider))
+        .dateKeyEqualTo(keyFor(day))
+        .createdAtLessThan(cutoff)
+        .sortByCreatedAtDesc()
+        .findAll();
+    return rows.isEmpty ? null : rows.first;
   }
 }
