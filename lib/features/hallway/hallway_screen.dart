@@ -37,7 +37,7 @@ class HallwayScreen extends ConsumerWidget {
             for (final house in Companions.openHouses) ...[
               HubNavButton(
                 title: house.name,
-                subtitle: house.work,
+                subtitle: house.hallwaySubtitle,
                 actionLabel: chosen?.id == house.id ? 'Here' : 'Enter',
                 onPressed: () async {
                   await ref
@@ -56,7 +56,7 @@ class HallwayScreen extends ConsumerWidget {
             for (final house in Companions.closedHouses) ...[
               HubNavButton(
                 title: house.name,
-                subtitle: house.work,
+                subtitle: house.hallwaySubtitle,
                 actionLabel: 'Soon',
               ),
               const SizedBox(height: 10),

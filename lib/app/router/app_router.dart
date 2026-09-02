@@ -1,15 +1,19 @@
 import 'package:dailycompany/app/router/page_turn.dart';
 import 'package:dailycompany/app/router/portal_routes.dart';
+import 'package:dailycompany/data/models/portal.dart';
 import 'package:dailycompany/data/providers.dart';
+import 'package:dailycompany/features/cycle/cycle_today_screen.dart';
 import 'package:dailycompany/features/desales/desales_letters_screen.dart';
 import 'package:dailycompany/features/desales/desales_meditations_screen.dart';
 import 'package:dailycompany/features/desales/desales_practice_screen.dart';
-import 'package:dailycompany/features/desales/desales_today_screen.dart';
 import 'package:dailycompany/features/hallway/hallway_screen.dart';
 import 'package:dailycompany/features/hours/hours_screen.dart';
 import 'package:dailycompany/features/hub/hub_screen.dart';
 import 'package:dailycompany/features/iap/desales_companion_paywall_screen.dart';
+import 'package:dailycompany/features/iap/kempis_companion_paywall_screen.dart';
 import 'package:dailycompany/features/iap/oblate_paywall_screen.dart';
+import 'package:dailycompany/features/kempis/kempis_admonitions_screen.dart';
+import 'package:dailycompany/features/kempis/kempis_practice_screen.dart';
 import 'package:dailycompany/features/lectio/lectio_screen.dart';
 import 'package:dailycompany/features/life/life_screen.dart';
 import 'package:dailycompany/features/medal/medal_screen.dart';
@@ -106,7 +110,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (portalId == 'benedict')
         _benedictShell(portalId)
       else
-        _desalesShell(portalId),
+        _cycleShell(portalId),
       GoRoute(
         parentNavigatorKey: rootNavigatorKey,
         path: '/more',
@@ -156,10 +160,18 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/p/:portalId/paywall',
         pageBuilder: (context, state) {
           final id = state.pathParameters['portalId'];
-          final child = id == 'desales'
-              ? const DesalesCompanionPaywallScreen()
-              : const OblatePaywallScreen();
-          final title = id == 'desales' ? 'Companion' : 'Oblate';
+          final Widget child;
+          final String title;
+          if (id == 'desales') {
+            child = const DesalesCompanionPaywallScreen();
+            title = 'Companion';
+          } else if (id == 'kempis') {
+            child = const KempisCompanionPaywallScreen();
+            title = 'Companion';
+          } else {
+            child = const OblatePaywallScreen();
+            title = 'Oblate';
+          }
           return PageTurn.of(
             key: state.pageKey,
             child: Scaffold(
@@ -252,26 +264,23 @@ StatefulShellRoute _benedictShell(String portalId) {
   );
 }
 
-/// Today, Meditations, Practice, Letters — de Sales' own shape (spec §8.4),
-/// not force-fit into Benedict's Hub/Hours/Life/Tools tabs.
-StatefulShellRoute _desalesShell(String portalId) {
+/// Today plus the house's own modules — not force-fit into Benedict's tabs.
+StatefulShellRoute _cycleShell(String portalId) {
+  final portal = PortalRegistry.byId(portalId);
+  final modules = portal?.modules ?? const ['today'];
   return StatefulShellRoute.indexedStack(
     builder: (context, state, navigationShell) =>
         AppShell(navigationShell: navigationShell),
     branches: [
-      StatefulShellBranch(
-        initialLocation: PortalRoutes.today(portalId),
-        routes: [
-          GoRoute(
-            path: '/p/:portalId/today',
-            pageBuilder: (context, state) => PageTurn.of(
-              key: state.pageKey,
-              child: const DesalesTodayScreen(),
-            ),
-          ),
-        ],
-      ),
-      StatefulShellBranch(
+      for (final module in modules) _cycleBranch(portalId, module),
+    ],
+  );
+}
+
+StatefulShellBranch _cycleBranch(String portalId, String module) {
+  switch (module) {
+    case 'meditations':
+      return StatefulShellBranch(
         initialLocation: PortalRoutes.meditations(portalId),
         routes: [
           GoRoute(
@@ -293,30 +302,40 @@ StatefulShellRoute _desalesShell(String portalId) {
             ],
           ),
         ],
-      ),
-      StatefulShellBranch(
+      );
+    case 'practice':
+      return StatefulShellBranch(
         initialLocation: PortalRoutes.practice(portalId),
         routes: [
           GoRoute(
             path: '/p/:portalId/practice',
-            pageBuilder: (context, state) => PageTurn.of(
-              key: state.pageKey,
-              child: const Scaffold(
-                appBar: null,
-                body: SafeArea(child: DesalesPracticeScreen()),
-              ),
-            ),
+            pageBuilder: (context, state) {
+              final id = state.pathParameters['portalId'] ?? portalId;
+              final body = id == 'kempis'
+                  ? const KempisPracticeScreen()
+                  : const DesalesPracticeScreen();
+              return PageTurn.of(
+                key: state.pageKey,
+                child: Scaffold(
+                  appBar: null,
+                  body: SafeArea(child: body),
+                ),
+              );
+            },
           ),
         ],
-      ),
-      StatefulShellBranch(
+      );
+    case 'letters':
+      return StatefulShellBranch(
         initialLocation: PortalRoutes.letters(portalId),
         routes: [
           GoRoute(
             path: '/p/:portalId/letters',
             pageBuilder: (context, state) => PageTurn.of(
               key: state.pageKey,
-              child: const Scaffold(body: SafeArea(child: DesalesLettersScreen())),
+              child: const Scaffold(
+                body: SafeArea(child: DesalesLettersScreen()),
+              ),
             ),
             routes: [
               GoRoute(
@@ -332,9 +351,46 @@ StatefulShellRoute _desalesShell(String portalId) {
             ],
           ),
         ],
-      ),
-    ],
-  );
+      );
+    case 'admonitions':
+      return StatefulShellBranch(
+        initialLocation: PortalRoutes.admonitions(portalId),
+        routes: [
+          GoRoute(
+            path: '/p/:portalId/admonitions',
+            pageBuilder: (context, state) => PageTurn.of(
+              key: state.pageKey,
+              child: const KempisAdmonitionsScreen(),
+            ),
+            routes: [
+              GoRoute(
+                path: ':chapter',
+                pageBuilder: (context, state) => PageTurn.of(
+                  key: state.pageKey,
+                  child: KempisAdmonitionScreen(
+                    chapter: int.parse(state.pathParameters['chapter']!),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    case 'today':
+    default:
+      return StatefulShellBranch(
+        initialLocation: PortalRoutes.today(portalId),
+        routes: [
+          GoRoute(
+            path: '/p/:portalId/today',
+            pageBuilder: (context, state) => PageTurn.of(
+              key: state.pageKey,
+              child: const CycleTodayScreen(),
+            ),
+          ),
+        ],
+      );
+  }
 }
 
 class AppShell extends ConsumerWidget {
@@ -370,34 +426,51 @@ class AppShell extends ConsumerWidget {
     ),
   ];
 
-  static const _desalesDestinations = [
-    NavigationDestination(
-      icon: Icon(Icons.menu_book_outlined),
-      selectedIcon: Icon(Icons.menu_book),
-      label: 'Today',
-    ),
-    NavigationDestination(
-      icon: Icon(Icons.self_improvement_outlined),
-      selectedIcon: Icon(Icons.self_improvement),
-      label: 'Meditations',
-    ),
-    NavigationDestination(
-      icon: Icon(Icons.spa_outlined),
-      selectedIcon: Icon(Icons.spa),
-      label: 'Practice',
-    ),
-    NavigationDestination(
-      icon: Icon(Icons.mail_outline),
-      selectedIcon: Icon(Icons.mail),
-      label: 'Letters',
-    ),
-  ];
+  static NavigationDestination _destinationFor(String module) {
+    return switch (module) {
+      'today' => const NavigationDestination(
+          icon: Icon(Icons.menu_book_outlined),
+          selectedIcon: Icon(Icons.menu_book),
+          label: 'Today',
+        ),
+      'meditations' => const NavigationDestination(
+          icon: Icon(Icons.self_improvement_outlined),
+          selectedIcon: Icon(Icons.self_improvement),
+          label: 'Meditations',
+        ),
+      'practice' => const NavigationDestination(
+          icon: Icon(Icons.spa_outlined),
+          selectedIcon: Icon(Icons.spa),
+          label: 'Practice',
+        ),
+      'letters' => const NavigationDestination(
+          icon: Icon(Icons.mail_outline),
+          selectedIcon: Icon(Icons.mail),
+          label: 'Letters',
+        ),
+      'admonitions' => const NavigationDestination(
+          icon: Icon(Icons.list_alt_outlined),
+          selectedIcon: Icon(Icons.list_alt),
+          label: 'Admonitions',
+        ),
+      _ => const NavigationDestination(
+          icon: Icon(Icons.menu_book_outlined),
+          selectedIcon: Icon(Icons.menu_book),
+          label: 'Today',
+        ),
+    };
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final portalId = ref.watch(currentPortalIdProvider);
-    final destinations =
-        portalId == 'benedict' ? _benedictDestinations : _desalesDestinations;
+    final List<NavigationDestination> destinations;
+    if (portalId == 'benedict') {
+      destinations = _benedictDestinations;
+    } else {
+      final modules = PortalRegistry.byId(portalId)?.modules ?? const ['today'];
+      destinations = [for (final m in modules) _destinationFor(m)];
+    }
 
     return Scaffold(
       body: navigationShell,

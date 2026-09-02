@@ -1,0 +1,157 @@
+repairs: 30
+  id  10: 'inoboetientibus' → 'inoboedientibus'
+  id  10: 'cursæ suæ' → 'curæ suæ'
+  id  11: 'et:qui' → 'et: qui'
+  id  12: 'una præ beatur' → 'una præbeatur'
+  id  14: 'unuscuiusque' → 'uniuscuiusque'
+  id  17: 'non p æ niteberis' → 'non pæniteberis'
+  id  18: 'Non facere futum.' → 'Non facere furtum.'
+  id  18: 'recreare.Nudum' → 'recreare. Nudum'
+  id  20: 'patefacere.Os' → 'patefacere. Os'
+  id  26: 'sed et desideria' → 'sed et desideria carnis'
+  id  26: omnimo → omnino (1×)
+  id  52: 'unuscuiusque' → 'uniuscuiusque'
+  id  55: 'partiendoscilicet' → 'partiendos scilicet'
+  id  71: omnimo → omnino (2×)
+  id  75: omnimo → omnino (1×)
+  id  78: 'sive una sit refectio sivi prandii' → 'sive una sit refectio sive prandii'
+  id  78: omnimo → omnino (1×)
+  id  79: omnimo → omnino (1×)
+  id  82: omnimo → omnino (1×)
+  id  83: omnimo → omnino (1×)
+  id  92: omnimo → omnino (1×)
+  id  93: omnimo → omnino (1×)
+  id 102: omnimo → omnino (1×)
+  id 105: omnimo → omnino (1×)
+  id 109: omnimo → omnino (1×)
+  id 115: 'eorum.Hanc autem' → 'eorum. Hanc autem'
+  id 115: omnimo → omnino (1×)
+  id 117: omnimo → omnino (1×)
+  id 121: omnimo → omnino (1×)
+  id 122: stripped Latin Library footer
+
+flags: 0
+
+all 122 La:En
+    1 ch.00  La  129  En  186  0.69
+    2 ch.00  La   75  En  115  0.65
+    3 ch.00  La  102  En  138  0.74
+    4 ch.00  La  203  En  288  0.70
+    5 ch.00  La   88  En  133  0.66
+    6 ch.00  La   86  En  133  0.65
+    7 ch.00  La   89  En  126  0.71
+    8 ch.01  La  200  En  324  0.62
+    9 ch.02  La   65  En  111  0.59
+   10 ch.02  La   94  En  148  0.64
+   11 ch.02  La  100  En  156  0.64
+   12 ch.02  La  108  En  156  0.69
+   13 ch.02  La  125  En  201  0.62
+   14 ch.02  La   68  En  106  0.64
+   15 ch.02  La  134  En  218  0.61
+   16 ch.03  La   89  En  137  0.65
+   17 ch.03  La   87  En  155  0.56
+   18 ch.04  La   81  En  145  0.56
+   19 ch.04  La   93  En  184  0.51
+   20 ch.04  La  138  En  224  0.62
+   21 ch.04  La  102  En  173  0.59
+   22 ch.05  La  176  En  258  0.68
+   23 ch.05  La  104  En  135  0.77
+   24 ch.06  La  131  En  201  0.65
+   25 ch.07  La  172  En  246  0.70
+   26 ch.07  La   67  En   93  0.72
+   27 ch.07  La   91  En  120  0.76
+   28 ch.07  La   94  En  128  0.73
+   29 ch.07  La  107  En  155  0.69
+   30 ch.07  La   42  En   65  0.65
+   31 ch.07  La   25  En   35  0.71
+   32 ch.07  La  168  En  263  0.64
+   33 ch.07  La   78  En  108  0.72
+   34 ch.07  La   45  En   61  0.74
+   35 ch.07  La   56  En   81  0.69
+   36 ch.07  La   17  En   28  0.61
+   37 ch.07  La   34  En   52  0.65
+   38 ch.07  La   21  En   28  0.75
+   39 ch.07  La   34  En   49  0.69
+   40 ch.07  La  161  En  244  0.66
+   41 ch.08  La   73  En  130  0.56
+   42 ch.09  La  162  En  256  0.63
+   43 ch.10  La   65  En   86  0.76
+   44 ch.11  La  202  En  299  0.68
+   45 ch.12  La   50  En   68  0.74
+   46 ch.13  La  119  En  180  0.66
+   47 ch.13  La   62  En   99  0.63
+   48 ch.14  La   30  En   49  0.61
+   49 ch.15  La   60  En   85  0.71
+   50 ch.16  La   82  En  120  0.68
+   51 ch.17  La  140  En  222  0.63
+   52 ch.18  La  101  En  140  0.72
+   53 ch.18  La   89  En  114  0.78
+   54 ch.18  La  123  En  148  0.83
+   55 ch.18  La  106  En  150  0.71
+   56 ch.19  La   70  En  108  0.65
+   57 ch.20  La   70  En  113  0.62
+   58 ch.21  La   91  En  132  0.69
+   59 ch.22  La  117  En  175  0.67
+   60 ch.23  La   62  En   96  0.65
+   61 ch.24  La   81  En  144  0.56
+   62 ch.25  La   76  En  123  0.62
+   63 ch.26  La   25  En   38  0.66
+   64 ch.27  La  150  En  234  0.64
+   65 ch.28  La  129  En  204  0.63
+   66 ch.29  La   46  En   74  0.62
+   67 ch.30  La   37  En   49  0.76
+   68 ch.31  La  135  En  233  0.58
+   69 ch.31  La   98  En  183  0.54
+   70 ch.32  La   65  En  112  0.58
+   71 ch.33  La   95  En  163  0.58
+   72 ch.34  La   71  En  111  0.64
+   73 ch.35  La  119  En  193  0.62
+   74 ch.35  La   99  En  164  0.60
+   75 ch.36  La  141  En  232  0.61
+   76 ch.37  La   43  En   73  0.59
+   77 ch.38  La  174  En  287  0.61
+   78 ch.39  La  149  En  226  0.66
+   79 ch.40  La  137  En  208  0.66
+   80 ch.41  La  131  En  208  0.63
+   81 ch.42  La  157  En  254  0.62
+   82 ch.43  La  192  En  293  0.66
+   83 ch.43  La  117  En  168  0.70
+   84 ch.44  La  150  En  221  0.68
+   85 ch.45  La   35  En   56  0.62
+   86 ch.46  La   85  En  120  0.71
+   87 ch.47  La   63  En  104  0.61
+   88 ch.48  La  138  En  212  0.65
+   89 ch.48  La  153  En  264  0.58
+   90 ch.48  La   63  En   92  0.68
+   91 ch.49  La  144  En  208  0.69
+   92 ch.50  La   55  En   91  0.60
+   93 ch.51  La   35  En   52  0.67
+   94 ch.52  La   80  En  121  0.66
+   95 ch.53  La  190  En  302  0.63
+   96 ch.53  La  129  En  216  0.60
+   97 ch.54  La   76  En  124  0.61
+   98 ch.55  La  177  En  267  0.66
+   99 ch.55  La  102  En  168  0.61
+  100 ch.56  La   33  En   52  0.63
+  101 ch.57  La  119  En  193  0.62
+  102 ch.58  La  236  En  363  0.65
+  103 ch.58  La  216  En  343  0.63
+  104 ch.59  La  142  En  209  0.68
+  105 ch.60  La  123  En  200  0.61
+  106 ch.61  La   81  En  119  0.68
+  107 ch.61  La  136  En  203  0.67
+  108 ch.62  La  133  En  215  0.62
+  109 ch.63  La  139  En  225  0.62
+  110 ch.63  La  130  En  197  0.66
+  111 ch.64  La  109  En  180  0.61
+  112 ch.64  La  223  En  361  0.62
+  113 ch.65  La  144  En  196  0.73
+  114 ch.65  La  179  En  276  0.65
+  115 ch.66  La  118  En  193  0.61
+  116 ch.67  La  102  En  178  0.57
+  117 ch.68  La   69  En   97  0.71
+  118 ch.69  La   43  En   63  0.68
+  119 ch.70  La   85  En  135  0.63
+  120 ch.71  La  122  En  180  0.68
+  121 ch.72  La   90  En  127  0.71
+  122 ch.73  La  137  En  207  0.66

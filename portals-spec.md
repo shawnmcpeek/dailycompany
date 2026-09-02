@@ -1,6 +1,10 @@
 # Daily Company — Portals Spec (v2)
 
-**Companion to `benedict-daily-spec.md`.** That document specifies the Benedict portal and the shared design system. This one specifies the *portal abstraction* the other saints plug into, the cadence rules for fitting a corpus to a calendar, and the full build spec for portal #2.
+**Companion to `benedict-daily-spec.md`.** That document specifies the Benedict portal and the shared design system. This one specifies the *portal abstraction* the other saints plug into, the cadence rules for fitting a corpus to a calendar, and the full build specs for de Sales and Kempis.
+
+**Opening a house:** follow `portal-playbook.md`. That file is the engineering checklist (how de Sales was actually built). This file remains product law.
+
+**Texts and rights:** `portal-texts.md`. Editions, do-not-use lists, and per-house identity. Not a second engine — IDs, spines, and IAP in this file still win.
 
 ---
 
@@ -13,10 +17,10 @@ v1 proposed five spine types, one per saint's "native" corpus structure. That wa
 | Five spines | **Two** — `CycleSpine` and `ProgramSpine` |
 | `MonthSpine` for Liguori | Collapsed into `CycleSpine` — `dateKeys` is already a list; a monthly cycle is twelve keys per entry |
 | `SerialSpine` for six saints | Gone as a spine. Survives as an optional **Read Through** reading mode (§3.4) |
-| `CardSpine` for John of the Cross | Gone. His corpus is 275k words — it fills two years, it doesn't need shuffling |
+| `CardSpine` for John of the Cross | Gone. Opening daily unit is the *Sayings*, not two years of treatise slices (`portal-texts.md`) |
 | Build Ignatius second | **Build de Sales second.** Ignatius is now a lone exception; build the common case first |
 
-The dominant cost across eight portals is no longer spine machinery. It's **cutting ~100k words into 365 pieces**, eight times. §11 specifies that pipeline; it is the thing to derisk.
+The dominant cost across eight portals is no longer spine machinery. It's **cutting ~100k words into 365 pieces**, eight times. §12 specifies that pipeline; it is the thing to derisk.
 
 ---
 
@@ -36,20 +40,17 @@ Date-keyed, repeating, identical to what Benedict already runs. `DailyEntry.date
 | Portal | Entries | Repeats/yr | Keys per entry |
 | --- | --- | --- | --- |
 | Benedict | 122 | 3 | 3 |
-| de Sales | 365 | 1 | 1 |
+| de Sales | 366 | 1 | 1 |
 | Liguori | 31 | ~12 | 12 |
 | Gregory | 183 | 2 | 2 |
-| John of the Cross | 730 | 0.5 (two-year) | 1, plus a `cycleYear` field |
 
-No new lookup code for any of these. Benedict's existing `byDate` map and its 366-day coverage test cover the whole set.
-
-**Two-year cycles** are the one genuine addition: `DailyEntry` gains `int? cycleYear` (1 or 2), and the resolver picks the arm by `date.year.isEven`. Anchor it to an explicit epoch year in `portal.json` rather than to parity alone, so a reinstall on a different device lands on the same arm.
+No new lookup code for any of these. Benedict's existing `byDate` map and its 366-day coverage test cover the whole set. John of the Cross opens on the *Sayings* (a repeat after word count), not a two-year treatise cut. A `cycleYear` arm remains available if a later shelf actually needs two years.
 
 **Leap day.** Emit 366 keys. In common years, merge `02-29` into `02-28` and stack the two portions with a hairline divider. You already have this code path for Benedict's Feb 24.
 
 ### `ProgramSpine` — Ignatius only
 
-Start date plus elapsed weeks. Justified once, in §9, and confined to a single module. Everything else in the Ignatius portal runs on a cycle like every other portal.
+Start date plus elapsed weeks. Justified once, in §10, and confined to a single module. Everything else in the Ignatius portal runs on a cycle like every other portal.
 
 ---
 
@@ -59,14 +60,15 @@ The rule: **`entries × repeats ≈ 365`, chosen so daily length lands in 250–
 
 | Portal | Corpus | ~Words | Cadence | ~Words/day |
 | --- | --- | --- | --- | --- |
-| **de Sales** | *Devout Life*, ~119 ch | ~120k | 365 × 1 | ~330 |
+| **de Sales** | *Devout Life*, ~119 ch | ~78k (was ~120k) | 366 × 1 | ~215 |
+| **Kempis** | *Imitation of Christ*, 4 books | ~63k | **366 × 1** | ~170 |
 | **Augustine** | *Confessions* I–X | ~100k | 365 × 1 | ~275 |
 | **Teresa** | *Interior Castle* + *Way of Perfection* | ~135k | 365 × 1 | ~370 |
 | **Thérèse** | *Story of a Soul* + letters | ~90k | 365 × 1 | ~245 |
-| **Francis** | *Fioretti* + Writings + Admonitions | ~80k | 365 × 1 | ~220 |
+| **Francis** | Writings (Robinson); *Fioretti* is a second shelf | thin | repeat after count (not a padded 365) | — |
 | **Gregory** | *Pastoral Rule*, 65 ch | ~75k | **183 × 2** | ~410 |
 | **Liguori** | *Visits*, 31 | ~30k | **31 × 12** | ~950/visit |
-| **John of the Cross** | *Ascent*, *Dark Night*, *Canticle*, *Flame* | ~275k | **730 × 1** (two-year) | ~375 |
+| **John of the Cross** | *Sayings of Light and Love* (daily); treatises later | short | repeat after count | — |
 | Benedict | *Rule* | ~40k | 122 × 3 | ~330 |
 
 Word counts are estimates from page counts and want verifying — have `01_fetch.py` print a real count per source before anyone commits to a cadence.
@@ -75,7 +77,9 @@ Word counts are estimates from page counts and want verifying — have `01_fetch
 
 **Liguori's ~950-word Visits are the author's own unit** and shouldn't be cut down. A monthly cycle also means his portal is the only one where a lapsed user returns to something they recognise, which is a quietly good property for the cheapest portal to build.
 
-**Francis at ~220 is borderline.** The *Fioretti* are narrative, and narrative tolerates short days better than argument does — an episode that ends on "and the wolf laid its paw in his hand" is fine at 200 words. Leave him at 365 × 1 and let the cutter's chapter-boundary preference do the work.
+**Francis's writings are thin.** Do not pad them to 365 and do not put the *Fioretti* in the daily slot to fatten the year. Take a repeat after the real count. The *Fioretti* are a labeled second shelf — stories told about him, not his voice.
+
+**Kempis at ~170 is the same trade de Sales already made.** The Imitation is thinner than the word-count band; a 183 × 2 repeat would land ~340 words and is the spec-correct default. The product choice for this house is daily freshness — a unique passage every calendar day — over the band. Thin days, never padding, never a repeat. Confirm the real count in the parse step before locking the cutter target.
 
 ---
 
@@ -137,7 +141,7 @@ Also linked from the Sources screen, which carries the full paragraph.
 >
 > This year-long cycle was made for this app. It is not a traditional division of the text: Francis de Sales did not write the *Devout Life* to be read a page a day, and no religious order or published edition assigns these passages to these dates. We cut the book into 365 readings at paragraph and chapter boundaries so it could be kept company with daily.
 >
-> The text itself is unaltered — Dom Henry Benedict Mackey's 1885 translation, complete.
+> The text itself is unaltered — the 1876 Rivingtons edition (Library of Spiritual Works for English Catholics). The title page names no translator.
 >
 > If you'd rather read it straight through as it was written, turn on Read Through under the reading.
 
@@ -163,7 +167,7 @@ This audience checks. Someone who reads the Rule already knows the Jan/May/Sept 
 
 ```dart
 class SaintPortal {
-  final String id;                 // 'benedict', 'desales'
+  final String id;                 // 'benedict', 'desales', 'kempis'
   final String displayName;        // 'Francis de Sales'
   final String tagline;            // 'Be who you are, and be that well.'
   final Spine spine;
@@ -184,6 +188,7 @@ class SaintPortal {
 assets/content/
   benedict/    portal.json  readings.json  dialogues.json  tools.json  medal.json
   desales/     portal.json  entries.json  meditations.json  letters.json
+  kempis/      portal.json  entries.json  calendar.json
   _shared/     psalter.json  prayers.json
 ```
 
@@ -220,6 +225,7 @@ Resist per-portal typefaces. Nine saints × a "fitting" face each is +12 MB of f
 | --- | --- |
 | Benedict | reading cycle (winter / summer / autumn) |
 | de Sales | Part of the *Devout Life* (I–V) |
+| Kempis | Book of the *Imitation* (I–IV) |
 | Teresa | the seven mansions |
 | Ignatius | Week of the Exercises |
 | Liguori, Augustine, Francis, Gregory, Thérèse | fixed |
@@ -237,6 +243,7 @@ The app reads as *about* the saint, never as *from* the order.
 | Portal | Never in name / icon / marketing | Icon trap | Incumbents |
 | --- | --- | --- | --- |
 | de Sales | Salesian, Salesians of Don Bosco, SDB, Visitation, Order of the Visitation | Salesian crest; the Visitation heart-and-thorns | none dominant |
+| Kempis | Windesheim, Brothers of the Common Life, Mount Saint Agnes, Devotio Moderna (as a brand), Canons Regular / Augustinian (collides with the Augustine house) | Canons Regular crest; a printed-book "Imitation" wordmark that reads as a publisher | crowded aisle — most-printed Christian book after the Bible |
 | Ignatius | Jesuit, Society of Jesus, SJ, Manresa, Gesù, Loyola (university marks), "Ignatian Spirituality" (jesuits.org) | **IHS monogram** — same problem as the Benedictine medal | Sacred Space, Pray as You Go, Reimagining the Examen (Loyola Press) — the last is a direct competitor for the anchor feature |
 | Liguori | Redemptorist, CSsR, **Liguori Publications** | — | Liguori Publications is an active trademark holder publishing this exact genre |
 | Teresa / John | Carmelite, OCD, Discalced, ICS Publications | Carmelite shield, brown scapular | — |
@@ -307,14 +314,14 @@ Part I's ten meditations (creation, the end for which we are made, God's gifts, 
 
 **"Companion — de Sales", $4.99 one-time,** sku `desales_companion`.
 
-Once portal 3 exists, add **"Daily Company — All Saints", $14.99**. Scaffold the entitlement hierarchy in RevenueCat *now*, on portal 2 — retrofitting it after users hold individual SKUs is unpleasant.
+Once portal 3 exists, add **"Daily Company — All Saints", $14.99**. Scaffold the entitlement id `all_saints` when touching IAP — retrofitting it after users hold individual SKUs is unpleasant.
 
 ### 8.5 Sources
 
 | Source | Use | Status |
 | --- | --- | --- |
-| *Introduction to the Devout Life*, trans. Dom Henry Benedict Mackey OSB (1885) | Primary display text | PD — Mackey d. 1906 |
-| *Letters to Persons in the World*, Mackey (1892) | Letters module | PD |
+| *Introduction to the Devout Life*, anonymous Rivingtons 1876 (*Library of Spiritual Works for English Catholics*) | Primary display text | PD — 1876. Not Mackey. |
+| *Letters to Persons in the World*, Mackey (1892) | Letters module | PD — Mackey d. 1906 |
 | *Treatise on the Love of God*, Mackey (1884) | Reserved for a possible year 2 | PD |
 
 **Do not use:** John K. Ryan (1950, Image/Doubleday — the best-selling English text and therefore the tempting one); Michael Day (Burns & Oates, 1956); Armind Nazareth; any TAN or Sophia Institute edition's apparatus, notes, or chapter titles.
@@ -322,7 +329,7 @@ Once portal 3 exists, add **"Daily Company — All Saints", $14.99**. Scaffold t
 ### 8.6 Build order
 
 1. **Portal abstraction** — asset refactor, registry, routing, `portalId` on Isar, portal picker, provenance sheet. Benedict's 366-day test green at the end. *No de Sales content yet.*
-2. **Content cutter** (§11) — run it on Mackey, review the sheet, commit `entries.json`.
+2. **Content cutter** (§12) — run it on the 1876 Rivingtons text, review the sheet, commit `entries.json`.
 3. **Bouquet + the two exercises** — free, shippable alone.
 4. **Today** on the shared widgets, Part-driven accent, provenance sheet wired.
 5. **Read Through** — cursor, toggle, position labels.
@@ -332,14 +339,94 @@ Once portal 3 exists, add **"Daily Company — All Saints", $14.99**. Scaffold t
 
 ---
 
-## 9. Portal #3 — Ignatius of Loyola (the exception)
+## 9. Portal #3 — Thomas à Kempis
+
+**id:** `kempis` · **Display:** Thomas à Kempis · **Tagline:** *Love God, and serve Him only.* (I.1)
+**Provenance:** `.constructed` · **Cadence:** 366 × 1, ~170 words/day
+
+**Disclaimer:** *An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by the Canons Regular of St. Augustine, the Congregation of Windesheim, the Brothers of the Common Life, any house associated with them, or any shrine or publisher of the Imitation.*
+
+Already a closed house in the hallway, listed ahead of de Sales. Opening it is the common-case path a second time — same `entries.json` + `calendar.json` shape, same leap/common handling — so the work is extracting the cycle loader and non-Benedict shell, not cloning de Sales. Ignatius remains the later `ProgramSpine` exception.
+
+There is no living traditional date-map for the Imitation comparable to the Rule's Jan/May/Sept cycle. The year is this app's construction.
+
+**Not a saint.** Thomas à Kempis has never been canonized or beatified. Display name, store copy, commentary, and hallway chrome never read "St. Thomas à Kempis." `HouseKind.writer` so the row is *Writer · The Imitation of Christ*. The app tagline can stay *Keep company with a saint*; this house is the exception the listing already hedges as *a saint or spiritual master*.
+
+### 9.1 Why 366 × 1
+
+The Imitation is thinner than the 250–400 word band (~63k in Benham). Spec §2 would take a repeat (183 × 2 ≈ 340 words). The product choice is the same trade de Sales already made: **a unique passage every calendar day**, thin days over merging or padding. 366 maps 1:1 onto a leap year; common years merge the last two entries onto Dec 31.
+
+Confirm the real word count in the parse step before locking the cutter target. Search `cut.py` for a target that yields exactly 366.
+
+### 9.2 Anchor practice — The Cell
+
+Kempis' own instruction, Book I chapter 20: *Of the love of solitude and silence.* Withdraw into the inner cell.
+
+This is the portal's Compline — fixed, no calendar logic, free forever:
+
+- After the day's reading, an unguided silence on the existing timer. No lectio movements. No select-to-keep (that is de Sales' Bouquet).
+- One persisted hour of withdrawal, **off by default**, user-set time.
+- At most one soft tap at that hour. Near-silence is the characterization.
+
+### 9.3 Haptics — almost none
+
+| Event | Pattern | Intent |
+| --- | --- | --- |
+| Cell hour | one soft tap, if enabled | a glance into the cell |
+| Movement change | one soft tick | reuse from Lectio, only if a timer is running |
+
+No jittered aspirations. No office bells. Borrowing either blurs the house.
+
+### 9.4 Accent by book
+
+Book I ascesis → slate. Book II inner life → umber. Book III dialogue → muted rose-brown. Book IV sacrament → antique gold. Hues must be distinct from `CycleAccent` and `DesalesAccent`.
+
+### 9.5 Modules and tiers
+
+| Module | Content | Tier |
+| --- | --- | --- |
+| Practice | The Cell | free |
+| Admonitions | Book I's 25 chapters, as written, indexed | free |
+| Today | the 366-day cycle of Books I–IV | unlock |
+| Read Through | continuous mode | unlock |
+
+No Latin, no Life, no second corpus (letters, soliloquies) in this opening. Book I is the "begin here" — complete in itself, the famous short book.
+
+**"Companion — Kempis", $4.99 one-time,** sku `kempis_companion`.
+
+Scaffold **"Daily Company — All Saints"** entitlement `all_saints` in the same IAP pass.
+
+### 9.6 Sources
+
+| Source | Use | Status |
+| --- | --- | --- |
+| *The Imitation of Christ*, trans. Rev. William Benham (1886), Project Gutenberg #1653 | Primary display text, all four books | PD — Benham d. 1910 |
+
+Book IV (the Blessed Sacrament) ships. This app is Catholic; Protestant editions that drop it are not the text.
+
+Authorship has been debated (Gerson, Gersen, Hilton). The house follows the received attribution: Thomas à Kempis. One sentence in Sources is enough; do not hedge the hallway name.
+
+**Do not use:** Aloysius Croft and Harold Bolton (1940, Image — the tempting Catholic edition); Ronald Knox; William Creasy; Joseph Tylenda SJ; any TAN or Sophia Institute edition's apparatus, notes, or chapter titles.
+
+### 9.7 Build order
+
+1. Decision record in this section + `portal-playbook.md`.
+2. Content cutter on Benham — fetch, parse four books, 366 entries, `review.html`, concatenation test. Translator named in `portal.json` from day one.
+3. Generic `CycleCalendar` + portal-scoped Read Through settings + registry-driven non-Benedict shell. de Sales tests stay green. Benedict stays on its loaders.
+4. The Cell + Book I Admonitions — free.
+5. Today on the shared cycle widgets, book-driven accent, provenance sheet, Read Through. No Bouquet gesture.
+6. Cell notification, IAP (`kempis_companion` + `all_saints` entitlement id).
+
+---
+
+## 10. Portal #4 — Ignatius of Loyola (the exception)
 
 **id:** `ignatius` · **Tagline:** *Find God in all things.*
 **Disclaimer:** *An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by the Society of Jesus, any Jesuit province or house, or any Ignatian retreat centre or publisher.*
 
 The only portal that keeps `ProgramSpine`, and only for one module.
 
-### 9.1 Why he's exempt
+### 10.1 Why he's exempt
 
 The *Exercises* are progressive by method — the Weeks are meant to do their work in order, and a first-ever day landing on the Third Week's Passion is wrong in a way that Augustine's Book VII on a random Tuesday is not. Ignatius says so himself in the Annotations. The Nineteenth Annotation is his own provision for someone who can't leave their work for thirty days: the Exercises spread over months of daily prayer. **30 weeks, 7 entries per week, 210 entries**, with a start date, pause, resume and restart.
 
@@ -353,7 +440,7 @@ Everything else in this portal runs on a cycle:
 | Prayers — Anima Christi, Suscipe, Generosity | none | free |
 | **Exercises** | **`ProgramSpine`** | unlock |
 
-### 9.2 Anchor — the Examen
+### 10.2 Anchor — the Examen
 
 Five movements on the existing timer, soft tick between each. Two forms: **Full** 12 min (2/1/5/2/2 — presence, light, review, sorrow, resolve) and **Short** 5 min. Ignatius held the Examen was the one thing never to be dropped, so the short form is the point rather than a compromise; default to it.
 
@@ -361,13 +448,13 @@ Journal at the end, saved against the date, resurfacing by date — *"a year ago
 
 **Haptics: two beats.** Midday Examen, soft double tap ~80ms apart. Evening Examen, double tap with a longer second beat. Defaults 12:30 and 21:00.
 
-### 9.3 Accent by Week
+### 10.3 Accent by Week
 
 Disposition `#6E655A` ash → First Week `#4A4266` violet → Second `#4F6146` green → Third `#8C2F26` red → Fourth `#A8802C` gold.
 
 **Repetition is structural, not filler.** Roughly one entry in four repeats the previous day's points, by design. Don't let a content pass "helpfully" replace them with new material — it breaks the method.
 
-### 9.4 Pastoral note — required
+### 10.4 Pastoral note — required
 
 Handle it like the Medal blessing: clear, unhedged, shown once before the program starts and available in About.
 
@@ -375,7 +462,7 @@ Handle it like the Medal blessing: clear, unhedged, shown once before the progra
 
 Not a legal disclaimer. It's the honest description of the product, and this audience will trust everything else more for it.
 
-### 9.5 Sources
+### 10.5 Sources
 
 *Spiritual Exercises*, trans. Elder Mullan SJ (1909) — PD, Mullan d. 1925; literal from the Autograph, keeps Ignatius's numbering. *Autobiography*, trans. J. F. X. O'Conor SJ (1900) — PD. *Letters and Instructions*, trans. Rickaby SJ (1914) — PD. Autograph Spanish for side-by-side — PD.
 
@@ -383,22 +470,25 @@ Not a legal disclaimer. It's the honest description of the product, and this aud
 
 ---
 
-## 10. The remaining six
+## 11. The remaining houses
+
+Editions, do-not-use, and identity never-lists: `portal-texts.md`. Cadence here is still a guess until the cutter prints a real word count.
 
 | Saint | Cadence | Primary text (PD) | Anchor | Note |
 | --- | --- | --- | --- | --- |
-| **Liguori** | 31 × 12 | *Visits to the Blessed Sacrament*, Coffin (1855) | The Visit | Cheapest portal here — 31 entries, no cutting pass, resets monthly. Provenance is `.partlyTraditional`: the 31 Visits are his own division, the month mapping is ours. |
+| **Liguori** | 31 × 12 | *Visits to the Blessed Sacrament*, Grimm Centenary (Benziger, 1886–97) | The Visit | Cheapest portal here — 31 entries, no cutting pass, resets monthly. Short months omit visits 29–31; do not merge them. Provenance is `.partlyTraditional`: the 31 Visits are his own division, the month mapping is ours. |
 | **Augustine** | 365 × 1 | *Confessions*, Pusey (1838) | Evening reading | Ship Books I–X; XI–XIII are philosophical and lose people. Treat them as an appendix reachable from the index and Read Through. |
-| **Teresa** | 365 × 1 | *Interior Castle* + *Way of Perfection*, David Lewis | Recollection timer | The seven mansions drive the accent — the one fixed-corpus portal that earns a moving accent. |
-| **Francis** | 365 × 1 | *Fioretti*, T. W. Arnold / Heywood (1906) + Writings | Canticle of the Creatures | The 28 Admonitions make a strong free tier. Highest name recognition, most crowded aisle. |
+| **Teresa** | 365 × 1 | *Interior Castle* + *Way of Perfection*, Stanbrook / Zimmerman (1911–12) | Recollection timer | The seven mansions drive the accent — the one fixed-corpus portal that earns a moving accent. Never Peers or ICS. |
+| **Francis** | repeat after count | Writings, Robinson (1906). *Fioretti* is a second shelf | Canticle of the Creatures | Do not pad a short corpus to 365. The 28 Admonitions make a strong free tier. Highest name recognition, most crowded aisle. |
 | **Gregory** | **183 × 2** | *Book of Pastoral Rule*, Barmby, NPNF II.12 (1895) | — | **Overlaps Benedict** — *Dialogues* Bk II already ships there as Life of Benedict. Cross-link the same JSON, don't duplicate. The *Pastoral Rule* is a book about leadership and is what Gregory brings that Benedict's portal doesn't. |
-| **Thérèse** | 365 × 1 | *Story of a Soul* — **see flag** | The Little Way offering | **Rights flag.** The standard PD English text is Thomas Taylor's 1912 translation; Taylor appears to have died in 1963, which clears the US but *not* life+70 until ~2034 — the exact Doyle problem the Benedict spec avoids. Verify the translator's dates before scheduling. The 1898 French *Histoire d'une Âme* is clear for Thérèse's own words, but Mother Agnes's editorial hand (d. 1951) complicates the edition. **Build last.** |
+| **John of the Cross** | repeat after count | *Sayings of Light and Love*, Lewis (1864/89) | — | Daily unit is the sayings, not slices of the *Ascent*. Treatises (~275k) are a later shelf. Never Kavanaugh–Rodriguez. |
+| **Thérèse** | 365 × 1 | *Story of a Soul* — **see flag** | The Little Way offering | **Rights flag.** Taylor 1912 of the 1898 Pauline text is the clear US path; it is the edited Thérèse, not the 1956 manuscripts. Never Clarke / Knox / ICS. **Build last.** |
 
 Public-domain status is jurisdiction-specific and I'm not a lawyer — the caveat closing the Benedict spec applies to every row above, the Thérèse row especially.
 
 ---
 
-## 11. The content cutter
+## 12. The content cutter
 
 `tools/content/cut.py`. This runs eight times and is the long pole of the whole project. Build it once, properly.
 
@@ -424,7 +514,7 @@ Public-domain status is jurisdiction-specific and I'm not a lawyer — the cavea
 
 ---
 
-## 12. Open questions
+## 13. Open questions
 
 1. **One active saint, or grazing?** Grazing is the easy build and the weaker product. Suggestion: the app remembers one active portal and opens straight to it; switching is two taps under More. "Keep company with a saint" is singular and the tagline is doing real work.
 2. **Cross-portal streaks.** Don't. The Benedict spec's argument holds harder across nine portals — someone who moves from Benedict to Ignatius has broken nothing.

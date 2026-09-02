@@ -1,0 +1,134 @@
+# Portal playbook
+
+Engineering recipe for opening a house. Product law lives in `portals-spec.md` and `benedict-daily-spec.md`. Texts and rights live in `portal-texts.md`. This file is the checklist extracted from how de Sales was actually built — not the idealized spec.
+
+Benedict is the traditional exception. Every later house copies the **de Sales shape**, not the Rule.
+
+Copy the house sheet from `portal-texts.md` into this decision record. Do not invent an edition.
+
+---
+
+## 0. Before any code
+
+Fill this decision record. Do not start a pipeline until the PD source and translator dates are named. Rights in `portal-texts.md` must read CLEAR (or CONDITIONAL with the cost accepted).
+
+| Field | Notes |
+| --- | --- |
+| `id` | Folder name, route param, registry key. Lowercase, no spaces. Matches `Companions` id if the house is already listed. |
+| Display name | Hallway + About. Never prefix *St.* / *Saint* unless they are canonized. Writers: `HouseKind.writer`. |
+| Tagline | One line, from the saint if possible. |
+| Provenance | `traditional` / `constructed` / `partlyTraditional`. Drives the ⓘ sheet. |
+| Cadence | `entries × repeats`. Run the cutter's `cadence_candidates` on a **real** word count before locking this. Spec §2 and `portal-texts.md` are starting guesses; de Sales' 120k estimate was 78k. |
+| Primary text | Work, translator, year, death date, edition URL — from `portal-texts.md`, then confirmed against the copy in hand. |
+| Do not use | In-copyright editions, trademarked apparatus, the tempting bestseller. |
+| Identity never-list | Order names, crests, shrine brands. Spec §7. Non-saints: never "St." |
+| Disclaimer | Verbatim, store + About. Template in spec §7. |
+| Anchor | The free practice that is this house's Compline. Different interaction from every other house. |
+| Haptics | The rhythm *is* the characterization. Do not reuse Benedict's six bells or de Sales' jittered aspirations unless that is actually this saint's day. |
+| Modules + tiers | Free vs unlock. One SKU, `$4.99` one-time, `id_companion`. |
+| Accent driver | Part / book / mansion / fixed. New hues, distinct from `CycleAccent` and `DesalesAccent`. |
+
+Hallway `open` is automatic once `PortalRegistry.byId(id)` is non-null. Add the `Companion` row first if the house is not already in `lib/data/companion.dart`.
+
+---
+
+## 1. Content
+
+Offline, committed JSON. Never run the cutter in CI.
+
+```
+tools/content/{id}/
+  fetch.py          # download the PD source into raw/
+  parse.py          # → work/chapters.json in cut.py's input shape
+  emit.py           # cut + calendar + review.html + assets
+  raw/              # gitignored or committed if small; source of truth for a re-run
+  work/chapters.json
+  review/review.html
+assets/content/{id}/
+  portal.json       # documentation; Dart registry is runtime truth
+  entries.json
+  calendar.json
+  …module JSON
+```
+
+**Parse shape** (`tools/content/cut.py`):
+
+```json
+{
+  "parts": [{
+    "part": 1,
+    "title": "…",
+    "chapters": [{
+      "chapter": 1,
+      "title": "…",
+      "paragraphs": ["…"]
+    }]
+  }]
+}
+```
+
+Strip TOC, running heads, translator preface, footnote markers, apparatus. Paragraphs are clean prose. A Book of the Imitation is a `part`.
+
+**Emit.** Search for a target word count that yields the cadence you locked (for constructed year-cycles: prefer **exactly 366**). Date map:
+
+- 366 entries → 1:1 onto a leap year; common years merge the last two entries onto Dec 31.
+- 365 entries → 1:1 onto a common year; leap day shares Feb 28.
+
+Name the translator in `entries.json` and `portal.json` on the first emit. Do not ship "unverified."
+
+**Must hold before commit:**
+
+- Entry ids contiguous `1..N`
+- Concatenating `textEn` reconstructs the parsed source, whitespace-normalized
+- Every day of 2024 and 2025 resolves to ≥1 entry
+- Every entry is reachable in at least one year type
+- Eyeball `review.html` once for flagged rows
+
+Register the folder in `pubspec.yaml` (`assets/content/{id}/`).
+
+---
+
+## 2. Dart
+
+Order matters. Do the shared cycle/shell work **before** a third copy of de Sales.
+
+1. **Registry** — `SaintPortal` in `lib/data/models/portal.dart`, append to `PortalRegistry.all`. Provenance paragraphs already substituted. Disclaimer verbatim.
+2. **Palette** — accent class in `lib/app/theme/palette.dart`. Wire the resolver in `lib/main.dart` from today's entry (or a fixed colour).
+3. **Cycle loader** — `CycleCalendar.load(portalId)` reads `assets/content/{id}/entries.json` + `calendar.json`. Do not add `FooCalendar`.
+4. **Settings** — Read Through mode and cursor are per-`portalId` maps. Never add `fooReadThrough`. Migrate any old portal-prefixed keys on load.
+5. **Shell** — Benedict keeps `_benedictShell`. Every other open house uses a shell built from `SaintPortal.modules`. Add a module id → branch mapping in `app_router.dart`; add path builders in `portal_routes.dart`.
+6. **Today** — Shared cycle Today: week-unmarked strip is not required if de Sales doesn't have it yet; provenance ⓘ, drop cap, Read Through toggle, position line. Bouquet / select-to-keep is **de Sales only**.
+7. **Free module + Practice** — House-specific screens. Reuse `guided_timer.dart` and `drop_cap_text.dart`.
+8. **IAP** — flags, entitlement, paywall screen, unlock provider. Scaffold `all_saints` when touching IAP. `IapFlags.enabled` stays false until RevenueCat is live; while false, unlock everything.
+9. **Notifications** — one channel, off by default, body is the chapter title not a nudge. Sync from a provider in `main.dart` the way bells/aspirations do.
+10. **Sources / More** — gate Benedict-only rows (bells, Latin, Oblate, Life track) on `currentPortalIdProvider == 'benedict'`. Sources lists the active portal's texts, not Benedict's by default.
+11. **Tests** — `test/{id}_cycle_test.dart` mirroring `test/desales_cycle_test.dart`. Update `test/companion_test.dart` open set.
+
+Landing route: Benedict → `/hub`; everyone else → `/p/{id}/today`.
+
+---
+
+## 3. What not to copy from Benedict
+
+- Hub dashboard
+- Liturgical computus / drop-cap Ordo (Benedict only)
+- Latin column
+- Six office bells and the Hours module
+- `ContentCatalog` (Rule/Life/Tools/Medal/Psalms)
+- Traditional 122 × 3 date tables unless this house actually has that custom
+
+---
+
+## 4. Shared vs per-portal
+
+**Shared, non-negotiable:** EB Garamond for reading text; sans confined to chrome; vellum / Compline / Paper surfaces; 1.5px line icons; 400–600ms `easeOutCubic`; drop cap widget; guided timer; audio controller when it exists.
+
+**Per-portal:** accent set and its driver, ornament, haptic rhythm, free-tier module, disclaimer, provenance copy, SKU.
+
+Never compute or display a reading backlog. No streak counters.
+
+---
+
+## 5. Store
+
+Leave `store/listing.yml` alone until the house is actually open and you are asked to update listings. Hallway copy and the in-app disclaimer ship with the portal; store copy is a separate pass.

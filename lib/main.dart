@@ -42,21 +42,21 @@ class DailyCompanyApp extends ConsumerWidget {
     final router = ref.watch(routerProvider);
     ref.watch(bellSyncProvider);
     ref.watch(desalesAspirationSyncProvider);
+    ref.watch(kempisCellSyncProvider);
     ref.watch(iapControllerProvider);
     final platformBrightness =
         WidgetsBinding.instance.platformDispatcher.platformBrightness;
 
     // Accent driver is per-portal (spec §6): Benedict's is date-driven,
-    // de Sales' is Part-driven. Falls back to Part I while the de Sales
-    // calendar is still loading, rather than blocking the first frame.
+    // de Sales' is Part-driven, Kempis' is Book-driven.
     final portalId = ref.watch(currentPortalIdProvider);
     Color accent;
-    if (portalId == 'desales') {
+    if (portalId == 'desales' || portalId == 'kempis') {
       final todaysEntries =
-          ref.watch(desalesCalendarProvider).valueOrNull?.resolveFor(day) ??
+          ref.watch(cycleCalendarProvider(portalId)).valueOrNull?.resolveFor(day) ??
               const [];
       final part = todaysEntries.isEmpty ? 1 : todaysEntries.first.part;
-      accent = DesalesAccent.forPart(part);
+      accent = portalAccent(portalId, part);
     } else {
       accent = ReadingCalendar.accentForStatic(day);
     }

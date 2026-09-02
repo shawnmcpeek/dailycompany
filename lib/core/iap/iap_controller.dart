@@ -45,14 +45,23 @@ final iapControllerProvider =
 /// Effective unlock: when IAP is flagged off, everything is unlocked.
 final oblateUnlockedProvider = Provider<bool>((ref) {
   if (!IapFlags.enabled) return true;
-  return ref.watch(iapControllerProvider).has(IapFlags.entitlementId);
+  final iap = ref.watch(iapControllerProvider);
+  return iap.has(IapFlags.entitlementId) ||
+      iap.has(IapFlags.allSaintsEntitlementId);
 });
 
 final desalesCompanionUnlockedProvider = Provider<bool>((ref) {
   if (!IapFlags.enabled) return true;
-  return ref
-      .watch(iapControllerProvider)
-      .has(IapFlags.desalesEntitlementId);
+  final iap = ref.watch(iapControllerProvider);
+  return iap.has(IapFlags.desalesEntitlementId) ||
+      iap.has(IapFlags.allSaintsEntitlementId);
+});
+
+final kempisCompanionUnlockedProvider = Provider<bool>((ref) {
+  if (!IapFlags.enabled) return true;
+  final iap = ref.watch(iapControllerProvider);
+  return iap.has(IapFlags.kempisEntitlementId) ||
+      iap.has(IapFlags.allSaintsEntitlementId);
 });
 
 class IapController extends StateNotifier<IapState> {
@@ -62,7 +71,12 @@ class IapController extends StateNotifier<IapState> {
     if (!IapFlags.enabled) {
       state = const IapState(
         ready: true,
-        entitlements: {IapFlags.entitlementId, IapFlags.desalesEntitlementId},
+        entitlements: {
+          IapFlags.entitlementId,
+          IapFlags.desalesEntitlementId,
+          IapFlags.kempisEntitlementId,
+          IapFlags.allSaintsEntitlementId,
+        },
       );
       return;
     }
@@ -108,7 +122,12 @@ class IapController extends StateNotifier<IapState> {
     if (!IapFlags.enabled) {
       state = const IapState(
         ready: true,
-        entitlements: {IapFlags.entitlementId, IapFlags.desalesEntitlementId},
+        entitlements: {
+          IapFlags.entitlementId,
+          IapFlags.desalesEntitlementId,
+          IapFlags.kempisEntitlementId,
+          IapFlags.allSaintsEntitlementId,
+        },
       );
       return;
     }
@@ -175,6 +194,9 @@ class IapController extends StateNotifier<IapState> {
 
   Future<bool> purchaseDesalesCompanion() =>
       _purchase(IapFlags.desalesProductId, IapFlags.desalesEntitlementId);
+
+  Future<bool> purchaseKempisCompanion() =>
+      _purchase(IapFlags.kempisProductId, IapFlags.kempisEntitlementId);
 
   Future<bool> restore() async {
     if (!IapFlags.enabled) return true;

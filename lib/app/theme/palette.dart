@@ -54,6 +54,29 @@ abstract final class DesalesAccent {
       };
 }
 
+/// Accent shifts with the Book of the Imitation — spec §9.4.
+/// Distinct from [CycleAccent] and [DesalesAccent].
+abstract final class KempisAccent {
+  static const bookI = Color(0xFF3F4A52); // Ascesis — slate
+  static const bookII = Color(0xFF5A4638); // Inner life — umber
+  static const bookIII = Color(0xFF6A4854); // Dialogue — muted rose-brown
+  static const bookIV = Color(0xFF7A6A3E); // Sacrament — antique gold
+
+  static Color forBook(int book) => switch (book) {
+        1 => bookI,
+        2 => bookII,
+        3 => bookIII,
+        4 => bookIV,
+        _ => bookI,
+      };
+}
+
+Color portalAccent(String portalId, int part) => switch (portalId) {
+      'desales' => DesalesAccent.forPart(part),
+      'kempis' => KempisAccent.forBook(part),
+      _ => CycleAccent.winter,
+    };
+
 /// Drop-cap liturgical colors (v1 resolver).
 abstract final class LiturgicalColor {
   static const green = Color(0xFF4F6146);

@@ -4,6 +4,7 @@ import 'package:dailycompany/app/theme/palette.dart';
 import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
 import 'package:dailycompany/core/iap/iap_flags.dart';
+import 'package:dailycompany/data/models/portal.dart';
 import 'package:dailycompany/data/providers.dart';
 import 'package:dailycompany/features/iap/paywall.dart';
 import 'package:dailycompany/features/lectio/journal_export.dart';
@@ -29,34 +30,36 @@ class MoreScreen extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
       children: [
-        ListTile(
-          contentPadding: EdgeInsets.zero,
-          title: const Text('Lectio Divina'),
-          subtitle: const Text('Guided timer over today’s reading'),
-          onTap: () => context.push(PortalRoutes.lectio(portalId)),
-        ),
-        const SectionRule(),
-        ListTile(
-          contentPadding: EdgeInsets.zero,
-          title: const Text('Export journal'),
-          subtitle: const Text('Plain text file via the share sheet'),
-          onTap: () async {
-            final unlocked = ref.read(oblateUnlockedProvider);
-            if (!unlocked) {
-              await openPaywall(context);
-              return;
-            }
-            final entries = ref.read(journalProvider);
-            final catalog = ref.read(contentCatalogProvider).valueOrNull;
-            if (!context.mounted) return;
-            await JournalExport.share(
-              context,
-              entries: entries,
-              catalog: catalog,
-            );
-          },
-        ),
-        const SectionRule(),
+        if (portalId == 'benedict') ...[
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('Lectio Divina'),
+            subtitle: const Text('Guided timer over today’s reading'),
+            onTap: () => context.push(PortalRoutes.lectio(portalId)),
+          ),
+          const SectionRule(),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('Export journal'),
+            subtitle: const Text('Plain text file via the share sheet'),
+            onTap: () async {
+              final unlocked = ref.read(oblateUnlockedProvider);
+              if (!unlocked) {
+                await openPaywall(context);
+                return;
+              }
+              final entries = ref.read(journalProvider);
+              final catalog = ref.read(contentCatalogProvider).valueOrNull;
+              if (!context.mounted) return;
+              await JournalExport.share(
+                context,
+                entries: entries,
+                catalog: catalog,
+              );
+            },
+          ),
+          const SectionRule(),
+        ],
         ListTile(
           contentPadding: EdgeInsets.zero,
           title: const Text('Export diagnostics'),
@@ -166,83 +169,107 @@ class MoreScreen extends ConsumerWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          'The Rule, written as monks read it — adjust until the page feels quiet.',
+          portalId == 'benedict'
+              ? 'The Rule, written as monks read it — adjust until the page feels quiet.'
+              : 'Adjust until the page feels quiet.',
           style: Theme.of(context).textTheme.bodyLarge,
         ),
-        const SizedBox(height: 24),
-        ChromeLabel('Daily reading'),
-        const SizedBox(height: 8),
-        Text(
-          'Life is one chapter a day from Gregory. The Rule follows the monastic calendar. Both shows each.',
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-        const SizedBox(height: 12),
-        DailyTrackToggle(
-          value: settings.dailyTrack,
-          onChanged: ctrl.setDailyTrack,
-        ),
-        ListTile(
-          contentPadding: EdgeInsets.zero,
-          title: const Text('Restart Life cycle'),
-          subtitle: const Text('Begin the book again from the Prologue'),
-          onTap: () async {
-            await ctrl.restartLifeTrack();
-            if (context.mounted) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Life cycle restarted.')),
-              );
-            }
-          },
-        ),
+        if (portalId == 'benedict') ...[
+          const SizedBox(height: 24),
+          ChromeLabel('Daily reading'),
+          const SizedBox(height: 8),
+          Text(
+            'Life is one chapter a day from Gregory. The Rule follows the monastic calendar. Both shows each.',
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          const SizedBox(height: 12),
+          DailyTrackToggle(
+            value: settings.dailyTrack,
+            onChanged: ctrl.setDailyTrack,
+          ),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('Restart Life cycle'),
+            subtitle: const Text('Begin the book again from the Prologue'),
+            onTap: () async {
+              await ctrl.restartLifeTrack();
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Life cycle restarted.')),
+                );
+              }
+            },
+          ),
+        ],
         const SizedBox(height: 8),
         ChromeLabel('Settings'),
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
-          title: const Text('Haptic bells'),
-          subtitle: const Text('The signal for the Work of God'),
+          title: Text(portalId == 'benedict' ? 'Haptic bells' : 'Haptics'),
+          subtitle: Text(
+            portalId == 'benedict'
+                ? 'The signal for the Work of God'
+                : 'Soft taps for this house’s practice',
+          ),
           value: settings.hapticsEnabled,
           onChanged: ctrl.setHaptics,
         ),
-        SwitchListTile(
-          contentPadding: EdgeInsets.zero,
-          title: const Text('Bell notifications'),
-          subtitle: const Text(
-            'Scheduled office bells — times live under Hours',
+        if (portalId == 'benedict') ...[
+          SwitchListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('Bell notifications'),
+            subtitle: const Text(
+              'Scheduled office bells — times live under Hours',
+            ),
+            value: settings.bellsEnabled,
+            onChanged: ctrl.setBellsEnabled,
           ),
-          value: settings.bellsEnabled,
-          onChanged: ctrl.setBellsEnabled,
-        ),
-        SwitchListTile(
-          contentPadding: EdgeInsets.zero,
-          title: const Text('Ora et Labora mode'),
-          subtitle: const Text('Weekday little hours only · Oblate'),
-          value: settings.oraEtLabora,
-          onChanged: unlocked
-              ? ctrl.setOraEtLabora
-              : (_) => openPaywall(context),
-        ),
-        SwitchListTile(
-          contentPadding: EdgeInsets.zero,
-          title: const Text('Prefer Latin side-by-side'),
-          subtitle: const Text('Oblate'),
-          value: settings.showLatin && unlocked,
-          onChanged: unlocked
-              ? ctrl.setShowLatin
-              : (_) => openPaywall(context),
-        ),
-        ListTile(
-          contentPadding: EdgeInsets.zero,
-          title: const Text('Oblate'),
-          subtitle: Text(
-            unlocked
-                ? (IapFlags.enabled
-                      ? 'Unlocked'
-                      : 'Billing flagged off — all features open in this build')
-                : 'One-time unlock for Hours, Life, journal, Latin',
+          SwitchListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('Ora et Labora mode'),
+            subtitle: const Text('Weekday little hours only · Oblate'),
+            value: settings.oraEtLabora,
+            onChanged: unlocked
+                ? ctrl.setOraEtLabora
+                : (_) => openPaywall(context),
           ),
-          trailing: const Icon(Icons.chevron_right, size: 20),
-          onTap: () => openPaywall(context),
-        ),
+          SwitchListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('Prefer Latin side-by-side'),
+            subtitle: const Text('Oblate'),
+            value: settings.showLatin && unlocked,
+            onChanged: unlocked
+                ? ctrl.setShowLatin
+                : (_) => openPaywall(context),
+          ),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('Oblate'),
+            subtitle: Text(
+              unlocked
+                  ? (IapFlags.enabled
+                        ? 'Unlocked'
+                        : 'Billing flagged off — all features open in this build')
+                  : 'One-time unlock for Hours, Life, journal, Latin',
+            ),
+            trailing: const Icon(Icons.chevron_right, size: 20),
+            onTap: () => openPaywall(context),
+          ),
+        ] else ...[
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('Companion'),
+            subtitle: Text(
+              ref.watch(cycleUnlockedProvider)
+                  ? (IapFlags.enabled
+                        ? 'Unlocked'
+                        : 'Billing flagged off — all features open in this build')
+                  : 'One-time unlock for the year-long cycle',
+            ),
+            trailing: const Icon(Icons.chevron_right, size: 20),
+            onTap: () => openPaywall(context),
+          ),
+        ],
         ListTile(
           contentPadding: EdgeInsets.zero,
           title: const Text('The hallway'),
@@ -263,9 +290,8 @@ class MoreScreen extends ConsumerWidget {
         ChromeLabel('About'),
         const SizedBox(height: 10),
         Text(
-          'An independent app from Daddoo Dev. Not affiliated with, endorsed by, '
-          'or produced by any Benedictine monastery, abbey, congregation, or '
-          'the Order of Saint Benedict.',
+          PortalRegistry.byId(portalId)?.disclaimer ??
+              PortalRegistry.benedict.disclaimer,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         const SizedBox(height: 12),

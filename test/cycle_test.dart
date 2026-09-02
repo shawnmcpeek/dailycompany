@@ -6,10 +6,10 @@ import 'package:flutter_test/flutter_test.dart';
 
 ReadingCalendar loadFixture() {
   final readings = jsonDecode(
-    File('assets/content/rule_readings.json').readAsStringSync(),
+    File('assets/content/benedict/rule_readings.json').readAsStringSync(),
   ) as Map<String, dynamic>;
   final calendar = jsonDecode(
-    File('assets/content/reading_calendar.json').readAsStringSync(),
+    File('assets/content/benedict/reading_calendar.json').readAsStringSync(),
   ) as Map<String, dynamic>;
   return ReadingCalendar.fromJson(readings, calendar);
 }
@@ -64,6 +64,46 @@ void main() {
     expect(feb23.length, greaterThanOrEqualTo(2));
     expect(common, isNotEmpty);
     expect(common, isNot(equals(leap)));
+  });
+
+  test('Latin of ch. 2 and 7 sits on the same portions as the English', () {
+    final byId = {for (final r in calendar.readings) r.id: r};
+    expect(byId[13]!.textLa, contains('Heli sacerdotis de Silo'));
+    expect(byId[13]!.textEn, contains('Heli, the priest of Silo'));
+    expect(byId[14]!.textLa, isNot(contains('Heli sacerdotis de Silo')));
+    expect(
+      byId[25]!.textLa,
+      contains('evocatio divina ascendendo inseruit'),
+    );
+    expect(byId[25]!.textEn, contains('ladder which appeared to Jacob'));
+    expect(byId[26]!.textLa, contains('sed et desideria carnis'));
+    expect(byId[26]!.textLa, isNot(contains(RegExp(r'\bomnimo\b'))));
+  });
+
+  test('Latin column has no known source defects', () {
+    final banned = [
+      'pastotis',
+      'delinquentiump',
+      'præ beatur',
+      'unuscuiusque',
+      'inoboetientibus',
+      'p æ niteberis',
+      'recreare.Nudum',
+      'patefacere.Os',
+      'partiendoscilicet',
+      'The Latin Library',
+      'Classics Page',
+    ];
+    for (final r in calendar.readings) {
+      expect(RegExp(r'\bfutum\b').hasMatch(r.textLa), isFalse, reason: 'id ${r.id}');
+      expect(RegExp(r'\bomnimo\b').hasMatch(r.textLa), isFalse, reason: 'id ${r.id}');
+      for (final bad in banned) {
+        expect(r.textLa, isNot(contains(bad)), reason: 'id ${r.id} $bad');
+      }
+      final en = r.textEn.split(RegExp(r'\s+')).where((w) => w.isNotEmpty).length;
+      final la = r.textLa.split(RegExp(r'\s+')).where((w) => w.isNotEmpty).length;
+      expect(la / en, inInclusiveRange(0.45, 1.05), reason: 'id ${r.id} $la/$en');
+    }
   });
 
   test('cycle labels cover winter/summer/autumn ranges', () {

@@ -13,5 +13,5 @@
   "modules": ["today", "meditations", "practice", "letters"],
   "disclaimer": "An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by the Salesians of Don Bosco, the Order of the Visitation, any Salesian or Visitandine province or house, or any shrine or publisher associated with them.",
   "unlockSku": "desales_companion",
-  "sourceNote": "Text: Introduction to the Devout Life, hosted by the Christian Classics Ethereal Library (ccel.org/ccel/desales/devout_life). Structurally matches the standard 5-part/119-chapter edition also mirrored at catholicity.com/devoutlife. TRANSLATOR UNVERIFIED — spec names Dom Henry Benedict Mackey's 1885 translation, but no source checked during sourcing named a translator for this specific text. Do not ship without confirming attribution and PD status against a definitive bibliographic record."
+  "sourceNote": "Introduction to the Devout Life, Library of Spiritual Works for English Catholics (Rivingtons, London / Oxford / Cambridge, 1876), 'A New Translation.' Title page names no translator. CCEL hosts this text (ccel.org/ccel/desales/devout_life). Not Mackey (he did the Burns & Oates Treatise and Letters). Not Ryan 1950. 1876 — public domain."
 }

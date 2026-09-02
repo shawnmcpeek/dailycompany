@@ -1,12 +1,14 @@
-import 'package:dailycompany/core/cycle/desales_calendar.dart';
+import 'package:dailycompany/core/cycle/cycle_calendar.dart';
 import 'package:dailycompany/core/cycle/life_track.dart';
 import 'package:dailycompany/data/models/desales_letter.dart';
 import 'package:dailycompany/data/models/desales_meditation.dart';
+import 'package:dailycompany/data/models/kempis_admonition.dart';
 import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
 import 'package:dailycompany/core/diagnostics/journal_failure_reporter.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
 import 'package:dailycompany/core/notifications/aspiration_scheduler.dart';
 import 'package:dailycompany/core/notifications/bell_scheduler.dart';
+import 'package:dailycompany/core/notifications/cell_scheduler.dart';
 import 'package:dailycompany/data/content_catalog.dart';
 import 'package:dailycompany/data/isar/app_isar.dart';
 import 'package:dailycompany/data/isar/bouquet.dart';
@@ -25,15 +27,19 @@ final currentPortalIdProvider = Provider<String>((ref) {
 });
 
 /// Benedict's content only — RuleReading/Latin/Life/Tools/Hours/Medal don't
-/// apply to any other portal. de Sales screens use [desalesCalendarProvider]
-/// instead.
+/// apply to any other portal. Cycle portals use [cycleCalendarProvider].
 final contentCatalogProvider = FutureProvider<ContentCatalog>((ref) async {
   final portalId = ref.watch(currentPortalIdProvider);
   return ContentCatalog.load(portalId);
 });
 
-final desalesCalendarProvider = FutureProvider<DesalesCalendar>((ref) async {
-  return DesalesCalendar.loadFromAssets();
+final cycleCalendarProvider =
+    FutureProvider.family<CycleCalendar, String>((ref, portalId) async {
+  return CycleCalendar.load(portalId);
+});
+
+final desalesCalendarProvider = FutureProvider<CycleCalendar>((ref) async {
+  return ref.watch(cycleCalendarProvider('desales').future);
 });
 
 final desalesMeditationsProvider =
@@ -44,6 +50,22 @@ final desalesMeditationsProvider =
 final desalesLettersProvider =
     FutureProvider<List<DesalesLetterBook>>((ref) async {
   return DesalesLetterBook.loadFromAssets();
+});
+
+final kempisAdmonitionsProvider =
+    FutureProvider<KempisAdmonitions>((ref) async {
+  return KempisAdmonitions.loadFromAssets();
+});
+
+/// Unlock for the active portal's paid cycle (Today + Read Through).
+final cycleUnlockedProvider = Provider<bool>((ref) {
+  final portalId = ref.watch(currentPortalIdProvider);
+  return switch (portalId) {
+    'benedict' => ref.watch(oblateUnlockedProvider),
+    'desales' => ref.watch(desalesCompanionUnlockedProvider),
+    'kempis' => ref.watch(kempisCompanionUnlockedProvider),
+    _ => false,
+  };
 });
 
 final selectedDayProvider = StateProvider<DateTime>((ref) {
@@ -91,6 +113,20 @@ final desalesAspirationSyncProvider = Provider<void>((ref) {
   });
 });
 
+/// Keeps Kempis' Cell hour aligned with settings.
+final kempisCellSyncProvider = Provider<void>((ref) {
+  void sync() {
+    final settings = ref.read(settingsProvider);
+    if (!settings.ready) return;
+    CellScheduler.instance.reschedule(settings);
+  }
+
+  ref.listen<AppSettings>(settingsProvider, (_, next) {
+    if (!next.ready) return;
+    sync();
+  });
+});
+
 class AppSettings {
   const AppSettings({
     this.ready = false,
@@ -112,10 +148,12 @@ class AppSettings {
     this.companionId = '',
     this.dailyTrack = DailyTrack.life,
     this.lifeTrackStart = '',
-    this.desalesReadThrough = false,
-    this.desalesReadThroughCursor = 1,
     this.desalesAspirationsEnabled = false,
     this.aspirationTimes = const {},
+    this.readThroughByPortal = const {},
+    this.readThroughCursorByPortal = const {},
+    this.kempisCellEnabled = false,
+    this.kempisCellTime = '20:00',
   });
 
   /// False until SharedPreferences have been read.
@@ -154,20 +192,36 @@ class AppSettings {
   /// `yyyy-MM-dd` the Life cycle began. Empty until prefs load.
   final String lifeTrackStart;
 
-  /// de Sales only — straight-through reading instead of the calendar.
-  /// Spec §3.4: switching modes never resets or penalises the other, so
-  /// this and the calendar's own day tracking are independent state.
-  final bool desalesReadThrough;
-
-  /// 1-indexed position in the 1..366 entry order, persisted per portal.
-  final int desalesReadThroughCursor;
-
   /// de Sales only — three or four light "aspiration" reminders a day.
   final bool desalesAspirationsEnabled;
 
   /// Slot id (`a1`, `a2`, `a3`) → `HH:mm`. Missing keys fall back to
   /// [AspirationScheduler.defaultTimes].
   final Map<String, String> aspirationTimes;
+
+  /// Read Through mode, keyed by portal id. Spec §3.4: switching never
+  /// resets the calendar path.
+  final Map<String, bool> readThroughByPortal;
+
+  /// 1-indexed Read Through cursor per portal.
+  final Map<String, int> readThroughCursorByPortal;
+
+  /// Kempis only — the Cell hour of withdrawal.
+  final bool kempisCellEnabled;
+
+  /// `HH:mm` for the Cell notification. Default 20:00.
+  final String kempisCellTime;
+
+  bool readThroughFor(String portalId) =>
+      readThroughByPortal[portalId] ?? false;
+
+  int readThroughCursorFor(String portalId) =>
+      readThroughCursorByPortal[portalId] ?? 1;
+
+  /// de Sales only — straight-through reading instead of the calendar.
+  bool get desalesReadThrough => readThroughFor('desales');
+
+  int get desalesReadThroughCursor => readThroughCursorFor('desales');
 
   DateTime get lifeStart {
     if (lifeTrackStart.isEmpty) {
@@ -211,10 +265,12 @@ class AppSettings {
     String? companionId,
     DailyTrack? dailyTrack,
     String? lifeTrackStart,
-    bool? desalesReadThrough,
-    int? desalesReadThroughCursor,
     bool? desalesAspirationsEnabled,
     Map<String, String>? aspirationTimes,
+    Map<String, bool>? readThroughByPortal,
+    Map<String, int>? readThroughCursorByPortal,
+    bool? kempisCellEnabled,
+    String? kempisCellTime,
   }) => AppSettings(
     ready: ready ?? this.ready,
     onboardingComplete: onboardingComplete ?? this.onboardingComplete,
@@ -235,12 +291,14 @@ class AppSettings {
     companionId: companionId ?? this.companionId,
     dailyTrack: dailyTrack ?? this.dailyTrack,
     lifeTrackStart: lifeTrackStart ?? this.lifeTrackStart,
-    desalesReadThrough: desalesReadThrough ?? this.desalesReadThrough,
-    desalesReadThroughCursor:
-        desalesReadThroughCursor ?? this.desalesReadThroughCursor,
     desalesAspirationsEnabled:
         desalesAspirationsEnabled ?? this.desalesAspirationsEnabled,
     aspirationTimes: aspirationTimes ?? this.aspirationTimes,
+    readThroughByPortal: readThroughByPortal ?? this.readThroughByPortal,
+    readThroughCursorByPortal:
+        readThroughCursorByPortal ?? this.readThroughCursorByPortal,
+    kempisCellEnabled: kempisCellEnabled ?? this.kempisCellEnabled,
+    kempisCellTime: kempisCellTime ?? this.kempisCellTime,
   );
 }
 
@@ -301,12 +359,13 @@ class SettingsController extends StateNotifier<AppSettings> {
       companionId: prefs.getString('companionId') ?? '',
       dailyTrack: DailyTrackX.fromStorage(prefs.getString('dailyTrack')),
       lifeTrackStart: lifeStart,
-      desalesReadThrough: prefs.getBool('desalesReadThrough') ?? false,
-      desalesReadThroughCursor:
-          prefs.getInt('desalesReadThroughCursor') ?? 1,
       desalesAspirationsEnabled:
           prefs.getBool('desalesAspirationsEnabled') ?? false,
       aspirationTimes: aspTimes,
+      readThroughByPortal: _loadReadThroughMap(prefs),
+      readThroughCursorByPortal: _loadReadThroughCursorMap(prefs),
+      kempisCellEnabled: prefs.getBool('kempisCellEnabled') ?? false,
+      kempisCellTime: prefs.getString('kempisCellTime') ?? '20:00',
     );
   }
 
@@ -370,15 +429,29 @@ class SettingsController extends StateNotifier<AppSettings> {
     (await SharedPreferences.getInstance()).setString('lifeTrackStart', key);
   }
 
-  Future<void> setDesalesReadThrough(bool v) async {
-    state = state.copyWith(desalesReadThrough: v);
-    (await SharedPreferences.getInstance()).setBool('desalesReadThrough', v);
+  Future<void> setDesalesReadThrough(bool v) => setReadThrough('desales', v);
+
+  Future<void> setDesalesReadThroughCursor(int v) =>
+      setReadThroughCursor('desales', v);
+
+  Future<void> setReadThrough(String portalId, bool v) async {
+    final next = Map<String, bool>.from(state.readThroughByPortal)
+      ..[portalId] = v;
+    state = state.copyWith(readThroughByPortal: next);
+    (await SharedPreferences.getInstance()).setString(
+      'readThroughByPortal',
+      jsonEncode(next),
+    );
   }
 
-  Future<void> setDesalesReadThroughCursor(int v) async {
-    state = state.copyWith(desalesReadThroughCursor: v);
-    (await SharedPreferences.getInstance())
-        .setInt('desalesReadThroughCursor', v);
+  Future<void> setReadThroughCursor(String portalId, int v) async {
+    final next = Map<String, int>.from(state.readThroughCursorByPortal)
+      ..[portalId] = v;
+    state = state.copyWith(readThroughCursorByPortal: next);
+    (await SharedPreferences.getInstance()).setString(
+      'readThroughCursorByPortal',
+      jsonEncode(next),
+    );
   }
 
   Future<void> setDesalesAspirationsEnabled(bool v) async {
@@ -427,6 +500,19 @@ class SettingsController extends StateNotifier<AppSettings> {
     );
   }
 
+  Future<void> setKempisCellEnabled(bool v) async {
+    state = state.copyWith(kempisCellEnabled: v);
+    (await SharedPreferences.getInstance()).setBool('kempisCellEnabled', v);
+  }
+
+  Future<void> setKempisCellTime(TimeOfDayCompat time) async {
+    final hh = time.hour.toString().padLeft(2, '0');
+    final mm = time.minute.toString().padLeft(2, '0');
+    final next = '$hh:$mm';
+    state = state.copyWith(kempisCellTime: next);
+    (await SharedPreferences.getInstance()).setString('kempisCellTime', next);
+  }
+
   Future<void> setLectioMinutes({
     int? lectio,
     int? meditatio,
@@ -454,6 +540,34 @@ class TimeOfDayCompat {
   const TimeOfDayCompat({required this.hour, required this.minute});
   final int hour;
   final int minute;
+}
+
+Map<String, bool> _loadReadThroughMap(SharedPreferences prefs) {
+  final raw = prefs.getString('readThroughByPortal');
+  if (raw != null) {
+    final decoded = jsonDecode(raw) as Map<String, dynamic>;
+    return {
+      for (final e in decoded.entries) e.key: e.value as bool,
+    };
+  }
+  if (prefs.containsKey('desalesReadThrough')) {
+    return {'desales': prefs.getBool('desalesReadThrough') ?? false};
+  }
+  return {};
+}
+
+Map<String, int> _loadReadThroughCursorMap(SharedPreferences prefs) {
+  final raw = prefs.getString('readThroughCursorByPortal');
+  if (raw != null) {
+    final decoded = jsonDecode(raw) as Map<String, dynamic>;
+    return {
+      for (final e in decoded.entries) e.key: (e.value as num).toInt(),
+    };
+  }
+  if (prefs.containsKey('desalesReadThroughCursor')) {
+    return {'desales': prefs.getInt('desalesReadThroughCursor') ?? 1};
+  }
+  return {};
 }
 
 /// UI-facing journal row (backed by Isar [LectioJournalEntry]).

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generic content cutter — spec portals-spec.md §11.
+"""Generic content cutter — spec portals-spec.md §12.
 
 Greedy paragraph packing to a target word count, shared by every portal's
 content pipeline (not just the one that happens to run it first).

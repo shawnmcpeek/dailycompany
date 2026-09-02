@@ -6,12 +6,12 @@ import 'package:flutter_test/flutter_test.dart';
 
 CycleCalendar loadFixture() {
   final entries = jsonDecode(
-    File('assets/content/desales/entries.json').readAsStringSync(),
+    File('assets/content/kempis/entries.json').readAsStringSync(),
   ) as Map<String, dynamic>;
   final calendar = jsonDecode(
-    File('assets/content/desales/calendar.json').readAsStringSync(),
+    File('assets/content/kempis/calendar.json').readAsStringSync(),
   ) as Map<String, dynamic>;
-  return CycleCalendar.fromJson(entries, calendar, portalId: 'desales');
+  return CycleCalendar.fromJson(entries, calendar, portalId: 'kempis');
 }
 
 void main() {
@@ -69,29 +69,31 @@ void main() {
     expect(leapDec31, [366]);
   });
 
-  test('concatenating all entries reproduces the parsed source exactly', () {
-    // The cutter's own round-trip check already verified this at emit
-    // time against the raw chapter text; here we just confirm the
-    // committed JSON is internally consistent — ordering by id gives
-    // back a coherent, non-empty, non-duplicated text stream.
-    final byId = [for (var i = 1; i <= calendar.entries.length; i++) calendar.byId(i)!];
+  test('concatenating all entries yields a coherent non-empty stream', () {
+    final byId = [
+      for (var i = 1; i <= calendar.entries.length; i++) calendar.byId(i)!,
+    ];
     for (final e in byId) {
       expect(e.textEn.trim(), isNotEmpty, reason: 'entry ${e.id} has empty text');
     }
     final allText = byId.map((e) => e.textEn).join('\n\n');
-    expect(allText.length, greaterThan(50000));
+    expect(allText.length, greaterThan(40000));
   });
 
-  test('every part starts at chapter 1 (no mislabeled part boundary)', () {
+  test('every book starts at chapter 1 (no mislabeled part boundary)', () {
     final seenParts = <int>[];
     for (final e in calendar.entries) {
       if (seenParts.isEmpty || seenParts.last != e.part) {
         expect(e.chapter, 1,
-            reason: 'Part ${e.part} first appears at chapter ${e.chapter}, '
+            reason: 'Book ${e.part} first appears at chapter ${e.chapter}, '
                 'not 1 — a part-boundary label bug');
         seenParts.add(e.part);
       }
     }
-    expect(seenParts, [1, 2, 3, 4, 5]);
+    expect(seenParts, [1, 2, 3, 4]);
+  });
+
+  test('division noun is Book', () {
+    expect(calendar.divisionNoun, 'Book');
   });
 }

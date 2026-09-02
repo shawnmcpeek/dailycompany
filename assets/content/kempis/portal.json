@@ -1,0 +1,21 @@
+{
+  "id": "kempis",
+  "displayName": "Thomas à Kempis",
+  "tagline": "Love God, and serve Him only.",
+  "provenance": "constructed",
+  "spine": {
+    "type": "cycle",
+    "entries": 366,
+    "repeatsPerYear": 1.0,
+    "note": "366 x 1 — unique passage every calendar day. Maps 1:1 onto a leap year; common years merge the last two entries onto Dec 31."
+  },
+  "anchor": "cell",
+  "modules": [
+    "today",
+    "admonitions",
+    "practice"
+  ],
+  "disclaimer": "An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by the Canons Regular of St. Augustine, the Congregation of Windesheim, the Brothers of the Common Life, any house associated with them, or any shrine or publisher of the Imitation.",
+  "unlockSku": "kempis_companion",
+  "sourceNote": "The Imitation of Christ, trans. Rev. William Benham (1886). Project Gutenberg #1653. Benham d. 1910 — public domain. All four books, including Book IV (the Sacrament)."
+}

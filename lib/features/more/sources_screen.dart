@@ -1,9 +1,25 @@
 import 'package:dailycompany/data/models/portal.dart';
+import 'package:dailycompany/data/providers.dart';
 import 'package:dailycompany/shared/widgets/common.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SourcesScreen extends StatelessWidget {
+class SourcesScreen extends ConsumerWidget {
   const SourcesScreen({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final portalId = ref.watch(currentPortalIdProvider);
+    return switch (portalId) {
+      'desales' => const _DesalesSources(),
+      'kempis' => const _KempisSources(),
+      _ => const _BenedictSources(),
+    };
+  }
+}
+
+class _BenedictSources extends StatelessWidget {
+  const _BenedictSources();
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +44,10 @@ class SourcesScreen extends StatelessWidget {
           title: 'Latin side-by-side',
           body:
               'Regula Sancti Benedicti, from The Latin Library text of the Rule. '
-              'Public domain. (Butler’s 1912 Latin edition is the scholarly base often behind such texts.)',
+              'Public domain. Butler’s 1912 edition is the scholarly base often '
+              'behind such texts. Obvious scanning errors in that scrape '
+              '(missing words, split letters, site footer) were corrected '
+              'against published witnesses; the English is still Verheyen.',
         ),
         const _SourceBlock(
           title: 'Reading calendar (dates only)',
@@ -108,9 +127,115 @@ class SourcesScreen extends StatelessWidget {
         ),
         const SizedBox(height: 28),
         Text(
-          'An independent app from Daddoo Dev. Not affiliated with, endorsed by, '
-          'or produced by any Benedictine monastery, abbey, congregation, or '
-          'the Order of Saint Benedict.',
+          PortalRegistry.benedict.disclaimer,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ],
+    );
+  }
+}
+
+class _DesalesSources extends StatelessWidget {
+  const _DesalesSources();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
+      children: [
+        Text(
+          'Every text in Daily Company is public-domain or traditional.',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        const SizedBox(height: 28),
+        ChromeLabel('Introduction to the Devout Life'),
+        const SizedBox(height: 10),
+        const _SourceBlock(
+          title: 'English display text',
+          body:
+              'Library of Spiritual Works for English Catholics '
+              '(Rivingtons, London / Oxford / Cambridge, 1876), '
+              'titled “A New Translation.” The title page names no '
+              'translator. Hosted by the Christian Classics Ethereal '
+              'Library. Not Dom Henry Benedict Mackey (he translated '
+              'the Treatise and the Letters for Burns & Oates). '
+              'Not John K. Ryan (1950). 1876 — public domain.',
+        ),
+        _SourceBlock(
+          title: PortalRegistry.desales.provenanceTitle,
+          body: PortalRegistry.desales.provenanceParagraphs.join('\n\n'),
+        ),
+        const _SourceBlock(
+          title: 'Letters',
+          body:
+              'Letters to Persons in the World, from the public-domain English '
+              'text used in this house. Selections, not the complete correspondence.',
+        ),
+        const SizedBox(height: 20),
+        ChromeLabel('Not used'),
+        const SizedBox(height: 10),
+        Text(
+          'John K. Ryan (1950, Image/Doubleday), Michael Day (1956), '
+          'Armind Nazareth, and any TAN or Sophia Institute edition’s '
+          'apparatus, notes, or chapter titles.',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+        const SizedBox(height: 28),
+        Text(
+          PortalRegistry.desales.disclaimer,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ],
+    );
+  }
+}
+
+class _KempisSources extends StatelessWidget {
+  const _KempisSources();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
+      children: [
+        Text(
+          'Every text in Daily Company is public-domain or traditional.',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        const SizedBox(height: 28),
+        ChromeLabel('The Imitation of Christ'),
+        const SizedBox(height: 10),
+        const _SourceBlock(
+          title: 'English display text',
+          body:
+              'The Imitation of Christ, translated by Rev. William Benham (1886). '
+              'Project Gutenberg #1653. Benham died 1910 — public domain. '
+              'All four books, including Book IV on the Sacrament.',
+        ),
+        const _SourceBlock(
+          title: 'Authorship',
+          body:
+              'The work is traditionally attributed to Thomas à Kempis. '
+              'He was never canonized. Authorship has been debated '
+              '(Gerson, Gersen, Hilton); this house follows the received '
+              'attribution.',
+        ),
+        _SourceBlock(
+          title: PortalRegistry.kempis.provenanceTitle,
+          body: PortalRegistry.kempis.provenanceParagraphs.join('\n\n'),
+        ),
+        const SizedBox(height: 20),
+        ChromeLabel('Not used'),
+        const SizedBox(height: 10),
+        Text(
+          'Aloysius Croft and Harold Bolton (1940, Image), Ronald Knox, '
+          'William Creasy, Joseph Tylenda SJ, and any TAN or Sophia Institute '
+          'edition’s apparatus, notes, or chapter titles.',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+        const SizedBox(height: 28),
+        Text(
+          PortalRegistry.kempis.disclaimer,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
       ],

@@ -1,12 +1,25 @@
 import 'package:dailycompany/data/models/portal.dart';
 
+/// Hallway chrome. Saints are implied by the app tagline; writers must be labeled.
+enum HouseKind { saint, writer }
+
 /// A writer whose house you can keep. Only [open] houses have a daily cycle yet.
 class Companion {
-  const Companion({required this.id, required this.name, required this.work});
+  const Companion({
+    required this.id,
+    required this.name,
+    required this.work,
+    this.kind = HouseKind.saint,
+  });
 
   final String id;
   final String name;
   final String work;
+  final HouseKind kind;
+
+  /// Hallway subtitle. Writers get an explicit label so they are never implied saints.
+  String get hallwaySubtitle =>
+      kind == HouseKind.writer ? 'Writer · $work' : work;
 
   /// True once this house has a [SaintPortal] in the registry.
   bool get open => PortalRegistry.byId(id) != null;
@@ -25,6 +38,7 @@ abstract final class Companions {
       id: 'kempis',
       name: 'Thomas à Kempis',
       work: 'The Imitation of Christ',
+      kind: HouseKind.writer,
     ),
     Companion(
       id: 'desales',
@@ -55,7 +69,7 @@ abstract final class Companions {
     Companion(
       id: 'liguori',
       name: 'Alphonsus Liguori',
-      work: 'Uniformity with God’s Will',
+      work: 'Visits to the Blessed Sacrament',
     ),
     Companion(
       id: 'therese',
@@ -65,7 +79,7 @@ abstract final class Companions {
     Companion(
       id: 'john-cross',
       name: 'John of the Cross',
-      work: 'The Ascent of Mount Carmel',
+      work: 'Sayings of Light and Love',
     ),
     Companion(
       id: 'catherine',
@@ -81,11 +95,13 @@ abstract final class Companions {
       id: 'scupoli',
       name: 'Lorenzo Scupoli',
       work: 'The Spiritual Combat',
+      kind: HouseKind.writer,
     ),
     Companion(
       id: 'lawrence',
       name: 'Brother Lawrence',
       work: 'The Practice of the Presence of God',
+      kind: HouseKind.writer,
     ),
     Companion(id: 'cassian', name: 'John Cassian', work: 'The Conferences'),
   ];

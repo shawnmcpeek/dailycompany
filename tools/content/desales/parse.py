@@ -4,8 +4,8 @@ chapters: part number/title, chapter number/title, and clean paragraphs.
 
 Source: tools/content/desales/raw/ccel_devout_life.txt
   = plain-text export of https://www.ccel.org/ccel/desales/devout_life
-  Attribution on the source page is incomplete — see the translator note
-  in portals-spec.md discussion; treat as unverified pending confirmation.
+  Edition: anonymous 1876 Rivingtons "Library of Spiritual Works for
+  English Catholics." Not Mackey. See portal.json sourceNote.
 
 Strips: running heads/TOC/indices outside the five Parts, inline [N]
 footnote markers, and the footnote blocks themselves (Scripture

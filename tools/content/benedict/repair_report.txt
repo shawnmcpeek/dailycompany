@@ -1,0 +1,16 @@
+OCR   id  10: 'pastotis' -> 'pastoris'
+OCR   id  14: 'delinquentiump' -> 'delinquentium'
+SPLIT id   9 [CH2]: La   84 ->   66 words, En  112, ratio 0.59, dev 0.89
+SPLIT id  10 [CH2]: La   13 ->   95 words, En  150, ratio 0.63, dev 0.96
+SPLIT id  11 [CH2]: La  104 ->  102 words, En  157, ratio 0.65, dev 0.98
+SPLIT id  12 [CH2]: La   95 ->  110 words, En  157, ratio 0.70, dev 1.06
+SPLIT id  13 [CH2]: La  135 ->  128 words, En  201, ratio 0.64, dev 0.96
+SPLIT id  14 [CH2]: La   21 ->   68 words, En  104, ratio 0.65, dev 0.99
+SPLIT id  15 [CH2]: La  254 ->  137 words, En  220, ratio 0.62, dev 0.94
+SPLIT id  25 [CH7]: La   76 ->  175 words, En  250, ratio 0.70, dev 1.06
+SPLIT id  26 [CH7]: La   99 ->   66 words, En   93, ratio 0.71, dev 1.07
+SPLIT id  27 [CH7]: La  163 ->   96 words, En  124, ratio 0.77, dev 1.17
+
+OCR corrections applied: 2
+records re-split:        10
+validation failures:     0

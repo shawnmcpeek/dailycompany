@@ -24,6 +24,11 @@ abstract final class PortalRoutes {
   static String letter(String portalId, int book, int letter) =>
       '/p/$portalId/letters/$book/$letter';
 
+  // Kempis.
+  static String admonitions(String portalId) => '/p/$portalId/admonitions';
+  static String admonition(String portalId, int chapter) =>
+      '/p/$portalId/admonitions/$chapter';
+
   // Shared.
   static String lectio(String portalId) => '/p/$portalId/lectio';
   static String sources(String portalId) => '/p/$portalId/sources';
