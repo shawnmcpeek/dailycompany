@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "prayers": [
+    {
+      "key": "alabado",
+      "title": "The Alabado",
+      "note": "Sung at the missions at dawn and at the end of work. Spanish as printed by Engelhardt; English is the sense of that acclamation.",
+      "textEs": "Alabado sea el Santísimo Sacramento del Altar, y Bendita sea la Inmaculada Concepción de la Beatísima Virgen María.",
+      "textEn": "Praised be the Most Holy Sacrament of the Altar, and blessed be the Immaculate Conception of the most Blessed Virgin Mary."
+    },
+    {
+      "key": "angelus",
+      "title": "The Angelus",
+      "note": "The bell moment. Traditional English.",
+      "textEn": "The Angel of the Lord declared unto Mary.\nAnd she conceived of the Holy Spirit.\nHail Mary.\n\nBehold the handmaid of the Lord.\nBe it done unto me according to thy word.\nHail Mary.\n\nAnd the Word was made flesh.\nAnd dwelt among us.\nHail Mary.\n\nPray for us, O holy Mother of God.\nThat we may be made worthy of the promises of Christ.\n\nPour forth, we beseech Thee, O Lord, Thy grace into our hearts, that we, to whom the Incarnation of Christ Thy Son was made known by the message of an angel, may by His Passion and Cross be brought to the glory of His Resurrection. Through the same Christ our Lord. Amen."
+    },
+    {
+      "key": "crown",
+      "title": "The Franciscan Crown",
+      "note": "Seven decades, the Seven Joys. Opt-in, not a daily default. Two Hail Marys follow the seventh decade for the seventy-two years of Mary’s life — that closing is named, not timed here.",
+      "joys": [
+        {
+          "order": 1,
+          "title": "The Annunciation",
+          "prompt": "The Angel of the Lord declared unto Mary."
+        },
+        {
+          "order": 2,
+          "title": "The Visitation",
+          "prompt": "Mary arose and went with haste into the hill country."
+        },
+        {
+          "order": 3,
+          "title": "The Nativity",
+          "prompt": "She brought forth her firstborn Son."
+        },
+        {
+          "order": 4,
+          "title": "The Adoration of the Magi",
+          "prompt": "They found the Child with Mary His Mother."
+        },
+        {
+          "order": 5,
+          "title": "The Finding in the Temple",
+          "prompt": "They found Him in the temple, sitting in the midst of the teachers."
+        },
+        {
+          "order": 6,
+          "title": "The Resurrection",
+          "prompt": "The Lord is risen, as He said."
+        },
+        {
+          "order": 7,
+          "title": "The Assumption",
+          "prompt": "The Queen stands at Thy right hand, in gold of Ophir."
+        }
+      ]
+    }
+  ]
+}

@@ -44,6 +44,11 @@ abstract final class PortalRoutes {
 
   static String exercises(String portalId) => '/p/$portalId/exercises';
 
+  static String journey(String portalId) => '/p/$portalId/journey';
+  static String missions(String portalId) => '/p/$portalId/missions';
+  static String mission(String portalId, int order) =>
+      '/p/$portalId/missions/$order';
+
   // Shared.
   static String lectio(String portalId) => '/p/$portalId/lectio';
   static String sources(String portalId) => '/p/$portalId/sources';

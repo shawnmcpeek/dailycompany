@@ -1,0 +1,19 @@
+{
+  "id": "serra",
+  "displayName": "Junípero Serra",
+  "tagline": "I have put all my trust in God.",
+  "provenance": "traditional",
+  "spine": {
+    "type": "journey",
+    "note": "Not a page-a-day of Serra’s letters. The journey follows the historical dates of the 1769 overland expedition from Loreto to San Diego. Palóu, Relación Histórica, trans. C. Scott Williams (1913); Portolá’s diary, Smith and Teggart, Academy of Pacific Coast History vol. 1 (1909). The twenty-one missions are a gallery."
+  },
+  "anchor": null,
+  "modules": [
+    "journey",
+    "missions",
+    "practice"
+  ],
+  "disclaimer": "An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by the Order of Friars Minor, the Franciscan Friars of California, Serra International, any California mission parish, or any shrine or publisher associated with them.",
+  "unlockSku": "serra_companion",
+  "sourceNote": "Journey: Palóu/Williams 1913 and Portolá/Smith–Teggart 1909. Missions: Engelhardt (d. 1934), Palóu/Williams, Catholic Encyclopedia 1913. Engelhardt is a Franciscan partisan. Alabado: Engelhardt’s Spanish. Not used: Tibesar, Writings of Junípero Serra; Geiger 1955; Hackel; contemporary mission photographs."
+}

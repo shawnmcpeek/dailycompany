@@ -111,6 +111,14 @@ _Copy _copyFor(String id) => switch (id) {
           productId: IapFlags.cassianProductId,
           entitlementId: IapFlags.cassianEntitlementId,
         ),
+      'serra' => const _Copy(
+          includes:
+              'Includes Lasuén’s nine and the last three missions.',
+          staysFree:
+              'The 1769 journey, Serra’s nine, and the prayers stay free.',
+          productId: IapFlags.serraProductId,
+          entitlementId: IapFlags.serraEntitlementId,
+        ),
       _ => const _Copy(
           includes: 'Includes the year-long cycle and Read Through.',
           staysFree: 'Practice stays free.',

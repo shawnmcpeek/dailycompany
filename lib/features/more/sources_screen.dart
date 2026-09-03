@@ -26,6 +26,7 @@ class SourcesScreen extends ConsumerWidget {
       'scupoli' => const _NamedSources(portalId: 'scupoli'),
       'lawrence' => const _NamedSources(portalId: 'lawrence'),
       'cassian' => const _NamedSources(portalId: 'cassian'),
+      'serra' => const _SerraSources(),
       _ => const _BenedictSources(),
     };
   }
@@ -714,6 +715,77 @@ class _NamedSources extends StatelessWidget {
           const SizedBox(height: 10),
           Text(daily.$3, style: Theme.of(context).textTheme.bodyMedium),
         ],
+        const SizedBox(height: 28),
+        Text(portal.disclaimer, style: Theme.of(context).textTheme.bodyMedium),
+      ],
+    );
+  }
+}
+
+class _SerraSources extends StatelessWidget {
+  const _SerraSources();
+
+  @override
+  Widget build(BuildContext context) {
+    final portal = PortalRegistry.byId('serra')!;
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
+      children: [
+        Text(
+          'Every text in Daily Company is public-domain or traditional.',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        const SizedBox(height: 28),
+        ChromeLabel('The 1769 journey'),
+        const SizedBox(height: 10),
+        _SourceBlock(
+          title: 'English display text',
+          body:
+              'Francisco Palóu, Relación Histórica de la Vida y Apostólicas '
+              'Tareas del Venerable Padre Fray Junípero Serra, translated by '
+              'C. Scott Williams (George W. James, 1913). Diary of Gaspar de '
+              'Portolá during the California expedition of 1769–1770, edited '
+              'by Donald Eugene Smith and Frederick J. Teggart, Publications '
+              'of the Academy of Pacific Coast History, vol. 1 no. 3 (1909).',
+        ),
+        _SourceBlock(
+          title: portal.provenanceTitle,
+          body: portal.provenanceParagraphs.join('\n\n'),
+        ),
+        const SizedBox(height: 20),
+        ChromeLabel('The twenty-one missions'),
+        const SizedBox(height: 10),
+        _SourceBlock(
+          title: 'Research',
+          body:
+              'Zephyrin Engelhardt, O.F.M., The Missions and Missionaries of '
+              'California (1912–15). Engelhardt is a Franciscan partisan; the '
+              'gallery uses him as the primary research voice and names that '
+              'standpoint here, not as a disclaimer, as scholarship. Palóu/'
+              'Williams and the Catholic Encyclopedia (1913) supply founding '
+              'dates. Santa Cruz follows Engelhardt (25 September 1791), not '
+              'the Encyclopedia’s 29 September. San Luis Rey follows '
+              'Engelhardt (13 June 1798), not the Encyclopedia’s 13 July.',
+        ),
+        const SizedBox(height: 20),
+        ChromeLabel('Prayers'),
+        const SizedBox(height: 10),
+        _SourceBlock(
+          title: 'Alabado, Angelus, Crown',
+          body:
+              'The Alabado Spanish is the acclamation Engelhardt prints. The '
+              'Angelus and the Franciscan Crown are traditional public-domain '
+              'English. Nothing devotional was written for this house.',
+        ),
+        const SizedBox(height: 20),
+        ChromeLabel('Not used'),
+        const SizedBox(height: 10),
+        Text(
+          'Tibesar, Writings of Junípero Serra (1955–66). Geiger’s Palóu '
+          '(1955). Hackel. Modern mission guidebooks. Contemporary photographs '
+          'of the missions — these are active parishes.',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
         const SizedBox(height: 28),
         Text(portal.disclaimer, style: Theme.of(context).textTheme.bodyMedium),
       ],

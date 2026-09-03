@@ -66,6 +66,9 @@ abstract final class IapFlags {
   static const cassianEntitlementId = 'cassian_companion';
   static const cassianProductId = 'cassian_companion';
 
+  static const serraEntitlementId = 'serra_companion';
+  static const serraProductId = 'serra_companion';
+
   /// Bundle entitlement covering every open house. Scaffolded now so
   /// individual SKUs can later grant this without a migration fight.
   static const allSaintsEntitlementId = 'all_saints';

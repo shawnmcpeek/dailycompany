@@ -32,6 +32,9 @@ import 'package:dailycompany/features/ignatius/ignatius_practice_screen.dart';
 import 'package:dailycompany/features/ignatius/ignatius_discernment_screen.dart';
 import 'package:dailycompany/features/ignatius/ignatius_exercises_screen.dart';
 import 'package:dailycompany/features/cycle/simple_practice_screen.dart';
+import 'package:dailycompany/features/serra/serra_journey_screen.dart';
+import 'package:dailycompany/features/serra/serra_missions_screen.dart';
+import 'package:dailycompany/features/serra/serra_practice_screen.dart';
 import 'package:dailycompany/features/lectio/lectio_screen.dart';
 import 'package:dailycompany/features/life/life_screen.dart';
 import 'package:dailycompany/features/medal/medal_screen.dart';
@@ -47,10 +50,14 @@ import 'package:go_router/go_router.dart';
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 
 /// Where a portal's own landing screen is, once a house is chosen. Benedict
-/// keeps its dashboard; every other portal goes straight to Today — Hub is
-/// a Benedict-specific bonus screen, not part of the generic portal shape.
-String portalLandingRoute(String portalId) =>
-    portalId == 'benedict' ? '/hub' : PortalRoutes.today(portalId);
+/// keeps its dashboard; Serra opens on the journey; every other portal goes
+/// straight to Today — Hub is a Benedict-specific bonus screen, not part of
+/// the generic portal shape.
+String portalLandingRoute(String portalId) {
+  if (portalId == 'benedict') return '/hub';
+  if (portalId == 'serra') return PortalRoutes.journey(portalId);
+  return PortalRoutes.today(portalId);
+}
 
 final routerProvider = Provider<GoRouter>((ref) {
   final refresh = ValueNotifier(0);
@@ -213,7 +220,8 @@ final routerProvider = Provider<GoRouter>((ref) {
               id == 'montfort' ||
               id == 'scupoli' ||
               id == 'lawrence' ||
-              id == 'cassian') {
+              id == 'cassian' ||
+              id == 'serra') {
             child = CycleCompanionPaywallScreen(portalId: id!);
             title = 'Companion';
           } else {
@@ -376,6 +384,8 @@ StatefulShellBranch _cycleBranch(String portalId, String module) {
                 body = const IgnatiusPracticeScreen();
               } else if (id == 'therese') {
                 body = const TheresePracticeScreen();
+              } else if (id == 'serra') {
+                body = const SerraPracticeScreen();
               } else if (id == 'catherine' ||
                   id == 'montfort' ||
                   id == 'scupoli' ||
@@ -538,6 +548,47 @@ StatefulShellBranch _cycleBranch(String portalId, String module) {
           ),
         ],
       );
+    case 'journey':
+      return StatefulShellBranch(
+        initialLocation: PortalRoutes.journey(portalId),
+        routes: [
+          GoRoute(
+            path: '/p/:portalId/journey',
+            pageBuilder: (context, state) => PageTurn.of(
+              key: state.pageKey,
+              child: const Scaffold(
+                body: SafeArea(child: SerraJourneyScreen()),
+              ),
+            ),
+          ),
+        ],
+      );
+    case 'missions':
+      return StatefulShellBranch(
+        initialLocation: PortalRoutes.missions(portalId),
+        routes: [
+          GoRoute(
+            path: '/p/:portalId/missions',
+            pageBuilder: (context, state) => PageTurn.of(
+              key: state.pageKey,
+              child: const Scaffold(
+                body: SafeArea(child: SerraMissionsScreen()),
+              ),
+            ),
+            routes: [
+              GoRoute(
+                path: ':order',
+                pageBuilder: (context, state) => PageTurn.of(
+                  key: state.pageKey,
+                  child: SerraMissionScreen(
+                    order: int.parse(state.pathParameters['order']!),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
     case 'today':
     default:
       return StatefulShellBranch(
@@ -669,6 +720,13 @@ class AppShell extends ConsumerWidget {
         label: 'Elder',
       );
     }
+    if (module == 'practice' && portalId == 'serra') {
+      return const NavigationDestination(
+        icon: Icon(Icons.spa_outlined),
+        selectedIcon: Icon(Icons.spa),
+        label: 'Alabado',
+      );
+    }
     return switch (module) {
       'today' => const NavigationDestination(
         icon: Icon(Icons.menu_book_outlined),
@@ -714,6 +772,16 @@ class AppShell extends ConsumerWidget {
         icon: Icon(Icons.self_improvement_outlined),
         selectedIcon: Icon(Icons.self_improvement),
         label: 'Exercises',
+      ),
+      'journey' => const NavigationDestination(
+        icon: Icon(Icons.menu_book_outlined),
+        selectedIcon: Icon(Icons.menu_book),
+        label: 'Journey',
+      ),
+      'missions' => const NavigationDestination(
+        icon: Icon(Icons.map_outlined),
+        selectedIcon: Icon(Icons.map),
+        label: 'Missions',
       ),
       _ => const NavigationDestination(
         icon: Icon(Icons.menu_book_outlined),

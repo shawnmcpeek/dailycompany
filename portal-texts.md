@@ -203,11 +203,21 @@ The `ProgramSpine` exception. Full module table and director note: `portals-spec
 | Anchor | Sit with the elder. |
 | Never-list | None active (predates the orders). |
 
+### Junípero Serra — `serra` — CLEAR
+
+| | |
+| --- | --- |
+| Kind | **Place.** Not a writer. No daily-portion of letters. |
+| Journey | Palóu, *Relación Histórica*, trans. C. Scott Williams (1913). Portolá diary, Smith & Teggart (1909). Window 28 March – 1 July. Quiet after arrival until the next March. |
+| Gallery | Twenty-one missions. Engelhardt (d. 1934); Palóu/Williams; CE 1913 for date cross-check. Act I free; II–III unlock. |
+| Prayers | Alabado (Engelhardt Spanish), Angelus (traditional), Franciscan Crown (opt-in). |
+| Never-list | Tibesar *Writings*; Geiger 1955; Hackel; contemporary mission photographs. OFM / Serra International as affiliation. |
+
 ---
 
 ## Still in the hallway
 
-Serra is a different content type (`serra.md`) — after the writer houses. Not a Companion.
+None. The writer houses are open. Serra is the first Place house.
 
 ---
 
@@ -230,6 +240,7 @@ Serra is a different content type (`serra.md`) — after the writer houses. Not 
 | `montfort` | Faber 1863 | CLEAR |
 | `scupoli` | Rivingtons anonymous 1875 | CLEAR |
 | `lawrence` | Revell, translated from the French | CLEAR |
-| `cassian` | Gibson NPNF II.11 1894 | CLEAR |
+| `cassian` | Gibson NPNF II.11 1894 | CLEAR (shipped) |
+| `serra` | Palóu/Williams 1913; Portolá/Smith–Teggart 1909; Engelhardt | CLEAR (shipped) |
 
 Foreign first publication after 1900: confirm a US printing of the same edition (Benziger / Kenedy co-pubs are typical). Record the copy in `portal.json`.

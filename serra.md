@@ -1,7 +1,7 @@
 Daily Company — Serra & the Missions Module
 ===========================================
 
-Status: Deferred. Build after the nine Writer saints ship. Depends on: Life-of-Benedict module (format validation), calendar/cycle resolver, haptic bell engine. Parent spec: `benedict-daily-spec.md`
+Status: Open. Place saint — journey + twenty-one missions + map. Not a writer cycle.
 
 0. Brief
 --------

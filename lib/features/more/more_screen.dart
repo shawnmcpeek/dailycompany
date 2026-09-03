@@ -60,7 +60,7 @@ class MoreScreen extends ConsumerWidget {
           ),
           const SectionRule(),
         ],
-        if (portalId != 'benedict') ...[
+        if (portalId != 'benedict' && portalId != 'serra') ...[
           ListTile(
             contentPadding: EdgeInsets.zero,
             title: const Text('Readings'),
@@ -273,7 +273,9 @@ class MoreScreen extends ConsumerWidget {
                   ? (IapFlags.enabled
                         ? 'Unlocked'
                         : 'Billing flagged off — all features open in this build')
-                  : 'One-time unlock for the year-long cycle',
+                  : portalId == 'serra'
+                        ? 'One-time unlock for Lasuén’s nine and the last three'
+                        : 'One-time unlock for the year-long cycle',
             ),
             trailing: const Icon(Icons.chevron_right, size: 20),
             onTap: () => openPaywall(context),

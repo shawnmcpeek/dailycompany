@@ -54,7 +54,9 @@ class DailyCompanyApp extends ConsumerWidget {
     // de Sales' is Part-driven, Kempis' is Book-driven.
     final portalId = ref.watch(currentPortalIdProvider);
     Color accent;
-    if (portalId == 'desales' ||
+    if (portalId == 'serra') {
+      accent = portalAccent(portalId, 0);
+    } else if (portalId == 'desales' ||
         portalId == 'kempis' ||
         portalId == 'liguori' ||
         portalId == 'francis' ||

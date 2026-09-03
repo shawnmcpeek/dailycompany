@@ -21,6 +21,7 @@ void main() {
       'scupoli',
       'lawrence',
       'cassian',
+      'serra',
     });
     expect(Companions.byId('benedict')?.open, isTrue);
     expect(Companions.byId('desales')?.open, isTrue);
@@ -38,6 +39,7 @@ void main() {
     expect(Companions.byId('scupoli')?.open, isTrue);
     expect(Companions.byId('lawrence')?.open, isTrue);
     expect(Companions.byId('cassian')?.open, isTrue);
+    expect(Companions.byId('serra')?.open, isTrue);
   });
 
   test('every companion has a unique id', () {
@@ -63,5 +65,12 @@ void main() {
     for (final w in writers) {
       expect(w.hallwaySubtitle, startsWith('Writer ·'));
     }
+  });
+
+  test('Serra is a place house, never a writer cycle', () {
+    final serra = Companions.byId('serra')!;
+    expect(serra.kind, HouseKind.place);
+    expect(serra.hallwaySubtitle, startsWith('Place ·'));
+    expect(serra.hallwaySubtitle, contains('California Missions'));
   });
 }

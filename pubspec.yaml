@@ -62,6 +62,7 @@ flutter:
     - assets/content/scupoli/
     - assets/content/lawrence/
     - assets/content/cassian/
+    - assets/content/serra/
     - assets/branding/
   fonts:
     - family: EBGaramond

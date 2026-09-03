@@ -167,6 +167,14 @@ abstract final class CassianAccent {
   static const desert = Color(0xFF8A7048);
 }
 
+/// Fixed accent — mission adobe. Distinct from [AugustineAccent] hearth
+/// and [LawrenceAccent] hearth.
+abstract final class SerraAccent {
+  static const adobe = Color(0xFF8A5340);
+  static const lasuen = Color(0xFF5A6A58);
+  static const last = Color(0xFF8A7048);
+}
+
 Color portalAccent(String portalId, int part) => switch (portalId) {
       'desales' => DesalesAccent.forPart(part),
       'kempis' => KempisAccent.forBook(part),
@@ -183,6 +191,7 @@ Color portalAccent(String portalId, int part) => switch (portalId) {
       'scupoli' => ScupoliAccent.steel,
       'lawrence' => LawrenceAccent.hearth,
       'cassian' => CassianAccent.desert,
+      'serra' => SerraAccent.adobe,
       _ => CycleAccent.winter,
     };
 

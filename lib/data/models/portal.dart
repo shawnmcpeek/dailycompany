@@ -476,6 +476,33 @@ abstract final class PortalRegistry {
     unlockSku: 'cassian_companion',
   );
 
+  static const serra = SaintPortal(
+    id: 'serra',
+    displayName: 'Junípero Serra',
+    tagline: 'I have put all my trust in God.',
+    provenance: CycleProvenance.traditional,
+    provenanceTitle: 'About this journey',
+    provenanceParagraphs: [
+      'This is not a page-a-day of Serra’s letters. The journey follows '
+          'the historical dates of the 1769 overland expedition from Loreto '
+          'to San Diego: Palóu’s Relación Histórica in C. Scott Williams’s '
+          '1913 English, and Portolá’s diary in Smith and Teggart’s 1909 '
+          'Academy of Pacific Coast History text. The dates are the '
+          'expedition’s, not ours.',
+      'The twenty-one missions are a gallery, not a cycle. Engelhardt is '
+          'a Franciscan partisan; that is named on Sources.',
+      'After the first of July the journey sits quiet until the twenty-eighth '
+          'of March. It does not loop.',
+    ],
+    disclaimer:
+        'An independent app from Daddoo Dev. Not affiliated with, endorsed '
+        'by, or produced by the Order of Friars Minor, the Franciscan Friars '
+        'of California, Serra International, any California mission parish, '
+        'or any shrine or publisher associated with them.',
+    modules: ['journey', 'missions', 'practice'],
+    unlockSku: 'serra_companion',
+  );
+
   static const all = <SaintPortal>[
     benedict,
     desales,
@@ -493,6 +520,7 @@ abstract final class PortalRegistry {
     scupoli,
     lawrence,
     cassian,
+    serra,
   ];
 
   static SaintPortal? byId(String id) {

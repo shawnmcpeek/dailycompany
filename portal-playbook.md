@@ -248,6 +248,26 @@ Hallway `open` is automatic once `PortalRegistry.byId(id)` is non-null. Add the 
 | SKU | `cassian_companion` |
 | Accent | Fixed `CassianAccent.desert`. |
 
+### Filled — `serra`
+
+| | |
+| --- | --- |
+| `id` | `serra` |
+| Display | Junípero Serra |
+| Tagline | *I have put all my trust in God.* |
+| Kind | **Place.** Not a writer house. No daily cycle. |
+| Provenance | `traditional` — the 1769 dates are the expedition’s |
+| Cadence | Journey window **03-28 → 07-01** (96 days). Quiet after 1 July until 28 March. Does not loop. 37 unique Palóu/Portolá readings, fill-forward on rest days. Never “Day N of 95.” |
+| Primary text | Palóu, *Relación Histórica*, trans. C. Scott Williams (1913). Portolá diary, Smith & Teggart, Academy of Pacific Coast History vol. 1 (1909). Missions: Engelhardt (d. 1934), CE 1913 for cross-check. |
+| Do not use | Tibesar *Writings*; Geiger 1955; Hackel; modern guidebooks; contemporary mission photos. |
+| Never-list | OFM / Franciscan Friars of California as affiliation; Serra International; mission parishes. |
+| Disclaimer | Spec §7, naming OFM, Franciscan Friars of California, Serra International, mission parishes. |
+| Anchor | Alabado (Engelhardt Spanish). Angelus traditional. Franciscan Crown opt-in. |
+| Haptics | None new. Crown uses the existing guided timer. |
+| Modules | Free: journey, Act I (Serra’s nine), prayers. Unlock: Acts II–III. SKU `serra_companion`. |
+| Accent | Fixed `SerraAccent.adobe`. Drop cap on the journey is liturgical color of the day. |
+| Map | Offline CustomPainter, California outline + 21 pins + Camino polyline. Tap a pin for the planned mission reading. No tiles, no photos, no geofencing. |
+
 ---
 
 ## 1. Content
@@ -322,7 +342,7 @@ Order matters. Do the shared cycle/shell work **before** a third copy of de Sale
 10. **Sources / More** — gate Benedict-only rows (bells, Latin, Oblate, Life track) on `currentPortalIdProvider == 'benedict'`. Sources lists the active portal's texts, not Benedict's by default.
 11. **Tests** — `test/{id}_cycle_test.dart` mirroring `test/desales_cycle_test.dart`. Update `test/companion_test.dart` open set.
 
-Landing route: Benedict → `/hub`; everyone else → `/p/{id}/today`.
+Landing route: Benedict → `/hub`; Serra → `/p/serra/journey`; everyone else → `/p/{id}/today`.
 
 ---
 

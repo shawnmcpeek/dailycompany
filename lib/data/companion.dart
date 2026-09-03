@@ -1,9 +1,9 @@
 import 'package:dailycompany/data/models/portal.dart';
 
 /// Hallway chrome. Saints are implied by the app tagline; writers must be labeled.
-enum HouseKind { saint, writer }
+enum HouseKind { saint, writer, place }
 
-/// A writer whose house you can keep. Only [open] houses have a daily cycle yet.
+/// A house you can keep. Only [open] houses have a portal yet.
 class Companion {
   const Companion({
     required this.id,
@@ -17,9 +17,12 @@ class Companion {
   final String work;
   final HouseKind kind;
 
-  /// Hallway subtitle. Writers get an explicit label so they are never implied saints.
-  String get hallwaySubtitle =>
-      kind == HouseKind.writer ? 'Writer · $work' : work;
+  /// Hallway subtitle. Writers and place-saints are labeled so they are never implied as the other kind.
+  String get hallwaySubtitle => switch (kind) {
+        HouseKind.writer => 'Writer · $work',
+        HouseKind.place => 'Place · $work',
+        HouseKind.saint => work,
+      };
 
   /// True once this house has a [SaintPortal] in the registry.
   bool get open => PortalRegistry.byId(id) != null;
@@ -104,6 +107,12 @@ abstract final class Companions {
       kind: HouseKind.writer,
     ),
     Companion(id: 'cassian', name: 'John Cassian', work: 'The Conferences'),
+    Companion(
+      id: 'serra',
+      name: 'Junípero Serra',
+      work: 'The California Missions',
+      kind: HouseKind.place,
+    ),
   ];
 
   static Companion? byId(String id) {

@@ -155,6 +155,13 @@ final cassianCompanionUnlockedProvider = Provider<bool>((ref) {
       iap.has(IapFlags.allSaintsEntitlementId);
 });
 
+final serraCompanionUnlockedProvider = Provider<bool>((ref) {
+  if (!IapFlags.enabled) return true;
+  final iap = ref.watch(iapControllerProvider);
+  return iap.has(IapFlags.serraEntitlementId) ||
+      iap.has(IapFlags.allSaintsEntitlementId);
+});
+
 class IapController extends StateNotifier<IapState> {
   IapController() : super(const IapState());
 
@@ -179,6 +186,7 @@ class IapController extends StateNotifier<IapState> {
           IapFlags.scupoliEntitlementId,
           IapFlags.lawrenceEntitlementId,
           IapFlags.cassianEntitlementId,
+          IapFlags.serraEntitlementId,
           IapFlags.allSaintsEntitlementId,
         },
       );
@@ -237,6 +245,7 @@ class IapController extends StateNotifier<IapState> {
           IapFlags.scupoliEntitlementId,
           IapFlags.lawrenceEntitlementId,
           IapFlags.cassianEntitlementId,
+          IapFlags.serraEntitlementId,
           IapFlags.allSaintsEntitlementId,
         },
       );

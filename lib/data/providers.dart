@@ -7,6 +7,7 @@ import 'package:dailycompany/data/models/francis_canticle.dart';
 import 'package:dailycompany/data/models/francis_story.dart';
 import 'package:dailycompany/data/models/john_precaution.dart';
 import 'package:dailycompany/data/models/ignatius_content.dart';
+import 'package:dailycompany/data/models/place_saint.dart';
 import 'package:dailycompany/data/models/kempis_admonition.dart';
 import 'package:dailycompany/data/models/liguori_manner.dart';
 import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
@@ -105,6 +106,10 @@ final ignatiusPrayersProvider = FutureProvider<IgnatiusPrayers>((ref) async {
   return IgnatiusPrayers.loadFromAssets();
 });
 
+final placeSaintProvider = FutureProvider<PlaceSaint>((ref) async {
+  return PlaceSaint.load('serra');
+});
+
 /// Unlock for the active portal's paid cycle (Today + Read Through).
 final cycleUnlockedProvider = Provider<bool>((ref) {
   final portalId = ref.watch(currentPortalIdProvider);
@@ -125,6 +130,7 @@ final cycleUnlockedProvider = Provider<bool>((ref) {
     'scupoli' => ref.watch(scupoliCompanionUnlockedProvider),
     'lawrence' => ref.watch(lawrenceCompanionUnlockedProvider),
     'cassian' => ref.watch(cassianCompanionUnlockedProvider),
+    'serra' => ref.watch(serraCompanionUnlockedProvider),
     _ => false,
   };
 });
