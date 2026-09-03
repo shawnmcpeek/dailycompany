@@ -106,6 +106,55 @@ final teresaAvilaCompanionUnlockedProvider = Provider<bool>((ref) {
       iap.has(IapFlags.allSaintsEntitlementId);
 });
 
+final ignatiusCompanionUnlockedProvider = Provider<bool>((ref) {
+  if (!IapFlags.enabled) return true;
+  final iap = ref.watch(iapControllerProvider);
+  return iap.has(IapFlags.ignatiusEntitlementId) ||
+      iap.has(IapFlags.allSaintsEntitlementId);
+});
+
+final thereseCompanionUnlockedProvider = Provider<bool>((ref) {
+  if (!IapFlags.enabled) return true;
+  final iap = ref.watch(iapControllerProvider);
+  return iap.has(IapFlags.thereseEntitlementId) ||
+      iap.has(IapFlags.allSaintsEntitlementId);
+});
+
+final catherineCompanionUnlockedProvider = Provider<bool>((ref) {
+  if (!IapFlags.enabled) return true;
+  final iap = ref.watch(iapControllerProvider);
+  return iap.has(IapFlags.catherineEntitlementId) ||
+      iap.has(IapFlags.allSaintsEntitlementId);
+});
+
+final montfortCompanionUnlockedProvider = Provider<bool>((ref) {
+  if (!IapFlags.enabled) return true;
+  final iap = ref.watch(iapControllerProvider);
+  return iap.has(IapFlags.montfortEntitlementId) ||
+      iap.has(IapFlags.allSaintsEntitlementId);
+});
+
+final scupoliCompanionUnlockedProvider = Provider<bool>((ref) {
+  if (!IapFlags.enabled) return true;
+  final iap = ref.watch(iapControllerProvider);
+  return iap.has(IapFlags.scupoliEntitlementId) ||
+      iap.has(IapFlags.allSaintsEntitlementId);
+});
+
+final lawrenceCompanionUnlockedProvider = Provider<bool>((ref) {
+  if (!IapFlags.enabled) return true;
+  final iap = ref.watch(iapControllerProvider);
+  return iap.has(IapFlags.lawrenceEntitlementId) ||
+      iap.has(IapFlags.allSaintsEntitlementId);
+});
+
+final cassianCompanionUnlockedProvider = Provider<bool>((ref) {
+  if (!IapFlags.enabled) return true;
+  final iap = ref.watch(iapControllerProvider);
+  return iap.has(IapFlags.cassianEntitlementId) ||
+      iap.has(IapFlags.allSaintsEntitlementId);
+});
+
 class IapController extends StateNotifier<IapState> {
   IapController() : super(const IapState());
 
@@ -123,6 +172,13 @@ class IapController extends StateNotifier<IapState> {
           IapFlags.gregoryEntitlementId,
           IapFlags.augustineEntitlementId,
           IapFlags.teresaAvilaEntitlementId,
+          IapFlags.ignatiusEntitlementId,
+          IapFlags.thereseEntitlementId,
+          IapFlags.catherineEntitlementId,
+          IapFlags.montfortEntitlementId,
+          IapFlags.scupoliEntitlementId,
+          IapFlags.lawrenceEntitlementId,
+          IapFlags.cassianEntitlementId,
           IapFlags.allSaintsEntitlementId,
         },
       );
@@ -174,6 +230,13 @@ class IapController extends StateNotifier<IapState> {
           IapFlags.gregoryEntitlementId,
           IapFlags.augustineEntitlementId,
           IapFlags.teresaAvilaEntitlementId,
+          IapFlags.ignatiusEntitlementId,
+          IapFlags.thereseEntitlementId,
+          IapFlags.catherineEntitlementId,
+          IapFlags.montfortEntitlementId,
+          IapFlags.scupoliEntitlementId,
+          IapFlags.lawrenceEntitlementId,
+          IapFlags.cassianEntitlementId,
           IapFlags.allSaintsEntitlementId,
         },
       );

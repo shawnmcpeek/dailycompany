@@ -61,6 +61,56 @@ _Copy _copyFor(String id) => switch (id) {
           productId: IapFlags.teresaAvilaProductId,
           entitlementId: IapFlags.teresaAvilaEntitlementId,
         ),
+      'ignatius' => const _Copy(
+          includes:
+              'Includes the Autobiography through the year, the 210-day '
+              'Exercises, and Read Through.',
+          staysFree: 'The Examen, the 22 rules, and the prayers stay free.',
+          productId: IapFlags.ignatiusProductId,
+          entitlementId: IapFlags.ignatiusEntitlementId,
+        ),
+      'therese' => const _Copy(
+          includes:
+              'Includes Story of a Soul through the year, and Read Through.',
+          staysFree: 'The offering stays free.',
+          productId: IapFlags.thereseProductId,
+          entitlementId: IapFlags.thereseEntitlementId,
+        ),
+      'catherine' => const _Copy(
+          includes: 'Includes the Dialogue through the year, and Read Through.',
+          staysFree: 'The four requests stay free.',
+          productId: IapFlags.catherineProductId,
+          entitlementId: IapFlags.catherineEntitlementId,
+        ),
+      'montfort' => const _Copy(
+          includes:
+              'Includes True Devotion through the year, and Read Through.',
+          staysFree: 'The offering stays free.',
+          productId: IapFlags.montfortProductId,
+          entitlementId: IapFlags.montfortEntitlementId,
+        ),
+      'scupoli' => const _Copy(
+          includes:
+              'Includes the Spiritual Combat through the year, and Read Through.',
+          staysFree: 'The combat stays free.',
+          productId: IapFlags.scupoliProductId,
+          entitlementId: IapFlags.scupoliEntitlementId,
+        ),
+      'lawrence' => const _Copy(
+          includes:
+              'Includes the conversations and letters through the year, and '
+              'Read Through.',
+          staysFree: 'The presence stays free.',
+          productId: IapFlags.lawrenceProductId,
+          entitlementId: IapFlags.lawrenceEntitlementId,
+        ),
+      'cassian' => const _Copy(
+          includes:
+              'Includes the Conferences through the year, and Read Through.',
+          staysFree: 'Sitting with the elder stays free.',
+          productId: IapFlags.cassianProductId,
+          entitlementId: IapFlags.cassianEntitlementId,
+        ),
       _ => const _Copy(
           includes: 'Includes the year-long cycle and Read Through.',
           staysFree: 'Practice stays free.',

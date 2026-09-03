@@ -27,6 +27,11 @@ import 'package:dailycompany/features/kempis/kempis_admonitions_screen.dart';
 import 'package:dailycompany/features/kempis/kempis_practice_screen.dart';
 import 'package:dailycompany/features/liguori/liguori_practice_screen.dart';
 import 'package:dailycompany/features/teresa/teresa_practice_screen.dart';
+import 'package:dailycompany/features/therese/therese_practice_screen.dart';
+import 'package:dailycompany/features/ignatius/ignatius_practice_screen.dart';
+import 'package:dailycompany/features/ignatius/ignatius_discernment_screen.dart';
+import 'package:dailycompany/features/ignatius/ignatius_exercises_screen.dart';
+import 'package:dailycompany/features/cycle/simple_practice_screen.dart';
 import 'package:dailycompany/features/lectio/lectio_screen.dart';
 import 'package:dailycompany/features/life/life_screen.dart';
 import 'package:dailycompany/features/medal/medal_screen.dart';
@@ -201,7 +206,14 @@ final routerProvider = Provider<GoRouter>((ref) {
           } else if (id == 'john-cross' ||
               id == 'gregory' ||
               id == 'augustine' ||
-              id == 'teresa-avila') {
+              id == 'teresa-avila' ||
+              id == 'ignatius' ||
+              id == 'therese' ||
+              id == 'catherine' ||
+              id == 'montfort' ||
+              id == 'scupoli' ||
+              id == 'lawrence' ||
+              id == 'cassian') {
             child = CycleCompanionPaywallScreen(portalId: id!);
             title = 'Companion';
           } else {
@@ -360,6 +372,16 @@ StatefulShellBranch _cycleBranch(String portalId, String module) {
                 body = const AugustinePracticeScreen();
               } else if (id == 'teresa-avila') {
                 body = const TeresaPracticeScreen();
+              } else if (id == 'ignatius') {
+                body = const IgnatiusPracticeScreen();
+              } else if (id == 'therese') {
+                body = const TheresePracticeScreen();
+              } else if (id == 'catherine' ||
+                  id == 'montfort' ||
+                  id == 'scupoli' ||
+                  id == 'lawrence' ||
+                  id == 'cassian') {
+                body = SimplePracticeScreen(portalId: id);
               } else {
                 body = const DesalesPracticeScreen();
               }
@@ -477,6 +499,45 @@ StatefulShellBranch _cycleBranch(String portalId, String module) {
           ),
         ],
       );
+    case 'discernment':
+      return StatefulShellBranch(
+        initialLocation: PortalRoutes.discernment(portalId),
+        routes: [
+          GoRoute(
+            path: '/p/:portalId/discernment',
+            pageBuilder: (context, state) => PageTurn.of(
+              key: state.pageKey,
+              child: const IgnatiusDiscernmentScreen(),
+            ),
+            routes: [
+              GoRoute(
+                path: ':chapter',
+                pageBuilder: (context, state) => PageTurn.of(
+                  key: state.pageKey,
+                  child: IgnatiusRuleScreen(
+                    chapter: int.parse(state.pathParameters['chapter']!),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
+    case 'exercises':
+      return StatefulShellBranch(
+        initialLocation: PortalRoutes.exercises(portalId),
+        routes: [
+          GoRoute(
+            path: '/p/:portalId/exercises',
+            pageBuilder: (context, state) => PageTurn.of(
+              key: state.pageKey,
+              child: const Scaffold(
+                body: SafeArea(child: IgnatiusExercisesScreen()),
+              ),
+            ),
+          ),
+        ],
+      );
     case 'today':
     default:
       return StatefulShellBranch(
@@ -559,6 +620,55 @@ class AppShell extends ConsumerWidget {
         label: 'Recollection',
       );
     }
+    if (module == 'practice' && portalId == 'ignatius') {
+      return const NavigationDestination(
+        icon: Icon(Icons.spa_outlined),
+        selectedIcon: Icon(Icons.spa),
+        label: 'Examen',
+      );
+    }
+    if (module == 'practice' && portalId == 'therese') {
+      return const NavigationDestination(
+        icon: Icon(Icons.spa_outlined),
+        selectedIcon: Icon(Icons.spa),
+        label: 'Offering',
+      );
+    }
+    if (module == 'practice' && portalId == 'catherine') {
+      return const NavigationDestination(
+        icon: Icon(Icons.spa_outlined),
+        selectedIcon: Icon(Icons.spa),
+        label: 'Requests',
+      );
+    }
+    if (module == 'practice' && portalId == 'montfort') {
+      return const NavigationDestination(
+        icon: Icon(Icons.spa_outlined),
+        selectedIcon: Icon(Icons.spa),
+        label: 'Offering',
+      );
+    }
+    if (module == 'practice' && portalId == 'scupoli') {
+      return const NavigationDestination(
+        icon: Icon(Icons.spa_outlined),
+        selectedIcon: Icon(Icons.spa),
+        label: 'Combat',
+      );
+    }
+    if (module == 'practice' && portalId == 'lawrence') {
+      return const NavigationDestination(
+        icon: Icon(Icons.spa_outlined),
+        selectedIcon: Icon(Icons.spa),
+        label: 'Presence',
+      );
+    }
+    if (module == 'practice' && portalId == 'cassian') {
+      return const NavigationDestination(
+        icon: Icon(Icons.spa_outlined),
+        selectedIcon: Icon(Icons.spa),
+        label: 'Elder',
+      );
+    }
     return switch (module) {
       'today' => const NavigationDestination(
         icon: Icon(Icons.menu_book_outlined),
@@ -594,6 +704,16 @@ class AppShell extends ConsumerWidget {
         icon: Icon(Icons.list_alt_outlined),
         selectedIcon: Icon(Icons.list_alt),
         label: 'Cautions',
+      ),
+      'discernment' => const NavigationDestination(
+        icon: Icon(Icons.list_alt_outlined),
+        selectedIcon: Icon(Icons.list_alt),
+        label: 'Rules',
+      ),
+      'exercises' => const NavigationDestination(
+        icon: Icon(Icons.self_improvement_outlined),
+        selectedIcon: Icon(Icons.self_improvement),
+        label: 'Exercises',
       ),
       _ => const NavigationDestination(
         icon: Icon(Icons.menu_book_outlined),

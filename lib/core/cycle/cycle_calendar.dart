@@ -68,6 +68,7 @@ class CycleCalendar {
   String get divisionNoun => switch (portalId) {
         'kempis' || 'augustine' || 'gregory' => 'Book',
         'john-cross' => 'Saying',
+        'cassian' => 'Conference',
         _ => 'Part',
       };
 
@@ -85,6 +86,9 @@ class CycleCalendar {
     }
     if (portalId == 'teresa-avila') {
       return '${entry.partTitle} · Chapter ${entry.chapter}';
+    }
+    if (portalId == 'cassian') {
+      return 'Conference ${entry.part} · Chapter ${entry.chapter}';
     }
     return '$divisionNoun ${entry.part} · Chapter ${entry.chapter}';
   }

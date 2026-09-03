@@ -6,6 +6,7 @@ import 'package:dailycompany/data/models/francis_admonition.dart';
 import 'package:dailycompany/data/models/francis_canticle.dart';
 import 'package:dailycompany/data/models/francis_story.dart';
 import 'package:dailycompany/data/models/john_precaution.dart';
+import 'package:dailycompany/data/models/ignatius_content.dart';
 import 'package:dailycompany/data/models/kempis_admonition.dart';
 import 'package:dailycompany/data/models/liguori_manner.dart';
 import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
@@ -92,6 +93,18 @@ final johnPrecautionsProvider = FutureProvider<JohnPrecautions>((ref) async {
   return JohnPrecautions.loadFromAssets();
 });
 
+final ignatiusRulesProvider = FutureProvider<IgnatiusRules>((ref) async {
+  return IgnatiusRules.loadFromAssets();
+});
+
+final ignatiusProgramProvider = FutureProvider<IgnatiusProgram>((ref) async {
+  return IgnatiusProgram.loadFromAssets();
+});
+
+final ignatiusPrayersProvider = FutureProvider<IgnatiusPrayers>((ref) async {
+  return IgnatiusPrayers.loadFromAssets();
+});
+
 /// Unlock for the active portal's paid cycle (Today + Read Through).
 final cycleUnlockedProvider = Provider<bool>((ref) {
   final portalId = ref.watch(currentPortalIdProvider);
@@ -105,6 +118,13 @@ final cycleUnlockedProvider = Provider<bool>((ref) {
     'gregory' => ref.watch(gregoryCompanionUnlockedProvider),
     'augustine' => ref.watch(augustineCompanionUnlockedProvider),
     'teresa-avila' => ref.watch(teresaAvilaCompanionUnlockedProvider),
+    'ignatius' => ref.watch(ignatiusCompanionUnlockedProvider),
+    'therese' => ref.watch(thereseCompanionUnlockedProvider),
+    'catherine' => ref.watch(catherineCompanionUnlockedProvider),
+    'montfort' => ref.watch(montfortCompanionUnlockedProvider),
+    'scupoli' => ref.watch(scupoliCompanionUnlockedProvider),
+    'lawrence' => ref.watch(lawrenceCompanionUnlockedProvider),
+    'cassian' => ref.watch(cassianCompanionUnlockedProvider),
     _ => false,
   };
 });
@@ -203,12 +223,15 @@ final cycleReminderSyncProvider = Provider<void>((ref) {
     if (!settings.ready) return;
     final now = DateTime.now();
     final day = DateTime(now.year, now.month, now.day);
-    for (final portalId in CycleReminderScheduler.specs.keys) {
-      final cal = ref.read(cycleCalendarProvider(portalId)).valueOrNull;
-      String? body;
-      if (cal != null) {
-        final entries = cal.resolveFor(day);
-        if (entries.isNotEmpty) body = entries.first.chapterTitle;
+    for (final spec in CycleReminderScheduler.specs.values) {
+      final portalId = spec.portalId;
+      String? body = spec.title;
+      if (portalId != 'ignatius' && portalId != 'ignatius-evening') {
+        final cal = ref.read(cycleCalendarProvider(portalId)).valueOrNull;
+        if (cal != null) {
+          final entries = cal.resolveFor(day);
+          if (entries.isNotEmpty) body = entries.first.chapterTitle;
+        }
       }
       CycleReminderScheduler.instance.reschedule(
         settings,
@@ -223,6 +246,7 @@ final cycleReminderSyncProvider = Provider<void>((ref) {
     sync();
   });
   for (final id in CycleReminderScheduler.specs.keys) {
+    if (id == 'ignatius-evening') continue;
     ref.listen(cycleCalendarProvider(id), (_, _) => sync());
   }
 });
@@ -260,6 +284,10 @@ class AppSettings {
     this.francisCanticleTime = '07:00',
     this.cycleReminderEnabled = const {},
     this.cycleReminderTime = const {},
+    this.ignatiusProgramStart = '',
+    this.ignatiusProgramPaused = false,
+    this.ignatiusElapsedWhenPaused = 0,
+    this.ignatiusDirectorAcked = false,
   });
 
   /// False until SharedPreferences have been read.
@@ -336,11 +364,25 @@ class AppSettings {
   /// `HH:mm` per portal. Missing keys fall back to [reminderDefaultFor].
   final Map<String, String> cycleReminderTime;
 
+  /// Ignatius Exercises program — ISO `yyyy-MM-dd`, empty until begun.
+  final String ignatiusProgramStart;
+  final bool ignatiusProgramPaused;
+  final int ignatiusElapsedWhenPaused;
+  final bool ignatiusDirectorAcked;
+
   static const reminderDefaults = <String, String>{
     'john-cross': '07:00',
     'gregory': '08:00',
     'augustine': '21:00',
     'teresa-avila': '07:00',
+    'ignatius': '12:30',
+    'ignatius-evening': '21:00',
+    'therese': '07:00',
+    'catherine': '07:00',
+    'montfort': '07:00',
+    'scupoli': '07:00',
+    'lawrence': '08:00',
+    'cassian': '08:00',
   };
 
   bool reminderEnabledFor(String portalId) =>
@@ -348,6 +390,26 @@ class AppSettings {
 
   String reminderTimeFor(String portalId) =>
       cycleReminderTime[portalId] ?? reminderDefaults[portalId] ?? '08:00';
+
+  /// Days since program start, frozen while paused. `-1` if not started.
+  int ignatiusElapsedDays(DateTime today) {
+    if (ignatiusProgramStart.isEmpty) return -1;
+    if (ignatiusProgramPaused) return ignatiusElapsedWhenPaused;
+    final parts = ignatiusProgramStart.split('-');
+    if (parts.length != 3) return -1;
+    final start = DateTime(
+      int.parse(parts[0]),
+      int.parse(parts[1]),
+      int.parse(parts[2]),
+    );
+    final day = DateTime(today.year, today.month, today.day);
+    return day.difference(start).inDays;
+  }
+
+  static String _isoDay(DateTime d) =>
+      '${d.year.toString().padLeft(4, '0')}-'
+      '${d.month.toString().padLeft(2, '0')}-'
+      '${d.day.toString().padLeft(2, '0')}';
 
   bool readThroughFor(String portalId) =>
       readThroughByPortal[portalId] ?? false;
@@ -414,6 +476,10 @@ class AppSettings {
     String? francisCanticleTime,
     Map<String, bool>? cycleReminderEnabled,
     Map<String, String>? cycleReminderTime,
+    String? ignatiusProgramStart,
+    bool? ignatiusProgramPaused,
+    int? ignatiusElapsedWhenPaused,
+    bool? ignatiusDirectorAcked,
   }) => AppSettings(
     ready: ready ?? this.ready,
     onboardingComplete: onboardingComplete ?? this.onboardingComplete,
@@ -449,6 +515,11 @@ class AppSettings {
     francisCanticleTime: francisCanticleTime ?? this.francisCanticleTime,
     cycleReminderEnabled: cycleReminderEnabled ?? this.cycleReminderEnabled,
     cycleReminderTime: cycleReminderTime ?? this.cycleReminderTime,
+    ignatiusProgramStart: ignatiusProgramStart ?? this.ignatiusProgramStart,
+    ignatiusProgramPaused: ignatiusProgramPaused ?? this.ignatiusProgramPaused,
+    ignatiusElapsedWhenPaused:
+        ignatiusElapsedWhenPaused ?? this.ignatiusElapsedWhenPaused,
+    ignatiusDirectorAcked: ignatiusDirectorAcked ?? this.ignatiusDirectorAcked,
   );
 }
 
@@ -520,6 +591,11 @@ class SettingsController extends StateNotifier<AppSettings> {
       francisCanticleTime: prefs.getString('francisCanticleTime') ?? '07:00',
       cycleReminderEnabled: _loadBoolMap(prefs, 'cycleReminderEnabled'),
       cycleReminderTime: _loadStringMap(prefs, 'cycleReminderTime'),
+      ignatiusProgramStart: prefs.getString('ignatiusProgramStart') ?? '',
+      ignatiusProgramPaused: prefs.getBool('ignatiusProgramPaused') ?? false,
+      ignatiusElapsedWhenPaused:
+          prefs.getInt('ignatiusElapsedWhenPaused') ?? 0,
+      ignatiusDirectorAcked: prefs.getBool('ignatiusDirectorAcked') ?? false,
     );
   }
 
@@ -725,6 +801,65 @@ class SettingsController extends StateNotifier<AppSettings> {
       'cycleReminderTime',
       jsonEncode(next),
     );
+  }
+
+  Future<void> ackIgnatiusDirector() async {
+    state = state.copyWith(ignatiusDirectorAcked: true);
+    (await SharedPreferences.getInstance()).setBool(
+      'ignatiusDirectorAcked',
+      true,
+    );
+  }
+
+  Future<void> startIgnatiusProgram(DateTime today) async {
+    final start = AppSettings._isoDay(today);
+    state = state.copyWith(
+      ignatiusProgramStart: start,
+      ignatiusProgramPaused: false,
+      ignatiusElapsedWhenPaused: 0,
+    );
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('ignatiusProgramStart', start);
+    await prefs.setBool('ignatiusProgramPaused', false);
+    await prefs.setInt('ignatiusElapsedWhenPaused', 0);
+  }
+
+  Future<void> pauseIgnatiusProgram(DateTime today) async {
+    final elapsed = state.ignatiusElapsedDays(today);
+    final frozen = elapsed < 0 ? 0 : elapsed;
+    state = state.copyWith(
+      ignatiusProgramPaused: true,
+      ignatiusElapsedWhenPaused: frozen,
+    );
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('ignatiusProgramPaused', true);
+    await prefs.setInt('ignatiusElapsedWhenPaused', frozen);
+  }
+
+  Future<void> resumeIgnatiusProgram(DateTime today) async {
+    final elapsed = state.ignatiusElapsedWhenPaused;
+    final start = DateTime(today.year, today.month, today.day)
+        .subtract(Duration(days: elapsed));
+    final iso = AppSettings._isoDay(start);
+    state = state.copyWith(
+      ignatiusProgramStart: iso,
+      ignatiusProgramPaused: false,
+    );
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('ignatiusProgramStart', iso);
+    await prefs.setBool('ignatiusProgramPaused', false);
+  }
+
+  Future<void> restartIgnatiusProgram() async {
+    state = state.copyWith(
+      ignatiusProgramStart: '',
+      ignatiusProgramPaused: false,
+      ignatiusElapsedWhenPaused: 0,
+    );
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('ignatiusProgramStart', '');
+    await prefs.setBool('ignatiusProgramPaused', false);
+    await prefs.setInt('ignatiusElapsedWhenPaused', 0);
   }
 
   Future<void> setLectioMinutes({

@@ -1,0 +1,14 @@
+{
+  "prayers": [
+    {
+      "id": "anima-christi",
+      "title": "Anima Christi",
+      "textEn": "Soul of Christ, sanctify me.\nBody of Christ, save me.\nBlood of Christ, inebriate me.\nWater from the side of Christ, wash me.\nPassion of Christ, strengthen me.\nO good Jesus, hear me.\nWithin Thy wounds hide me.\nSuffer me not to be separated from Thee.\nFrom the malignant enemy defend me.\nIn the hour of my death call me.\nAnd bid me come unto Thee,\nThat with Thy saints I may praise Thee\nForever and ever. Amen."
+    },
+    {
+      "id": "suscipe",
+      "title": "Take, Lord",
+      "textEn": "Take, Lord, and receive all my liberty, my memory, my intellect, and all my will--all that I have and possess. Thou gavest it to me: to Thee, Lord, I return it! All is Thine, dispose of it according to all Thy will. Give me Thy love and grace, for this is enough for me."
+    }
+  ]
+}

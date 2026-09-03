@@ -55,6 +55,13 @@ flutter:
     - assets/content/gregory/
     - assets/content/augustine/
     - assets/content/teresa-avila/
+    - assets/content/ignatius/
+    - assets/content/therese/
+    - assets/content/catherine/
+    - assets/content/montfort/
+    - assets/content/scupoli/
+    - assets/content/lawrence/
+    - assets/content/cassian/
     - assets/branding/
   fonts:
     - family: EBGaramond

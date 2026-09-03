@@ -1,0 +1,22 @@
+{
+  "id": "ignatius",
+  "displayName": "Ignatius of Loyola",
+  "tagline": "Find God in all things.",
+  "provenance": "constructed",
+  "spine": {
+    "type": "cycle",
+    "note": "The Autobiography, cut and cycled — a thin book, repeated, never padded. The Spiritual Exercises are a 210-day program (30 weeks × 7), sequential, not mapped onto the calendar.",
+    "entries": 60,
+    "repeatsPerYear": 6.1
+  },
+  "anchor": "examen",
+  "modules": [
+    "today",
+    "practice",
+    "discernment",
+    "exercises"
+  ],
+  "disclaimer": "An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by the Society of Jesus, any Jesuit province or house, or any Ignatian retreat centre or publisher.",
+  "unlockSku": "ignatius_companion",
+  "sourceNote": "Autobiography of St. Ignatius, translated by J. F. X. O'Conor, S.J. (Benziger Brothers, New York, 1900); Project Gutenberg #24534. Spiritual Exercises, translated from the Autograph by Elder Mullan, S.J. (P. J. Kenedy & Sons, New York, 1914). Anima Christi is the traditional public-domain English; Mullan only names it as a rubric (\"And with that the Soul of Christ\"). The Prayer for Generosity is not in the Autograph or in Mullan and is not included. Not Puhl, Ganss, or Fleming."
+}

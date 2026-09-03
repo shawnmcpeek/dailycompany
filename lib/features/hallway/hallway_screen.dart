@@ -50,9 +50,10 @@ class HallwayScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 10),
             ],
-            const SizedBox(height: 18),
-            ChromeLabel('Not yet open'),
-            const SizedBox(height: 12),
+            if (Companions.closedHouses.isNotEmpty) const SizedBox(height: 18),
+            if (Companions.closedHouses.isNotEmpty)
+              ChromeLabel('Not yet open'),
+            if (Companions.closedHouses.isNotEmpty) const SizedBox(height: 12),
             for (final house in Companions.closedHouses) ...[
               HubNavButton(
                 title: house.name,

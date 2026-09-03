@@ -1,0 +1,20 @@
+{
+  "id": "catherine",
+  "displayName": "Catherine of Siena",
+  "tagline": "Remain in the cell of self-knowledge.",
+  "provenance": "constructed",
+  "spine": {
+    "type": "cycle",
+    "note": "A constructed year through Algar Thorold's 1907 English of the Dialogue — four treatises: Divine Providence, Discretion, Prayer, and Obedience.",
+    "entries": 365,
+    "repeatsPerYear": 1.0
+  },
+  "anchor": null,
+  "modules": [
+    "today",
+    "practice"
+  ],
+  "disclaimer": "An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by the Dominican Order, the Order of Preachers, any Dominican province or house, or any shrine or publisher associated with them.",
+  "unlockSku": "catherine_companion",
+  "sourceNote": "The Dialogue of Saint Catherine of Siena, translated by Algar Thorold (Kegan Paul, Trench, Trubner & Co., 1907). CCEL text of that edition. Not a modern critical translation."
+}

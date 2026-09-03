@@ -38,6 +38,12 @@ abstract final class PortalRoutes {
   static String precaution(String portalId, int chapter) =>
       '/p/$portalId/precautions/$chapter';
 
+  static String discernment(String portalId) => '/p/$portalId/discernment';
+  static String discernmentRule(String portalId, int chapter) =>
+      '/p/$portalId/discernment/$chapter';
+
+  static String exercises(String portalId) => '/p/$portalId/exercises';
+
   // Shared.
   static String lectio(String portalId) => '/p/$portalId/lectio';
   static String sources(String portalId) => '/p/$portalId/sources';

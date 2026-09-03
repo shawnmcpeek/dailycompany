@@ -2,7 +2,7 @@ import 'package:dailycompany/data/companion.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('open houses include the four cycle houses opened after Francis', () {
+  test('every companion house is open', () {
     final open = Companions.openHouses.map((c) => c.id).toSet();
     expect(open, {
       'benedict',
@@ -14,6 +14,13 @@ void main() {
       'gregory',
       'augustine',
       'teresa-avila',
+      'ignatius',
+      'therese',
+      'catherine',
+      'montfort',
+      'scupoli',
+      'lawrence',
+      'cassian',
     });
     expect(Companions.byId('benedict')?.open, isTrue);
     expect(Companions.byId('desales')?.open, isTrue);
@@ -24,6 +31,13 @@ void main() {
     expect(Companions.byId('gregory')?.open, isTrue);
     expect(Companions.byId('augustine')?.open, isTrue);
     expect(Companions.byId('teresa-avila')?.open, isTrue);
+    expect(Companions.byId('ignatius')?.open, isTrue);
+    expect(Companions.byId('therese')?.open, isTrue);
+    expect(Companions.byId('catherine')?.open, isTrue);
+    expect(Companions.byId('montfort')?.open, isTrue);
+    expect(Companions.byId('scupoli')?.open, isTrue);
+    expect(Companions.byId('lawrence')?.open, isTrue);
+    expect(Companions.byId('cassian')?.open, isTrue);
   });
 
   test('every companion has a unique id', () {
@@ -32,8 +46,7 @@ void main() {
   });
 
   test('closed houses stay listed', () {
-    expect(Companions.closedHouses, isNotEmpty);
-    expect(Companions.closedHouses.every((c) => !c.open), isTrue);
+    expect(Companions.closedHouses, isEmpty);
   });
 
   test('Kempis is a writer, never a saint in chrome', () {

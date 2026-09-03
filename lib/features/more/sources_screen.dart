@@ -19,6 +19,13 @@ class SourcesScreen extends ConsumerWidget {
       'gregory' => const _GregorySources(),
       'augustine' => const _AugustineSources(),
       'teresa-avila' => const _TeresaSources(),
+      'ignatius' => const _IgnatiusSources(),
+      'therese' => const _ThereseSources(),
+      'catherine' => const _NamedSources(portalId: 'catherine'),
+      'montfort' => const _NamedSources(portalId: 'montfort'),
+      'scupoli' => const _NamedSources(portalId: 'scupoli'),
+      'lawrence' => const _NamedSources(portalId: 'lawrence'),
+      'cassian' => const _NamedSources(portalId: 'cassian'),
       _ => const _BenedictSources(),
     };
   }
@@ -530,6 +537,185 @@ class _TeresaSources extends StatelessWidget {
           PortalRegistry.teresaAvila.disclaimer,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
+      ],
+    );
+  }
+}
+
+class _IgnatiusSources extends StatelessWidget {
+  const _IgnatiusSources();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
+      children: [
+        Text(
+          'Every text in Daily Company is public-domain or traditional.',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        const SizedBox(height: 28),
+        ChromeLabel('Autobiography and Exercises'),
+        const SizedBox(height: 10),
+        const _SourceBlock(
+          title: 'English display text',
+          body:
+              'Autobiography of St. Ignatius, translated by J. F. X. O’Conor, '
+              'S.J. (Benziger, 1900). Spiritual Exercises, translated from '
+              'the Autograph by Elder Mullan, S.J. (Kenedy, 1914). Anima '
+              'Christi is the traditional public-domain English; Mullan only '
+              'names it as a rubric. The Prayer for Generosity is not in the '
+              'Autograph or in Mullan and is not included. Not Puhl, Ganss, '
+              'or Fleming.',
+        ),
+        _SourceBlock(
+          title: PortalRegistry.ignatius.provenanceTitle,
+          body: PortalRegistry.ignatius.provenanceParagraphs.join('\n\n'),
+        ),
+        const SizedBox(height: 20),
+        ChromeLabel('Not used'),
+        const SizedBox(height: 10),
+        Text(
+          'Puhl (1951). Ganss. Fleming. Loyola Press or IJS apparatus. The '
+          'Prayer for Generosity, which is not in the Autograph or in Mullan. '
+          'The IHS emblem as ornament. “Company” as an Ignatian wink.',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+        const SizedBox(height: 28),
+        Text(
+          PortalRegistry.ignatius.disclaimer,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ],
+    );
+  }
+}
+
+class _ThereseSources extends StatelessWidget {
+  const _ThereseSources();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
+      children: [
+        Text(
+          'Every text in Daily Company is public-domain or traditional.',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        const SizedBox(height: 28),
+        ChromeLabel('Story of a Soul'),
+        const SizedBox(height: 10),
+        const _SourceBlock(
+          title: 'English display text',
+          body:
+              'Story of a Soul, translated by Thomas N. Taylor (Burns, Oates '
+              '& Washbourne, 1912). Taylor of the 1898 Pauline edited '
+              'Histoire d’une Âme — the historically famous edited Thérèse, '
+              'not the 1956 manuscript restoration, not Clarke ICS, and not '
+              'Knox. Poems in the Gutenberg file are Susan L. Emery’s and '
+              'are not shipped.',
+        ),
+        _SourceBlock(
+          title: PortalRegistry.therese.provenanceTitle,
+          body: PortalRegistry.therese.provenanceParagraphs.join('\n\n'),
+        ),
+        const SizedBox(height: 20),
+        ChromeLabel('Not used'),
+        const SizedBox(height: 10),
+        Text(
+          'The 1956 Manuscrits autobiographiques. Clarke ICS (1975). Knox '
+          '(1958). Any translation of the critical edition. Susan L. Emery’s '
+          'poems in the Gutenberg file. Lisieux shrine photography and Office '
+          'Central de Lisieux imagery.',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+        const SizedBox(height: 28),
+        Text(
+          PortalRegistry.therese.disclaimer,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ],
+    );
+  }
+}
+
+class _NamedSources extends StatelessWidget {
+  const _NamedSources({required this.portalId});
+
+  final String portalId;
+
+  @override
+  Widget build(BuildContext context) {
+    final portal = PortalRegistry.byId(portalId)!;
+    final daily = switch (portalId) {
+      'catherine' => (
+          'The Dialogue',
+          'The Dialogue of Saint Catherine of Siena, translated by Algar '
+              'Thorold (Kegan Paul, Trench, Trubner & Co., 1907).',
+          'Modern critical translations. Dominican or OP apparatus, notes, '
+              'or chapter titles.',
+        ),
+      'montfort' => (
+          'True Devotion',
+          'A Treatise on the True Devotion to the Blessed Virgin, '
+              'translated by Frederick William Faber (Burns & Lambert, 1863). '
+              'Not a modern Montfort translation, and not a thirty-three-day '
+              'program.',
+          'Company of Mary, Montfort Missionaries, or Daughters of Wisdom '
+              'apparatus. A 33-day consecration program built from this book.',
+        ),
+      'scupoli' => (
+          'The Spiritual Combat',
+          'The Spiritual Combat, together with the Supplement, anonymous '
+              'new translation (Rivingtons, 1875), Library of Spiritual Works '
+              'for English Catholics. The Path of Paradise in that scan is '
+              'not shipped. Not a modern edition.',
+          'Theatines. “St.” or “Saint” on this name. The Path of Paradise '
+              'from this scan.',
+        ),
+      'lawrence' => (
+          'The Practice of the Presence of God',
+          'Conversations and Letters of Brother Lawrence, translated from '
+              'the French (Fleming H. Revell). Anonymous nineteenth-century '
+              'English. Project Gutenberg #13871.',
+          'Carmelite or OCD apparatus. “St.” or “Saint” on this name.',
+        ),
+      'cassian' => (
+          'The Conferences',
+          'The Conferences of John Cassian, translated by Edgar C. S. Gibson, '
+              'Nicene and Post-Nicene Fathers, Second Series, Volume 11 (1894). '
+              'Conferences I–XI, XIII–XXI, XXIII–XXIV. Gibson did not translate '
+              'XII and XXII; they are not invented here. Not the Institutes, '
+              'not On the Incarnation.',
+          'The Institutes. On the Incarnation against Nestorius. Invented '
+              'English for the two conferences Gibson left untranslated.',
+        ),
+      _ => ('Daily text', '', ''),
+    };
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
+      children: [
+        Text(
+          'Every text in Daily Company is public-domain or traditional.',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        const SizedBox(height: 28),
+        ChromeLabel(daily.$1),
+        const SizedBox(height: 10),
+        _SourceBlock(title: 'English display text', body: daily.$2),
+        _SourceBlock(
+          title: portal.provenanceTitle,
+          body: portal.provenanceParagraphs.join('\n\n'),
+        ),
+        if (daily.$3.isNotEmpty) ...[
+          const SizedBox(height: 20),
+          ChromeLabel('Not used'),
+          const SizedBox(height: 10),
+          Text(daily.$3, style: Theme.of(context).textTheme.bodyMedium),
+        ],
+        const SizedBox(height: 28),
+        Text(portal.disclaimer, style: Theme.of(context).textTheme.bodyMedium),
       ],
     );
   }

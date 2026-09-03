@@ -1,0 +1,20 @@
+{
+  "id": "lawrence",
+  "displayName": "Brother Lawrence",
+  "tagline": "Practice the presence of God.",
+  "provenance": "constructed",
+  "spine": {
+    "type": "cycle",
+    "entries": 19,
+    "repeatsPerYear": 19.26,
+    "note": "19 conversations and letters, cycled — the book is short, so the units repeat rather than being padded out."
+  },
+  "anchor": null,
+  "modules": [
+    "today",
+    "practice"
+  ],
+  "disclaimer": "An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by the Order of Discalced Carmelites, any Carmelite province or house, or any shrine or publisher associated with them.",
+  "unlockSku": "lawrence_companion",
+  "sourceNote": "The Practice of the Presence of God: the Best Rule of a Holy Life, being Conversations and Letters of Nicholas Herman of Lorraine (Brother Lawrence). Translated from the French. Fleming H. Revell Company. Project Gutenberg #13871. Anonymous nineteenth-century English."
+}

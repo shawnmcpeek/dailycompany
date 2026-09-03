@@ -1,0 +1,20 @@
+{
+  "id": "therese",
+  "displayName": "Thérèse of Lisieux",
+  "tagline": "My vocation is love.",
+  "provenance": "constructed",
+  "spine": {
+    "type": "cycle",
+    "note": "A constructed year through Taylor's 1912 English of the 1898 Pauline Histoire d'une Ame — the historically famous edited text, not the 1956 manuscript restoration.",
+    "entries": 366,
+    "repeatsPerYear": 1.0
+  },
+  "anchor": "offering",
+  "modules": [
+    "today",
+    "practice"
+  ],
+  "disclaimer": "An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by the Order of Discalced Carmelites, any Carmelite province or house, the shrine at Lisieux, the Office Central de Lisieux, ICS Publications, or any shrine or publisher associated with them.",
+  "unlockSku": "therese_companion",
+  "sourceNote": "Story of a Soul, translated by Thomas N. Taylor (Burns, Oates & Washbourne, 1912; this electronic text is the 8th impression of that translation). It is Taylor of the 1898 Pauline edited Histoire d'une Ame, not the 1956 Manuscrits autobiographiques, not Clarke ICS, and not Knox. Poems in that Gutenberg file are Susan L. Emery's and are not shipped."
+}

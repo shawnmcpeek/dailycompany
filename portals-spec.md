@@ -67,11 +67,17 @@ The rule: **`entries × repeats ≈ 365`, chosen so daily length lands in 250–
 | **Kempis** | *Imitation of Christ*, 4 books | ~63k | **366 × 1** | ~170 |
 | **Augustine** | *Confessions* I–X | 79.6k | **366 × 1** | ~217 |
 | **Teresa** | *Interior Castle* + *Way of Perfection* | 104k | **366 × 1** | ~284 |
-| **Thérèse** | *Story of a Soul* + letters | ~90k | 365 × 1 | ~245 |
+| **Thérèse** | *Story of a Soul* + letters + prayers | 88.7k | **366 × 1** | ~242 |
 | **Francis** | Writings (Robinson); *Fioretti* is a second shelf | 27.8k | **85 × ~4.3** | ~327 |
 | **Gregory** | *Pastoral Rule*, 65 ch | ~75k | **183 × 2** | ~410 |
 | **Liguori** | *Visits*, 31 | ~19k | **31 × 12** | ~610/visit |
 | **John of the Cross** | *Sayings* / Precautions + Maxims (Lewis) | 16.3k | **366 × 1** + 8 appendix | ~43 |
+| **Ignatius** | Autobiography (O'Conor); Exercises are a program | 18.0k | **60 × 6.1** | ~300 |
+| **Catherine** | *Dialogue* (Thorold) | 79.3k | **365 × 1** | ~217 |
+| **Montfort** | *True Devotion* (Faber) | 47.2k | **120 × 3.05** | ~393 |
+| **Scupoli** | *Spiritual Combat* + Supplement | 53.9k | **120 × 3.05** | ~449 |
+| **Lawrence** | Conversations + letters | 10.7k | **19 × ~19.3** | ~562 |
+| **Cassian** | *Conferences* I–XXIV except XII, XXII | 160k | **366 × 1** | ~438 |
 | Benedict | *Rule* | ~40k | 122 × 3 | ~330 |
 
 Word counts are estimates from page counts and want verifying — have `01_fetch.py` print a real count per source before anyone commits to a cadence.
@@ -439,9 +445,9 @@ Everything else in this portal runs on a cycle:
 | --- | --- | --- |
 | Examen | fixed practice, no spine | free |
 | Discernment — 22 rules | `CycleSpine`, 22 × 16 | free |
-| Autobiography, 11 ch | `CycleSpine`, 365 × 1 (cut like any other) | first 3 free |
-| Prayers — Anima Christi, Suscipe, Generosity | none | free |
-| **Exercises** | **`ProgramSpine`** | unlock |
+| Autobiography, 8 ch | `CycleSpine`, **60 × 6.1** (real count 18,018 words; do not pad) | first 3 free |
+| Prayers — Anima Christi, Suscipe | none | free |
+| **Exercises** | **`ProgramSpine`**, 210 sequential | unlock |
 
 ### 10.2 Anchor — the Examen
 
@@ -455,7 +461,9 @@ Journal at the end, saved against the date, resurfacing by date — *"a year ago
 
 Disposition `#6E655A` ash → First Week `#4A4266` violet → Second `#4F6146` green → Third `#8C2F26` red → Fourth `#A8802C` gold.
 
-**Repetition is structural, not filler.** Roughly one entry in four repeats the previous day's points, by design. Don't let a content pass "helpfully" replace them with new material — it breaks the method.
+**Repetition is structural, not filler.** A thirty-day retreat repeats roughly one entry in four. The 210-day Nineteenth Annotation expansion repeats more often, by design — do not replace those days with new material.
+
+The Prayer for Generosity is not in the Autograph or in Mullan and is not shipped. Anima Christi is the traditional public-domain English; Mullan only names it as a rubric.
 
 ### 10.4 Pastoral note — required
 
@@ -475,7 +483,7 @@ Not a legal disclaimer. It's the honest description of the product, and this aud
 
 ## 11. The remaining houses
 
-Editions, do-not-use, and identity never-lists: `portal-texts.md`. Cadence for Liguori, Francis, John, Gregory, Augustine, and Teresa is locked from a real count. Thérèse remains a guess until that house is opened.
+Editions, do-not-use, and identity never-lists: `portal-texts.md`. Cadence for every house in `Companions` is locked from a real count.
 
 | Saint | Cadence | Primary text (PD) | Anchor | Note |
 | --- | --- | --- | --- | --- |
@@ -485,7 +493,13 @@ Editions, do-not-use, and identity never-lists: `portal-texts.md`. Cadence for L
 | **Francis** | **85 × ~4.3** | Writings, Robinson (1905). *Fioretti* (Heywood 1906) is a second shelf | Canticle of the Creatures | Do not pad a short corpus to 365. 85 natural units cycle through the year. The Office of the Passion is five seasonal offices, not mashed hour-scraps. The 28 Admonitions and the Canticle stay free. Highest name recognition, most crowded aisle. |
 | **Gregory** | **183 × 2** | *Book of Pastoral Rule*, Barmby, NPNF II.12 (1895) | Sit with today’s counsel | **Overlaps Benedict** — *Dialogues* Bk II already ships there as Life of Benedict. Cross-link the same JSON, don't duplicate. The *Pastoral Rule* is a book about leadership and is what Gregory brings that Benedict's portal doesn't. |
 | **John of the Cross** | **366 × 1** + 8 appendix | Precautions + Spiritual Maxims, Lewis (1864) | Sit with the saying | Daily unit is the sayings, not slices of the *Ascent*. 366 unique days; overflow sits in the index. Treatises (~275k) are a later shelf. Never Kavanaugh–Rodriguez. The Precautions stay free. |
-| **Thérèse** | 365 × 1 | *Story of a Soul* — **see flag** | The Little Way offering | **Rights flag.** Taylor 1912 of the 1898 Pauline text is the clear US path; it is the edited Thérèse, not the 1956 manuscripts. Never Clarke / Knox / ICS. **Build last.** |
+| **Ignatius** | Autobiography **60 × 6.1**; Exercises **210** sequential | Mullan 1914; O'Conor 1900 | Examen | Do not calendar the Exercises. 22 rules stay free. Prayer for Generosity omitted — not in Autograph/Mullan. |
+| **Thérèse** | **366 × 1** | *Story of a Soul* — Taylor 1912 of 1898 Pauline | The Little Way offering | **Rights flag, cost accepted.** The historically famous edited Thérèse, not the 1956 manuscripts. Never Clarke / Knox / ICS. |
+| **Catherine** | **365 × 1** | *Dialogue*, Thorold 1907 | Four requests | Four treatises as parts. |
+| **Montfort** | **120 × 3.05** | *True Devotion*, Faber 1863 | To Jesus through Mary | Not a 33-day program. Consecration is the last chapter. |
+| **Scupoli** | **120 × 3.05** | *Spiritual Combat* + Supplement, Rivingtons 1875 anonymous | The combat | Writer, never “St.” Path of Paradise skipped (scan not clean). |
+| **Lawrence** | **19 × ~19.3** | Conversations and letters, Revell from the French | Remain in the presence | Writer, never “St.” Natural units, repeating — do not pad. |
+| **Cassian** | **366 × 1** | *Conferences*, Gibson NPNF II.11 1894 | Sit with the elder | Conferences I–XXIV except XII and XXII (Gibson left them untranslated). Not the Institutes. |
 
 Public-domain status is jurisdiction-specific and I'm not a lawyer — the caveat closing the Benedict spec applies to every row above, the Thérèse row especially.
 

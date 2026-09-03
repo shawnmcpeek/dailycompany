@@ -1,0 +1,20 @@
+{
+  "id": "montfort",
+  "displayName": "Louis de Montfort",
+  "tagline": "It is by Mary that He has to reign in the world.",
+  "provenance": "constructed",
+  "spine": {
+    "type": "cycle",
+    "note": "A constructed cycle through Faber's 1863 English of True Devotion to the Blessed Virgin. Not a 33-day consecration program.",
+    "entries": 120,
+    "repeatsPerYear": 3.05
+  },
+  "anchor": null,
+  "modules": [
+    "today",
+    "practice"
+  ],
+  "disclaimer": "An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by the Company of Mary, the Montfort Missionaries, the Daughters of Wisdom, any shrine or publisher associated with them.",
+  "unlockSku": "montfort_companion",
+  "sourceNote": "A Treatise on the True Devotion to the Blessed Virgin, translated by Frederick William Faber, D.D. (Burns & Lambert, London, 1863; second edition). Not a modern Montfort translation."
+}

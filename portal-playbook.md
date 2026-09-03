@@ -139,6 +139,115 @@ Hallway `open` is automatic once `PortalRegistry.byId(id)` is non-null. Add the 
 | Modules | Free: Recollection. Unlock: Way + Castle through the year + Read Through. SKU `teresa-avila_companion`. |
 | Accent | `TeresaAccent.forPart` — Way, then mansions 1–7. |
 
+### Filled — `ignatius`
+
+| | |
+| --- | --- |
+| `id` | `ignatius` |
+| Display | Ignatius of Loyola |
+| Tagline | *Find God in all things.* |
+| Provenance | `constructed` (Autobiography cycle). Exercises are `ProgramSpine`. |
+| Cadence | Autobiography **60 × 6.1**. Real count 18,018 words. 22 rules modulo. Exercises **210** sequential. |
+| Primary text | Mullan 1914 Exercises; O'Conor 1900 Autobiography. |
+| Do not use | Puhl; Ganss; Fleming; Loyola Press / IJS. |
+| Never-list | Jesuit, Society of Jesus, IHS emblem. |
+| Disclaimer | Spec §7 / §10. |
+| Anchor | Examen (short form is the point). Two reminders: 12:30 and 21:00. |
+| Modules | Free: Examen, 22 rules, prayers. Unlock: Autobiography + 210-day program. SKU `ignatius_companion`. |
+| Accent | `IgnatiusAccent.forPart` — disposition / four Weeks. |
+
+### Filled — `therese`
+
+| | |
+| --- | --- |
+| `id` | `therese` |
+| Display | Thérèse of Lisieux |
+| Tagline | *My vocation is love.* |
+| Provenance | `constructed` |
+| Cadence | **366 × 1**. Real count 88,561 words (~242/day). |
+| Primary text | Thomas N. Taylor (1912) of the 1898 Pauline *Histoire d'une Âme*. |
+| Do not use | 1956 manuscripts; Clarke ICS; Knox. Emery poems in the Gutenberg file are not shipped. |
+| Never-list | Carmelite, OCD, Lisieux shrine, Office Central de Lisieux. |
+| Disclaimer | Spec §7, naming Discalced Carmelites, Lisieux, ICS. |
+| Anchor | The Little Way offering (her act of oblation). |
+| Modules | Free: Offering. Unlock: the year + Read Through. SKU `therese_companion`. |
+| Accent | Fixed `ThereseAccent.rose`. |
+
+### Filled — `catherine`
+
+| | |
+| --- | --- |
+| `id` | `catherine` |
+| Display | Catherine of Siena |
+| Tagline | *Remain in the cell of self-knowledge.* |
+| Provenance | `constructed` |
+| Cadence | **365 × 1**. Real count 79,331 words. |
+| Primary text | Algar Thorold, 1907. |
+| Never-list | Dominican, OP. |
+| Anchor | Four requests. |
+| SKU | `catherine_companion` |
+| Accent | Fixed `CatherineAccent.fire`. |
+
+### Filled — `montfort`
+
+| | |
+| --- | --- |
+| `id` | `montfort` |
+| Display | Louis de Montfort |
+| Tagline | *It is by Mary that He has to reign in the world.* |
+| Provenance | `constructed` |
+| Cadence | **120 × 3.05**. Real count 47,186 words. Not a 33-day program. |
+| Primary text | Faber 1863. |
+| Never-list | Company of Mary, Montfort Missionaries, Daughters of Wisdom. |
+| Anchor | To Jesus through Mary. |
+| SKU | `montfort_companion` |
+| Accent | Fixed `MontfortAccent.lily`. |
+
+### Filled — `scupoli`
+
+| | |
+| --- | --- |
+| `id` | `scupoli` |
+| Display | Lorenzo Scupoli |
+| Tagline | *Distrust yourself, and trust in God.* |
+| Provenance | `constructed` |
+| Cadence | **120 × 3.05**. Real count 53,935 words. |
+| Primary text | Rivingtons 1875 anonymous. |
+| Never-list | Theatines. "St." on this name. |
+| Anchor | The combat. |
+| SKU | `scupoli_companion` |
+| Accent | Fixed `ScupoliAccent.steel`. |
+
+### Filled — `lawrence`
+
+| | |
+| --- | --- |
+| `id` | `lawrence` |
+| Display | Brother Lawrence |
+| Tagline | *Practice the presence of God.* |
+| Provenance | `constructed` |
+| Cadence | **19 × ~19.3**. Real count 10,671 words. |
+| Primary text | Revell, translated from the French. |
+| Never-list | Carmelite, OCD. "St." on this name. |
+| Anchor | Remain in the presence. |
+| SKU | `lawrence_companion` |
+| Accent | Fixed `LawrenceAccent.hearth`. |
+
+### Filled — `cassian`
+
+| | |
+| --- | --- |
+| `id` | `cassian` |
+| Display | John Cassian |
+| Tagline | *Purity of heart is the goal.* |
+| Provenance | `constructed` |
+| Cadence | **366 × 1**. Real count 160,215 words. |
+| Primary text | Gibson NPNF II.11, 1894. Conferences I–XI, XIII–XXI, XXIII–XXIV. Gibson did not translate XII and XXII. |
+| Never-list | None active. |
+| Anchor | Sit with the elder. |
+| SKU | `cassian_companion` |
+| Accent | Fixed `CassianAccent.desert`. |
+
 ---
 
 ## 1. Content

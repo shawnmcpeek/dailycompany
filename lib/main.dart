@@ -61,12 +61,27 @@ class DailyCompanyApp extends ConsumerWidget {
         portalId == 'john-cross' ||
         portalId == 'gregory' ||
         portalId == 'augustine' ||
-        portalId == 'teresa-avila') {
-      final todaysEntries =
-          ref.watch(cycleCalendarProvider(portalId)).valueOrNull?.resolveFor(day) ??
-              const [];
-      final part = todaysEntries.isEmpty ? 1 : todaysEntries.first.part;
-      accent = portalAccent(portalId, part);
+        portalId == 'teresa-avila' ||
+        portalId == 'ignatius' ||
+        portalId == 'therese' ||
+        portalId == 'catherine' ||
+        portalId == 'montfort' ||
+        portalId == 'scupoli' ||
+        portalId == 'lawrence' ||
+        portalId == 'cassian') {
+      if (portalId == 'ignatius') {
+        final program =
+            ref.watch(ignatiusProgramProvider).valueOrNull;
+        final elapsed = settings.ignatiusElapsedDays(day);
+        final part = program?.forElapsed(elapsed)?.part ?? 0;
+        accent = portalAccent(portalId, part);
+      } else {
+        final todaysEntries =
+            ref.watch(cycleCalendarProvider(portalId)).valueOrNull?.resolveFor(day) ??
+                const [];
+        final part = todaysEntries.isEmpty ? 1 : todaysEntries.first.part;
+        accent = portalAccent(portalId, part);
+      }
     } else {
       accent = ReadingCalendar.accentForStatic(day);
     }

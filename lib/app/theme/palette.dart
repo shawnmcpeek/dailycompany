@@ -124,6 +124,49 @@ abstract final class TeresaAccent {
       };
 }
 
+/// Accent by Exercises Week — spec §10.3.
+abstract final class IgnatiusAccent {
+  static const disposition = Color(0xFF6E655A);
+  static const first = Color(0xFF4A4266);
+  static const second = Color(0xFF4F6146);
+  static const third = Color(0xFF8C2F26);
+  static const fourth = Color(0xFFA8802C);
+
+  static Color forPart(int part) => switch (part) {
+        0 => disposition,
+        1 => first,
+        2 => second,
+        3 => third,
+        4 => fourth,
+        _ => disposition,
+      };
+}
+
+/// Fixed accent — spec §6.
+abstract final class ThereseAccent {
+  static const rose = Color(0xFF8A5A62);
+}
+
+abstract final class CatherineAccent {
+  static const fire = Color(0xFF7A4A32);
+}
+
+abstract final class MontfortAccent {
+  static const lily = Color(0xFF4A5A72);
+}
+
+abstract final class ScupoliAccent {
+  static const steel = Color(0xFF4A5458);
+}
+
+abstract final class LawrenceAccent {
+  static const hearth = Color(0xFF6A5840);
+}
+
+abstract final class CassianAccent {
+  static const desert = Color(0xFF8A7048);
+}
+
 Color portalAccent(String portalId, int part) => switch (portalId) {
       'desales' => DesalesAccent.forPart(part),
       'kempis' => KempisAccent.forBook(part),
@@ -133,6 +176,13 @@ Color portalAccent(String portalId, int part) => switch (portalId) {
       'gregory' => GregoryAccent.stone,
       'augustine' => AugustineAccent.hearth,
       'teresa-avila' => TeresaAccent.forPart(part),
+      'ignatius' => IgnatiusAccent.forPart(part),
+      'therese' => ThereseAccent.rose,
+      'catherine' => CatherineAccent.fire,
+      'montfort' => MontfortAccent.lily,
+      'scupoli' => ScupoliAccent.steel,
+      'lawrence' => LawrenceAccent.hearth,
+      'cassian' => CassianAccent.desert,
       _ => CycleAccent.winter,
     };
 

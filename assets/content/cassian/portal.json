@@ -1,0 +1,20 @@
+{
+  "id": "cassian",
+  "displayName": "John Cassian",
+  "tagline": "Purity of heart is the goal.",
+  "provenance": "constructed",
+  "spine": {
+    "type": "cycle",
+    "note": "A constructed year through Edgar C. S. Gibson's 1894 English of the Conferences (NPNF II.11). The Institutes and the work against Nestorius are not included. Conferences Gibson left untranslated are omitted.",
+    "entries": 366,
+    "repeatsPerYear": 1.0
+  },
+  "anchor": null,
+  "modules": [
+    "today",
+    "practice"
+  ],
+  "disclaimer": "An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by any diocese or publisher. Cassian predates the later religious orders; this app makes no imprimatur claim.",
+  "unlockSku": "cassian_companion",
+  "sourceNote": "The Conferences of John Cassian, translated by Edgar C. S. Gibson, in Nicene and Post-Nicene Fathers, Second Series, Vol. 11, ed. Philip Schaff and Henry Wace (Christian Literature Publishing Co., 1894). Conferences only — not the Institutes, not On the Incarnation against Nestorius."
+}

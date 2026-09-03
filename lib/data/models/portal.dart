@@ -303,6 +303,179 @@ abstract final class PortalRegistry {
     unlockSku: 'teresa-avila_companion',
   );
 
+  static const ignatius = SaintPortal(
+    id: 'ignatius',
+    displayName: 'Ignatius of Loyola',
+    tagline: 'Find God in all things.',
+    provenance: CycleProvenance.constructed,
+    provenanceTitle: 'About this reading cycle',
+    provenanceParagraphs: [
+      'The Autobiography is cut for this app and repeats through '
+          'the year. Ignatius did not arrange those chapters to be read '
+          'a page a day. The Spiritual Exercises are not on that calendar: '
+          'they run as a 210-day program, thirty weeks, because the Weeks '
+          'are meant to do their work in order.',
+      'The texts are unaltered — J. F. X. O’Conor’s Autobiography (1900) '
+          'and Elder Mullan’s Spiritual Exercises (1914), from the Autograph. '
+          'This is not Puhl, Ganss, or Fleming.',
+      'If you’d rather read the Autobiography straight through, turn on '
+          'Read Through under the reading.',
+    ],
+    disclaimer:
+        'An independent app from Daddoo Dev. Not affiliated with, endorsed '
+        'by, or produced by the Society of Jesus, any Jesuit province or '
+        'house, or any Ignatian retreat centre or publisher.',
+    modules: ['today', 'practice', 'discernment', 'exercises'],
+    unlockSku: 'ignatius_companion',
+  );
+
+  static const therese = SaintPortal(
+    id: 'therese',
+    displayName: 'Thérèse of Lisieux',
+    tagline: 'My vocation is love.',
+    provenance: CycleProvenance.constructed,
+    provenanceTitle: 'About this reading cycle',
+    provenanceParagraphs: [
+      'This year-long cycle was made for this app. Thérèse did not write '
+          'the Story of a Soul to be read a page a day, and no edition '
+          'assigns these passages to these dates.',
+      'The text itself is unaltered — Thomas N. Taylor’s 1912 English of '
+          'the 1898 Pauline Histoire d’une Âme. That is the historically '
+          'famous edited Thérèse, not the 1956 manuscript restoration, '
+          'not Clarke, and not Knox.',
+      'If you’d rather read it straight through as it was written, '
+          'turn on Read Through under the reading.',
+    ],
+    disclaimer:
+        'An independent app from Daddoo Dev. Not affiliated with, endorsed '
+        'by, or produced by the Order of Discalced Carmelites, any Carmelite '
+        'province or house, the shrine at Lisieux, the Office Central de '
+        'Lisieux, ICS Publications, or any shrine or publisher associated '
+        'with them.',
+    modules: ['today', 'practice'],
+    unlockSku: 'therese_companion',
+  );
+
+  static const catherine = SaintPortal(
+    id: 'catherine',
+    displayName: 'Catherine of Siena',
+    tagline: 'Remain in the cell of self-knowledge.',
+    provenance: CycleProvenance.constructed,
+    provenanceTitle: 'About this reading cycle',
+    provenanceParagraphs: [
+      'This year-long cycle was made for this app. Catherine did not '
+          'dictate the Dialogue to be read a page a day, and no edition '
+          'assigns these passages to these dates.',
+      'The text itself is unaltered — Algar Thorold’s 1907 translation.',
+      'If you’d rather read it straight through as it was written, '
+          'turn on Read Through under the reading.',
+    ],
+    disclaimer:
+        'An independent app from Daddoo Dev. Not affiliated with, endorsed '
+        'by, or produced by the Dominican Order, the Order of Preachers, '
+        'any Dominican province or house, or any shrine or publisher '
+        'associated with them.',
+    modules: ['today', 'practice'],
+    unlockSku: 'catherine_companion',
+  );
+
+  static const montfort = SaintPortal(
+    id: 'montfort',
+    displayName: 'Louis de Montfort',
+    tagline: 'It is by Mary that He has to reign in the world.',
+    provenance: CycleProvenance.constructed,
+    provenanceTitle: 'About this reading cycle',
+    provenanceParagraphs: [
+      'This cycle was made for this app. Montfort did not write True '
+          'Devotion to be read a page a day. This is not a thirty-three-day '
+          'consecration program.',
+      'The text itself is unaltered — Frederick William Faber’s 1863 '
+          'translation.',
+      'If you’d rather read it straight through as it was written, '
+          'turn on Read Through under the reading.',
+    ],
+    disclaimer:
+        'An independent app from Daddoo Dev. Not affiliated with, endorsed '
+        'by, or produced by the Company of Mary, the Montfort Missionaries, '
+        'the Daughters of Wisdom, any shrine or publisher associated with '
+        'them.',
+    modules: ['today', 'practice'],
+    unlockSku: 'montfort_companion',
+  );
+
+  static const scupoli = SaintPortal(
+    id: 'scupoli',
+    displayName: 'Lorenzo Scupoli',
+    tagline: 'Distrust yourself, and trust in God.',
+    provenance: CycleProvenance.constructed,
+    provenanceTitle: 'About this reading cycle',
+    provenanceParagraphs: [
+      'This cycle was made for this app. Scupoli did not write the '
+          'Spiritual Combat to be read a page a day. The book is read in '
+          'repeating passes rather than padded out.',
+      'The text itself is unaltered — the anonymous 1875 Rivingtons '
+          'translation (Library of Spiritual Works for English Catholics). '
+          'The title page names no translator.',
+      'If you’d rather read it straight through as it was written, '
+          'turn on Read Through under the reading.',
+    ],
+    disclaimer:
+        'An independent app from Daddoo Dev. Not affiliated with, endorsed '
+        'by, or produced by the Theatines, any shrine, or any publisher of '
+        'the Spiritual Combat.',
+    modules: ['today', 'practice'],
+    unlockSku: 'scupoli_companion',
+  );
+
+  static const lawrence = SaintPortal(
+    id: 'lawrence',
+    displayName: 'Brother Lawrence',
+    tagline: 'Practice the presence of God.',
+    provenance: CycleProvenance.constructed,
+    provenanceTitle: 'About this reading cycle',
+    provenanceParagraphs: [
+      'This cycle was made for this app. The conversations and letters '
+          'are short, so they repeat through the year rather than being '
+          'padded out.',
+      'The text itself is unaltered — the anonymous nineteenth-century '
+          'English issued by Fleming H. Revell, translated from the French.',
+      'If you’d rather read it straight through as it stands, turn on '
+          'Read Through under the reading.',
+    ],
+    disclaimer:
+        'An independent app from Daddoo Dev. Not affiliated with, endorsed '
+        'by, or produced by the Order of Discalced Carmelites, any Carmelite '
+        'province or house, or any shrine or publisher associated with them.',
+    modules: ['today', 'practice'],
+    unlockSku: 'lawrence_companion',
+  );
+
+  static const cassian = SaintPortal(
+    id: 'cassian',
+    displayName: 'John Cassian',
+    tagline: 'Purity of heart is the goal.',
+    provenance: CycleProvenance.constructed,
+    provenanceTitle: 'About this reading cycle',
+    provenanceParagraphs: [
+      'This year-long cycle was made for this app. Cassian did not '
+          'arrange the Conferences to be read a page a day, and no edition '
+          'assigns these passages to these dates.',
+          'The text itself is unaltered — Edgar C. S. Gibson’s translation in '
+          'Nicene and Post-Nicene Fathers, Second Series, Volume 11 (1894). '
+          'The Institutes and the work against Nestorius are not included. '
+          'Gibson did not translate Conferences XII and XXII; they are not '
+          'invented here.',
+      'If you’d rather read the Conferences straight through, turn on '
+          'Read Through under the reading.',
+    ],
+    disclaimer:
+        'An independent app from Daddoo Dev. Not affiliated with, endorsed '
+        'by, or produced by any diocese or publisher. Cassian predates the '
+        'later religious orders; this app makes no imprimatur claim.',
+    modules: ['today', 'practice'],
+    unlockSku: 'cassian_companion',
+  );
+
   static const all = <SaintPortal>[
     benedict,
     desales,
@@ -313,6 +486,13 @@ abstract final class PortalRegistry {
     gregory,
     augustine,
     teresaAvila,
+    ignatius,
+    therese,
+    catherine,
+    montfort,
+    scupoli,
+    lawrence,
+    cassian,
   ];
 
   static SaintPortal? byId(String id) {

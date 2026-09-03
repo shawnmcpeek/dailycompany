@@ -135,12 +135,13 @@ The `ProgramSpine` exception. Full module table and director note: `portals-spec
 | Kind | Saint |
 | Program text | *Spiritual Exercises*, Elder Mullan SJ (1909 / 1914 Kenedy). Mullan d. 1925. |
 | Also CLEAR | Autobiography, J. F. X. O'Conor SJ (1900); Letters, Rickaby (1914). Autograph Spanish for parallel. |
+| Cadence | Autobiography **60 × 6.1**. Exercises **210** sequential. 22 rules modulo. |
 | Anchor | Examen (short form is the point). |
 | Do not use | Puhl (1951); Ganss; Fleming; Loyola Press / IJS apparatus. |
 | Never-list | Jesuit, Society of Jesus, IHS emblem. Do not advertise the word "Company" as an Ignatian wink. |
 | Required | Director disclaimer before the program starts, kept in About. |
 
-### Thérèse of Lisieux — `therese` — CONDITIONAL — **build last**
+### Thérèse of Lisieux — `therese` — CONDITIONAL
 
 | | |
 | --- | --- |
@@ -148,25 +149,65 @@ The `ProgramSpine` exception. Full module table and director note: `portals-spec
 | Daily text | *Story of a Soul*, Thomas N. Taylor (1912) of the **1898 Pauline** *Histoire d'une Âme*. |
 | The cost | This is the historically famous edited text, not the 1956 manuscript restoration. State that in provenance, unhedged. |
 | Do not use | 1956 *Manuscrits autobiographiques*; Clarke ICS (1975); Knox (1958); any translation of the critical edition. French parallel must be 1898, not a modern manuscript text. |
-| Cadence | 365 × 1 after a real count. Letters only from a CLEAR edition. |
-| Alternative | License ICS — a real negotiation; do not block other houses on it. |
+| Cadence | **366 × 1**. Real count 88,561 words (~242/day). Letters and prayers from this CLEAR edition. |
 | Never-list | Carmelite, OCD, Lisieux shrine photography and Office Central de Lisieux imagery. |
+
+### Catherine of Siena — `catherine` — CLEAR
+
+| | |
+| --- | --- |
+| Kind | Saint |
+| Daily text | *The Dialogue*, Algar Thorold (Kegan Paul, 1907). Thorold d. 1936; 1907 is US PD. |
+| Cadence | **365 × 1**. Real count 79,331 words (~217/day). Four treatises. |
+| Anchor | Four requests (from the opening). |
+| Never-list | Dominican, OP, Order of Preachers. |
+| Do not use | Modern critical translations. |
+
+### Louis de Montfort — `montfort` — CLEAR
+
+| | |
+| --- | --- |
+| Kind | Saint |
+| Daily text | *True Devotion to the Blessed Virgin*, Frederick William Faber (Burns & Lambert, 1863). Faber d. 1863. |
+| Cadence | **120 × 3.05**, repeating. Real count 47,186 words (~393/entry). Not a 33-day program. |
+| Anchor | To Jesus through Mary. |
+| Never-list | Company of Mary, Montfort Missionaries, Daughters of Wisdom. |
+
+### Lorenzo Scupoli — `scupoli` — CLEAR
+
+| | |
+| --- | --- |
+| Kind | **Writer.** Never canonized. |
+| Daily text | *The Spiritual Combat* + Supplement, anonymous “A New Translation,” Rivingtons 1875 (Library of Spiritual Works for English Catholics). Same series as the 1876 Devout Life. |
+| Cadence | **120 × 3.05**. Real count 53,935 words. Path of Paradise in that scan is not clean enough to ship. |
+| Anchor | The combat (four things necessary). |
+| Never-list | Theatines. "St." / "Saint" on this name. |
+
+### Brother Lawrence — `lawrence` — CLEAR
+
+| | |
+| --- | --- |
+| Kind | **Writer.** Never canonized. |
+| Daily text | *The Practice of the Presence of God*, anonymous English from the French (Fleming H. Revell; Gutenberg #13871). Conversations and letters. |
+| Cadence | **19 × ~19.3**. Real count 10,671 words. Natural units, repeating — do not pad. |
+| Anchor | Remain in the presence. |
+| Never-list | Carmelite, OCD. "St." / "Saint" on this name. |
+
+### John Cassian — `cassian` — CLEAR
+
+| | |
+| --- | --- |
+| Kind | Saint |
+| Daily text | *The Conferences*, Edgar C. S. Gibson, NPNF II.11 (1894). Conferences I–XI, XIII–XXI, XXIII–XXIV. Gibson did not translate XII and XXII. |
+| Cadence | **366 × 1**. Real count 160,215 words (~438/day). Not the Institutes. Not *Against Nestorius*. |
+| Anchor | Sit with the elder. |
+| Never-list | None active (predates the orders). |
 
 ---
 
 ## Still in the hallway
 
-Listed in `Companions`. No pipeline until a sheet like the ones above is filled and Rights is CLEAR.
-
-| id | Display | Work (hallway) | Kind | Notes |
-| --- | --- | --- | --- | --- |
-| `catherine` | Catherine of Siena | *The Dialogue* | Saint | |
-| `montfort` | Louis de Montfort | *True Devotion to Mary* | Saint | |
-| `scupoli` | Lorenzo Scupoli | *The Spiritual Combat* | Writer | Not canonized. |
-| `lawrence` | Brother Lawrence | *The Practice of the Presence of God* | Writer | Not canonized. |
-| `cassian` | John Cassian | *The Conferences* | Saint | |
-
-Serra is a different content type (`serra.md`) — after the writer houses.
+Serra is a different content type (`serra.md`) — after the writer houses. Not a Companion.
 
 ---
 
@@ -183,7 +224,12 @@ Serra is a different content type (`serra.md`) — after the writer houses.
 | `gregory` | Barmby 1895 | CLEAR |
 | `augustine` | Pusey 1838 | CLEAR |
 | `teresa-avila` | Stanbrook–Zimmerman 1911–12 | CLEAR |
-| `ignatius` | Mullan 1909/14 | CLEAR |
-| `therese` | Taylor 1912 / Pauline 1898 | CONDITIONAL |
+| `ignatius` | Mullan 1909/14; O'Conor 1900 | CLEAR |
+| `therese` | Taylor 1912 / Pauline 1898 | CONDITIONAL (cost accepted) |
+| `catherine` | Thorold 1907 | CLEAR |
+| `montfort` | Faber 1863 | CLEAR |
+| `scupoli` | Rivingtons anonymous 1875 | CLEAR |
+| `lawrence` | Revell, translated from the French | CLEAR |
+| `cassian` | Gibson NPNF II.11 1894 | CLEAR |
 
 Foreign first publication after 1900: confirm a US printing of the same edition (Benziger / Kenedy co-pubs are typical). Record the copy in `portal.json`.
