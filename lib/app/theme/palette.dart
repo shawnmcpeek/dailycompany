@@ -83,11 +83,56 @@ abstract final class FrancisAccent {
   static const woodland = Color(0xFF3E5548);
 }
 
+/// Fixed accent — spec §6.
+abstract final class JohnCrossAccent {
+  static const night = Color(0xFF3A3F5C);
+}
+
+/// Fixed accent — spec §6.
+abstract final class GregoryAccent {
+  static const stone = Color(0xFF5A5850);
+}
+
+/// Fixed accent — spec §6.
+abstract final class AugustineAccent {
+  static const hearth = Color(0xFF6A4038);
+}
+
+/// Accent shifts with the seven mansions — spec §6. Way of Perfection
+/// uses a threshold colour (approaching the castle). Distinct from
+/// [CycleAccent], [DesalesAccent], [KempisAccent], and the fixed set.
+abstract final class TeresaAccent {
+  static const way = Color(0xFF6B5344);
+  static const mansion1 = Color(0xFF7A6B4A);
+  static const mansion2 = Color(0xFF5A6A4E);
+  static const mansion3 = Color(0xFF4A5A62);
+  static const mansion4 = Color(0xFF5A4A62);
+  static const mansion5 = Color(0xFF6A3E48);
+  static const mansion6 = Color(0xFF3E4A6A);
+  static const mansion7 = Color(0xFF8A6A2C);
+
+  static Color forPart(int part) => switch (part) {
+        1 => way,
+        2 => mansion1,
+        3 => mansion2,
+        4 => mansion3,
+        5 => mansion4,
+        6 => mansion5,
+        7 => mansion6,
+        8 => mansion7,
+        _ => way,
+      };
+}
+
 Color portalAccent(String portalId, int part) => switch (portalId) {
       'desales' => DesalesAccent.forPart(part),
       'kempis' => KempisAccent.forBook(part),
       'liguori' => LiguoriAccent.visit,
       'francis' => FrancisAccent.woodland,
+      'john-cross' => JohnCrossAccent.night,
+      'gregory' => GregoryAccent.stone,
+      'augustine' => AugustineAccent.hearth,
+      'teresa-avila' => TeresaAccent.forPart(part),
       _ => CycleAccent.winter,
     };
 

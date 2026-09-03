@@ -33,10 +33,7 @@ class CycleIndexScreen extends ConsumerWidget {
               );
             }
             final entry = calendar.entries[i - 1];
-            final noun = calendar.divisionNoun;
-            final subtitle = portalId == 'liguori'
-                ? 'Visit ${entry.id} of ${calendar.entries.length}'
-                : '$noun ${entry.part} · Chapter ${entry.chapter}';
+            final subtitle = calendar.indexSubtitle(entry);
             return ListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(entry.chapterTitle),
@@ -56,16 +53,18 @@ class CycleIndexScreen extends ConsumerWidget {
     CycleEntry entry,
   ) {
     final settings = ref.read(settingsProvider);
+    final notifier = ref.read(settingsProvider.notifier);
     if (settings.readThroughFor(calendar.portalId)) {
-      ref
-          .read(settingsProvider.notifier)
-          .setReadThroughCursor(calendar.portalId, entry.id);
+      notifier.setReadThroughCursor(calendar.portalId, entry.id);
     } else {
       final now = DateTime.now();
       final date = calendar.dateForEntry(entry.id, now.year) ??
           calendar.dateForEntry(entry.id, now.year - 1);
       if (date != null) {
         ref.read(selectedDayProvider.notifier).state = date;
+      } else {
+        notifier.setReadThrough(calendar.portalId, true);
+        notifier.setReadThroughCursor(calendar.portalId, entry.id);
       }
     }
     context.pop();

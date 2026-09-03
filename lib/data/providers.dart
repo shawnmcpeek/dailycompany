@@ -5,6 +5,7 @@ import 'package:dailycompany/data/models/desales_meditation.dart';
 import 'package:dailycompany/data/models/francis_admonition.dart';
 import 'package:dailycompany/data/models/francis_canticle.dart';
 import 'package:dailycompany/data/models/francis_story.dart';
+import 'package:dailycompany/data/models/john_precaution.dart';
 import 'package:dailycompany/data/models/kempis_admonition.dart';
 import 'package:dailycompany/data/models/liguori_manner.dart';
 import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
@@ -14,6 +15,7 @@ import 'package:dailycompany/core/notifications/aspiration_scheduler.dart';
 import 'package:dailycompany/core/notifications/bell_scheduler.dart';
 import 'package:dailycompany/core/notifications/canticle_scheduler.dart';
 import 'package:dailycompany/core/notifications/cell_scheduler.dart';
+import 'package:dailycompany/core/notifications/cycle_reminder_scheduler.dart';
 import 'package:dailycompany/core/notifications/visit_scheduler.dart';
 import 'package:dailycompany/data/content_catalog.dart';
 import 'package:dailycompany/data/isar/app_isar.dart';
@@ -86,6 +88,10 @@ final francisCanticleProvider = FutureProvider<FrancisCanticle>((ref) async {
   return FrancisCanticle.loadFromAssets();
 });
 
+final johnPrecautionsProvider = FutureProvider<JohnPrecautions>((ref) async {
+  return JohnPrecautions.loadFromAssets();
+});
+
 /// Unlock for the active portal's paid cycle (Today + Read Through).
 final cycleUnlockedProvider = Provider<bool>((ref) {
   final portalId = ref.watch(currentPortalIdProvider);
@@ -95,6 +101,10 @@ final cycleUnlockedProvider = Provider<bool>((ref) {
     'kempis' => ref.watch(kempisCompanionUnlockedProvider),
     'liguori' => ref.watch(liguoriCompanionUnlockedProvider),
     'francis' => ref.watch(francisCompanionUnlockedProvider),
+    'john-cross' => ref.watch(johnCrossCompanionUnlockedProvider),
+    'gregory' => ref.watch(gregoryCompanionUnlockedProvider),
+    'augustine' => ref.watch(augustineCompanionUnlockedProvider),
+    'teresa-avila' => ref.watch(teresaAvilaCompanionUnlockedProvider),
     _ => false,
   };
 });
@@ -186,6 +196,37 @@ final francisCanticleSyncProvider = Provider<void>((ref) {
   });
 });
 
+/// Keeps John / Gregory / Augustine / Teresa reminders aligned.
+final cycleReminderSyncProvider = Provider<void>((ref) {
+  void sync() {
+    final settings = ref.read(settingsProvider);
+    if (!settings.ready) return;
+    final now = DateTime.now();
+    final day = DateTime(now.year, now.month, now.day);
+    for (final portalId in CycleReminderScheduler.specs.keys) {
+      final cal = ref.read(cycleCalendarProvider(portalId)).valueOrNull;
+      String? body;
+      if (cal != null) {
+        final entries = cal.resolveFor(day);
+        if (entries.isNotEmpty) body = entries.first.chapterTitle;
+      }
+      CycleReminderScheduler.instance.reschedule(
+        settings,
+        portalId: portalId,
+        body: body,
+      );
+    }
+  }
+
+  ref.listen<AppSettings>(settingsProvider, (_, next) {
+    if (!next.ready) return;
+    sync();
+  });
+  for (final id in CycleReminderScheduler.specs.keys) {
+    ref.listen(cycleCalendarProvider(id), (_, _) => sync());
+  }
+});
+
 class AppSettings {
   const AppSettings({
     this.ready = false,
@@ -217,6 +258,8 @@ class AppSettings {
     this.liguoriVisitTime = '12:00',
     this.francisCanticleEnabled = false,
     this.francisCanticleTime = '07:00',
+    this.cycleReminderEnabled = const {},
+    this.cycleReminderTime = const {},
   });
 
   /// False until SharedPreferences have been read.
@@ -287,6 +330,25 @@ class AppSettings {
   /// `HH:mm` for the Canticle notification. Default 07:00.
   final String francisCanticleTime;
 
+  /// Optional daily reminder, keyed by portal id. Off by default.
+  final Map<String, bool> cycleReminderEnabled;
+
+  /// `HH:mm` per portal. Missing keys fall back to [reminderDefaultFor].
+  final Map<String, String> cycleReminderTime;
+
+  static const reminderDefaults = <String, String>{
+    'john-cross': '07:00',
+    'gregory': '08:00',
+    'augustine': '21:00',
+    'teresa-avila': '07:00',
+  };
+
+  bool reminderEnabledFor(String portalId) =>
+      cycleReminderEnabled[portalId] ?? false;
+
+  String reminderTimeFor(String portalId) =>
+      cycleReminderTime[portalId] ?? reminderDefaults[portalId] ?? '08:00';
+
   bool readThroughFor(String portalId) =>
       readThroughByPortal[portalId] ?? false;
 
@@ -350,6 +412,8 @@ class AppSettings {
     String? liguoriVisitTime,
     bool? francisCanticleEnabled,
     String? francisCanticleTime,
+    Map<String, bool>? cycleReminderEnabled,
+    Map<String, String>? cycleReminderTime,
   }) => AppSettings(
     ready: ready ?? this.ready,
     onboardingComplete: onboardingComplete ?? this.onboardingComplete,
@@ -383,6 +447,8 @@ class AppSettings {
     francisCanticleEnabled:
         francisCanticleEnabled ?? this.francisCanticleEnabled,
     francisCanticleTime: francisCanticleTime ?? this.francisCanticleTime,
+    cycleReminderEnabled: cycleReminderEnabled ?? this.cycleReminderEnabled,
+    cycleReminderTime: cycleReminderTime ?? this.cycleReminderTime,
   );
 }
 
@@ -452,6 +518,8 @@ class SettingsController extends StateNotifier<AppSettings> {
       liguoriVisitTime: prefs.getString('liguoriVisitTime') ?? '12:00',
       francisCanticleEnabled: prefs.getBool('francisCanticleEnabled') ?? false,
       francisCanticleTime: prefs.getString('francisCanticleTime') ?? '07:00',
+      cycleReminderEnabled: _loadBoolMap(prefs, 'cycleReminderEnabled'),
+      cycleReminderTime: _loadStringMap(prefs, 'cycleReminderTime'),
     );
   }
 
@@ -633,6 +701,32 @@ class SettingsController extends StateNotifier<AppSettings> {
     );
   }
 
+  Future<void> setCycleReminderEnabled(String portalId, bool v) async {
+    final next = Map<String, bool>.from(state.cycleReminderEnabled)
+      ..[portalId] = v;
+    state = state.copyWith(cycleReminderEnabled: next);
+    (await SharedPreferences.getInstance()).setString(
+      'cycleReminderEnabled',
+      jsonEncode(next),
+    );
+  }
+
+  Future<void> setCycleReminderTime(
+    String portalId,
+    TimeOfDayCompat time,
+  ) async {
+    final hh = time.hour.toString().padLeft(2, '0');
+    final mm = time.minute.toString().padLeft(2, '0');
+    final value = '$hh:$mm';
+    final next = Map<String, String>.from(state.cycleReminderTime)
+      ..[portalId] = value;
+    state = state.copyWith(cycleReminderTime: next);
+    (await SharedPreferences.getInstance()).setString(
+      'cycleReminderTime',
+      jsonEncode(next),
+    );
+  }
+
   Future<void> setLectioMinutes({
     int? lectio,
     int? meditatio,
@@ -660,6 +754,20 @@ class TimeOfDayCompat {
   const TimeOfDayCompat({required this.hour, required this.minute});
   final int hour;
   final int minute;
+}
+
+Map<String, bool> _loadBoolMap(SharedPreferences prefs, String key) {
+  final raw = prefs.getString(key);
+  if (raw == null) return {};
+  final decoded = jsonDecode(raw) as Map<String, dynamic>;
+  return {for (final e in decoded.entries) e.key: e.value as bool};
+}
+
+Map<String, String> _loadStringMap(SharedPreferences prefs, String key) {
+  final raw = prefs.getString(key);
+  if (raw == null) return {};
+  final decoded = jsonDecode(raw) as Map<String, dynamic>;
+  return {for (final e in decoded.entries) e.key: e.value as String};
 }
 
 Map<String, bool> _loadReadThroughMap(SharedPreferences prefs) {

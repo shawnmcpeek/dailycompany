@@ -34,6 +34,10 @@ abstract final class PortalRoutes {
   static String story(String portalId, int chapter) =>
       '/p/$portalId/stories/$chapter';
 
+  static String precautions(String portalId) => '/p/$portalId/precautions';
+  static String precaution(String portalId, int chapter) =>
+      '/p/$portalId/precautions/$chapter';
+
   // Shared.
   static String lectio(String portalId) => '/p/$portalId/lectio';
   static String sources(String portalId) => '/p/$portalId/sources';

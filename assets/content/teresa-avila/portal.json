@@ -1,0 +1,20 @@
+{
+  "id": "teresa-avila",
+  "displayName": "Teresa of Avila",
+  "tagline": "Let nothing disturb thee.",
+  "provenance": "constructed",
+  "spine": {
+    "type": "cycle",
+    "entries": 366,
+    "repeatsPerYear": 1.0,
+    "note": "366 readings of the Way of Perfection and the Interior Castle. A dwelling is never split across a day's entry. The seven mansions drive the accent."
+  },
+  "anchor": "recollection",
+  "modules": [
+    "today",
+    "practice"
+  ],
+  "disclaimer": "An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by the Order of Discalced Carmelites, any Carmelite province or house, ICS Publications, or any shrine or publisher associated with them.",
+  "unlockSku": "teresa-avila_companion",
+  "sourceNote": "The Way of Perfection and The Interior Castle, translated from the autograph by the Benedictines of Stanbrook, revised with notes by Benedict Zimmerman (Thomas Baker, 1911–12; CCEL text of the 1921 Baker impression of the same translation). Not Peers. Not ICS Kavanaugh–Rodriguez."
+}

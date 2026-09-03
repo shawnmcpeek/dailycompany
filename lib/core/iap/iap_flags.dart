@@ -33,6 +33,18 @@ abstract final class IapFlags {
   /// Store product / package id.
   static const francisProductId = 'francis_companion';
 
+  static const johnCrossEntitlementId = 'john-cross_companion';
+  static const johnCrossProductId = 'john-cross_companion';
+
+  static const gregoryEntitlementId = 'gregory_companion';
+  static const gregoryProductId = 'gregory_companion';
+
+  static const augustineEntitlementId = 'augustine_companion';
+  static const augustineProductId = 'augustine_companion';
+
+  static const teresaAvilaEntitlementId = 'teresa-avila_companion';
+  static const teresaAvilaProductId = 'teresa-avila_companion';
+
   /// Bundle entitlement covering every open house. Scaffolded now so
   /// individual SKUs can later grant this without a migration fight.
   static const allSaintsEntitlementId = 'all_saints';

@@ -2,14 +2,28 @@ import 'package:dailycompany/data/companion.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('Benedict, de Sales, Kempis, Liguori, and Francis are the open houses', () {
+  test('open houses include the four cycle houses opened after Francis', () {
     final open = Companions.openHouses.map((c) => c.id).toSet();
-    expect(open, {'benedict', 'desales', 'kempis', 'liguori', 'francis'});
+    expect(open, {
+      'benedict',
+      'desales',
+      'kempis',
+      'liguori',
+      'francis',
+      'john-cross',
+      'gregory',
+      'augustine',
+      'teresa-avila',
+    });
     expect(Companions.byId('benedict')?.open, isTrue);
     expect(Companions.byId('desales')?.open, isTrue);
     expect(Companions.byId('kempis')?.open, isTrue);
     expect(Companions.byId('liguori')?.open, isTrue);
     expect(Companions.byId('francis')?.open, isTrue);
+    expect(Companions.byId('john-cross')?.open, isTrue);
+    expect(Companions.byId('gregory')?.open, isTrue);
+    expect(Companions.byId('augustine')?.open, isTrue);
+    expect(Companions.byId('teresa-avila')?.open, isTrue);
   });
 
   test('every companion has a unique id', () {

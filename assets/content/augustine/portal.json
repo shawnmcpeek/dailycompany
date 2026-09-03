@@ -1,0 +1,20 @@
+{
+  "id": "augustine",
+  "displayName": "Augustine of Hippo",
+  "tagline": "Our heart is restless, until it repose in Thee.",
+  "provenance": "constructed",
+  "spine": {
+    "type": "cycle",
+    "entries": 366,
+    "repeatsPerYear": 1.0,
+    "note": "Books I–X in 366 readings. Books XI–XIII are an appendix, reachable from the index and Read Through, not mapped onto the calendar."
+  },
+  "anchor": "evening",
+  "modules": [
+    "today",
+    "practice"
+  ],
+  "disclaimer": "An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by the Order of Saint Augustine, any Augustinian province or house, or any shrine or publisher associated with them.",
+  "unlockSku": "augustine_companion",
+  "sourceNote": "The Confessions of Saint Augustine, trans. E. B. Pusey (1838). Daily year is Books I–X. Books XI–XIII remain as an appendix. Not City of God."
+}

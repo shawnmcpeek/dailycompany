@@ -428,10 +428,18 @@ class _EntryBlockState extends ConsumerState<_EntryBlock> {
         if (widget.portal != null)
           CycleProvenanceLine(
             label: widget.readThrough
-                ? (widget.portalId == 'liguori' ? entry.chapterTitle : partChapter)
-                : widget.portalId == 'liguori'
-                    ? 'Visit ${entry.id} of ${widget.calendar.entries.length}'
-                    : 'Day ${entry.id} of ${widget.calendar.entries.length}',
+                ? (widget.portalId == 'liguori' ||
+                        widget.portalId == 'john-cross' ||
+                        widget.calendar.isAppendix(entry)
+                    ? widget.calendar.progressLabel(
+                        entry,
+                        readThrough: true,
+                      )
+                    : partChapter)
+                : widget.calendar.progressLabel(
+                    entry,
+                    readThrough: false,
+                  ),
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: accent,
                 ),
@@ -440,11 +448,13 @@ class _EntryBlockState extends ConsumerState<_EntryBlock> {
           ),
         const SizedBox(height: 8),
         Text(
-          widget.portalId == 'liguori'
+          widget.portalId == 'liguori' || widget.portalId == 'john-cross'
               ? entry.chapterTitle
-              : widget.readThrough
-                  ? '${entry.chapterTitle}$portion'
-                  : '$partChapter · ${entry.chapterTitle}$portion',
+              : widget.portalId == 'teresa-avila'
+                  ? '${entry.partTitle} · ${entry.chapterTitle}$portion'
+                  : widget.readThrough || widget.calendar.isAppendix(entry)
+                      ? '${entry.chapterTitle}$portion'
+                      : '$partChapter · ${entry.chapterTitle}$portion',
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: 20),

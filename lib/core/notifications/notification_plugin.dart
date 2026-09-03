@@ -103,7 +103,13 @@ abstract final class SharedNotifications {
       GoRouter.of(ctx).go(PortalRoutes.office(portalId, officeId));
     } else if (payload == 'aspiration') {
       GoRouter.of(ctx).go(PortalRoutes.today(portalId));
-    } else if (payload == 'cell' || payload == 'visit' || payload == 'canticle') {
+    } else if (payload == 'cell' ||
+        payload == 'visit' ||
+        payload == 'canticle' ||
+        payload == 'saying' ||
+        payload == 'pastoral' ||
+        payload == 'evening' ||
+        payload == 'recollection') {
       GoRouter.of(ctx).go(PortalRoutes.practice(portalId));
     }
   }

@@ -67,6 +67,78 @@ Hallway `open` is automatic once `PortalRegistry.byId(id)` is non-null. Add the 
 | Modules | Free: 28 Admonitions + Canticle. Unlock: writings + Fioretti + Read Through. SKU `francis_companion`. |
 | Accent | Fixed `FrancisAccent.woodland`. |
 
+### Filled — `john-cross`
+
+| | |
+| --- | --- |
+| `id` | `john-cross` |
+| Display | John of the Cross |
+| Tagline | *There is no progress but in the imitation of Christ.* |
+| Provenance | `constructed` |
+| Cadence | **366 × 1**, unique year. 374 natural sayings (~16,270 words, ~43/saying); 8 closing pieces sit in the index. Atomic — one saying a day, never bundled. |
+| Primary text | David Lewis, *Complete Works* vol. 2 (Longman, 1864): Precautions and Spiritual Maxims. |
+| Do not use | Kavanaugh–Rodriguez ICS (1964–). Treatises are a later shelf. |
+| Never-list | Carmelite, OCD, Discalced emblem. |
+| Disclaimer | Spec §7, naming the Order of Discalced Carmelites and ICS Publications. |
+| Anchor | Sit with today’s saying. Free: Precautions. |
+| Haptics | One optional saying reminder, off by default. |
+| Modules | Free: Precautions + Practice. Unlock: sayings + Read Through. SKU `john-cross_companion`. |
+| Accent | Fixed `JohnCrossAccent.night`. |
+
+### Filled — `gregory`
+
+| | |
+| --- | --- |
+| `id` | `gregory` |
+| Display | Gregory the Great |
+| Tagline | *The government of souls is the art of arts.* |
+| Provenance | `constructed` |
+| Cadence | **183 × 2.00**. Real count 64,649 words (~353/entry). Thin days over padding. |
+| Primary text | James Barmby, NPNF II.12 (1895), *Book of Pastoral Rule*. |
+| Do not recut | *Dialogues* Book II already ships as Benedict’s Life. |
+| Never-list | Papal tiara / crossed keys. |
+| Disclaimer | Spec §7, naming no diocese or papal household. |
+| Anchor | Sit with today’s counsel. |
+| Haptics | One optional Pastoral Rule reminder, off by default. |
+| Modules | Free: Practice. Unlock: the Rule twice a year + Read Through. SKU `gregory_companion`. |
+| Accent | Fixed `GregoryAccent.stone`. |
+
+### Filled — `augustine`
+
+| | |
+| --- | --- |
+| `id` | `augustine` |
+| Display | Augustine of Hippo |
+| Tagline | *Our heart is restless, until it repose in Thee.* |
+| Provenance | `constructed` |
+| Cadence | **366 × 1** for Books I–X. Real count 79,569 words (~217/day). Books XI–XIII are a 100-entry appendix (ids 367–466), not mapped onto the calendar. |
+| Primary text | E. B. Pusey (1838), *Confessions*. |
+| Do not use | *City of God* as the daily book. |
+| Never-list | Augustinian, OSA. |
+| Disclaimer | Spec §7, naming the Order of Saint Augustine. |
+| Anchor | Evening reading. |
+| Haptics | One optional evening reminder, off by default. Default 21:00. |
+| Modules | Free: Evening. Unlock: I–X through the year + appendix from the index + Read Through. SKU `augustine_companion`. |
+| Accent | Fixed `AugustineAccent.hearth`. |
+
+### Filled — `teresa-avila`
+
+| | |
+| --- | --- |
+| `id` | `teresa-avila` |
+| Display | Teresa of Avila |
+| Tagline | *Let nothing disturb thee.* |
+| Provenance | `constructed` |
+| Cadence | **366 × 1**. Real count 104,096 words (~284/day). A dwelling is never split across an entry. |
+| Primary text | Benedictines of Stanbrook / Benedict Zimmerman (1911–12), *Way of Perfection* + *Interior Castle*. |
+| Do not use | E. Allison Peers (1946–); ICS Kavanaugh–Rodriguez. |
+| Never-list | Carmelite, OCD. |
+| Disclaimer | Spec §7, naming the Order of Discalced Carmelites and ICS Publications. |
+| Anchor | Recollection timer (quotes from the Way). |
+| Haptics | One optional recollection reminder, off by default. |
+| Modules | Free: Recollection. Unlock: Way + Castle through the year + Read Through. SKU `teresa-avila_companion`. |
+| Accent | `TeresaAccent.forPart` — Way, then mansions 1–7. |
+
 ---
 
 ## 1. Content

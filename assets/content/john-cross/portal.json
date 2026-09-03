@@ -1,0 +1,21 @@
+{
+  "id": "john-cross",
+  "displayName": "John of the Cross",
+  "tagline": "There is no progress but in the imitation of Christ.",
+  "provenance": "constructed",
+  "spine": {
+    "type": "cycle",
+    "entries": 366,
+    "repeatsPerYear": 1.0,
+    "note": "366 sayings through the year, one a day. 8 closing pieces sit in the index, not on the calendar. The treatises are not the daily cut."
+  },
+  "anchor": null,
+  "modules": [
+    "today",
+    "precautions",
+    "practice"
+  ],
+  "disclaimer": "An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by the Order of Discalced Carmelites, any Carmelite province or house, ICS Publications, or any shrine or publisher associated with them.",
+  "unlockSku": "john-cross_companion",
+  "sourceNote": "The Complete Works of Saint John of the Cross, trans. David Lewis, vol. 2 (Longman, Green, Longman, Roberts & Green, 1864): Instructions and Cautions, and Spiritual Maxims. Not the Kavanaugh–Rodriguez ICS edition. Ascent, Dark Night, Canticle, and Living Flame are a later shelf."
+}

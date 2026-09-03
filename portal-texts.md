@@ -88,7 +88,7 @@ Cadence below is a **guess**. Playbook: print `cadence_candidates` on a real cou
 | Kind | Saint |
 | Daily text | **Sayings of Light and Love** (and kindred maxims: Precautions, Counsels), David Lewis (1864 / 1889). Atomic — one saying a day, do not bundle to fatten the word count. |
 | Not the daily cut | *Ascent*, *Dark Night*, *Canticle*, *Flame* (~275k). A later shelf if wanted — not the opening daily unit. A 300-word slice of the Ascent is close to meaningless. |
-| Cadence | After counting Lewis's sayings. Likely a repeat, not two years of treatise slices. |
+| Cadence | **366 × 1**, unique year. Real count 16,270 words (~43/saying); 8 overflow pieces in the index. |
 | Do not use | Kavanaugh–Rodriguez ICS (1964–). |
 | Never-list | Carmelite, OCD, Discalced emblem. |
 
@@ -98,7 +98,7 @@ Cadence below is a **guess**. Playbook: print `cadence_candidates` on a real cou
 | --- | --- |
 | Kind | Saint |
 | Daily text | *Book of Pastoral Rule*, James Barmby, NPNF II.12 (1895). |
-| Cadence | **183 × 2** after a real count (spec starting guess). Thin days over padding. |
+| Cadence | **183 × 2.00**. Real count 64,649 words (~353/entry). |
 | Do not recut | *Dialogues* Book II already ships as Benedict's Life. **Cross-link the same JSON; do not duplicate.** |
 | Optional later | *Moralia* selections (Library of the Fathers, 1844–50) — editorial selection, not a mechanical cut. Homilies if needed. |
 | Never-list | None active (predates the orders). |
@@ -109,7 +109,7 @@ Cadence below is a **guess**. Playbook: print `cadence_candidates` on a real cou
 | --- | --- |
 | Kind | Saint |
 | Daily text | *Confessions* I–X, E. B. Pusey (1838). XI–XIII as appendix / Read Through, not the daily year. |
-| Cadence | 365 × 1 after a real count. |
+| Cadence | **366 × 1** for I–X after a real count (79,569 words, ~217/day). XI–XIII are a 100-entry appendix, not calendar days. |
 | Also CLEAR | Homilies on 1 John (Browne, NPNF I.7, 1888); selected sermons (MacMullen, NPNF I.6, 1888). |
 | Do not use | *City of God* as the daily book. |
 | Note | Pusey is dense. Clear, and the portal most likely to draw "hard to read" reviews. |
@@ -121,7 +121,7 @@ Cadence below is a **guess**. Playbook: print `cadence_candidates` on a real cou
 | --- | --- |
 | Kind | Saint |
 | Daily text | *Way of Perfection* + *Interior Castle*, Benedictines of Stanbrook / Benedict Zimmerman (1911–12). *Life*, David Lewis (1870), if the year needs a third work. |
-| Cadence | 365 × 1 after a real count. Accent by mansion. Never split a dwelling across an entry. |
+| Cadence | **366 × 1** after a real count (104,096 words, ~284/day). Accent by mansion. Never split a dwelling across an entry. |
 | Do not use | E. Allison Peers (1946–); ICS Kavanaugh–Rodriguez. Peers is the one a casual search will offer. |
 | Anchor | Recollection timer. |
 | Never-list | Carmelite, OCD. |

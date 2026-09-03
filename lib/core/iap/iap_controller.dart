@@ -78,6 +78,34 @@ final francisCompanionUnlockedProvider = Provider<bool>((ref) {
       iap.has(IapFlags.allSaintsEntitlementId);
 });
 
+final johnCrossCompanionUnlockedProvider = Provider<bool>((ref) {
+  if (!IapFlags.enabled) return true;
+  final iap = ref.watch(iapControllerProvider);
+  return iap.has(IapFlags.johnCrossEntitlementId) ||
+      iap.has(IapFlags.allSaintsEntitlementId);
+});
+
+final gregoryCompanionUnlockedProvider = Provider<bool>((ref) {
+  if (!IapFlags.enabled) return true;
+  final iap = ref.watch(iapControllerProvider);
+  return iap.has(IapFlags.gregoryEntitlementId) ||
+      iap.has(IapFlags.allSaintsEntitlementId);
+});
+
+final augustineCompanionUnlockedProvider = Provider<bool>((ref) {
+  if (!IapFlags.enabled) return true;
+  final iap = ref.watch(iapControllerProvider);
+  return iap.has(IapFlags.augustineEntitlementId) ||
+      iap.has(IapFlags.allSaintsEntitlementId);
+});
+
+final teresaAvilaCompanionUnlockedProvider = Provider<bool>((ref) {
+  if (!IapFlags.enabled) return true;
+  final iap = ref.watch(iapControllerProvider);
+  return iap.has(IapFlags.teresaAvilaEntitlementId) ||
+      iap.has(IapFlags.allSaintsEntitlementId);
+});
+
 class IapController extends StateNotifier<IapState> {
   IapController() : super(const IapState());
 
@@ -91,6 +119,10 @@ class IapController extends StateNotifier<IapState> {
           IapFlags.kempisEntitlementId,
           IapFlags.liguoriEntitlementId,
           IapFlags.francisEntitlementId,
+          IapFlags.johnCrossEntitlementId,
+          IapFlags.gregoryEntitlementId,
+          IapFlags.augustineEntitlementId,
+          IapFlags.teresaAvilaEntitlementId,
           IapFlags.allSaintsEntitlementId,
         },
       );
@@ -138,6 +170,10 @@ class IapController extends StateNotifier<IapState> {
           IapFlags.kempisEntitlementId,
           IapFlags.liguoriEntitlementId,
           IapFlags.francisEntitlementId,
+          IapFlags.johnCrossEntitlementId,
+          IapFlags.gregoryEntitlementId,
+          IapFlags.augustineEntitlementId,
+          IapFlags.teresaAvilaEntitlementId,
           IapFlags.allSaintsEntitlementId,
         },
       );
@@ -216,6 +252,9 @@ class IapController extends StateNotifier<IapState> {
 
   Future<bool> purchaseFrancisCompanion() =>
       _purchase(IapFlags.francisProductId, IapFlags.francisEntitlementId);
+
+  Future<bool> purchaseCompanion(String productId, String entitlementId) =>
+      _purchase(productId, entitlementId);
 
   Future<bool> restore() async {
     if (!IapFlags.enabled) return true;

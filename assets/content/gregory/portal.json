@@ -1,0 +1,20 @@
+{
+  "id": "gregory",
+  "displayName": "Gregory the Great",
+  "tagline": "The government of souls is the art of arts.",
+  "provenance": "constructed",
+  "spine": {
+    "type": "cycle",
+    "entries": 183,
+    "repeatsPerYear": 2.0,
+    "note": "183 readings, twice a year. Thin days over padding. Dialogues Book II already ships as Benedict's Life — not recut here."
+  },
+  "anchor": null,
+  "modules": [
+    "today",
+    "practice"
+  ],
+  "disclaimer": "An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by any diocese, papal household, or publisher associated with Gregory the Great.",
+  "unlockSku": "gregory_companion",
+  "sourceNote": "The Book of Pastoral Rule, trans. James Barmby, in Nicene and Post-Nicene Fathers, Second Series, Vol. 12, ed. Philip Schaff and Henry Wace (Christian Literature Publishing Co., 1895). Dialogues Book II is not duplicated; it already ships as the Life of Benedict."
+}

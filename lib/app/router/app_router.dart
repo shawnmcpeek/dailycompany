@@ -10,17 +10,23 @@ import 'package:dailycompany/features/desales/desales_practice_screen.dart';
 import 'package:dailycompany/features/hallway/hallway_screen.dart';
 import 'package:dailycompany/features/hours/hours_screen.dart';
 import 'package:dailycompany/features/hub/hub_screen.dart';
+import 'package:dailycompany/features/iap/cycle_companion_paywall_screen.dart';
 import 'package:dailycompany/features/iap/desales_companion_paywall_screen.dart';
 import 'package:dailycompany/features/iap/francis_companion_paywall_screen.dart';
 import 'package:dailycompany/features/iap/kempis_companion_paywall_screen.dart';
 import 'package:dailycompany/features/iap/liguori_companion_paywall_screen.dart';
 import 'package:dailycompany/features/iap/oblate_paywall_screen.dart';
+import 'package:dailycompany/features/augustine/augustine_practice_screen.dart';
 import 'package:dailycompany/features/francis/francis_admonitions_screen.dart';
 import 'package:dailycompany/features/francis/francis_practice_screen.dart';
 import 'package:dailycompany/features/francis/francis_stories_screen.dart';
+import 'package:dailycompany/features/gregory/gregory_practice_screen.dart';
+import 'package:dailycompany/features/john_cross/john_practice_screen.dart';
+import 'package:dailycompany/features/john_cross/john_precautions_screen.dart';
 import 'package:dailycompany/features/kempis/kempis_admonitions_screen.dart';
 import 'package:dailycompany/features/kempis/kempis_practice_screen.dart';
 import 'package:dailycompany/features/liguori/liguori_practice_screen.dart';
+import 'package:dailycompany/features/teresa/teresa_practice_screen.dart';
 import 'package:dailycompany/features/lectio/lectio_screen.dart';
 import 'package:dailycompany/features/life/life_screen.dart';
 import 'package:dailycompany/features/medal/medal_screen.dart';
@@ -192,6 +198,12 @@ final routerProvider = Provider<GoRouter>((ref) {
           } else if (id == 'francis') {
             child = const FrancisCompanionPaywallScreen();
             title = 'Companion';
+          } else if (id == 'john-cross' ||
+              id == 'gregory' ||
+              id == 'augustine' ||
+              id == 'teresa-avila') {
+            child = CycleCompanionPaywallScreen(portalId: id!);
+            title = 'Companion';
           } else {
             child = const OblatePaywallScreen();
             title = 'Oblate';
@@ -340,6 +352,14 @@ StatefulShellBranch _cycleBranch(String portalId, String module) {
                 body = const LiguoriPracticeScreen();
               } else if (id == 'francis') {
                 body = const FrancisPracticeScreen();
+              } else if (id == 'john-cross') {
+                body = const JohnPracticeScreen();
+              } else if (id == 'gregory') {
+                body = const GregoryPracticeScreen();
+              } else if (id == 'augustine') {
+                body = const AugustinePracticeScreen();
+              } else if (id == 'teresa-avila') {
+                body = const TeresaPracticeScreen();
               } else {
                 body = const DesalesPracticeScreen();
               }
@@ -433,6 +453,30 @@ StatefulShellBranch _cycleBranch(String portalId, String module) {
           ),
         ],
       );
+    case 'precautions':
+      return StatefulShellBranch(
+        initialLocation: PortalRoutes.precautions(portalId),
+        routes: [
+          GoRoute(
+            path: '/p/:portalId/precautions',
+            pageBuilder: (context, state) => PageTurn.of(
+              key: state.pageKey,
+              child: const JohnPrecautionsScreen(),
+            ),
+            routes: [
+              GoRoute(
+                path: ':chapter',
+                pageBuilder: (context, state) => PageTurn.of(
+                  key: state.pageKey,
+                  child: JohnPrecautionScreen(
+                    chapter: int.parse(state.pathParameters['chapter']!),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      );
     case 'today':
     default:
       return StatefulShellBranch(
@@ -501,6 +545,20 @@ class AppShell extends ConsumerWidget {
         label: 'Canticle',
       );
     }
+    if (module == 'practice' && portalId == 'augustine') {
+      return const NavigationDestination(
+        icon: Icon(Icons.spa_outlined),
+        selectedIcon: Icon(Icons.spa),
+        label: 'Evening',
+      );
+    }
+    if (module == 'practice' && portalId == 'teresa-avila') {
+      return const NavigationDestination(
+        icon: Icon(Icons.spa_outlined),
+        selectedIcon: Icon(Icons.spa),
+        label: 'Recollection',
+      );
+    }
     return switch (module) {
       'today' => const NavigationDestination(
         icon: Icon(Icons.menu_book_outlined),
@@ -531,6 +589,11 @@ class AppShell extends ConsumerWidget {
         icon: Icon(Icons.auto_stories_outlined),
         selectedIcon: Icon(Icons.auto_stories),
         label: 'Stories',
+      ),
+      'precautions' => const NavigationDestination(
+        icon: Icon(Icons.list_alt_outlined),
+        selectedIcon: Icon(Icons.list_alt),
+        label: 'Cautions',
       ),
       _ => const NavigationDestination(
         icon: Icon(Icons.menu_book_outlined),

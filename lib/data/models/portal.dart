@@ -192,7 +192,128 @@ abstract final class PortalRegistry {
     unlockSku: 'francis_companion',
   );
 
-  static const all = <SaintPortal>[benedict, desales, kempis, liguori, francis];
+  static const johnCross = SaintPortal(
+    id: 'john-cross',
+    displayName: 'John of the Cross',
+    tagline: 'There is no progress but in the imitation of Christ.',
+    provenance: CycleProvenance.constructed,
+    provenanceTitle: 'About this reading cycle',
+    provenanceParagraphs: [
+      'This cycle was made for this app. John did not arrange '
+          'the sayings to be read one a day, and no order or '
+          'published edition assigns these passages to these dates. '
+          'Each saying stands alone — we do not bundle them to fill '
+          'the page. The treatises are a later shelf, not this year. '
+          'Two closing pieces sit in the index, off the calendar.',
+      'The text itself is unaltered — David Lewis’s 1864 translation '
+          'of the Precautions and Spiritual Maxims. It is not the '
+          'Kavanaugh–Rodriguez ICS edition.',
+      'If you’d rather read the sayings straight through as they '
+          'stand, turn on Read Through under the reading.',
+    ],
+    disclaimer:
+        'An independent app from Daddoo Dev. Not affiliated with, '
+        'endorsed by, or produced by the Order of Discalced Carmelites, '
+        'any Carmelite province or house, ICS Publications, or any '
+        'shrine or publisher associated with them.',
+    modules: ['today', 'precautions', 'practice'],
+    unlockSku: 'john-cross_companion',
+  );
+
+  static const gregory = SaintPortal(
+    id: 'gregory',
+    displayName: 'Gregory the Great',
+    tagline: 'The government of souls is the art of arts.',
+    provenance: CycleProvenance.constructed,
+    provenanceTitle: 'About this reading cycle',
+    provenanceParagraphs: [
+      'This cycle was made for this app. Gregory did not write the '
+          'Pastoral Rule to be read a page a day, and no edition '
+          'assigns these passages to these dates. The book is read '
+          'twice a year — thin days over padding.',
+      'The text itself is unaltered — James Barmby’s translation in '
+          'Nicene and Post-Nicene Fathers, Second Series, Volume 12 '
+          '(1895). Dialogues Book II already ships as Benedict’s Life; '
+          'it is not recut here.',
+      'If you’d rather read the Rule straight through as it was '
+          'written, turn on Read Through under the reading.',
+    ],
+    disclaimer:
+        'An independent app from Daddoo Dev. Not affiliated with, '
+        'endorsed by, or produced by any diocese, papal household, '
+        'or publisher associated with Gregory the Great.',
+    modules: ['today', 'practice'],
+    unlockSku: 'gregory_companion',
+  );
+
+  static const augustine = SaintPortal(
+    id: 'augustine',
+    displayName: 'Augustine of Hippo',
+    tagline: 'Our heart is restless, until it repose in Thee.',
+    provenance: CycleProvenance.constructed,
+    provenanceTitle: 'About this reading cycle',
+    provenanceParagraphs: [
+      'This year-long cycle was made for this app. It is not a '
+          'traditional division of the text: Augustine did not write '
+          'the Confessions to be read a page a day, and no order or '
+          'published edition assigns these passages to these dates. '
+          'We cut Books I–X into 366 readings at paragraph and chapter '
+          'boundaries so they could be kept company with daily.',
+      'The text itself is unaltered — E. B. Pusey’s 1838 translation. '
+          'Books XI–XIII are an appendix, reachable from the index and '
+          'Read Through, not mapped onto the calendar. This is not '
+          'City of God.',
+      'If you’d rather read it straight through as it was written, '
+          'turn on Read Through under the reading.',
+    ],
+    disclaimer:
+        'An independent app from Daddoo Dev. Not affiliated with, '
+        'endorsed by, or produced by the Order of Saint Augustine, '
+        'any Augustinian province or house, or any shrine or '
+        'publisher associated with them.',
+    modules: ['today', 'practice'],
+    unlockSku: 'augustine_companion',
+  );
+
+  static const teresaAvila = SaintPortal(
+    id: 'teresa-avila',
+    displayName: 'Teresa of Avila',
+    tagline: 'Let nothing disturb thee.',
+    provenance: CycleProvenance.constructed,
+    provenanceTitle: 'About this reading cycle',
+    provenanceParagraphs: [
+      'This year-long cycle was made for this app. It is not a '
+          'traditional division of the text: Teresa did not write the '
+          'Way of Perfection or the Interior Castle to be read a page '
+          'a day, and no order or published edition assigns these '
+          'passages to these dates. A dwelling is never split across '
+          'a day’s entry. The seven mansions drive the accent.',
+      'The text itself is unaltered — the Benedictines of Stanbrook, '
+          'revised by Benedict Zimmerman (1911–12). It is not Peers, '
+          'and it is not the ICS Kavanaugh–Rodriguez edition.',
+      'If you’d rather read the books straight through as they were '
+          'written, turn on Read Through under the reading.',
+    ],
+    disclaimer:
+        'An independent app from Daddoo Dev. Not affiliated with, '
+        'endorsed by, or produced by the Order of Discalced Carmelites, '
+        'any Carmelite province or house, ICS Publications, or any '
+        'shrine or publisher associated with them.',
+    modules: ['today', 'practice'],
+    unlockSku: 'teresa-avila_companion',
+  );
+
+  static const all = <SaintPortal>[
+    benedict,
+    desales,
+    kempis,
+    liguori,
+    francis,
+    johnCross,
+    gregory,
+    augustine,
+    teresaAvila,
+  ];
 
   static SaintPortal? byId(String id) {
     for (final p in all) {

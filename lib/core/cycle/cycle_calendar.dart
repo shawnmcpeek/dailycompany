@@ -47,18 +47,61 @@ class CycleCalendar {
   CycleCalendar({
     required this.portalId,
     required this.entries,
-    required this._byDateCommon,
-    required this._byDateLeap,
-  }) : _byId = {for (final e in entries) e.id: e};
+    required Map<String, List<int>> byDateCommon,
+    required Map<String, List<int>> byDateLeap,
+    int? dailyCount,
+  })  : _byDateCommon = byDateCommon,
+        _byDateLeap = byDateLeap,
+        dailyCount = dailyCount ?? entries.length,
+        _byId = {for (final e in entries) e.id: e};
 
   final String portalId;
   final List<CycleEntry> entries;
+
+  /// Calendar-mapped count. Augustine's appendix lives past this.
+  final int dailyCount;
   final Map<String, List<int>> _byDateCommon;
   final Map<String, List<int>> _byDateLeap;
   final Map<int, CycleEntry> _byId;
 
-  /// "Book" for Kempis, "Part" for everyone else on this spine.
-  String get divisionNoun => portalId == 'kempis' ? 'Book' : 'Part';
+  /// "Book" for Kempis / Augustine / Gregory, "Part" otherwise.
+  String get divisionNoun => switch (portalId) {
+        'kempis' || 'augustine' || 'gregory' => 'Book',
+        'john-cross' => 'Saying',
+        _ => 'Part',
+      };
+
+  bool isAppendix(CycleEntry entry) => entry.id > dailyCount;
+
+  String indexSubtitle(CycleEntry entry) {
+    if (portalId == 'liguori') {
+      return 'Visit ${entry.id} of ${entries.length}';
+    }
+    if (portalId == 'john-cross') {
+      return 'Saying ${entry.id} of $dailyCount';
+    }
+    if (isAppendix(entry)) {
+      return 'Appendix · Book ${entry.part} · Chapter ${entry.chapter}';
+    }
+    if (portalId == 'teresa-avila') {
+      return '${entry.partTitle} · Chapter ${entry.chapter}';
+    }
+    return '$divisionNoun ${entry.part} · Chapter ${entry.chapter}';
+  }
+
+  String progressLabel(CycleEntry entry, {required bool readThrough}) {
+    if (isAppendix(entry)) {
+      return 'Appendix · Book ${entry.part} · Chapter ${entry.chapter}';
+    }
+    if (portalId == 'liguori') {
+      return 'Visit ${entry.id} of ${entries.length}';
+    }
+    if (portalId == 'john-cross') {
+      return 'Saying ${entry.id} of $dailyCount';
+    }
+    final total = readThrough ? entries.length : dailyCount;
+    return 'Day ${entry.id} of $total';
+  }
 
   static Future<CycleCalendar> load(String portalId) async {
     final entriesRaw = await rootBundle.loadString(
@@ -94,6 +137,7 @@ class CycleCalendar {
       entries: entries,
       byDateCommon: parseMap('byDateCommon'),
       byDateLeap: parseMap('byDateLeap'),
+      dailyCount: entriesJson['dailyEntries'] as int?,
     );
   }
 

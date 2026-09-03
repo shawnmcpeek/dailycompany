@@ -15,6 +15,10 @@ class SourcesScreen extends ConsumerWidget {
       'kempis' => const _KempisSources(),
       'liguori' => const _LiguoriSources(),
       'francis' => const _FrancisSources(),
+      'john-cross' => const _JohnCrossSources(),
+      'gregory' => const _GregorySources(),
+      'augustine' => const _AugustineSources(),
+      'teresa-avila' => const _TeresaSources(),
       _ => const _BenedictSources(),
     };
   }
@@ -343,6 +347,187 @@ class _FrancisSources extends StatelessWidget {
         const SizedBox(height: 28),
         Text(
           PortalRegistry.francis.disclaimer,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ],
+    );
+  }
+}
+
+class _JohnCrossSources extends StatelessWidget {
+  const _JohnCrossSources();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
+      children: [
+        Text(
+          'Every text in Daily Company is public-domain or traditional.',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        const SizedBox(height: 28),
+        ChromeLabel('Sayings'),
+        const SizedBox(height: 10),
+        const _SourceBlock(
+          title: 'English display text',
+          body:
+              'The Complete Works of Saint John of the Cross, translated by '
+              'David Lewis, volume 2 (Longman, Green, Longman, Roberts & Green, '
+              '1864): the Instructions and Cautions, and the Spiritual Maxims. '
+              'One saying a day. The treatises are not this year.',
+        ),
+        _SourceBlock(
+          title: PortalRegistry.johnCross.provenanceTitle,
+          body: PortalRegistry.johnCross.provenanceParagraphs.join('\n\n'),
+        ),
+        const SizedBox(height: 20),
+        ChromeLabel('Not used'),
+        const SizedBox(height: 10),
+        Text(
+          'Kavanaugh–Rodriguez (ICS, 1964–). Any Carmelite or OCD apparatus, '
+          'notes, or chapter titles. The Ascent, Dark Night, Spiritual Canticle, '
+          'and Living Flame are a later shelf.',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+        const SizedBox(height: 28),
+        Text(
+          PortalRegistry.johnCross.disclaimer,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ],
+    );
+  }
+}
+
+class _GregorySources extends StatelessWidget {
+  const _GregorySources();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
+      children: [
+        Text(
+          'Every text in Daily Company is public-domain or traditional.',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        const SizedBox(height: 28),
+        ChromeLabel('The Pastoral Rule'),
+        const SizedBox(height: 10),
+        const _SourceBlock(
+          title: 'English display text',
+          body:
+              'The Book of Pastoral Rule, translated by James Barmby, in '
+              'Nicene and Post-Nicene Fathers, Second Series, Volume 12, '
+              'edited by Philip Schaff and Henry Wace (Christian Literature '
+              'Publishing Co., 1895). Dialogues Book II already ships as '
+              'Benedict’s Life and is not recut here.',
+        ),
+        _SourceBlock(
+          title: PortalRegistry.gregory.provenanceTitle,
+          body: PortalRegistry.gregory.provenanceParagraphs.join('\n\n'),
+        ),
+        const SizedBox(height: 20),
+        ChromeLabel('Not used'),
+        const SizedBox(height: 10),
+        Text(
+          'Any modern papal, diocesan, or Newman-press apparatus. Dialogues '
+          'Book II is not duplicated.',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+        const SizedBox(height: 28),
+        Text(
+          PortalRegistry.gregory.disclaimer,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ],
+    );
+  }
+}
+
+class _AugustineSources extends StatelessWidget {
+  const _AugustineSources();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
+      children: [
+        Text(
+          'Every text in Daily Company is public-domain or traditional.',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        const SizedBox(height: 28),
+        ChromeLabel('The Confessions'),
+        const SizedBox(height: 10),
+        const _SourceBlock(
+          title: 'English display text',
+          body:
+              'The Confessions of Saint Augustine, translated by E. B. Pusey '
+              '(1838). The daily year is Books I–X. Books XI–XIII remain as '
+              'an appendix, reachable from the index and Read Through. '
+              'Not City of God.',
+        ),
+        _SourceBlock(
+          title: PortalRegistry.augustine.provenanceTitle,
+          body: PortalRegistry.augustine.provenanceParagraphs.join('\n\n'),
+        ),
+        const SizedBox(height: 20),
+        ChromeLabel('Not used'),
+        const SizedBox(height: 10),
+        Text(
+          'Any Augustinian or OSA apparatus. City of God is not the daily book.',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+        const SizedBox(height: 28),
+        Text(
+          PortalRegistry.augustine.disclaimer,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ],
+    );
+  }
+}
+
+class _TeresaSources extends StatelessWidget {
+  const _TeresaSources();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
+      children: [
+        Text(
+          'Every text in Daily Company is public-domain or traditional.',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        const SizedBox(height: 28),
+        ChromeLabel('Way and Castle'),
+        const SizedBox(height: 10),
+        const _SourceBlock(
+          title: 'English display text',
+          body:
+              'The Way of Perfection and The Interior Castle, translated from '
+              'the autograph by the Benedictines of Stanbrook, revised with '
+              'notes by Benedict Zimmerman (Thomas Baker, 1911–12; the 1921 '
+              'Baker impression of the same translation). Not Peers. Not ICS.',
+        ),
+        _SourceBlock(
+          title: PortalRegistry.teresaAvila.provenanceTitle,
+          body: PortalRegistry.teresaAvila.provenanceParagraphs.join('\n\n'),
+        ),
+        const SizedBox(height: 20),
+        ChromeLabel('Not used'),
+        const SizedBox(height: 10),
+        Text(
+          'E. Allison Peers (1946–). Kavanaugh–Rodriguez ICS. Any Carmelite '
+          'or OCD apparatus, notes, or chapter titles.',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+        const SizedBox(height: 28),
+        Text(
+          PortalRegistry.teresaAvila.disclaimer,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
       ],

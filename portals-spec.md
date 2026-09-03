@@ -43,8 +43,11 @@ Date-keyed, repeating, identical to what Benedict already runs. `DailyEntry.date
 | de Sales | 366 | 1 | 1 |
 | Liguori | 31 | ~12 | 12 |
 | Gregory | 183 | 2 | 2 |
+| John of the Cross | 366 | 1 | unique + 8 appendix |
+| Augustine | 366 | 1 | 1 |
+| Teresa | 366 | 1 | 1 |
 
-No new lookup code for any of these. Benedict's existing `byDate` map and its 366-day coverage test cover the whole set. John of the Cross opens on the *Sayings* (a repeat after word count), not a two-year treatise cut. A `cycleYear` arm remains available if a later shelf actually needs two years.
+No new lookup code for any of these. Benedict's existing `byDate` map and its 366-day coverage test cover the whole set. John of the Cross opens on the *Sayings* (366 unique days; overflow in the index), not a two-year treatise cut. A `cycleYear` arm remains available if a later shelf actually needs two years.
 
 **Leap day.** Emit 366 keys. In common years, merge `02-29` into `02-28` and stack the two portions with a hairline divider. You already have this code path for Benedict's Feb 24.
 
@@ -62,13 +65,13 @@ The rule: **`entries × repeats ≈ 365`, chosen so daily length lands in 250–
 | --- | --- | --- | --- | --- |
 | **de Sales** | *Devout Life*, ~119 ch | ~78k (was ~120k) | 366 × 1 | ~215 |
 | **Kempis** | *Imitation of Christ*, 4 books | ~63k | **366 × 1** | ~170 |
-| **Augustine** | *Confessions* I–X | ~100k | 365 × 1 | ~275 |
-| **Teresa** | *Interior Castle* + *Way of Perfection* | ~135k | 365 × 1 | ~370 |
+| **Augustine** | *Confessions* I–X | 79.6k | **366 × 1** | ~217 |
+| **Teresa** | *Interior Castle* + *Way of Perfection* | 104k | **366 × 1** | ~284 |
 | **Thérèse** | *Story of a Soul* + letters | ~90k | 365 × 1 | ~245 |
 | **Francis** | Writings (Robinson); *Fioretti* is a second shelf | 27.8k | **85 × ~4.3** | ~327 |
 | **Gregory** | *Pastoral Rule*, 65 ch | ~75k | **183 × 2** | ~410 |
 | **Liguori** | *Visits*, 31 | ~19k | **31 × 12** | ~610/visit |
-| **John of the Cross** | *Sayings of Light and Love* (daily); treatises later | short | repeat after count | — |
+| **John of the Cross** | *Sayings* / Precautions + Maxims (Lewis) | 16.3k | **366 × 1** + 8 appendix | ~43 |
 | Benedict | *Rule* | ~40k | 122 × 3 | ~330 |
 
 Word counts are estimates from page counts and want verifying — have `01_fetch.py` print a real count per source before anyone commits to a cadence.
@@ -472,16 +475,16 @@ Not a legal disclaimer. It's the honest description of the product, and this aud
 
 ## 11. The remaining houses
 
-Editions, do-not-use, and identity never-lists: `portal-texts.md`. Cadence here is still a guess until the cutter prints a real word count.
+Editions, do-not-use, and identity never-lists: `portal-texts.md`. Cadence for Liguori, Francis, John, Gregory, Augustine, and Teresa is locked from a real count. Thérèse remains a guess until that house is opened.
 
 | Saint | Cadence | Primary text (PD) | Anchor | Note |
 | --- | --- | --- | --- | --- |
 | **Liguori** | 31 × 12 | *Visits to the Blessed Sacrament*, Grimm Centenary (Benziger, 1886–97) | The Visit | Cheapest portal here — 31 entries, no cutting pass, resets monthly. Short months omit visits 29–31; do not merge them. Provenance is `.partlyTraditional`: the 31 Visits are his own division, the month mapping is ours. |
-| **Augustine** | 365 × 1 | *Confessions*, Pusey (1838) | Evening reading | Ship Books I–X; XI–XIII are philosophical and lose people. Treat them as an appendix reachable from the index and Read Through. |
-| **Teresa** | 365 × 1 | *Interior Castle* + *Way of Perfection*, Stanbrook / Zimmerman (1911–12) | Recollection timer | The seven mansions drive the accent — the one fixed-corpus portal that earns a moving accent. Never Peers or ICS. |
+| **Augustine** | **366 × 1** | *Confessions*, Pusey (1838) | Evening reading | Ship Books I–X in 366 readings; XI–XIII are a 100-entry appendix reachable from the index and Read Through. |
+| **Teresa** | **366 × 1** | *Interior Castle* + *Way of Perfection*, Stanbrook / Zimmerman (1911–12) | Recollection timer | The seven mansions drive the accent — the one fixed-corpus portal that earns a moving accent. Never Peers or ICS. A dwelling is never split across an entry. |
 | **Francis** | **85 × ~4.3** | Writings, Robinson (1905). *Fioretti* (Heywood 1906) is a second shelf | Canticle of the Creatures | Do not pad a short corpus to 365. 85 natural units cycle through the year. The Office of the Passion is five seasonal offices, not mashed hour-scraps. The 28 Admonitions and the Canticle stay free. Highest name recognition, most crowded aisle. |
-| **Gregory** | **183 × 2** | *Book of Pastoral Rule*, Barmby, NPNF II.12 (1895) | — | **Overlaps Benedict** — *Dialogues* Bk II already ships there as Life of Benedict. Cross-link the same JSON, don't duplicate. The *Pastoral Rule* is a book about leadership and is what Gregory brings that Benedict's portal doesn't. |
-| **John of the Cross** | repeat after count | *Sayings of Light and Love*, Lewis (1864/89) | — | Daily unit is the sayings, not slices of the *Ascent*. Treatises (~275k) are a later shelf. Never Kavanaugh–Rodriguez. |
+| **Gregory** | **183 × 2** | *Book of Pastoral Rule*, Barmby, NPNF II.12 (1895) | Sit with today’s counsel | **Overlaps Benedict** — *Dialogues* Bk II already ships there as Life of Benedict. Cross-link the same JSON, don't duplicate. The *Pastoral Rule* is a book about leadership and is what Gregory brings that Benedict's portal doesn't. |
+| **John of the Cross** | **366 × 1** + 8 appendix | Precautions + Spiritual Maxims, Lewis (1864) | Sit with the saying | Daily unit is the sayings, not slices of the *Ascent*. 366 unique days; overflow sits in the index. Treatises (~275k) are a later shelf. Never Kavanaugh–Rodriguez. The Precautions stay free. |
 | **Thérèse** | 365 × 1 | *Story of a Soul* — **see flag** | The Little Way offering | **Rights flag.** Taylor 1912 of the 1898 Pauline text is the clear US path; it is the edited Thérèse, not the 1956 manuscripts. Never Clarke / Knox / ICS. **Build last.** |
 
 Public-domain status is jurisdiction-specific and I'm not a lawyer — the caveat closing the Benedict spec applies to every row above, the Thérèse row especially.

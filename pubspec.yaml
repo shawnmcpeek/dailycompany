@@ -51,6 +51,10 @@ flutter:
     - assets/content/kempis/
     - assets/content/liguori/
     - assets/content/francis/
+    - assets/content/john-cross/
+    - assets/content/gregory/
+    - assets/content/augustine/
+    - assets/content/teresa-avila/
     - assets/branding/
   fonts:
     - family: EBGaramond

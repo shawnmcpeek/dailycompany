@@ -45,6 +45,7 @@ class DailyCompanyApp extends ConsumerWidget {
     ref.watch(kempisCellSyncProvider);
     ref.watch(liguoriVisitSyncProvider);
     ref.watch(francisCanticleSyncProvider);
+    ref.watch(cycleReminderSyncProvider);
     ref.watch(iapControllerProvider);
     final platformBrightness =
         WidgetsBinding.instance.platformDispatcher.platformBrightness;
@@ -56,7 +57,11 @@ class DailyCompanyApp extends ConsumerWidget {
     if (portalId == 'desales' ||
         portalId == 'kempis' ||
         portalId == 'liguori' ||
-        portalId == 'francis') {
+        portalId == 'francis' ||
+        portalId == 'john-cross' ||
+        portalId == 'gregory' ||
+        portalId == 'augustine' ||
+        portalId == 'teresa-avila') {
       final todaysEntries =
           ref.watch(cycleCalendarProvider(portalId)).valueOrNull?.resolveFor(day) ??
               const [];
