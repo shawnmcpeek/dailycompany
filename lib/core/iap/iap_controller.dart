@@ -28,17 +28,17 @@ class IapState {
     Set<String>? entitlements,
     Map<String, String>? priceLabels,
     String? error,
-  }) =>
-      IapState(
-        ready: ready ?? this.ready,
-        entitlements: entitlements ?? this.entitlements,
-        priceLabels: priceLabels ?? this.priceLabels,
-        error: error,
-      );
+  }) => IapState(
+    ready: ready ?? this.ready,
+    entitlements: entitlements ?? this.entitlements,
+    priceLabels: priceLabels ?? this.priceLabels,
+    error: error,
+  );
 }
 
-final iapControllerProvider =
-    StateNotifierProvider<IapController, IapState>((ref) {
+final iapControllerProvider = StateNotifierProvider<IapController, IapState>((
+  ref,
+) {
   return IapController()..bootstrap();
 });
 
@@ -71,6 +71,13 @@ final liguoriCompanionUnlockedProvider = Provider<bool>((ref) {
       iap.has(IapFlags.allSaintsEntitlementId);
 });
 
+final francisCompanionUnlockedProvider = Provider<bool>((ref) {
+  if (!IapFlags.enabled) return true;
+  final iap = ref.watch(iapControllerProvider);
+  return iap.has(IapFlags.francisEntitlementId) ||
+      iap.has(IapFlags.allSaintsEntitlementId);
+});
+
 class IapController extends StateNotifier<IapState> {
   IapController() : super(const IapState());
 
@@ -83,6 +90,7 @@ class IapController extends StateNotifier<IapState> {
           IapFlags.desalesEntitlementId,
           IapFlags.kempisEntitlementId,
           IapFlags.liguoriEntitlementId,
+          IapFlags.francisEntitlementId,
           IapFlags.allSaintsEntitlementId,
         },
       );
@@ -90,18 +98,12 @@ class IapController extends StateNotifier<IapState> {
     }
 
     if (IapFlags.apiKey.isEmpty) {
-      state = const IapState(
-        ready: true,
-        error: 'REVENUECAT_API_KEY missing',
-      );
+      state = const IapState(ready: true, error: 'REVENUECAT_API_KEY missing');
       return;
     }
 
     if (kIsWeb) {
-      state = const IapState(
-        ready: true,
-        error: 'IAP not available on web',
-      );
+      state = const IapState(ready: true, error: 'IAP not available on web');
       return;
     }
 
@@ -135,6 +137,7 @@ class IapController extends StateNotifier<IapState> {
           IapFlags.desalesEntitlementId,
           IapFlags.kempisEntitlementId,
           IapFlags.liguoriEntitlementId,
+          IapFlags.francisEntitlementId,
           IapFlags.allSaintsEntitlementId,
         },
       );
@@ -155,7 +158,8 @@ class IapController extends StateNotifier<IapState> {
   Future<void> _loadOfferings() async {
     try {
       final offerings = await Purchases.getOfferings();
-      final packages = offerings.current?.availablePackages ?? const <Package>[];
+      final packages =
+          offerings.current?.availablePackages ?? const <Package>[];
       final labels = <String, String>{};
       for (final p in packages) {
         labels[p.storeProduct.identifier] = p.storeProduct.priceString;
@@ -209,6 +213,9 @@ class IapController extends StateNotifier<IapState> {
 
   Future<bool> purchaseLiguoriCompanion() =>
       _purchase(IapFlags.liguoriProductId, IapFlags.liguoriEntitlementId);
+
+  Future<bool> purchaseFrancisCompanion() =>
+      _purchase(IapFlags.francisProductId, IapFlags.francisEntitlementId);
 
   Future<bool> restore() async {
     if (!IapFlags.enabled) return true;

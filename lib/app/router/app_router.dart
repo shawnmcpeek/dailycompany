@@ -11,9 +11,13 @@ import 'package:dailycompany/features/hallway/hallway_screen.dart';
 import 'package:dailycompany/features/hours/hours_screen.dart';
 import 'package:dailycompany/features/hub/hub_screen.dart';
 import 'package:dailycompany/features/iap/desales_companion_paywall_screen.dart';
+import 'package:dailycompany/features/iap/francis_companion_paywall_screen.dart';
 import 'package:dailycompany/features/iap/kempis_companion_paywall_screen.dart';
 import 'package:dailycompany/features/iap/liguori_companion_paywall_screen.dart';
 import 'package:dailycompany/features/iap/oblate_paywall_screen.dart';
+import 'package:dailycompany/features/francis/francis_admonitions_screen.dart';
+import 'package:dailycompany/features/francis/francis_practice_screen.dart';
+import 'package:dailycompany/features/francis/francis_stories_screen.dart';
 import 'package:dailycompany/features/kempis/kempis_admonitions_screen.dart';
 import 'package:dailycompany/features/kempis/kempis_practice_screen.dart';
 import 'package:dailycompany/features/liguori/liguori_practice_screen.dart';
@@ -185,6 +189,9 @@ final routerProvider = Provider<GoRouter>((ref) {
           } else if (id == 'liguori') {
             child = const LiguoriCompanionPaywallScreen();
             title = 'Companion';
+          } else if (id == 'francis') {
+            child = const FrancisCompanionPaywallScreen();
+            title = 'Companion';
           } else {
             child = const OblatePaywallScreen();
             title = 'Oblate';
@@ -288,9 +295,7 @@ StatefulShellRoute _cycleShell(String portalId) {
   return StatefulShellRoute.indexedStack(
     builder: (context, state, navigationShell) =>
         AppShell(navigationShell: navigationShell),
-    branches: [
-      for (final module in modules) _cycleBranch(portalId, module),
-    ],
+    branches: [for (final module in modules) _cycleBranch(portalId, module)],
   );
 }
 
@@ -333,15 +338,14 @@ StatefulShellBranch _cycleBranch(String portalId, String module) {
                 body = const KempisPracticeScreen();
               } else if (id == 'liguori') {
                 body = const LiguoriPracticeScreen();
+              } else if (id == 'francis') {
+                body = const FrancisPracticeScreen();
               } else {
                 body = const DesalesPracticeScreen();
               }
               return PageTurn.of(
                 key: state.pageKey,
-                child: Scaffold(
-                  appBar: null,
-                  body: SafeArea(child: body),
-                ),
+                child: Scaffold(appBar: null, body: SafeArea(child: body)),
               );
             },
           ),
@@ -380,16 +384,47 @@ StatefulShellBranch _cycleBranch(String portalId, String module) {
         routes: [
           GoRoute(
             path: '/p/:portalId/admonitions',
+            pageBuilder: (context, state) {
+              final id = state.pathParameters['portalId'] ?? portalId;
+              final Widget child = id == 'francis'
+                  ? const FrancisAdmonitionsScreen()
+                  : const KempisAdmonitionsScreen();
+              return PageTurn.of(key: state.pageKey, child: child);
+            },
+            routes: [
+              GoRoute(
+                path: ':chapter',
+                pageBuilder: (context, state) {
+                  final id = state.pathParameters['portalId'] ?? portalId;
+                  final chapter = int.parse(state.pathParameters['chapter']!);
+                  final Widget child = id == 'francis'
+                      ? FrancisAdmonitionScreen(chapter: chapter)
+                      : KempisAdmonitionScreen(chapter: chapter);
+                  return PageTurn.of(key: state.pageKey, child: child);
+                },
+              ),
+            ],
+          ),
+        ],
+      );
+    case 'stories':
+      return StatefulShellBranch(
+        initialLocation: PortalRoutes.stories(portalId),
+        routes: [
+          GoRoute(
+            path: '/p/:portalId/stories',
             pageBuilder: (context, state) => PageTurn.of(
               key: state.pageKey,
-              child: const KempisAdmonitionsScreen(),
+              child: const Scaffold(
+                body: SafeArea(child: FrancisStoriesScreen()),
+              ),
             ),
             routes: [
               GoRoute(
                 path: ':chapter',
                 pageBuilder: (context, state) => PageTurn.of(
                   key: state.pageKey,
-                  child: KempisAdmonitionScreen(
+                  child: FrancisStoryScreen(
                     chapter: int.parse(state.pathParameters['chapter']!),
                   ),
                 ),
@@ -448,7 +483,10 @@ class AppShell extends ConsumerWidget {
     ),
   ];
 
-  static NavigationDestination _destinationFor(String module, [String? portalId]) {
+  static NavigationDestination _destinationFor(
+    String module, [
+    String? portalId,
+  ]) {
     if (module == 'practice' && portalId == 'liguori') {
       return const NavigationDestination(
         icon: Icon(Icons.spa_outlined),
@@ -456,37 +494,49 @@ class AppShell extends ConsumerWidget {
         label: 'Visit',
       );
     }
+    if (module == 'practice' && portalId == 'francis') {
+      return const NavigationDestination(
+        icon: Icon(Icons.spa_outlined),
+        selectedIcon: Icon(Icons.spa),
+        label: 'Canticle',
+      );
+    }
     return switch (module) {
       'today' => const NavigationDestination(
-          icon: Icon(Icons.menu_book_outlined),
-          selectedIcon: Icon(Icons.menu_book),
-          label: 'Today',
-        ),
+        icon: Icon(Icons.menu_book_outlined),
+        selectedIcon: Icon(Icons.menu_book),
+        label: 'Today',
+      ),
       'meditations' => const NavigationDestination(
-          icon: Icon(Icons.self_improvement_outlined),
-          selectedIcon: Icon(Icons.self_improvement),
-          label: 'Meditations',
-        ),
+        icon: Icon(Icons.self_improvement_outlined),
+        selectedIcon: Icon(Icons.self_improvement),
+        label: 'Meditations',
+      ),
       'practice' => const NavigationDestination(
-          icon: Icon(Icons.spa_outlined),
-          selectedIcon: Icon(Icons.spa),
-          label: 'Practice',
-        ),
+        icon: Icon(Icons.spa_outlined),
+        selectedIcon: Icon(Icons.spa),
+        label: 'Practice',
+      ),
       'letters' => const NavigationDestination(
-          icon: Icon(Icons.mail_outline),
-          selectedIcon: Icon(Icons.mail),
-          label: 'Letters',
-        ),
+        icon: Icon(Icons.mail_outline),
+        selectedIcon: Icon(Icons.mail),
+        label: 'Letters',
+      ),
       'admonitions' => const NavigationDestination(
-          icon: Icon(Icons.list_alt_outlined),
-          selectedIcon: Icon(Icons.list_alt),
-          label: 'Admonitions',
-        ),
+        icon: Icon(Icons.list_alt_outlined),
+        selectedIcon: Icon(Icons.list_alt),
+        label: 'Admonitions',
+      ),
+      'stories' => const NavigationDestination(
+        icon: Icon(Icons.auto_stories_outlined),
+        selectedIcon: Icon(Icons.auto_stories),
+        label: 'Stories',
+      ),
       _ => const NavigationDestination(
-          icon: Icon(Icons.menu_book_outlined),
-          selectedIcon: Icon(Icons.menu_book),
-          label: 'Today',
-        ),
+        icon: Icon(Icons.menu_book_outlined),
+        selectedIcon: Icon(Icons.menu_book),
+        label: 'Today',
+      ),
     };
   }
 
@@ -498,9 +548,7 @@ class AppShell extends ConsumerWidget {
       destinations = _benedictDestinations;
     } else {
       final modules = PortalRegistry.byId(portalId)?.modules ?? const ['today'];
-      destinations = [
-        for (final m in modules) _destinationFor(m, portalId),
-      ];
+      destinations = [for (final m in modules) _destinationFor(m, portalId)];
     }
 
     return Scaffold(

@@ -48,6 +48,25 @@ Hallway `open` is automatic once `PortalRegistry.byId(id)` is non-null. Add the 
 | Modules | Free: The Visit. Unlock: 31 daily Visits + Read Through. SKU `liguori_companion`. |
 | Accent | Fixed `LiguoriAccent.visit`. |
 
+### Filled — `francis`
+
+| | |
+| --- | --- |
+| `id` | `francis` |
+| Display | Francis of Assisi |
+| Tagline | *Most high, omnipotent, good Lord.* |
+| Provenance | `constructed` |
+| Cadence | **85 × ~4.3**, repeating. Real count 27,804 words (~327/entry). Do not pad. |
+| Primary text | Paschal Robinson OFM, Dolphin Press, Philadelphia, 1905. Robinson d. 1948; 1905 is US PD. |
+| Second shelf | *Fioretti*, W. Heywood, Methuen 1906. Labeled “Stories told about him.” |
+| Do not use | Modern Franciscan / ICS editions. Do not put Fioretti in the daily slot. |
+| Never-list | Franciscan, OFM (except translator credit), Capuchin, Conventual emblems. Tau as ornament is fine. |
+| Disclaimer | Spec §7, naming OFM, Capuchins, Conventuals. |
+| Anchor | Canticle of the Creatures. |
+| Haptics | One optional Canticle reminder, off by default. |
+| Modules | Free: 28 Admonitions + Canticle. Unlock: writings + Fioretti + Read Through. SKU `francis_companion`. |
+| Accent | Fixed `FrancisAccent.woodland`. |
+
 ---
 
 ## 1. Content

@@ -77,10 +77,17 @@ abstract final class LiguoriAccent {
   static const visit = Color(0xFF5B3D4A); // dusk wine
 }
 
+/// Fixed accent — spec §6. Distinct from [CycleAccent] summer and
+/// [KempisAccent] umber.
+abstract final class FrancisAccent {
+  static const woodland = Color(0xFF3E5548);
+}
+
 Color portalAccent(String portalId, int part) => switch (portalId) {
       'desales' => DesalesAccent.forPart(part),
       'kempis' => KempisAccent.forBook(part),
       'liguori' => LiguoriAccent.visit,
+      'francis' => FrancisAccent.woodland,
       _ => CycleAccent.winter,
     };
 

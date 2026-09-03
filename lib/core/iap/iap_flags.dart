@@ -27,6 +27,12 @@ abstract final class IapFlags {
   /// Store product / package id.
   static const liguoriProductId = 'liguori_companion';
 
+  /// RevenueCat entitlement — Francis' Companion unlock.
+  static const francisEntitlementId = 'francis_companion';
+
+  /// Store product / package id.
+  static const francisProductId = 'francis_companion';
+
   /// Bundle entitlement covering every open house. Scaffolded now so
   /// individual SKUs can later grant this without a migration fight.
   static const allSaintsEntitlementId = 'all_saints';

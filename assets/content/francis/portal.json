@@ -1,0 +1,22 @@
+{
+  "id": "francis",
+  "displayName": "Francis of Assisi",
+  "tagline": "Most high, omnipotent, good Lord.",
+  "provenance": "constructed",
+  "spine": {
+    "type": "cycle",
+    "entries": 85,
+    "repeatsPerYear": 4.31,
+    "note": "85 authentic writings, cycled — about four times a year. The Fioretti are a second shelf of stories told about him, never mixed into the daily writings."
+  },
+  "anchor": "canticle",
+  "modules": [
+    "today",
+    "admonitions",
+    "stories",
+    "practice"
+  ],
+  "disclaimer": "An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by the Order of Friars Minor, the Capuchins, the Conventuals, any Franciscan province or house, or any shrine or publisher associated with them.",
+  "unlockSku": "francis_companion",
+  "sourceNote": "The Writings of St. Francis of Assisi, trans. Paschal Robinson, OFM (The Dolphin Press, Philadelphia, 1905). Robinson died 1948; the 1905 printing is public domain in the United States. Fioretti: The Little Flowers of St. Francis, trans. W. Heywood (Methuen, London, 1906), labeled as stories told about him."
+}

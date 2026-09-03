@@ -74,8 +74,8 @@ Cadence below is a **guess**. Playbook: print `cadence_candidates` on a real cou
 | | |
 | --- | --- |
 | Kind | Saint |
-| Daily text | Authentic writings, Paschal Robinson OFM (Dolphin Press, 1906): Admonitions, Rules, Testament, letters, Canticle, etc. Short corpus (~90 pages) — **do not pad to 365.** |
-| Cadence | After word count. Likely a repeat (e.g. 91 × 4), not a forced year of scraps. |
+| Daily text | Authentic writings, Paschal Robinson OFM (Dolphin Press, 1905): Admonitions, Rules, Testament, letters, Canticle, etc. Short corpus — **do not pad to 365.** |
+| Cadence | **85 × ~4.3.** Real count 27,804 words (~327/entry). Natural units, repeating. The Office of the Passion is five seasonal offices. |
 | Second shelf | *Fioretti* (Heywood / Arnold, 1906) as **"Stories told about him"** — never interleaved with the daily writings. Highest name recognition, most crowded aisle. |
 | Anchor | Canticle of the Creatures. Free tier: the 28 Admonitions. |
 | Never-list | Franciscan, OFM, Capuchin, Conventual emblems. Tau as ornament is fine. |
@@ -178,7 +178,7 @@ Serra is a different content type (`serra.md`) — after the writer houses.
 | `kempis` | Benham 1886 | CLEAR (shipped) |
 | `desales` | Rivingtons 1876 anonymous; Mackey Letters | CLEAR (shipped) |
 | `liguori` | Grimm Centenary 1887 | CLEAR (shipped) |
-| `francis` | Robinson 1906; Heywood 1906 for Fioretti shelf | CLEAR |
+| `francis` | Robinson 1905; Heywood 1906 for Fioretti shelf | CLEAR |
 | `john-cross` | Lewis 1864/89 | CLEAR |
 | `gregory` | Barmby 1895 | CLEAR |
 | `augustine` | Pusey 1838 | CLEAR |

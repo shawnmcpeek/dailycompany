@@ -164,7 +164,35 @@ abstract final class PortalRegistry {
     unlockSku: 'liguori_companion',
   );
 
-  static const all = <SaintPortal>[benedict, desales, kempis, liguori];
+  static const francis = SaintPortal(
+    id: 'francis',
+    displayName: 'Francis of Assisi',
+    tagline: 'Most high, omnipotent, good Lord.',
+    provenance: CycleProvenance.constructed,
+    provenanceTitle: 'About this reading cycle',
+    provenanceParagraphs: [
+      'This cycle was made for this app. Francis did not arrange '
+          'his writings to be read a page a day, and no order or '
+          'published edition assigns these passages to these dates. '
+          'The corpus is short, so the writings repeat '
+          'through the year rather than being padded out.',
+      'The text itself is unaltered — Paschal Robinson’s 1905 '
+          'translation of the authentic writings. The Little Flowers '
+          'are stories told about him; they live on their own shelf, '
+          'never mixed into the daily readings.',
+      'If you’d rather read the writings straight through as they '
+          'stand, turn on Read Through under the reading.',
+    ],
+    disclaimer:
+        'An independent app from Daddoo Dev. Not affiliated with, '
+        'endorsed by, or produced by the Order of Friars Minor, the '
+        'Capuchins, the Conventuals, any Franciscan province or house, '
+        'or any shrine or publisher associated with them.',
+    modules: ['today', 'admonitions', 'stories', 'practice'],
+    unlockSku: 'francis_companion',
+  );
+
+  static const all = <SaintPortal>[benedict, desales, kempis, liguori, francis];
 
   static SaintPortal? byId(String id) {
     for (final p in all) {

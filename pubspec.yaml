@@ -50,6 +50,7 @@ flutter:
     - assets/content/desales/
     - assets/content/kempis/
     - assets/content/liguori/
+    - assets/content/francis/
     - assets/branding/
   fonts:
     - family: EBGaramond

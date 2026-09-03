@@ -65,7 +65,7 @@ The rule: **`entries × repeats ≈ 365`, chosen so daily length lands in 250–
 | **Augustine** | *Confessions* I–X | ~100k | 365 × 1 | ~275 |
 | **Teresa** | *Interior Castle* + *Way of Perfection* | ~135k | 365 × 1 | ~370 |
 | **Thérèse** | *Story of a Soul* + letters | ~90k | 365 × 1 | ~245 |
-| **Francis** | Writings (Robinson); *Fioretti* is a second shelf | thin | repeat after count (not a padded 365) | — |
+| **Francis** | Writings (Robinson); *Fioretti* is a second shelf | 27.8k | **85 × ~4.3** | ~327 |
 | **Gregory** | *Pastoral Rule*, 65 ch | ~75k | **183 × 2** | ~410 |
 | **Liguori** | *Visits*, 31 | ~19k | **31 × 12** | ~610/visit |
 | **John of the Cross** | *Sayings of Light and Love* (daily); treatises later | short | repeat after count | — |
@@ -232,7 +232,7 @@ Resist per-portal typefaces. Nine saints × a "fitting" face each is +12 MB of f
 
 The drop cap stays as the shared "one saturated element," each portal supplying its own color resolver. **Only Benedict gets the liturgical resolver and its computus** — it's the most expensive component in the app and eight portals don't need it.
 
-**Per-portal haptics.** This matters more than it sounds. Benedict's six bells exist because the Benedictine day *is* a horarium. Ignatius gets two Examens. de Sales gets three or four light aspirations. Liguori gets one Visit. If every portal fires six bells you've flattened the one thing that makes these feel like different lives — **the rhythm is the characterization.**
+**Per-portal haptics.** This matters more than it sounds. Benedict's six bells exist because the Benedictine day *is* a horarium. Ignatius gets two Examens. de Sales gets three or four light aspirations. Liguori gets one Visit. Francis gets one Canticle reminder. If every portal fires six bells you've flattened the one thing that makes these feel like different lives — **the rhythm is the characterization.**
 
 ---
 
@@ -479,7 +479,7 @@ Editions, do-not-use, and identity never-lists: `portal-texts.md`. Cadence here 
 | **Liguori** | 31 × 12 | *Visits to the Blessed Sacrament*, Grimm Centenary (Benziger, 1886–97) | The Visit | Cheapest portal here — 31 entries, no cutting pass, resets monthly. Short months omit visits 29–31; do not merge them. Provenance is `.partlyTraditional`: the 31 Visits are his own division, the month mapping is ours. |
 | **Augustine** | 365 × 1 | *Confessions*, Pusey (1838) | Evening reading | Ship Books I–X; XI–XIII are philosophical and lose people. Treat them as an appendix reachable from the index and Read Through. |
 | **Teresa** | 365 × 1 | *Interior Castle* + *Way of Perfection*, Stanbrook / Zimmerman (1911–12) | Recollection timer | The seven mansions drive the accent — the one fixed-corpus portal that earns a moving accent. Never Peers or ICS. |
-| **Francis** | repeat after count | Writings, Robinson (1906). *Fioretti* is a second shelf | Canticle of the Creatures | Do not pad a short corpus to 365. The 28 Admonitions make a strong free tier. Highest name recognition, most crowded aisle. |
+| **Francis** | **85 × ~4.3** | Writings, Robinson (1905). *Fioretti* (Heywood 1906) is a second shelf | Canticle of the Creatures | Do not pad a short corpus to 365. 85 natural units cycle through the year. The Office of the Passion is five seasonal offices, not mashed hour-scraps. The 28 Admonitions and the Canticle stay free. Highest name recognition, most crowded aisle. |
 | **Gregory** | **183 × 2** | *Book of Pastoral Rule*, Barmby, NPNF II.12 (1895) | — | **Overlaps Benedict** — *Dialogues* Bk II already ships there as Life of Benedict. Cross-link the same JSON, don't duplicate. The *Pastoral Rule* is a book about leadership and is what Gregory brings that Benedict's portal doesn't. |
 | **John of the Cross** | repeat after count | *Sayings of Light and Love*, Lewis (1864/89) | — | Daily unit is the sayings, not slices of the *Ascent*. Treatises (~275k) are a later shelf. Never Kavanaugh–Rodriguez. |
 | **Thérèse** | 365 × 1 | *Story of a Soul* — **see flag** | The Little Way offering | **Rights flag.** Taylor 1912 of the 1898 Pauline text is the clear US path; it is the edited Thérèse, not the 1956 manuscripts. Never Clarke / Knox / ICS. **Build last.** |

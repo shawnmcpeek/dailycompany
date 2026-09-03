@@ -14,6 +14,7 @@ class SourcesScreen extends ConsumerWidget {
       'desales' => const _DesalesSources(),
       'kempis' => const _KempisSources(),
       'liguori' => const _LiguoriSources(),
+      'francis' => const _FrancisSources(),
       _ => const _BenedictSources(),
     };
   }
@@ -286,6 +287,62 @@ class _LiguoriSources extends StatelessWidget {
         const SizedBox(height: 28),
         Text(
           PortalRegistry.liguori.disclaimer,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ],
+    );
+  }
+}
+
+class _FrancisSources extends StatelessWidget {
+  const _FrancisSources();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
+      children: [
+        Text(
+          'Every text in Daily Company is public-domain or traditional.',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        const SizedBox(height: 28),
+        ChromeLabel('Writings'),
+        const SizedBox(height: 10),
+        const _SourceBlock(
+          title: 'English display text',
+          body:
+              'The Writings of St. Francis of Assisi, translated by Paschal '
+              'Robinson, OFM (The Dolphin Press, Philadelphia, 1905). '
+              'Robinson died 1948; the 1905 printing is public domain in '
+              'the United States. Authentic writings only — Admonitions, '
+              'Rules, Testament, letters, prayers, the Canticle. Not a '
+              'modern Franciscan or ICS edition.',
+        ),
+        const _SourceBlock(
+          title: 'Stories told about him',
+          body:
+              'The Little Flowers of St. Francis, translated by W. Heywood '
+              '(Methuen, London, 1906), with an introduction by '
+              'A. G. Ferrers Howell. A second shelf — never interleaved '
+              'with the daily writings.',
+        ),
+        _SourceBlock(
+          title: PortalRegistry.francis.provenanceTitle,
+          body: PortalRegistry.francis.provenanceParagraphs.join('\n\n'),
+        ),
+        const SizedBox(height: 20),
+        ChromeLabel('Not used'),
+        const SizedBox(height: 10),
+        Text(
+          'Any post-1928 Franciscan, OFM, Capuchin, or ICS edition’s '
+          'apparatus, notes, or chapter titles. The Fioretti are not '
+          'used as daily readings.',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+        const SizedBox(height: 28),
+        Text(
+          PortalRegistry.francis.disclaimer,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
       ],

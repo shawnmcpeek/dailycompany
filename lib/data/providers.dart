@@ -2,6 +2,9 @@ import 'package:dailycompany/core/cycle/cycle_calendar.dart';
 import 'package:dailycompany/core/cycle/life_track.dart';
 import 'package:dailycompany/data/models/desales_letter.dart';
 import 'package:dailycompany/data/models/desales_meditation.dart';
+import 'package:dailycompany/data/models/francis_admonition.dart';
+import 'package:dailycompany/data/models/francis_canticle.dart';
+import 'package:dailycompany/data/models/francis_story.dart';
 import 'package:dailycompany/data/models/kempis_admonition.dart';
 import 'package:dailycompany/data/models/liguori_manner.dart';
 import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
@@ -9,6 +12,7 @@ import 'package:dailycompany/core/diagnostics/journal_failure_reporter.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
 import 'package:dailycompany/core/notifications/aspiration_scheduler.dart';
 import 'package:dailycompany/core/notifications/bell_scheduler.dart';
+import 'package:dailycompany/core/notifications/canticle_scheduler.dart';
 import 'package:dailycompany/core/notifications/cell_scheduler.dart';
 import 'package:dailycompany/core/notifications/visit_scheduler.dart';
 import 'package:dailycompany/data/content_catalog.dart';
@@ -35,8 +39,10 @@ final contentCatalogProvider = FutureProvider<ContentCatalog>((ref) async {
   return ContentCatalog.load(portalId);
 });
 
-final cycleCalendarProvider =
-    FutureProvider.family<CycleCalendar, String>((ref, portalId) async {
+final cycleCalendarProvider = FutureProvider.family<CycleCalendar, String>((
+  ref,
+  portalId,
+) async {
   return CycleCalendar.load(portalId);
 });
 
@@ -44,23 +50,40 @@ final desalesCalendarProvider = FutureProvider<CycleCalendar>((ref) async {
   return ref.watch(cycleCalendarProvider('desales').future);
 });
 
-final desalesMeditationsProvider =
-    FutureProvider<List<DesalesMeditation>>((ref) async {
+final desalesMeditationsProvider = FutureProvider<List<DesalesMeditation>>((
+  ref,
+) async {
   return DesalesMeditation.loadFromAssets();
 });
 
-final desalesLettersProvider =
-    FutureProvider<List<DesalesLetterBook>>((ref) async {
+final desalesLettersProvider = FutureProvider<List<DesalesLetterBook>>((
+  ref,
+) async {
   return DesalesLetterBook.loadFromAssets();
 });
 
-final kempisAdmonitionsProvider =
-    FutureProvider<KempisAdmonitions>((ref) async {
+final kempisAdmonitionsProvider = FutureProvider<KempisAdmonitions>((
+  ref,
+) async {
   return KempisAdmonitions.loadFromAssets();
 });
 
 final liguoriMannerProvider = FutureProvider<LiguoriManner>((ref) async {
   return LiguoriManner.loadFromAssets();
+});
+
+final francisAdmonitionsProvider = FutureProvider<FrancisAdmonitions>((
+  ref,
+) async {
+  return FrancisAdmonitions.loadFromAssets();
+});
+
+final francisStoriesProvider = FutureProvider<FrancisStories>((ref) async {
+  return FrancisStories.loadFromAssets();
+});
+
+final francisCanticleProvider = FutureProvider<FrancisCanticle>((ref) async {
+  return FrancisCanticle.loadFromAssets();
 });
 
 /// Unlock for the active portal's paid cycle (Today + Read Through).
@@ -71,6 +94,7 @@ final cycleUnlockedProvider = Provider<bool>((ref) {
     'desales' => ref.watch(desalesCompanionUnlockedProvider),
     'kempis' => ref.watch(kempisCompanionUnlockedProvider),
     'liguori' => ref.watch(liguoriCompanionUnlockedProvider),
+    'francis' => ref.watch(francisCompanionUnlockedProvider),
     _ => false,
   };
 });
@@ -148,6 +172,20 @@ final liguoriVisitSyncProvider = Provider<void>((ref) {
   });
 });
 
+/// Keeps Francis' Canticle reminder aligned with settings.
+final francisCanticleSyncProvider = Provider<void>((ref) {
+  void sync() {
+    final settings = ref.read(settingsProvider);
+    if (!settings.ready) return;
+    CanticleScheduler.instance.reschedule(settings);
+  }
+
+  ref.listen<AppSettings>(settingsProvider, (_, next) {
+    if (!next.ready) return;
+    sync();
+  });
+});
+
 class AppSettings {
   const AppSettings({
     this.ready = false,
@@ -177,6 +215,8 @@ class AppSettings {
     this.kempisCellTime = '20:00',
     this.liguoriVisitEnabled = false,
     this.liguoriVisitTime = '12:00',
+    this.francisCanticleEnabled = false,
+    this.francisCanticleTime = '07:00',
   });
 
   /// False until SharedPreferences have been read.
@@ -241,6 +281,12 @@ class AppSettings {
   /// `HH:mm` for the Visit notification. Default 12:00.
   final String liguoriVisitTime;
 
+  /// Francis only — one Canticle reminder a day.
+  final bool francisCanticleEnabled;
+
+  /// `HH:mm` for the Canticle notification. Default 07:00.
+  final String francisCanticleTime;
+
   bool readThroughFor(String portalId) =>
       readThroughByPortal[portalId] ?? false;
 
@@ -302,6 +348,8 @@ class AppSettings {
     String? kempisCellTime,
     bool? liguoriVisitEnabled,
     String? liguoriVisitTime,
+    bool? francisCanticleEnabled,
+    String? francisCanticleTime,
   }) => AppSettings(
     ready: ready ?? this.ready,
     onboardingComplete: onboardingComplete ?? this.onboardingComplete,
@@ -332,6 +380,9 @@ class AppSettings {
     kempisCellTime: kempisCellTime ?? this.kempisCellTime,
     liguoriVisitEnabled: liguoriVisitEnabled ?? this.liguoriVisitEnabled,
     liguoriVisitTime: liguoriVisitTime ?? this.liguoriVisitTime,
+    francisCanticleEnabled:
+        francisCanticleEnabled ?? this.francisCanticleEnabled,
+    francisCanticleTime: francisCanticleTime ?? this.francisCanticleTime,
   );
 }
 
@@ -355,9 +406,7 @@ class SettingsController extends StateNotifier<AppSettings> {
       }
     }
 
-    final aspTimes = Map<String, String>.from(
-      AspirationScheduler.defaultTimes,
-    );
+    final aspTimes = Map<String, String>.from(AspirationScheduler.defaultTimes);
     final rawAspTimes = prefs.getString('aspirationTimes');
     if (rawAspTimes != null) {
       final decoded = jsonDecode(rawAspTimes) as Map<String, dynamic>;
@@ -401,6 +450,8 @@ class SettingsController extends StateNotifier<AppSettings> {
       kempisCellTime: prefs.getString('kempisCellTime') ?? '20:00',
       liguoriVisitEnabled: prefs.getBool('liguoriVisitEnabled') ?? false,
       liguoriVisitTime: prefs.getString('liguoriVisitTime') ?? '12:00',
+      francisCanticleEnabled: prefs.getBool('francisCanticleEnabled') ?? false,
+      francisCanticleTime: prefs.getString('francisCanticleTime') ?? '07:00',
     );
   }
 
@@ -491,8 +542,10 @@ class SettingsController extends StateNotifier<AppSettings> {
 
   Future<void> setDesalesAspirationsEnabled(bool v) async {
     state = state.copyWith(desalesAspirationsEnabled: v);
-    (await SharedPreferences.getInstance())
-        .setBool('desalesAspirationsEnabled', v);
+    (await SharedPreferences.getInstance()).setBool(
+      'desalesAspirationsEnabled',
+      v,
+    );
   }
 
   Future<void> setAspirationTime(String slotId, TimeOfDayCompat time) async {
@@ -561,6 +614,25 @@ class SettingsController extends StateNotifier<AppSettings> {
     (await SharedPreferences.getInstance()).setString('liguoriVisitTime', next);
   }
 
+  Future<void> setFrancisCanticleEnabled(bool v) async {
+    state = state.copyWith(francisCanticleEnabled: v);
+    (await SharedPreferences.getInstance()).setBool(
+      'francisCanticleEnabled',
+      v,
+    );
+  }
+
+  Future<void> setFrancisCanticleTime(TimeOfDayCompat time) async {
+    final hh = time.hour.toString().padLeft(2, '0');
+    final mm = time.minute.toString().padLeft(2, '0');
+    final next = '$hh:$mm';
+    state = state.copyWith(francisCanticleTime: next);
+    (await SharedPreferences.getInstance()).setString(
+      'francisCanticleTime',
+      next,
+    );
+  }
+
   Future<void> setLectioMinutes({
     int? lectio,
     int? meditatio,
@@ -594,9 +666,7 @@ Map<String, bool> _loadReadThroughMap(SharedPreferences prefs) {
   final raw = prefs.getString('readThroughByPortal');
   if (raw != null) {
     final decoded = jsonDecode(raw) as Map<String, dynamic>;
-    return {
-      for (final e in decoded.entries) e.key: e.value as bool,
-    };
+    return {for (final e in decoded.entries) e.key: e.value as bool};
   }
   if (prefs.containsKey('desalesReadThrough')) {
     return {'desales': prefs.getBool('desalesReadThrough') ?? false};
@@ -608,9 +678,7 @@ Map<String, int> _loadReadThroughCursorMap(SharedPreferences prefs) {
   final raw = prefs.getString('readThroughCursorByPortal');
   if (raw != null) {
     final decoded = jsonDecode(raw) as Map<String, dynamic>;
-    return {
-      for (final e in decoded.entries) e.key: (e.value as num).toInt(),
-    };
+    return {for (final e in decoded.entries) e.key: (e.value as num).toInt()};
   }
   if (prefs.containsKey('desalesReadThroughCursor')) {
     return {'desales': prefs.getInt('desalesReadThroughCursor') ?? 1};
@@ -969,10 +1037,11 @@ class IlluminationController extends StateNotifier<String?> {
 }
 
 /// de Sales' Bouquet — see lib/data/isar/bouquet.dart.
-final bouquetProvider =
-    StateNotifierProvider<BouquetController, List<Bouquet>>((ref) {
-      return BouquetController(ref.watch(isarProvider), ref);
-    });
+final bouquetProvider = StateNotifierProvider<BouquetController, List<Bouquet>>(
+  (ref) {
+    return BouquetController(ref.watch(isarProvider), ref);
+  },
+);
 
 class BouquetController extends StateNotifier<List<Bouquet>> {
   BouquetController(this._isar, this._ref) : super(const []) {
