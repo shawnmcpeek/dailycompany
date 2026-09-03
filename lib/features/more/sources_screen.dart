@@ -13,6 +13,7 @@ class SourcesScreen extends ConsumerWidget {
     return switch (portalId) {
       'desales' => const _DesalesSources(),
       'kempis' => const _KempisSources(),
+      'liguori' => const _LiguoriSources(),
       _ => const _BenedictSources(),
     };
   }
@@ -236,6 +237,55 @@ class _KempisSources extends StatelessWidget {
         const SizedBox(height: 28),
         Text(
           PortalRegistry.kempis.disclaimer,
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ],
+    );
+  }
+}
+
+class _LiguoriSources extends StatelessWidget {
+  const _LiguoriSources();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
+      children: [
+        Text(
+          'Every text in Daily Company is public-domain or traditional.',
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
+        const SizedBox(height: 28),
+        ChromeLabel('Visits to the Blessed Sacrament'),
+        const SizedBox(height: 10),
+        const _SourceBlock(
+          title: 'English display text',
+          body:
+              'Visits to the Blessed Sacrament and to the Blessed Virgin, '
+              'translated by Eugene Grimm, CSsR, in the Centenary Edition '
+              '(Benziger Brothers, New York, 1887) — The Holy Eucharist, '
+              'Volume VI of the Complete Ascetical Works. Confirmed against '
+              'the 1887 printing (archive.org alphonsusworks06alfouoft). '
+              'Grimm died 1891 — public domain. Not a Liguori Publications '
+              'edition.',
+        ),
+        _SourceBlock(
+          title: PortalRegistry.liguori.provenanceTitle,
+          body: PortalRegistry.liguori.provenanceParagraphs.join('\n\n'),
+        ),
+        const SizedBox(height: 20),
+        ChromeLabel('Not used'),
+        const SizedBox(height: 10),
+        Text(
+          'Any Liguori Publications, TAN, or Sophia Institute edition’s '
+          'apparatus, notes, or chapter titles. The 1949 Catholic Book '
+          'Publishing Co. Visits (Spellman imprimatur) is in copyright.',
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+        const SizedBox(height: 28),
+        Text(
+          PortalRegistry.liguori.disclaimer,
           style: Theme.of(context).textTheme.bodyMedium,
         ),
       ],

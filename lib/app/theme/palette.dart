@@ -71,9 +71,16 @@ abstract final class KempisAccent {
       };
 }
 
+/// Fixed accent — spec §6. Distinct from [CycleAccent], [DesalesAccent],
+/// and [KempisAccent].
+abstract final class LiguoriAccent {
+  static const visit = Color(0xFF5B3D4A); // dusk wine
+}
+
 Color portalAccent(String portalId, int part) => switch (portalId) {
       'desales' => DesalesAccent.forPart(part),
       'kempis' => KempisAccent.forBook(part),
+      'liguori' => LiguoriAccent.visit,
       _ => CycleAccent.winter,
     };
 

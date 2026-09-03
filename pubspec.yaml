@@ -49,6 +49,7 @@ flutter:
     - assets/content/benedict/medal/
     - assets/content/desales/
     - assets/content/kempis/
+    - assets/content/liguori/
     - assets/branding/
   fonts:
     - family: EBGaramond

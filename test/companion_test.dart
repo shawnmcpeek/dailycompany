@@ -2,12 +2,13 @@ import 'package:dailycompany/data/companion.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('Benedict, de Sales, and Kempis are the open houses', () {
+  test('Benedict, de Sales, Kempis, and Liguori are the open houses', () {
     final open = Companions.openHouses.map((c) => c.id).toSet();
-    expect(open, {'benedict', 'desales', 'kempis'});
+    expect(open, {'benedict', 'desales', 'kempis', 'liguori'});
     expect(Companions.byId('benedict')?.open, isTrue);
     expect(Companions.byId('desales')?.open, isTrue);
     expect(Companions.byId('kempis')?.open, isTrue);
+    expect(Companions.byId('liguori')?.open, isTrue);
   });
 
   test('every companion has a unique id', () {

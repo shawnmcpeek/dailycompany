@@ -43,6 +43,7 @@ class DailyCompanyApp extends ConsumerWidget {
     ref.watch(bellSyncProvider);
     ref.watch(desalesAspirationSyncProvider);
     ref.watch(kempisCellSyncProvider);
+    ref.watch(liguoriVisitSyncProvider);
     ref.watch(iapControllerProvider);
     final platformBrightness =
         WidgetsBinding.instance.platformDispatcher.platformBrightness;
@@ -51,7 +52,7 @@ class DailyCompanyApp extends ConsumerWidget {
     // de Sales' is Part-driven, Kempis' is Book-driven.
     final portalId = ref.watch(currentPortalIdProvider);
     Color accent;
-    if (portalId == 'desales' || portalId == 'kempis') {
+    if (portalId == 'desales' || portalId == 'kempis' || portalId == 'liguori') {
       final todaysEntries =
           ref.watch(cycleCalendarProvider(portalId)).valueOrNull?.resolveFor(day) ??
               const [];

@@ -82,6 +82,13 @@ void main() {
     expect(allText.length, greaterThan(50000));
   });
 
+  test('every entry has a calendar date in both year types', () {
+    for (final e in calendar.entries) {
+      expect(calendar.dateForEntry(e.id, 2024), isNotNull, reason: 'leap ${e.id}');
+      expect(calendar.dateForEntry(e.id, 2025), isNotNull, reason: 'common ${e.id}');
+    }
+  });
+
   test('every part starts at chapter 1 (no mislabeled part boundary)', () {
     final seenParts = <int>[];
     for (final e in calendar.entries) {

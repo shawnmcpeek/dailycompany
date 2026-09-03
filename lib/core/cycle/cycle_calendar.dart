@@ -120,4 +120,15 @@ class CycleCalendar {
     }
     return chapters.length;
   }
+
+  /// First calendar date in [year] that carries this entry, if any.
+  DateTime? dateForEntry(int id, int year) {
+    final table = isLeapYear(year) ? _byDateLeap : _byDateCommon;
+    for (final e in table.entries) {
+      if (!e.value.contains(id)) continue;
+      final parts = e.key.split('-');
+      return DateTime(year, int.parse(parts[0]), int.parse(parts[1]));
+    }
+    return null;
+  }
 }

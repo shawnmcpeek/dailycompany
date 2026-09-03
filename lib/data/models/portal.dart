@@ -94,6 +94,8 @@ abstract final class PortalRegistry {
           '(Library of Spiritual Works for English Catholics). The '
           'title page names no translator. It is not Mackey’s, and '
           'it is not John K. Ryan’s 1950 version.',
+      'If you’d rather read it straight through as it was written, '
+          'turn on Read Through under the reading.',
     ],
     disclaimer:
         'An independent app from Daddoo Dev. Not affiliated with, '
@@ -133,7 +135,36 @@ abstract final class PortalRegistry {
     unlockSku: 'kempis_companion',
   );
 
-  static const all = <SaintPortal>[benedict, desales, kempis];
+  static const liguori = SaintPortal(
+    id: 'liguori',
+    displayName: 'Alphonsus Liguori',
+    tagline: 'My Jesus, I will love Thee only.',
+    provenance: CycleProvenance.partlyTraditional,
+    provenanceTitle: 'About this reading cycle',
+    provenanceParagraphs: [
+      'Alphonsus wrote thirty-one Visits to the Blessed Sacrament, '
+          'one for each day of the month. Those thirty-one are his. '
+          'Mapping them onto every calendar month is ours: the first '
+          'of the month is always the First Visit, and so on. Months '
+          'that end before the 29th, 30th, or 31st simply omit those '
+          'Visits. We do not fold them onto the last day.',
+      'The text itself is unaltered — Eugene Grimm’s translation in '
+          'the Centenary Edition (Benziger, 1887), from The Holy '
+          'Eucharist, Volume VI of the Complete Ascetical Works.',
+      'If you’d rather read the thirty-one Visits straight through, '
+          'turn on Read Through under the reading.',
+    ],
+    disclaimer:
+        'An independent app from Daddoo Dev. Not affiliated with, '
+        'endorsed by, or produced by the Congregation of the Most '
+        'Holy Redeemer, Liguori Publications, any Redemptorist '
+        'province or house, or any shrine or publisher associated '
+        'with them.',
+    modules: ['today', 'practice'],
+    unlockSku: 'liguori_companion',
+  );
+
+  static const all = <SaintPortal>[benedict, desales, kempis, liguori];
 
   static SaintPortal? byId(String id) {
     for (final p in all) {

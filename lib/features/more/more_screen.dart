@@ -60,6 +60,15 @@ class MoreScreen extends ConsumerWidget {
           ),
           const SectionRule(),
         ],
+        if (portalId != 'benedict') ...[
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('Readings'),
+            subtitle: const Text('Any day of the cycle — not a backlog'),
+            onTap: () => context.push(PortalRoutes.index(portalId)),
+          ),
+          const SectionRule(),
+        ],
         ListTile(
           contentPadding: EdgeInsets.zero,
           title: const Text('Export diagnostics'),
@@ -163,7 +172,7 @@ class MoreScreen extends ConsumerWidget {
         SwitchListTile(
           contentPadding: EdgeInsets.zero,
           title: const Text('Bold reading text'),
-          subtitle: const Text('Heavier weight on Rule and offices'),
+          subtitle: const Text('Heavier weight on reading text'),
           value: settings.boldReading,
           onChanged: ctrl.setBoldReading,
         ),

@@ -67,7 +67,7 @@ The rule: **`entries × repeats ≈ 365`, chosen so daily length lands in 250–
 | **Thérèse** | *Story of a Soul* + letters | ~90k | 365 × 1 | ~245 |
 | **Francis** | Writings (Robinson); *Fioretti* is a second shelf | thin | repeat after count (not a padded 365) | — |
 | **Gregory** | *Pastoral Rule*, 65 ch | ~75k | **183 × 2** | ~410 |
-| **Liguori** | *Visits*, 31 | ~30k | **31 × 12** | ~950/visit |
+| **Liguori** | *Visits*, 31 | ~19k | **31 × 12** | ~610/visit |
 | **John of the Cross** | *Sayings of Light and Love* (daily); treatises later | short | repeat after count | — |
 | Benedict | *Rule* | ~40k | 122 × 3 | ~330 |
 

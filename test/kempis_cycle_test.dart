@@ -93,6 +93,13 @@ void main() {
     expect(seenParts, [1, 2, 3, 4]);
   });
 
+  test('every entry has a calendar date in both year types', () {
+    for (final e in calendar.entries) {
+      expect(calendar.dateForEntry(e.id, 2024), isNotNull, reason: 'leap ${e.id}');
+      expect(calendar.dateForEntry(e.id, 2025), isNotNull, reason: 'common ${e.id}');
+    }
+  });
+
   test('division noun is Book', () {
     expect(calendar.divisionNoun, 'Book');
   });

@@ -1,0 +1,20 @@
+{
+  "id": "liguori",
+  "displayName": "Alphonsus Liguori",
+  "tagline": "My Jesus, I will love Thee only.",
+  "provenance": "partlyTraditional",
+  "spine": {
+    "type": "cycle",
+    "entries": 31,
+    "repeatsPerYear": 12,
+    "note": "31 × 12 — day of the month is the Visit number. Short months omit Visits 29–31; they are never merged."
+  },
+  "anchor": "visit",
+  "modules": [
+    "today",
+    "practice"
+  ],
+  "disclaimer": "An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by the Congregation of the Most Holy Redeemer, Liguori Publications, any Redemptorist province or house, or any shrine or publisher associated with them.",
+  "unlockSku": "liguori_companion",
+  "sourceNote": "Visits to the Blessed Sacrament and to the Blessed Virgin, Eugene Grimm, CSsR, Centenary Edition (Benziger Brothers, New York, 1887), from The Holy Eucharist, Volume VI of the Complete Ascetical Works. Confirmed against archive.org alphonsusworks06alfouoft. Not a Liguori Publications edition. 1887 — public domain."
+}

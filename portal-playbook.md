@@ -30,6 +30,24 @@ Fill this decision record. Do not start a pipeline until the PD source and trans
 
 Hallway `open` is automatic once `PortalRegistry.byId(id)` is non-null. Add the `Companion` row first if the house is not already in `lib/data/companion.dart`.
 
+### Filled — `liguori`
+
+| | |
+| --- | --- |
+| `id` | `liguori` |
+| Display | Alphonsus Liguori |
+| Tagline | *My Jesus, I will love Thee only.* |
+| Provenance | `partlyTraditional` |
+| Cadence | **31 × 12**, day-of-month. Real count 18,872 words (~608/visit). No cutter. |
+| Primary text | Grimm, Centenary Edition, Benziger 1887. Grimm d. 1891. |
+| Do not use | Liguori Publications; 1949 CBPC (Spellman). |
+| Never-list | Redemptorist, CSsR (except translator credit), Liguori Publications. |
+| Disclaimer | Spec §7, naming the Congregation of the Most Holy Redeemer and Liguori Publications. |
+| Anchor | The Visit. |
+| Haptics | One Visit reminder. |
+| Modules | Free: The Visit. Unlock: 31 daily Visits + Read Through. SKU `liguori_companion`. |
+| Accent | Fixed `LiguoriAccent.visit`. |
+
 ---
 
 ## 1. Content

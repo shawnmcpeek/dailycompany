@@ -27,6 +27,18 @@ Display names never prefix *St.* / *Saint* unless the person is actually canoniz
 | Never-list | Order of Saint Benedict, congregation names, crests, abbey brands. |
 | Latin | Latin Library text (Butler 1912 family). Alignment of ch. 2 and 7 repaired in place. Lexical OCR patched against published witnesses (Dysinger / IntraText): `carnis`, `furtum`, `omnino`, footer stripped. Walk: `tools/content/benedict/walk_latin.py`. Pre-repair: `tools/content/benedict/rule_readings.v1-preRepair.json`. |
 
+### Alphonsus Liguori — `liguori` — CLEAR
+
+| | |
+| --- | --- |
+| Kind | Saint |
+| Daily text | *Visits to the Blessed Sacrament*, Eugene Grimm CSsR, Centenary Edition (Benziger, 1887). **31 visits, no cutter.** 18,872 words (~608/visit). |
+| Cadence | **31 × 12**, day-of-month. Provenance `.partlyTraditional`. |
+| Short months | Visits 29–31 simply do not occur. **Do not merge.** |
+| Anchor | The Visit (manner + spiritual communion + remain). |
+| Never-list | Redemptorist, Congregation of the Most Holy Redeemer, order emblem, **Liguori Publications**. "CSsR" only in the translator credit. |
+| Also CLEAR | Grimm *Uniformity with God's Will*, *Preparation for Death* — side path, not the daily slot. |
+
 ### Francis de Sales — `desales` — VERIFY
 
 | | |
@@ -56,18 +68,6 @@ Display names never prefix *St.* / *Saint* unless the person is actually canoniz
 ## Next houses (editorial plan)
 
 Cadence below is a **guess**. Playbook: print `cadence_candidates` on a real count, then lock. Thin books take a repeat or unique thin days — never pad with filler commentary. Copy de Sales unless a traditional division actually exists (Liguori's 31 Visits; Ignatius's program).
-
-### Alphonsus Liguori — `liguori` — CLEAR
-
-| | |
-| --- | --- |
-| Kind | Saint |
-| Daily text | *Visits to the Blessed Sacrament*, Eugene Grimm CSsR, Centenary Edition (Benziger, 1886–97). Atomic: **31 visits, no cutter pass.** |
-| Cadence | **31 × 12**, day-of-month. Provenance `.partlyTraditional` — the 31 are his; mapping them onto every month is ours. |
-| Short months | Visits 29–31 simply do not occur. **Do not merge** 29–31 onto Feb 28 / 30-day month-ends. |
-| Also CLEAR | Grimm *Uniformity with God's Will*, *Preparation for Death* — side path, not the daily slot. |
-| Anchor | The Visit. |
-| Never-list | Redemptorist, Congregation of the Most Holy Redeemer, order emblem. "CSsR" only in the translator credit. |
 
 ### Francis of Assisi — `francis` — CLEAR
 
@@ -177,7 +177,7 @@ Serra is a different content type (`serra.md`) — after the writer houses.
 | `benedict` | Verheyen 1902 | CLEAR (shipped) |
 | `kempis` | Benham 1886 | CLEAR (shipped) |
 | `desales` | Rivingtons 1876 anonymous; Mackey Letters | CLEAR (shipped) |
-| `liguori` | Grimm Centenary | CLEAR |
+| `liguori` | Grimm Centenary 1887 | CLEAR (shipped) |
 | `francis` | Robinson 1906; Heywood 1906 for Fioretti shelf | CLEAR |
 | `john-cross` | Lewis 1864/89 | CLEAR |
 | `gregory` | Barmby 1895 | CLEAR |

@@ -32,5 +32,6 @@ abstract final class PortalRoutes {
   // Shared.
   static String lectio(String portalId) => '/p/$portalId/lectio';
   static String sources(String portalId) => '/p/$portalId/sources';
+  static String index(String portalId) => '/p/$portalId/index';
   static String paywall(String portalId) => '/p/$portalId/paywall';
 }

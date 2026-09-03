@@ -2,6 +2,7 @@ import 'package:dailycompany/app/router/page_turn.dart';
 import 'package:dailycompany/app/router/portal_routes.dart';
 import 'package:dailycompany/data/models/portal.dart';
 import 'package:dailycompany/data/providers.dart';
+import 'package:dailycompany/features/cycle/cycle_index_screen.dart';
 import 'package:dailycompany/features/cycle/cycle_today_screen.dart';
 import 'package:dailycompany/features/desales/desales_letters_screen.dart';
 import 'package:dailycompany/features/desales/desales_meditations_screen.dart';
@@ -11,9 +12,11 @@ import 'package:dailycompany/features/hours/hours_screen.dart';
 import 'package:dailycompany/features/hub/hub_screen.dart';
 import 'package:dailycompany/features/iap/desales_companion_paywall_screen.dart';
 import 'package:dailycompany/features/iap/kempis_companion_paywall_screen.dart';
+import 'package:dailycompany/features/iap/liguori_companion_paywall_screen.dart';
 import 'package:dailycompany/features/iap/oblate_paywall_screen.dart';
 import 'package:dailycompany/features/kempis/kempis_admonitions_screen.dart';
 import 'package:dailycompany/features/kempis/kempis_practice_screen.dart';
+import 'package:dailycompany/features/liguori/liguori_practice_screen.dart';
 import 'package:dailycompany/features/lectio/lectio_screen.dart';
 import 'package:dailycompany/features/life/life_screen.dart';
 import 'package:dailycompany/features/medal/medal_screen.dart';
@@ -146,6 +149,17 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         parentNavigatorKey: rootNavigatorKey,
+        path: '/p/:portalId/index',
+        pageBuilder: (context, state) => PageTurn.of(
+          key: state.pageKey,
+          child: Scaffold(
+            appBar: AppBar(title: const Text('Readings')),
+            body: const CycleIndexScreen(),
+          ),
+        ),
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
         path: '/p/:portalId/sources',
         pageBuilder: (context, state) => PageTurn.of(
           key: state.pageKey,
@@ -167,6 +181,9 @@ final routerProvider = Provider<GoRouter>((ref) {
             title = 'Companion';
           } else if (id == 'kempis') {
             child = const KempisCompanionPaywallScreen();
+            title = 'Companion';
+          } else if (id == 'liguori') {
+            child = const LiguoriCompanionPaywallScreen();
             title = 'Companion';
           } else {
             child = const OblatePaywallScreen();
@@ -311,9 +328,14 @@ StatefulShellBranch _cycleBranch(String portalId, String module) {
             path: '/p/:portalId/practice',
             pageBuilder: (context, state) {
               final id = state.pathParameters['portalId'] ?? portalId;
-              final body = id == 'kempis'
-                  ? const KempisPracticeScreen()
-                  : const DesalesPracticeScreen();
+              final Widget body;
+              if (id == 'kempis') {
+                body = const KempisPracticeScreen();
+              } else if (id == 'liguori') {
+                body = const LiguoriPracticeScreen();
+              } else {
+                body = const DesalesPracticeScreen();
+              }
               return PageTurn.of(
                 key: state.pageKey,
                 child: Scaffold(
@@ -426,7 +448,14 @@ class AppShell extends ConsumerWidget {
     ),
   ];
 
-  static NavigationDestination _destinationFor(String module) {
+  static NavigationDestination _destinationFor(String module, [String? portalId]) {
+    if (module == 'practice' && portalId == 'liguori') {
+      return const NavigationDestination(
+        icon: Icon(Icons.spa_outlined),
+        selectedIcon: Icon(Icons.spa),
+        label: 'Visit',
+      );
+    }
     return switch (module) {
       'today' => const NavigationDestination(
           icon: Icon(Icons.menu_book_outlined),
@@ -469,7 +498,9 @@ class AppShell extends ConsumerWidget {
       destinations = _benedictDestinations;
     } else {
       final modules = PortalRegistry.byId(portalId)?.modules ?? const ['today'];
-      destinations = [for (final m in modules) _destinationFor(m)];
+      destinations = [
+        for (final m in modules) _destinationFor(m, portalId),
+      ];
     }
 
     return Scaffold(

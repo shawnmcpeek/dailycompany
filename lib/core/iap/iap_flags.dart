@@ -21,6 +21,12 @@ abstract final class IapFlags {
   /// Store product / package id — portals-spec.md §9.5.
   static const kempisProductId = 'kempis_companion';
 
+  /// RevenueCat entitlement — Liguori's Companion unlock.
+  static const liguoriEntitlementId = 'liguori_companion';
+
+  /// Store product / package id.
+  static const liguoriProductId = 'liguori_companion';
+
   /// Bundle entitlement covering every open house. Scaffolded now so
   /// individual SKUs can later grant this without a migration fight.
   static const allSaintsEntitlementId = 'all_saints';

@@ -4,6 +4,7 @@ import 'package:dailycompany/core/haptics/bell_haptics.dart';
 import 'package:dailycompany/data/isar/bouquet.dart';
 import 'package:dailycompany/data/models/portal.dart';
 import 'package:dailycompany/data/providers.dart';
+import 'package:dailycompany/features/cycle/cycle_week_strip.dart';
 import 'package:dailycompany/features/desales/desales_reading_body.dart';
 import 'package:dailycompany/features/iap/paywall.dart';
 import 'package:dailycompany/shared/widgets/common.dart';
@@ -52,6 +53,10 @@ class CycleTodayScreen extends ConsumerWidget {
     final readThrough = unlocked && settings.readThroughFor(portalId);
     final portal = PortalRegistry.byId(portalId);
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final viewingToday =
+        day.year == today.year && day.month == today.month && day.day == today.day;
     final dateLabel = DateFormat('EEEE, MMMM d').format(day);
     final enableBouquet = portalId == 'desales';
 
@@ -100,6 +105,21 @@ class CycleTodayScreen extends ConsumerWidget {
                 readThrough ? 'Read Through' : dateLabel,
                 style: Theme.of(context).textTheme.labelSmall,
               ),
+              if (!readThrough && !viewingToday) ...[
+                const SizedBox(height: 8),
+                GestureDetector(
+                  onTap: () =>
+                      ref.read(selectedDayProvider.notifier).state = today,
+                  child: Text(
+                    'Back to today',
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ),
+              ],
+              if (!readThrough) ...[
+                const SizedBox(height: 16),
+                CycleWeekStrip(calendar: calendar),
+              ],
               const SizedBox(height: 16),
               if (!readThrough && enableBouquet) _BouquetPin(day: day),
               if (!unlocked)
@@ -125,6 +145,8 @@ class CycleTodayScreen extends ConsumerWidget {
                     enableBouquet: enableBouquet,
                   ),
                 ],
+                const SizedBox(height: 20),
+                _MarkRead(day: day, readingId: entries.first.id),
                 const SizedBox(height: 24),
                 if (readThrough)
                   _ReadThroughNav(
@@ -142,6 +164,37 @@ class CycleTodayScreen extends ConsumerWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class _MarkRead extends ConsumerWidget {
+  const _MarkRead({required this.day, required this.readingId});
+
+  final DateTime day;
+  final int readingId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: ActionChip(
+        label: const Text('Mark read'),
+        onPressed: () async {
+          await ref.read(completionProvider.notifier).markRead(
+                day,
+                readingId: readingId,
+              );
+          if (ref.read(settingsProvider).hapticsEnabled) {
+            await BellHaptics.play(BellKind.complete);
+          }
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Reading acknowledged.')),
+            );
+          }
+        },
+      ),
     );
   }
 }
@@ -375,8 +428,10 @@ class _EntryBlockState extends ConsumerState<_EntryBlock> {
         if (widget.portal != null)
           CycleProvenanceLine(
             label: widget.readThrough
-                ? partChapter
-                : 'Day ${entry.id} of ${widget.calendar.entries.length}',
+                ? (widget.portalId == 'liguori' ? entry.chapterTitle : partChapter)
+                : widget.portalId == 'liguori'
+                    ? 'Visit ${entry.id} of ${widget.calendar.entries.length}'
+                    : 'Day ${entry.id} of ${widget.calendar.entries.length}',
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: accent,
                 ),
@@ -385,9 +440,11 @@ class _EntryBlockState extends ConsumerState<_EntryBlock> {
           ),
         const SizedBox(height: 8),
         Text(
-          widget.readThrough
-              ? '${entry.chapterTitle}$portion'
-              : '$partChapter · ${entry.chapterTitle}$portion',
+          widget.portalId == 'liguori'
+              ? entry.chapterTitle
+              : widget.readThrough
+                  ? '${entry.chapterTitle}$portion'
+                  : '$partChapter · ${entry.chapterTitle}$portion',
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: 20),

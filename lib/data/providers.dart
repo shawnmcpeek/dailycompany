@@ -3,12 +3,14 @@ import 'package:dailycompany/core/cycle/life_track.dart';
 import 'package:dailycompany/data/models/desales_letter.dart';
 import 'package:dailycompany/data/models/desales_meditation.dart';
 import 'package:dailycompany/data/models/kempis_admonition.dart';
+import 'package:dailycompany/data/models/liguori_manner.dart';
 import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
 import 'package:dailycompany/core/diagnostics/journal_failure_reporter.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
 import 'package:dailycompany/core/notifications/aspiration_scheduler.dart';
 import 'package:dailycompany/core/notifications/bell_scheduler.dart';
 import 'package:dailycompany/core/notifications/cell_scheduler.dart';
+import 'package:dailycompany/core/notifications/visit_scheduler.dart';
 import 'package:dailycompany/data/content_catalog.dart';
 import 'package:dailycompany/data/isar/app_isar.dart';
 import 'package:dailycompany/data/isar/bouquet.dart';
@@ -57,6 +59,10 @@ final kempisAdmonitionsProvider =
   return KempisAdmonitions.loadFromAssets();
 });
 
+final liguoriMannerProvider = FutureProvider<LiguoriManner>((ref) async {
+  return LiguoriManner.loadFromAssets();
+});
+
 /// Unlock for the active portal's paid cycle (Today + Read Through).
 final cycleUnlockedProvider = Provider<bool>((ref) {
   final portalId = ref.watch(currentPortalIdProvider);
@@ -64,6 +70,7 @@ final cycleUnlockedProvider = Provider<bool>((ref) {
     'benedict' => ref.watch(oblateUnlockedProvider),
     'desales' => ref.watch(desalesCompanionUnlockedProvider),
     'kempis' => ref.watch(kempisCompanionUnlockedProvider),
+    'liguori' => ref.watch(liguoriCompanionUnlockedProvider),
     _ => false,
   };
 });
@@ -127,6 +134,20 @@ final kempisCellSyncProvider = Provider<void>((ref) {
   });
 });
 
+/// Keeps Liguori's Visit hour aligned with settings.
+final liguoriVisitSyncProvider = Provider<void>((ref) {
+  void sync() {
+    final settings = ref.read(settingsProvider);
+    if (!settings.ready) return;
+    VisitScheduler.instance.reschedule(settings);
+  }
+
+  ref.listen<AppSettings>(settingsProvider, (_, next) {
+    if (!next.ready) return;
+    sync();
+  });
+});
+
 class AppSettings {
   const AppSettings({
     this.ready = false,
@@ -154,6 +175,8 @@ class AppSettings {
     this.readThroughCursorByPortal = const {},
     this.kempisCellEnabled = false,
     this.kempisCellTime = '20:00',
+    this.liguoriVisitEnabled = false,
+    this.liguoriVisitTime = '12:00',
   });
 
   /// False until SharedPreferences have been read.
@@ -211,6 +234,12 @@ class AppSettings {
 
   /// `HH:mm` for the Cell notification. Default 20:00.
   final String kempisCellTime;
+
+  /// Liguori only — one Visit reminder a day.
+  final bool liguoriVisitEnabled;
+
+  /// `HH:mm` for the Visit notification. Default 12:00.
+  final String liguoriVisitTime;
 
   bool readThroughFor(String portalId) =>
       readThroughByPortal[portalId] ?? false;
@@ -271,6 +300,8 @@ class AppSettings {
     Map<String, int>? readThroughCursorByPortal,
     bool? kempisCellEnabled,
     String? kempisCellTime,
+    bool? liguoriVisitEnabled,
+    String? liguoriVisitTime,
   }) => AppSettings(
     ready: ready ?? this.ready,
     onboardingComplete: onboardingComplete ?? this.onboardingComplete,
@@ -299,6 +330,8 @@ class AppSettings {
         readThroughCursorByPortal ?? this.readThroughCursorByPortal,
     kempisCellEnabled: kempisCellEnabled ?? this.kempisCellEnabled,
     kempisCellTime: kempisCellTime ?? this.kempisCellTime,
+    liguoriVisitEnabled: liguoriVisitEnabled ?? this.liguoriVisitEnabled,
+    liguoriVisitTime: liguoriVisitTime ?? this.liguoriVisitTime,
   );
 }
 
@@ -366,6 +399,8 @@ class SettingsController extends StateNotifier<AppSettings> {
       readThroughCursorByPortal: _loadReadThroughCursorMap(prefs),
       kempisCellEnabled: prefs.getBool('kempisCellEnabled') ?? false,
       kempisCellTime: prefs.getString('kempisCellTime') ?? '20:00',
+      liguoriVisitEnabled: prefs.getBool('liguoriVisitEnabled') ?? false,
+      liguoriVisitTime: prefs.getString('liguoriVisitTime') ?? '12:00',
     );
   }
 
@@ -511,6 +546,19 @@ class SettingsController extends StateNotifier<AppSettings> {
     final next = '$hh:$mm';
     state = state.copyWith(kempisCellTime: next);
     (await SharedPreferences.getInstance()).setString('kempisCellTime', next);
+  }
+
+  Future<void> setLiguoriVisitEnabled(bool v) async {
+    state = state.copyWith(liguoriVisitEnabled: v);
+    (await SharedPreferences.getInstance()).setBool('liguoriVisitEnabled', v);
+  }
+
+  Future<void> setLiguoriVisitTime(TimeOfDayCompat time) async {
+    final hh = time.hour.toString().padLeft(2, '0');
+    final mm = time.minute.toString().padLeft(2, '0');
+    final next = '$hh:$mm';
+    state = state.copyWith(liguoriVisitTime: next);
+    (await SharedPreferences.getInstance()).setString('liguoriVisitTime', next);
   }
 
   Future<void> setLectioMinutes({
@@ -802,7 +850,9 @@ class JournalController extends StateNotifier<List<JournalEntry>> {
 
 final completionProvider =
     StateNotifierProvider<CompletionController, Set<String>>((ref) {
-      return CompletionController(ref.watch(isarProvider), ref);
+      final ctrl = CompletionController(ref.watch(isarProvider), ref);
+      ref.listen<String>(currentPortalIdProvider, (_, _) => ctrl.reload());
+      return ctrl;
     });
 
 class CompletionController extends StateNotifier<Set<String>> {
@@ -813,8 +863,14 @@ class CompletionController extends StateNotifier<Set<String>> {
   final Isar _isar;
   final Ref _ref;
 
+  Future<void> reload() => _load();
+
   Future<void> _load() async {
-    final rows = await _isar.readingCompletions.where().findAll();
+    final portalId = _ref.read(currentPortalIdProvider);
+    final rows = await _isar.readingCompletions
+        .filter()
+        .portalIdEqualTo(portalId)
+        .findAll();
     state = {for (final r in rows) r.dateKey};
   }
 
@@ -823,9 +879,11 @@ class CompletionController extends StateNotifier<Set<String>> {
 
   Future<void> markRead(DateTime day, {int? readingId}) async {
     final key = keyFor(day);
+    final portalId = _ref.read(currentPortalIdProvider);
     await _isar.writeTxn(() async {
       final existing = await _isar.readingCompletions
           .filter()
+          .portalIdEqualTo(portalId)
           .dateKeyEqualTo(key)
           .findFirst();
       if (existing != null) {

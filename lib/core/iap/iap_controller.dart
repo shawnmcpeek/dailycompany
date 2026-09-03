@@ -64,6 +64,13 @@ final kempisCompanionUnlockedProvider = Provider<bool>((ref) {
       iap.has(IapFlags.allSaintsEntitlementId);
 });
 
+final liguoriCompanionUnlockedProvider = Provider<bool>((ref) {
+  if (!IapFlags.enabled) return true;
+  final iap = ref.watch(iapControllerProvider);
+  return iap.has(IapFlags.liguoriEntitlementId) ||
+      iap.has(IapFlags.allSaintsEntitlementId);
+});
+
 class IapController extends StateNotifier<IapState> {
   IapController() : super(const IapState());
 
@@ -75,6 +82,7 @@ class IapController extends StateNotifier<IapState> {
           IapFlags.entitlementId,
           IapFlags.desalesEntitlementId,
           IapFlags.kempisEntitlementId,
+          IapFlags.liguoriEntitlementId,
           IapFlags.allSaintsEntitlementId,
         },
       );
@@ -126,6 +134,7 @@ class IapController extends StateNotifier<IapState> {
           IapFlags.entitlementId,
           IapFlags.desalesEntitlementId,
           IapFlags.kempisEntitlementId,
+          IapFlags.liguoriEntitlementId,
           IapFlags.allSaintsEntitlementId,
         },
       );
@@ -197,6 +206,9 @@ class IapController extends StateNotifier<IapState> {
 
   Future<bool> purchaseKempisCompanion() =>
       _purchase(IapFlags.kempisProductId, IapFlags.kempisEntitlementId);
+
+  Future<bool> purchaseLiguoriCompanion() =>
+      _purchase(IapFlags.liguoriProductId, IapFlags.liguoriEntitlementId);
 
   Future<bool> restore() async {
     if (!IapFlags.enabled) return true;
