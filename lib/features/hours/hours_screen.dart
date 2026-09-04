@@ -5,6 +5,8 @@ import 'package:dailycompany/data/content_catalog.dart';
 import 'package:dailycompany/data/providers.dart';
 import 'package:dailycompany/features/iap/paywall.dart';
 import 'package:dailycompany/shared/widgets/common.dart';
+import 'package:dailycompany/shared/widgets/continue_reading.dart';
+import 'package:dailycompany/shared/widgets/reading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -45,6 +47,8 @@ class HoursScreen extends ConsumerWidget {
                       : 'A lay-scaled horarium. Compline is the anchor.',
               style: Theme.of(context).textTheme.bodySmall,
             ),
+            const SizedBox(height: 20),
+            const ContinueReadingTile(module: 'hours'),
             if (!unlocked) ...[
               const SizedBox(height: 12),
               OutlinedButton(
@@ -178,67 +182,63 @@ class OfficeScreen extends ConsumerWidget {
             if (catalog.psalms[n] != null) catalog.psalms[n]!,
         ];
 
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(office.label),
-            actions: [
-              TextButton(
-                onPressed: () => _pickTime(context, ref, officeId),
-                child: Text(settings.timeForOffice(officeId)),
-              ),
-            ],
-          ),
-          body: ListView(
-            padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
-            children: [
-              _LineBlock(line: office.opening),
-              _LineBlock(line: office.response),
+        return ReadingPage(
+          title: office.label,
+          snippet: office.opening.english,
+          actions: [
+            TextButton(
+              onPressed: () => _pickTime(context, ref, officeId),
+              child: Text(settings.timeForOffice(officeId)),
+            ),
+          ],
+          children: [
+            _LineBlock(line: office.opening),
+            _LineBlock(line: office.response),
+            const SizedBox(height: 8),
+            _LineBlock(line: office.gloryBe),
+            const SizedBox(height: 20),
+            for (final psalm in psalms) ...[
+              ChromeLabel('Psalm ${psalm.number} · ${psalm.title}'),
+              const SizedBox(height: 10),
+              for (final v in psalm.verses)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    '${v.n}.  ${v.text}',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ),
               const SizedBox(height: 8),
               _LineBlock(line: office.gloryBe),
-              const SizedBox(height: 20),
-              for (final psalm in psalms) ...[
-                ChromeLabel('Psalm ${psalm.number} · ${psalm.title}'),
-                const SizedBox(height: 10),
-                for (final v in psalm.verses)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: Text(
-                      '${v.n}.  ${v.text}',
-                      style: Theme.of(context).textTheme.bodyLarge,
-                    ),
-                  ),
-                const SizedBox(height: 8),
-                _LineBlock(line: office.gloryBe),
-                const SizedBox(height: 16),
-              ],
-              _LineBlock(line: office.closing),
-              const SizedBox(height: 28),
-              FilledButton(
-                onPressed: () async {
-                  if (settings.hapticsEnabled) {
-                    await BellHaptics.play(_bellFor(office.haptic));
-                  }
-                  if (context.mounted) {
-                    if (settings.oraEtLabora &&
-                        {'terce', 'sext', 'none'}.contains(officeId)) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Return to your work.'),
-                        ),
-                      );
-                    }
-                    context.pop();
-                  }
-                },
-                child: Text(
-                  settings.oraEtLabora &&
-                          {'terce', 'sext', 'none'}.contains(officeId)
-                      ? 'Return to work'
-                      : 'Amen',
-                ),
-              ),
+              const SizedBox(height: 16),
             ],
-          ),
+            _LineBlock(line: office.closing),
+            const SizedBox(height: 28),
+            FilledButton(
+              onPressed: () async {
+                if (settings.hapticsEnabled) {
+                  await BellHaptics.play(_bellFor(office.haptic));
+                }
+                if (context.mounted) {
+                  if (settings.oraEtLabora &&
+                      {'terce', 'sext', 'none'}.contains(officeId)) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Return to your work.'),
+                      ),
+                    );
+                  }
+                  context.pop();
+                }
+              },
+              child: Text(
+                settings.oraEtLabora &&
+                        {'terce', 'sext', 'none'}.contains(officeId)
+                    ? 'Return to work'
+                    : 'Amen',
+              ),
+            ),
+          ],
         );
       },
     );

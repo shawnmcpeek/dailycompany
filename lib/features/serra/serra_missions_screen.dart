@@ -4,6 +4,8 @@ import 'package:dailycompany/data/providers.dart';
 import 'package:dailycompany/features/iap/paywall.dart';
 import 'package:dailycompany/features/serra/california_missions_map.dart';
 import 'package:dailycompany/shared/widgets/common.dart';
+import 'package:dailycompany/shared/widgets/continue_reading.dart';
+import 'package:dailycompany/shared/widgets/reading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -42,6 +44,7 @@ class _SerraMissionsScreenState extends ConsumerState<SerraMissionsScreen> {
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 16),
+            const ContinueReadingTile(module: 'missions'),
             CaliforniaMissionsMap(
               stops: place.stops,
               unlocked: unlocked,
@@ -192,23 +195,19 @@ class SerraMissionScreen extends ConsumerWidget {
             ),
           );
         }
-        return Scaffold(
-          appBar: AppBar(
-            title: Text('${stop.order} of ${place.stops.length}'),
-          ),
-          body: ListView(
-            padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
-            children: [
-              Text(stop.name, style: Theme.of(context).textTheme.titleMedium),
-              const SizedBox(height: 8),
-              Text(
-                '${stop.foundedYear} · ${stop.foundedBy}',
-                style: Theme.of(context).textTheme.bodySmall,
-              ),
-              const SizedBox(height: 20),
-              ReadingBody(text: stop.textEn),
-            ],
-          ),
+        return ReadingPage(
+          title: '${stop.order} of ${place.stops.length}',
+          snippet: stop.textEn,
+          children: [
+            Text(stop.name, style: Theme.of(context).textTheme.titleMedium),
+            const SizedBox(height: 8),
+            Text(
+              '${stop.foundedYear} · ${stop.foundedBy}',
+              style: Theme.of(context).textTheme.bodySmall,
+            ),
+            const SizedBox(height: 20),
+            ReadingBody(text: stop.textEn),
+          ],
         );
       },
     );

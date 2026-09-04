@@ -11,6 +11,7 @@ import 'package:dailycompany/shared/widgets/cycle_provenance.dart';
 import 'package:dailycompany/shared/widgets/daily_track_toggle.dart';
 import 'package:dailycompany/shared/widgets/drop_cap_text.dart';
 import 'package:dailycompany/shared/widgets/reader_display_sheet.dart';
+import 'package:dailycompany/shared/widgets/reading_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -59,6 +60,14 @@ class TodayScreen extends ConsumerWidget {
           animateIndex = 1;
         }
 
+        final portalId = portal.id;
+        final route = PortalRoutes.today(portalId);
+        final snippet = [
+          if (life != null) life.textEn,
+          for (final r in ruleReadings) r.textEn,
+        ].join(' ');
+        final heading = dateLabel;
+
         return Scaffold(
           appBar: AppBar(
             title: const Text('Today'),
@@ -66,19 +75,17 @@ class TodayScreen extends ConsumerWidget {
               IconButton(
                 tooltip: 'Reading display',
                 onPressed: () => showReaderDisplaySheet(context),
-                icon: const Text(
+                icon: Text(
                   'Aa',
-                  style: TextStyle(
-                    fontFamily: 'EBGaramond',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                  ),
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
               ),
             ],
           ),
-          body: ListView(
-            padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
+          body: ReadingScrollView(
+            route: route,
+            title: heading,
+            snippet: snippet,
             children: [
               Text(dateLabel, style: Theme.of(context).textTheme.labelSmall),
               const SizedBox(height: 12),

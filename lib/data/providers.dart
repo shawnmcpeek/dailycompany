@@ -294,6 +294,7 @@ class AppSettings {
     this.ignatiusProgramPaused = false,
     this.ignatiusElapsedWhenPaused = 0,
     this.ignatiusDirectorAcked = false,
+    this.lastReadingRouteByPortal = const {},
   });
 
   /// False until SharedPreferences have been read.
@@ -375,6 +376,15 @@ class AppSettings {
   final bool ignatiusProgramPaused;
   final int ignatiusElapsedWhenPaused;
   final bool ignatiusDirectorAcked;
+
+  /// Last resumable reading path per house, so re-entering opens that page.
+  final Map<String, String> lastReadingRouteByPortal;
+
+  String? lastReadingRouteFor(String portalId) {
+    final route = lastReadingRouteByPortal[portalId];
+    if (route == null || route.isEmpty) return null;
+    return route;
+  }
 
   static const reminderDefaults = <String, String>{
     'john-cross': '07:00',
@@ -486,6 +496,7 @@ class AppSettings {
     bool? ignatiusProgramPaused,
     int? ignatiusElapsedWhenPaused,
     bool? ignatiusDirectorAcked,
+    Map<String, String>? lastReadingRouteByPortal,
   }) => AppSettings(
     ready: ready ?? this.ready,
     onboardingComplete: onboardingComplete ?? this.onboardingComplete,
@@ -526,6 +537,8 @@ class AppSettings {
     ignatiusElapsedWhenPaused:
         ignatiusElapsedWhenPaused ?? this.ignatiusElapsedWhenPaused,
     ignatiusDirectorAcked: ignatiusDirectorAcked ?? this.ignatiusDirectorAcked,
+    lastReadingRouteByPortal:
+        lastReadingRouteByPortal ?? this.lastReadingRouteByPortal,
   );
 }
 
@@ -602,6 +615,7 @@ class SettingsController extends StateNotifier<AppSettings> {
       ignatiusElapsedWhenPaused:
           prefs.getInt('ignatiusElapsedWhenPaused') ?? 0,
       ignatiusDirectorAcked: prefs.getBool('ignatiusDirectorAcked') ?? false,
+      lastReadingRouteByPortal: _loadStringMap(prefs, 'lastReadingRouteByPortal'),
     );
   }
 
@@ -866,6 +880,17 @@ class SettingsController extends StateNotifier<AppSettings> {
     await prefs.setString('ignatiusProgramStart', '');
     await prefs.setBool('ignatiusProgramPaused', false);
     await prefs.setInt('ignatiusElapsedWhenPaused', 0);
+  }
+
+  Future<void> setLastReadingRoute(String portalId, String route) async {
+    if (state.lastReadingRouteByPortal[portalId] == route) return;
+    final next = Map<String, String>.from(state.lastReadingRouteByPortal)
+      ..[portalId] = route;
+    state = state.copyWith(lastReadingRouteByPortal: next);
+    (await SharedPreferences.getInstance()).setString(
+      'lastReadingRouteByPortal',
+      jsonEncode(next),
+    );
   }
 
   Future<void> setLectioMinutes({

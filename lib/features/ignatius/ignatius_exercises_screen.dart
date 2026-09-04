@@ -1,7 +1,9 @@
+import 'package:dailycompany/app/router/portal_routes.dart';
 import 'package:dailycompany/data/models/ignatius_content.dart';
 import 'package:dailycompany/data/models/portal.dart';
 import 'package:dailycompany/data/providers.dart';
 import 'package:dailycompany/shared/widgets/common.dart';
+import 'package:dailycompany/shared/widgets/reading_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -49,7 +51,10 @@ class IgnatiusExercisesScreen extends ConsumerWidget {
         final completed = elapsed >= IgnatiusProgram.length;
         final started = elapsed >= 0;
 
-        return ListView(
+        return ReadingScrollView(
+          route: PortalRoutes.exercises('ignatius'),
+          title: entry?.title ?? 'The Exercises',
+          snippet: entry?.textEn ?? program.directorNote,
           padding: const EdgeInsets.fromLTRB(24, 16, 24, 48),
           children: [
             Text(

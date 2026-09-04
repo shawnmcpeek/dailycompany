@@ -2,6 +2,8 @@ import 'package:dailycompany/app/router/portal_routes.dart';
 import 'package:dailycompany/data/models/desales_letter.dart';
 import 'package:dailycompany/data/providers.dart';
 import 'package:dailycompany/shared/widgets/common.dart';
+import 'package:dailycompany/shared/widgets/continue_reading.dart';
+import 'package:dailycompany/shared/widgets/reading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -31,6 +33,7 @@ class DesalesLettersScreen extends ConsumerWidget {
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 20),
+            const ContinueReadingTile(module: 'letters'),
             for (final book in books) ...[
               Text(
                 'Book ${book.book} · ${book.title}',
@@ -106,23 +109,21 @@ class DesalesLetterScreen extends ConsumerWidget {
             body: const Center(child: Text('Letter not found.')),
           );
         }
-        return Scaffold(
-          appBar: AppBar(title: Text('Book ${b.book} · Letter ${l.letter}')),
-          body: ListView(
-            padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
-            children: [
-              Text(b.title, style: Theme.of(context).textTheme.labelSmall),
-              if (l.description.isNotEmpty) ...[
-                const SizedBox(height: 4),
-                Text(
-                  l.description,
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-              ],
-              const SizedBox(height: 20),
-              ReadingBody(text: l.textEn),
+        return ReadingPage(
+          title: 'Book ${b.book} · Letter ${l.letter}',
+          snippet: l.textEn,
+          children: [
+            Text(b.title, style: Theme.of(context).textTheme.labelSmall),
+            if (l.description.isNotEmpty) ...[
+              const SizedBox(height: 4),
+              Text(
+                l.description,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
             ],
-          ),
+            const SizedBox(height: 20),
+            ReadingBody(text: l.textEn),
+          ],
         );
       },
     );

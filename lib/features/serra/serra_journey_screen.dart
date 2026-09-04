@@ -1,9 +1,11 @@
+import 'package:dailycompany/app/router/portal_routes.dart';
 import 'package:dailycompany/core/liturgical/liturgical_color.dart';
 import 'package:dailycompany/data/models/portal.dart';
 import 'package:dailycompany/data/providers.dart';
 import 'package:dailycompany/shared/widgets/common.dart';
 import 'package:dailycompany/shared/widgets/cycle_provenance.dart';
 import 'package:dailycompany/shared/widgets/drop_cap_text.dart';
+import 'package:dailycompany/shared/widgets/reading_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -36,7 +38,10 @@ class SerraJourneyScreen extends ConsumerWidget {
         final rest = restSplit > 0 ? first.substring(restSplit).trim() : '';
         final bodyStyle = Theme.of(context).textTheme.bodyLarge!;
 
-        return ListView(
+        return ReadingScrollView(
+          route: PortalRoutes.journey('serra'),
+          title: title,
+          snippet: body,
           padding: const EdgeInsets.fromLTRB(24, 16, 24, 48),
           children: [
             Text('Journey', style: Theme.of(context).textTheme.headlineMedium),

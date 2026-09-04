@@ -4,6 +4,8 @@ import 'package:dailycompany/data/content_catalog.dart';
 import 'package:dailycompany/data/providers.dart';
 import 'package:dailycompany/features/iap/paywall.dart';
 import 'package:dailycompany/shared/widgets/common.dart';
+import 'package:dailycompany/shared/widgets/continue_reading.dart';
+import 'package:dailycompany/shared/widgets/reading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -38,6 +40,7 @@ class LifeScreen extends ConsumerWidget {
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 20),
+            const ContinueReadingTile(module: 'life'),
             for (final ep in episodes) ...[
               ListTile(
                 contentPadding: EdgeInsets.zero,
@@ -125,22 +128,17 @@ class LifeEpisodeScreen extends ConsumerWidget {
           );
         }
         final numbered = catalog.life.where((e) => e.chapter > 0).length;
-        return Scaffold(
-          appBar: AppBar(
-            title: Text(
-              ep.chapter == 0
-                  ? 'Prologue'
-                  : 'Episode ${ep.chapter} of $numbered',
-            ),
-          ),
-          body: ListView(
-            padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
-            children: [
-              Text(ep.title, style: Theme.of(context).textTheme.titleMedium),
-              const SizedBox(height: 20),
-              ReadingBody(text: ep.textEn),
-            ],
-          ),
+        final heading = ep.chapter == 0
+            ? 'Prologue'
+            : 'Episode ${ep.chapter} of $numbered';
+        return ReadingPage(
+          title: heading,
+          snippet: ep.textEn,
+          children: [
+            Text(ep.title, style: Theme.of(context).textTheme.titleMedium),
+            const SizedBox(height: 20),
+            ReadingBody(text: ep.textEn),
+          ],
         );
       },
     );

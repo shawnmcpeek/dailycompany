@@ -1,7 +1,9 @@
 import 'package:dailycompany/app/router/page_turn.dart';
 import 'package:dailycompany/app/router/portal_routes.dart';
+import 'package:dailycompany/core/reading/reading_routes.dart';
 import 'package:dailycompany/data/models/portal.dart';
 import 'package:dailycompany/data/providers.dart';
+import 'package:dailycompany/features/bookmarks/bookmarks_screen.dart';
 import 'package:dailycompany/features/cycle/cycle_index_screen.dart';
 import 'package:dailycompany/features/cycle/cycle_today_screen.dart';
 import 'package:dailycompany/features/desales/desales_letters_screen.dart';
@@ -43,6 +45,7 @@ import 'package:dailycompany/features/more/sources_screen.dart';
 import 'package:dailycompany/features/onboarding/welcome_screen.dart';
 import 'package:dailycompany/features/today/today_screen.dart';
 import 'package:dailycompany/features/tools/tools_screen.dart';
+import 'package:dailycompany/shared/widgets/house_toolbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -53,7 +56,13 @@ final rootNavigatorKey = GlobalKey<NavigatorState>();
 /// keeps its dashboard; Serra opens on the journey; every other portal goes
 /// straight to Today — Hub is a Benedict-specific bonus screen, not part of
 /// the generic portal shape.
-String portalLandingRoute(String portalId) {
+///
+/// If the reader left a chapter mid-book, [lastRoute] reopens that page.
+String portalLandingRoute(String portalId, {String? lastRoute}) {
+  if (lastRoute != null &&
+      ReadingRoutes.isResumable(lastRoute, portalId)) {
+    return lastRoute;
+  }
   if (portalId == 'benedict') return '/hub';
   if (portalId == 'serra') return PortalRoutes.journey(portalId);
   return PortalRoutes.today(portalId);
@@ -61,8 +70,11 @@ String portalLandingRoute(String portalId) {
 
 final routerProvider = Provider<GoRouter>((ref) {
   final refresh = ValueNotifier(0);
-  ref.listen<AppSettings>(settingsProvider, (_, _) {
-    refresh.value++;
+  ref.listen<AppSettings>(settingsProvider, (prev, next) {
+    if (prev?.onboardingComplete != next.onboardingComplete ||
+        prev?.companionId != next.companionId) {
+      refresh.value++;
+    }
   });
   ref.onDispose(refresh.dispose);
 
@@ -91,11 +103,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (settings.onboardingComplete && onWelcome) {
         return settings.companionId.isEmpty
             ? '/hallway'
-            : portalLandingRoute(settings.companionId);
+            : portalLandingRoute(
+                settings.companionId,
+                lastRoute: settings.lastReadingRouteFor(settings.companionId),
+              );
       }
       if (settings.onboardingComplete &&
           settings.companionId.isEmpty &&
-          !onHallway) {
+          !onHallway &&
+          loc != '/bookmarks') {
         return '/hallway';
       }
       return null;
@@ -129,8 +145,14 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         parentNavigatorKey: rootNavigatorKey,
         path: '/',
-        redirect: (context, state) =>
-            portalLandingRoute(ref.read(currentPortalIdProvider)),
+        redirect: (context, state) {
+          final id = ref.read(currentPortalIdProvider);
+          final settings = ref.read(settingsProvider);
+          return portalLandingRoute(
+            id,
+            lastRoute: settings.lastReadingRouteFor(id),
+          );
+        },
       ),
       if (portalId == 'benedict')
         _benedictShell(portalId)
@@ -144,6 +166,17 @@ final routerProvider = Provider<GoRouter>((ref) {
           child: Scaffold(
             appBar: AppBar(title: const Text('More')),
             body: const MoreScreen(),
+          ),
+        ),
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigatorKey,
+        path: '/bookmarks',
+        pageBuilder: (context, state) => PageTurn.of(
+          key: state.pageKey,
+          child: Scaffold(
+            appBar: AppBar(title: const Text('Bookmarks')),
+            body: const BookmarksScreen(),
           ),
         ),
       ),
@@ -803,7 +836,16 @@ class AppShell extends ConsumerWidget {
     }
 
     return Scaffold(
-      body: navigationShell,
+      body: Column(
+        children: [
+          if (_showHouseChrome(GoRouterState.of(context).uri.path))
+            const SafeArea(
+              bottom: false,
+              child: HouseToolbar(),
+            ),
+          Expanded(child: navigationShell),
+        ],
+      ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: navigationShell.goBranch,
@@ -811,4 +853,9 @@ class AppShell extends ConsumerWidget {
       ),
     );
   }
+}
+
+bool _showHouseChrome(String path) {
+  if (path == '/hub') return true;
+  return ReadingRoutes.parts(path).length <= 3;
 }

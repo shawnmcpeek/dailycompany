@@ -44,7 +44,14 @@ class HallwayScreen extends ConsumerWidget {
                       .read(settingsProvider.notifier)
                       .setCompanion(house.id);
                   if (context.mounted) {
-                    context.go(portalLandingRoute(house.id));
+                    context.go(
+                      portalLandingRoute(
+                        house.id,
+                        lastRoute: ref
+                            .read(settingsProvider)
+                            .lastReadingRouteFor(house.id),
+                      ),
+                    );
                   }
                 },
               ),

@@ -2,6 +2,8 @@ import 'package:dailycompany/app/router/portal_routes.dart';
 import 'package:dailycompany/data/models/desales_meditation.dart';
 import 'package:dailycompany/data/providers.dart';
 import 'package:dailycompany/shared/widgets/common.dart';
+import 'package:dailycompany/shared/widgets/continue_reading.dart';
+import 'package:dailycompany/shared/widgets/reading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -32,6 +34,7 @@ class DesalesMeditationsScreen extends ConsumerWidget {
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 20),
+            const ContinueReadingTile(module: 'meditations'),
             for (final m in meditations) ...[
               ListTile(
                 contentPadding: EdgeInsets.zero,
@@ -83,16 +86,14 @@ class DesalesMeditationScreen extends ConsumerWidget {
             body: const Center(child: Text('Meditation not found.')),
           );
         }
-        return Scaffold(
-          appBar: AppBar(title: Text('${m.title} of 10')),
-          body: ListView(
-            padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
-            children: [
-              Text(m.topic, style: Theme.of(context).textTheme.titleMedium),
-              const SizedBox(height: 20),
-              ReadingBody(text: m.textEn),
-            ],
-          ),
+        return ReadingPage(
+          title: '${m.title} of 10',
+          snippet: m.textEn,
+          children: [
+            Text(m.topic, style: Theme.of(context).textTheme.titleMedium),
+            const SizedBox(height: 20),
+            ReadingBody(text: m.textEn),
+          ],
         );
       },
     );

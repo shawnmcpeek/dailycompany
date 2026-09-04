@@ -283,6 +283,13 @@ class MoreScreen extends ConsumerWidget {
         ],
         ListTile(
           contentPadding: EdgeInsets.zero,
+          title: const Text('Bookmarks'),
+          subtitle: const Text('Places you kept while reading'),
+          onTap: () => context.push('/bookmarks'),
+        ),
+        const SectionRule(),
+        ListTile(
+          contentPadding: EdgeInsets.zero,
           title: const Text('The hallway'),
           subtitle: const Text('Choose whose house you keep'),
           onTap: () => context.go('/hallway'),

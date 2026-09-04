@@ -3,9 +3,11 @@ import 'dart:io';
 
 import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
 import 'package:dailycompany/core/diagnostics/journal_failure_reporter.dart';
+import 'package:dailycompany/data/isar/bookmark.dart';
 import 'package:dailycompany/data/isar/bouquet.dart';
 import 'package:dailycompany/data/isar/lectio_journal_entry.dart';
 import 'package:dailycompany/data/isar/reading_completion.dart';
+import 'package:dailycompany/data/isar/reading_spot.dart';
 import 'package:isar_community/isar.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -26,7 +28,13 @@ abstract final class AppIsar {
     if (_instance != null) return _instance!;
     final dir = await getApplicationDocumentsDirectory();
     _instance = await Isar.open(
-      [LectioJournalEntrySchema, ReadingCompletionSchema, BouquetSchema],
+      [
+        LectioJournalEntrySchema,
+        ReadingCompletionSchema,
+        BouquetSchema,
+        ReadingSpotSchema,
+        BookmarkSchema,
+      ],
       directory: dir.path,
       name: 'daily_company',
     );

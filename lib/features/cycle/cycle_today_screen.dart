@@ -1,3 +1,4 @@
+import 'package:dailycompany/app/router/portal_routes.dart';
 import 'package:dailycompany/app/theme/palette.dart';
 import 'package:dailycompany/core/cycle/cycle_calendar.dart';
 import 'package:dailycompany/core/haptics/bell_haptics.dart';
@@ -11,9 +12,9 @@ import 'package:dailycompany/shared/widgets/common.dart';
 import 'package:dailycompany/shared/widgets/cycle_provenance.dart';
 import 'package:dailycompany/shared/widgets/drop_cap_text.dart';
 import 'package:dailycompany/shared/widgets/reader_display_sheet.dart';
+import 'package:dailycompany/shared/widgets/reading_scroll_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 String roman(int n) {
@@ -75,6 +76,12 @@ class CycleTodayScreen extends ConsumerWidget {
           return const Center(child: Text('No reading for this day.'));
         }
 
+        final route = PortalRoutes.today(portalId);
+        final snippet = entries.map((e) => e.textEn).join(' ');
+        final heading = readThrough
+            ? entries.first.chapterTitle
+            : dateLabel;
+
         return Scaffold(
           appBar: AppBar(
             title: const Text('Today'),
@@ -82,24 +89,17 @@ class CycleTodayScreen extends ConsumerWidget {
               IconButton(
                 tooltip: 'Reading display',
                 onPressed: () => showReaderDisplaySheet(context),
-                icon: const Text(
+                icon: Text(
                   'Aa',
-                  style: TextStyle(
-                    fontFamily: 'EBGaramond',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                  ),
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
-              ),
-              IconButton(
-                tooltip: 'More',
-                onPressed: () => context.push('/more'),
-                icon: const Icon(Icons.more_horiz),
               ),
             ],
           ),
-          body: ListView(
-            padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
+          body: ReadingScrollView(
+            route: route,
+            title: heading,
+            snippet: snippet,
             children: [
               Text(
                 readThrough ? 'Read Through' : dateLabel,

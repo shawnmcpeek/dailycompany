@@ -2,6 +2,8 @@ import 'package:dailycompany/app/router/portal_routes.dart';
 import 'package:dailycompany/data/models/kempis_admonition.dart';
 import 'package:dailycompany/data/providers.dart';
 import 'package:dailycompany/shared/widgets/common.dart';
+import 'package:dailycompany/shared/widgets/continue_reading.dart';
+import 'package:dailycompany/shared/widgets/reading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -32,6 +34,7 @@ class KempisAdmonitionsScreen extends ConsumerWidget {
               style: Theme.of(context).textTheme.bodySmall,
             ),
             const SizedBox(height: 20),
+            const ContinueReadingTile(module: 'admonitions'),
             for (final c in book.chapters) ...[
               ListTile(
                 contentPadding: EdgeInsets.zero,
@@ -83,18 +86,14 @@ class KempisAdmonitionScreen extends ConsumerWidget {
             body: const Center(child: Text('Chapter not found.')),
           );
         }
-        return Scaffold(
-          appBar: AppBar(
-            title: Text('Chapter ${found.chapter} of ${book.chapters.length}'),
-          ),
-          body: ListView(
-            padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
-            children: [
-              Text(found.title, style: Theme.of(context).textTheme.titleMedium),
-              const SizedBox(height: 20),
-              ReadingBody(text: found.textEn),
-            ],
-          ),
+        return ReadingPage(
+          title: 'Chapter ${found.chapter} of ${book.chapters.length}',
+          snippet: found.textEn,
+          children: [
+            Text(found.title, style: Theme.of(context).textTheme.titleMedium),
+            const SizedBox(height: 20),
+            ReadingBody(text: found.textEn),
+          ],
         );
       },
     );

@@ -2,6 +2,8 @@ import 'package:dailycompany/app/router/portal_routes.dart';
 import 'package:dailycompany/data/models/john_precaution.dart';
 import 'package:dailycompany/data/providers.dart';
 import 'package:dailycompany/shared/widgets/common.dart';
+import 'package:dailycompany/shared/widgets/continue_reading.dart';
+import 'package:dailycompany/shared/widgets/reading_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -33,6 +35,7 @@ class JohnPrecautionsScreen extends ConsumerWidget {
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               const SizedBox(height: 20),
+              const ContinueReadingTile(module: 'precautions'),
               for (final c in book.chapters) ...[
                 ListTile(
                   contentPadding: EdgeInsets.zero,
@@ -81,14 +84,12 @@ class JohnPrecautionScreen extends ConsumerWidget {
             body: const Center(child: Text('Precaution not found.')),
           );
         }
-        return Scaffold(
-          appBar: AppBar(title: Text(found.title)),
-          body: ListView(
-            padding: const EdgeInsets.fromLTRB(24, 8, 24, 48),
-            children: [
-              ReadingBody(text: found.textEn),
-            ],
-          ),
+        return ReadingPage(
+          title: found.title,
+          snippet: found.textEn,
+          children: [
+            ReadingBody(text: found.textEn),
+          ],
         );
       },
     );
