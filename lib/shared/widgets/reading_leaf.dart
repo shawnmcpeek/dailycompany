@@ -1,9 +1,10 @@
 import 'package:dailycompany/app/theme/parchment.dart';
+import 'package:dailycompany/app/theme/parchment_field.dart';
 import 'package:flutter/material.dart';
 
-/// A reading page: inset leaf, hairline, gutter, stacked fore-edge.
+/// A reading page: inset leaf, fiber, hairline, gutter, stacked fore-edge.
 ///
-/// Chrome stays on the cover. Only wrap [ReadingScrollView].
+/// Chrome stays on the desk. Only wrap [ReadingScrollView].
 class ReadingLeaf extends StatelessWidget {
   const ReadingLeaf({super.key, required this.child});
 
@@ -13,6 +14,7 @@ class ReadingLeaf extends StatelessWidget {
   Widget build(BuildContext context) {
     final parchment = ParchmentTheme.of(context);
     final ltr = Directionality.of(context) == TextDirection.ltr;
+    final textDirection = Directionality.of(context);
 
     final page = DecoratedBox(
       decoration: BoxDecoration(
@@ -21,6 +23,15 @@ class ReadingLeaf extends StatelessWidget {
       child: Stack(
         fit: StackFit.expand,
         children: [
+          CustomPaint(
+            painter: ParchmentPagePainter(
+              parchment,
+              textDirection: textDirection,
+            ),
+            isComplex: true,
+            willChange: false,
+            child: const SizedBox.expand(),
+          ),
           child,
           Positioned(
             top: 0,

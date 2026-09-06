@@ -82,6 +82,23 @@ set_target_properties(${BINARY_NAME}
 # them to the application.
 include(flutter/generated_plugins.cmake)
 
+# sentry-native adds --version-script=ABS_PATH via target_link_libraries.
+# This repo path has a space; clang splits the flag. Use a build-dir
+# relative map so the argument stays one token.
+if(TARGET sentry)
+  get_target_property(_sentry_libs sentry LINK_LIBRARIES)
+  set(_sentry_relink)
+  foreach(_lib IN LISTS _sentry_libs)
+    if(_lib MATCHES "version-script=")
+      list(APPEND _sentry_relink
+        "-Wl,--build-id=sha1,--version-script=_deps/sentry-native-src/src/exports.map")
+    else()
+      list(APPEND _sentry_relink "${_lib}")
+    endif()
+  endforeach()
+  set_property(TARGET sentry PROPERTY LINK_LIBRARIES ${_sentry_relink})
+endif()
+
 
 # === Installation ===
 # By default, "installing" just makes a relocatable bundle in the build
