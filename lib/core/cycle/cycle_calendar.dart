@@ -47,12 +47,10 @@ class CycleCalendar {
   CycleCalendar({
     required this.portalId,
     required this.entries,
-    required Map<String, List<int>> byDateCommon,
-    required Map<String, List<int>> byDateLeap,
+    required this._byDateCommon,
+    required this._byDateLeap,
     int? dailyCount,
-  })  : _byDateCommon = byDateCommon,
-        _byDateLeap = byDateLeap,
-        dailyCount = dailyCount ?? entries.length,
+  })  : dailyCount = dailyCount ?? entries.length,
         _byId = {for (final e in entries) e.id: e};
 
   final String portalId;

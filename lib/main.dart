@@ -2,6 +2,7 @@ import 'package:dailycompany/app/brand.dart';
 import 'package:dailycompany/app/router/app_router.dart';
 import 'package:dailycompany/app/theme/app_theme.dart';
 import 'package:dailycompany/app/theme/palette.dart';
+import 'package:dailycompany/app/theme/parchment_field.dart';
 import 'package:dailycompany/core/cycle/reading_calendar.dart';
 import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
@@ -101,6 +102,7 @@ class DailyCompanyApp extends ConsumerWidget {
         title: Brand.appName,
         debugShowCheckedModeBanner: false,
         theme: theme,
+        builder: parchmentAppBuilder,
         home: const Scaffold(body: Center(child: CircularProgressIndicator())),
       );
     }
@@ -111,6 +113,7 @@ class DailyCompanyApp extends ConsumerWidget {
       theme: theme,
       darkTheme: theme,
       themeMode: ThemeMode.light,
+      builder: parchmentAppBuilder,
       routerConfig: router,
     );
   }

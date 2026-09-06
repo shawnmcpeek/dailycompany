@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dailycompany/core/reading/reading_routes.dart';
 import 'package:dailycompany/data/reading_memory.dart';
+import 'package:dailycompany/shared/widgets/reading_leaf.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -99,15 +100,17 @@ class _ReadingScrollViewState extends ConsumerState<ReadingScrollView> {
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<ScrollNotification>(
-      onNotification: (notification) {
-        if (notification.depth == 0) _onScroll();
-        return false;
-      },
-      child: ListView(
-        controller: _controller,
-        padding: widget.padding,
-        children: widget.children,
+    return ReadingLeaf(
+      child: NotificationListener<ScrollNotification>(
+        onNotification: (notification) {
+          if (notification.depth == 0) _onScroll();
+          return false;
+        },
+        child: ListView(
+          controller: _controller,
+          padding: widget.padding,
+          children: widget.children,
+        ),
       ),
     );
   }

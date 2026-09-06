@@ -1,4 +1,5 @@
 import 'package:dailycompany/app/theme/palette.dart';
+import 'package:dailycompany/app/theme/parchment.dart';
 import 'package:flutter/material.dart';
 
 ThemeData buildPaperTheme({
@@ -16,6 +17,7 @@ ThemeData buildPaperTheme({
     accent: accent,
     fontScale: fontScale,
     boldReading: boldReading,
+    parchment: ParchmentTheme.paper,
   );
 }
 
@@ -34,6 +36,7 @@ ThemeData buildVellumTheme({
     accent: accent,
     fontScale: fontScale,
     boldReading: boldReading,
+    parchment: ParchmentTheme.vellum,
   );
 }
 
@@ -52,6 +55,7 @@ ThemeData buildComplineTheme({
     accent: accent,
     fontScale: fontScale,
     boldReading: boldReading,
+    parchment: ParchmentTheme.compline,
   );
 }
 
@@ -100,6 +104,7 @@ ThemeData _base({
   required Color accent,
   required double fontScale,
   required bool boldReading,
+  required ParchmentTheme parchment,
 }) {
   final scale = fontScale.clamp(0.85, 1.45);
   final readingWeight = boldReading ? FontWeight.w600 : FontWeight.w400;
@@ -115,7 +120,8 @@ ThemeData _base({
   final base = ThemeData(
     useMaterial3: true,
     brightness: brightness,
-    scaffoldBackgroundColor: bg,
+    scaffoldBackgroundColor: Colors.transparent,
+    extensions: <ThemeExtension<dynamic>>[parchment],
     colorScheme: ColorScheme(
       brightness: brightness,
       primary: accent,
@@ -128,10 +134,17 @@ ThemeData _base({
       onSurface: ink,
     ),
     dividerColor: rule,
-    appBarTheme: AppBarTheme(
+    dialogTheme: DialogThemeData(backgroundColor: bg),
+    bottomSheetTheme: BottomSheetThemeData(
       backgroundColor: bg,
+      surfaceTintColor: Colors.transparent,
+    ),
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.transparent,
       foregroundColor: ink,
       elevation: 0,
+      scrolledUnderElevation: 0,
+      surfaceTintColor: Colors.transparent,
       centerTitle: false,
       titleTextStyle: TextStyle(
         fontFamily: 'IBMPlexSans',
@@ -142,7 +155,10 @@ ThemeData _base({
       ),
     ),
     navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: bg,
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      shadowColor: Colors.transparent,
+      surfaceTintColor: Colors.transparent,
       indicatorColor: accent.withValues(alpha: 0.12),
       labelTextStyle: WidgetStatePropertyAll(
         TextStyle(
