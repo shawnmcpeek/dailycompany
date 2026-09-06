@@ -51,24 +51,27 @@ class CycleTodayScreen extends ConsumerWidget {
     final day = ref.watch(selectedDayProvider);
     final unlocked = ref.watch(cycleUnlockedProvider);
     final settings = ref.watch(settingsProvider);
-    final readThrough = unlocked && settings.readThroughFor(portalId);
+    final cycleKey = settings.cycleSettingsKey(portalId);
+    final readThrough = unlocked && settings.readThroughFor(cycleKey);
     final portal = PortalRegistry.byId(portalId);
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final viewingToday =
-        day.year == today.year && day.month == today.month && day.day == today.day;
+        day.year == today.year &&
+        day.month == today.month &&
+        day.day == today.day;
     final dateLabel = DateFormat('EEEE, MMMM d').format(day);
-    final enableBouquet = portalId == 'desales';
+    final enableBouquet =
+        portalId == 'desales' && settings.desalesCycleYear == 1;
 
     return calendarAsync.when(
       loading: () => const EmptyLoading(),
       error: (e, _) => Center(child: Text('$e')),
       data: (calendar) {
-        final cursor = settings.readThroughCursorFor(portalId).clamp(
-          1,
-          calendar.entries.length,
-        );
+        final cursor = settings
+            .readThroughCursorFor(cycleKey)
+            .clamp(1, calendar.entries.length);
         final entries = readThrough
             ? [calendar.byId(cursor) ?? calendar.entries.first]
             : calendar.resolveFor(day);
@@ -78,9 +81,7 @@ class CycleTodayScreen extends ConsumerWidget {
 
         final route = PortalRoutes.today(portalId);
         final snippet = entries.map((e) => e.textEn).join(' ');
-        final heading = readThrough
-            ? entries.first.chapterTitle
-            : dateLabel;
+        final heading = readThrough ? entries.first.chapterTitle : dateLabel;
 
         return Scaffold(
           appBar: AppBar(
@@ -105,6 +106,10 @@ class CycleTodayScreen extends ConsumerWidget {
                 readThrough ? 'Read Through' : dateLabel,
                 style: Theme.of(context).textTheme.labelSmall,
               ),
+              if (portalId == 'desales') ...[
+                const SizedBox(height: 8),
+                const _DesalesYearSwitch(),
+              ],
               if (!readThrough && !viewingToday) ...[
                 const SizedBox(height: 8),
                 GestureDetector(
@@ -129,8 +134,10 @@ class CycleTodayScreen extends ConsumerWidget {
                   if (i > 0) ...[
                     const SizedBox(height: 12),
                     SectionRule(
-                      color: portalAccent(portalId, entries[i].part)
-                          .withValues(alpha: 0.35),
+                      color: portalAccent(
+                        portalId,
+                        entries[i].part,
+                      ).withValues(alpha: 0.35),
                     ),
                     const SizedBox(height: 24),
                   ],
@@ -150,13 +157,13 @@ class CycleTodayScreen extends ConsumerWidget {
                 const SizedBox(height: 24),
                 if (readThrough)
                   _ReadThroughNav(
-                    portalId: portalId,
+                    portalId: cycleKey,
                     cursor: cursor,
                     total: calendar.entries.length,
                   ),
                 const SizedBox(height: 12),
                 _ReadThroughToggle(
-                  portalId: portalId,
+                  portalId: cycleKey,
                   readThrough: readThrough,
                 ),
               ],
@@ -181,10 +188,9 @@ class _MarkRead extends ConsumerWidget {
       child: ActionChip(
         label: const Text('Mark read'),
         onPressed: () async {
-          await ref.read(completionProvider.notifier).markRead(
-                day,
-                readingId: readingId,
-              );
+          await ref
+              .read(completionProvider.notifier)
+              .markRead(day, readingId: readingId);
           if (ref.read(settingsProvider).hapticsEnabled) {
             await BellHaptics.play(BellKind.complete);
           }
@@ -199,11 +205,38 @@ class _MarkRead extends ConsumerWidget {
   }
 }
 
+class _DesalesYearSwitch extends ConsumerWidget {
+  const _DesalesYearSwitch();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final year = ref.watch(settingsProvider).desalesCycleYear;
+    final muted = Theme.of(context).textTheme.bodySmall?.copyWith(
+      color: Theme.of(context).colorScheme.onSurfaceVariant,
+    );
+    final active = Theme.of(context).textTheme.bodySmall;
+    return Row(
+      children: [
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () =>
+              ref.read(settingsProvider.notifier).setDesalesCycleYear(1),
+          child: Text('Devout Life', style: year == 1 ? active : muted),
+        ),
+        Text('  ·  ', style: muted),
+        GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () =>
+              ref.read(settingsProvider.notifier).setDesalesCycleYear(2),
+          child: Text('Treatise', style: year == 2 ? active : muted),
+        ),
+      ],
+    );
+  }
+}
+
 class _ReadThroughToggle extends ConsumerWidget {
-  const _ReadThroughToggle({
-    required this.portalId,
-    required this.readThrough,
-  });
+  const _ReadThroughToggle({required this.portalId, required this.readThrough});
 
   final String portalId;
   final bool readThrough;
@@ -211,8 +244,8 @@ class _ReadThroughToggle extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final muted = Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: Theme.of(context).colorScheme.onSurfaceVariant,
-        );
+      color: Theme.of(context).colorScheme.onSurfaceVariant,
+    );
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () => ref
@@ -321,9 +354,9 @@ class _BouquetPin extends ConsumerWidget {
           const SizedBox(height: 8),
           Text(
             kept.text,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  fontStyle: FontStyle.italic,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyLarge?.copyWith(fontStyle: FontStyle.italic),
           ),
         ],
       ),
@@ -383,9 +416,9 @@ class _EntryBlockState extends ConsumerState<_EntryBlock> {
     if (ref.read(settingsProvider).hapticsEnabled) {
       BellHaptics.play(BellKind.lectioTick);
     }
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Kept for your bouquet.')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Kept for your bouquet.')));
   }
 
   @override
@@ -429,20 +462,14 @@ class _EntryBlockState extends ConsumerState<_EntryBlock> {
           CycleProvenanceLine(
             label: widget.readThrough
                 ? (widget.portalId == 'liguori' ||
-                        widget.portalId == 'john-cross' ||
-                        widget.calendar.isAppendix(entry)
-                    ? widget.calendar.progressLabel(
-                        entry,
-                        readThrough: true,
-                      )
-                    : partChapter)
-                : widget.calendar.progressLabel(
-                    entry,
-                    readThrough: false,
-                  ),
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: accent,
-                ),
+                          widget.portalId == 'john-cross' ||
+                          widget.calendar.isAppendix(entry)
+                      ? widget.calendar.progressLabel(entry, readThrough: true)
+                      : partChapter)
+                : widget.calendar.progressLabel(entry, readThrough: false),
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: accent),
             sheetTitle: widget.portal!.provenanceTitle,
             sheetParagraphs: widget.portal!.provenanceParagraphs,
           ),
@@ -451,10 +478,10 @@ class _EntryBlockState extends ConsumerState<_EntryBlock> {
           widget.portalId == 'liguori' || widget.portalId == 'john-cross'
               ? entry.chapterTitle
               : widget.portalId == 'teresa-avila'
-                  ? '${entry.partTitle} · ${entry.chapterTitle}$portion'
-                  : widget.readThrough || widget.calendar.isAppendix(entry)
-                      ? '${entry.chapterTitle}$portion'
-                      : '$partChapter · ${entry.chapterTitle}$portion',
+              ? '${entry.partTitle} · ${entry.chapterTitle}$portion'
+              : widget.readThrough || widget.calendar.isAppendix(entry)
+              ? '${entry.chapterTitle}$portion'
+              : '$partChapter · ${entry.chapterTitle}$portion',
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: 20),

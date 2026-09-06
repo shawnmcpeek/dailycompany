@@ -89,13 +89,16 @@ abstract final class PortalRegistry {
           'religious order or published edition assigns these passages '
           'to these dates. We cut the book into 366 readings at '
           'paragraph and chapter boundaries so it could be kept company '
-          'with daily.',
-      'The text itself is unaltered — the 1876 Rivingtons edition '
+          'with daily. The Treatise on the Love of God is a second '
+          'constructed year — switch under Today. The two years do '
+          'not share a Read Through cursor.',
+      'The Devout Life is the 1876 Rivingtons edition '
           '(Library of Spiritual Works for English Catholics). The '
           'title page names no translator. It is not Mackey’s, and '
-          'it is not John K. Ryan’s 1950 version.',
-      'If you’d rather read it straight through as it was written, '
-          'turn on Read Through under the reading.',
+          'it is not John K. Ryan’s 1950 version. The Treatise is '
+          'Dom Henry Benedict Mackey’s 1884 translation.',
+      'If you’d rather read either book straight through as it was '
+          'written, turn on Read Through under the reading.',
     ],
     disclaimer:
         'An independent app from Daddoo Dev. Not affiliated with, '
@@ -203,11 +206,14 @@ abstract final class PortalRegistry {
           'the sayings to be read one a day, and no order or '
           'published edition assigns these passages to these dates. '
           'Each saying stands alone — we do not bundle them to fill '
-          'the page. The treatises are a later shelf, not this year. '
-          'Two closing pieces sit in the index, off the calendar.',
+          'the page. The treatises sit on their own shelf — Ascent, '
+          'Dark Night, Spiritual Canticle, Living Flame — not cut '
+          'into the daily sayings. Two closing pieces sit in the '
+          'index, off the calendar.',
       'The text itself is unaltered — David Lewis’s 1864 translation '
-          'of the Precautions and Spiritual Maxims. It is not the '
-          'Kavanaugh–Rodriguez ICS edition.',
+          'of the Precautions, Spiritual Maxims, and the four '
+          'treatises. It is not the Kavanaugh–Rodriguez ICS edition, '
+          'and it is not E. Allison Peers.',
       'If you’d rather read the sayings straight through as they '
           'stand, turn on Read Through under the reading.',
     ],
@@ -216,8 +222,8 @@ abstract final class PortalRegistry {
         'endorsed by, or produced by the Order of Discalced Carmelites, '
         'any Carmelite province or house, ICS Publications, or any '
         'shrine or publisher associated with them.',
-    modules: ['today', 'precautions', 'practice'],
-    unlockSku: 'john-cross_companion',
+    modules: ['today', 'precautions', 'treatises', 'practice'],
+    unlockSku: 'john_cross_companion',
   );
 
   static const gregory = SaintPortal(
@@ -300,7 +306,7 @@ abstract final class PortalRegistry {
         'any Carmelite province or house, ICS Publications, or any '
         'shrine or publisher associated with them.',
     modules: ['today', 'practice'],
-    unlockSku: 'teresa-avila_companion',
+    unlockSku: 'teresa_avila_companion',
   );
 
   static const ignatius = SaintPortal(

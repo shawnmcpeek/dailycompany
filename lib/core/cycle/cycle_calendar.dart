@@ -50,10 +50,12 @@ class CycleCalendar {
     required this._byDateCommon,
     required this._byDateLeap,
     int? dailyCount,
+    this.divisionOverride,
   })  : dailyCount = dailyCount ?? entries.length,
         _byId = {for (final e in entries) e.id: e};
 
   final String portalId;
+  final String? divisionOverride;
   final List<CycleEntry> entries;
 
   /// Calendar-mapped count. Augustine's appendix lives past this.
@@ -63,7 +65,7 @@ class CycleCalendar {
   final Map<int, CycleEntry> _byId;
 
   /// "Book" for Kempis / Augustine / Gregory, "Part" otherwise.
-  String get divisionNoun => switch (portalId) {
+  String get divisionNoun => divisionOverride ?? switch (portalId) {
         'kempis' || 'augustine' || 'gregory' => 'Book',
         'john-cross' => 'Saying',
         'cassian' => 'Conference',
@@ -105,17 +107,21 @@ class CycleCalendar {
     return 'Day ${entry.id} of $total';
   }
 
-  static Future<CycleCalendar> load(String portalId) async {
-    final entriesRaw = await rootBundle.loadString(
-      'assets/content/$portalId/entries.json',
-    );
-    final calendarRaw = await rootBundle.loadString(
-      'assets/content/$portalId/calendar.json',
-    );
+  static Future<CycleCalendar> load(
+    String portalId, {
+    int cycleYear = 1,
+  }) async {
+    final treatise = portalId == 'desales' && cycleYear == 2;
+    final prefix = treatise
+        ? 'assets/content/desales/treatise_'
+        : 'assets/content/$portalId/';
+    final entriesRaw = await rootBundle.loadString('${prefix}entries.json');
+    final calendarRaw = await rootBundle.loadString('${prefix}calendar.json');
     return CycleCalendar.fromJson(
       jsonDecode(entriesRaw) as Map<String, dynamic>,
       jsonDecode(calendarRaw) as Map<String, dynamic>,
       portalId: portalId,
+      divisionOverride: treatise ? 'Book' : null,
     );
   }
 
@@ -123,6 +129,7 @@ class CycleCalendar {
     Map<String, dynamic> entriesJson,
     Map<String, dynamic> calendarJson, {
     String portalId = '',
+    String? divisionOverride,
   }) {
     final entries = (entriesJson['entries'] as List)
         .map((e) => CycleEntry.fromJson(e as Map<String, dynamic>))
@@ -140,6 +147,7 @@ class CycleCalendar {
       byDateCommon: parseMap('byDateCommon'),
       byDateLeap: parseMap('byDateLeap'),
       dailyCount: entriesJson['dailyEntries'] as int?,
+      divisionOverride: divisionOverride,
     );
   }
 

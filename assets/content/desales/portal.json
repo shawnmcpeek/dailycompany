@@ -7,11 +7,11 @@
     "type": "cycle",
     "entries": 366,
     "repeatsPerYear": 1.0,
-    "note": "366, not 365 x 1 as spec's table states — see sourceNote and portals-spec.md discussion. Maps 1:1 onto a leap year; common years merge the last two entries onto Dec 31 (mirrors Benedict's own leap-day handling, common/leap roles swapped)."
+    "note": "Two constructed years. Year 1 is the Devout Life (366). Year 2 is Mackey's Treatise on the Love of God (366). Switch under Today. Common years merge the last two entries onto Dec 31."
   },
   "anchor": "bouquet",
   "modules": ["today", "meditations", "practice", "letters"],
   "disclaimer": "An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by the Salesians of Don Bosco, the Order of the Visitation, any Salesian or Visitandine province or house, or any shrine or publisher associated with them.",
   "unlockSku": "desales_companion",
-  "sourceNote": "Introduction to the Devout Life, Library of Spiritual Works for English Catholics (Rivingtons, London / Oxford / Cambridge, 1876), 'A New Translation.' Title page names no translator. CCEL hosts this text (ccel.org/ccel/desales/devout_life). Not Mackey (he did the Burns & Oates Treatise and Letters). Not Ryan 1950. 1876 — public domain."
+  "sourceNote": "Year 1: Introduction to the Devout Life, Library of Spiritual Works for English Catholics (Rivingtons, 1876), 'A New Translation.' Title page names no translator. Not Mackey. Not Ryan 1950. Year 2: Treatise on the Love of God, Dom Henry Benedict Mackey (1884). Letters remain Mackey 1894. Public domain."
 }

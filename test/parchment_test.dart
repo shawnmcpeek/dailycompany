@@ -86,7 +86,7 @@ void main() {
           home: RepaintBoundary(key: key, child: body),
         ),
       );
-      await tester.pump();
+      await tester.pumpAndSettle();
       return (await tester.runAsync(() async {
             final boundary =
                 key.currentContext!.findRenderObject()! as RenderRepaintBoundary;
@@ -124,5 +124,53 @@ void main() {
     );
     expect(desk, 0);
     expect(page, greaterThan(80));
+  });
+
+  Finder leafTransform() => find.descendant(
+        of: find.byType(ReadingLeaf),
+        matching: find.byType(Transform),
+      );
+
+  testWidgets('leaf lifts eight pixels then settles', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: buildVellumTheme(accent: const Color(0xFF4A4266)),
+        home: const ReadingLeaf(child: SizedBox.expand()),
+      ),
+    );
+    await tester.pump();
+    final start = tester.widget<Transform>(leafTransform());
+    expect(start.transform.getTranslation().y, ReadingLeaf.lift);
+    await tester.pumpAndSettle();
+    final end = tester.widget<Transform>(leafTransform());
+    expect(end.transform.getTranslation().y, 0);
+  });
+
+  testWidgets('leaf-lift respects reduce motion', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: buildVellumTheme(accent: const Color(0xFF4A4266)),
+        builder: (context, child) => MediaQuery(
+          data: MediaQuery.of(context).copyWith(disableAnimations: true),
+          child: child!,
+        ),
+        home: const ReadingLeaf(child: SizedBox.expand()),
+      ),
+    );
+    await tester.pump();
+    final transform = tester.widget<Transform>(leafTransform());
+    expect(transform.transform.getTranslation().y, 0);
+  });
+
+  test('reading text uses oldstyle figures', () {
+    final theme = buildVellumTheme(accent: const Color(0xFF4A4266));
+    expect(
+      theme.textTheme.bodyLarge!.fontFeatures,
+      contains(const ui.FontFeature.oldstyleFigures()),
+    );
+    expect(
+      theme.textTheme.headlineMedium!.fontFeatures,
+      contains(const ui.FontFeature.oldstyleFigures()),
+    );
   });
 }

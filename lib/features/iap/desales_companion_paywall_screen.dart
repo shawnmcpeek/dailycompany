@@ -1,52 +1,15 @@
 import 'package:dailycompany/core/iap/iap_controller.dart';
 import 'package:dailycompany/core/iap/iap_flags.dart';
+import 'package:dailycompany/features/iap/paywall_actions.dart';
 import 'package:dailycompany/shared/widgets/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
-class DesalesCompanionPaywallScreen extends ConsumerStatefulWidget {
+class DesalesCompanionPaywallScreen extends ConsumerWidget {
   const DesalesCompanionPaywallScreen({super.key});
 
   @override
-  ConsumerState<DesalesCompanionPaywallScreen> createState() =>
-      _DesalesCompanionPaywallScreenState();
-}
-
-class _DesalesCompanionPaywallScreenState
-    extends ConsumerState<DesalesCompanionPaywallScreen> {
-  bool _busy = false;
-
-  Future<void> _buy() async {
-    setState(() => _busy = true);
-    final ok = await ref
-        .read(iapControllerProvider.notifier)
-        .purchaseDesalesCompanion();
-    if (!mounted) return;
-    setState(() => _busy = false);
-    if (ok) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Companion unlocked. Thank you.')),
-      );
-      context.pop();
-    }
-  }
-
-  Future<void> _restore() async {
-    setState(() => _busy = true);
-    final ok = await ref.read(iapControllerProvider.notifier).restore();
-    if (!mounted) return;
-    setState(() => _busy = false);
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(ok ? 'Purchases restored.' : 'No purchase found.'),
-      ),
-    );
-    if (ok) context.pop();
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final iap = ref.watch(iapControllerProvider);
     final price = iap.priceLabels[IapFlags.desalesProductId] ?? '\$4.99';
 
@@ -61,8 +24,9 @@ class _DesalesCompanionPaywallScreenState
         ),
         const SizedBox(height: 24),
         Text(
-          'Includes the year-long Devout Life cycle, Letters to Persons in '
-          'the World, and Read Through mode.',
+          'Includes both year-long cycles — Devout Life and the Treatise '
+          'on the Love of God — Letters to Persons in the World, and '
+          'Read Through.',
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         const SizedBox(height: 16),
@@ -72,32 +36,20 @@ class _DesalesCompanionPaywallScreenState
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         const SizedBox(height: 28),
-        if (!IapFlags.enabled) ...[
+        if (!IapFlags.enabled)
           Text(
             'Store billing is feature-flagged off in this build. '
             'Flip IapFlags.enabled and pass REVENUECAT_API_KEY when ready.',
             style: Theme.of(context).textTheme.bodySmall,
+          )
+        else
+          PaywallActions(
+            onPurchase: () => ref
+                .read(iapControllerProvider.notifier)
+                .purchaseDesalesCompanion(),
+            purchaseLabel: 'Unlock Companion · $price',
+            unlockedMessage: 'Companion unlocked. Thank you.',
           ),
-        ] else ...[
-          FilledButton(
-            onPressed: _busy ? null : _buy,
-            child: Text(_busy ? 'Working…' : 'Unlock Companion · $price'),
-          ),
-          const SizedBox(height: 10),
-          OutlinedButton(
-            onPressed: _busy ? null : _restore,
-            child: const Text('Restore purchases'),
-          ),
-          if (iap.error != null) ...[
-            const SizedBox(height: 16),
-            Text(
-              iap.error!,
-              style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.error,
-                  ),
-            ),
-          ],
-        ],
         const SizedBox(height: 28),
         const SectionRule(),
         const SizedBox(height: 16),

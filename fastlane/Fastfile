@@ -5,6 +5,11 @@ lane :expand_listing do
   sh("ruby", File.expand_path("../tools/store/expand_listing.rb", __dir__))
 end
 
+desc "Create one-time IAPs on App Store Connect and Play"
+lane :push_iaps do
+  sh("ruby", File.expand_path("../tools/store/push_iaps.rb", __dir__))
+end
+
 platform :ios do
   desc "Load App Store Connect API key from gitignored secrets/"
   private_lane :asc_api_key do

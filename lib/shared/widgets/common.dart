@@ -1,3 +1,5 @@
+import 'dart:ui' show FontFeature;
+
 import 'package:flutter/material.dart';
 
 class SectionRule extends StatelessWidget {
@@ -18,9 +20,18 @@ class ChromeLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Text(
-      text.toUpperCase(),
-      style: Theme.of(context).textTheme.labelSmall,
+      text,
+      style: theme.textTheme.labelSmall?.copyWith(
+        fontFamily: 'EBGaramond',
+        fontSize: 12,
+        height: 1.3,
+        letterSpacing: 0.96,
+        fontWeight: FontWeight.w500,
+        color: theme.textTheme.labelSmall?.color,
+        fontFeatures: const [FontFeature.enable('smcp')],
+      ),
     );
   }
 }

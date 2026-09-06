@@ -15,6 +15,11 @@ void main() {
       expect(ReadingRoutes.isResumable('/p/benedict/life/5'), isTrue);
       expect(ReadingRoutes.isResumable('/p/desales/letters'), isFalse);
       expect(ReadingRoutes.isResumable('/p/desales/letters/1/12'), isTrue);
+      expect(ReadingRoutes.isResumable('/p/john-cross/treatises'), isFalse);
+      expect(
+        ReadingRoutes.isResumable('/p/john-cross/treatises/ascent/1/3'),
+        isTrue,
+      );
       expect(ReadingRoutes.isResumable('/p/benedict/hours/compline'), isTrue);
     });
 

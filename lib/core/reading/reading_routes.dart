@@ -11,6 +11,7 @@ abstract final class ReadingRoutes {
     'admonitions',
     'stories',
     'precautions',
+    'treatises',
     'discernment',
     'missions',
   };

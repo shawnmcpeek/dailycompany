@@ -1,3 +1,5 @@
+import 'dart:ui' show FontFeature;
+
 import 'package:dailycompany/app/theme/palette.dart';
 import 'package:dailycompany/app/theme/parchment.dart';
 import 'package:flutter/material.dart';
@@ -115,6 +117,7 @@ ThemeData _base({
         height: height,
         fontWeight: readingWeight,
         color: ink,
+        fontFeatures: const [FontFeature.oldstyleFigures()],
       );
 
   final base = ThemeData(

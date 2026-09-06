@@ -328,6 +328,9 @@ class IapController extends StateNotifier<IapState> {
   Future<bool> purchaseCompanion(String productId, String entitlementId) =>
       _purchase(productId, entitlementId);
 
+  Future<bool> purchaseAllSaints() =>
+      _purchase(IapFlags.allSaintsProductId, IapFlags.allSaintsEntitlementId);
+
   Future<bool> restore() async {
     if (!IapFlags.enabled) return true;
     try {

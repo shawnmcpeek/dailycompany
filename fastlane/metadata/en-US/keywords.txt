@@ -1,1 +1,1 @@
-benedict,rule,lectio,hours,catholic,formation,breviary,gregory,kempis
+benedict,rule,lectio,hours,catholic,formation,breviary,gregory,kempis,teresa,ignatius,serra

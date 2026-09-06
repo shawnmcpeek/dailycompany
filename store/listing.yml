@@ -8,34 +8,33 @@ subtitle: Keep company with a saint
 short_description: Keep company with a saint and their writing — daily, offline, without streaks.
 
 promotional_text: >-
-  Walk the hallway and enter a house. Benedict’s is open: the Rule on the old calendar,
-  Hours, Lectio, and Gregory’s Life. Other saints and their books will follow.
+  Walk the hallway and enter a house. The Rule, the Devout Life, the Imitation,
+  the Confessions, Serra’s missions — today’s reading is already waiting.
 
 description: |
   Daily Company is a formation app, not a meditation playlist with a saint badge.
 
   You keep company with one writer at a time — a saint or spiritual master and the book they left. The hallway is the front door. You choose a house, then live in it: today’s reading is already waiting. There is no plan to start, and no streak to break.
 
-  Benedict’s house is open now. Inside it you will find the Rule on the thrice-yearly Benedictine calendar, a lay-scaled Hours, Lectio over the day’s passage, Gregory’s Life of Benedict, the Tools of Good Works, and the Medal. Other houses — Teresa, de Sales, à Kempis, Thérèse, and more — will open as their books are ready.
+  The hallway is open. Benedict, Thomas à Kempis, Francis de Sales, Ignatius, Augustine, Francis of Assisi, Teresa of Avila, Gregory, Alphonsus Liguori, Thérèse, John of the Cross, Catherine, Montfort, Scupoli, Brother Lawrence, Cassian, and Serra.
 
-  What you get in Benedict’s house
-  • Today’s Rule reading on a quiet, breviary-like page — optional commentary and Latin
-  • A lay-scaled Hours: short offices from Lauds to Compline, with optional bell reminders
-  • Lectio Divina over the day’s passage, with a private journal that can resurface next cycle
-  • The Life of St. Benedict (Gregory the Great, Dialogues II) as a serialized season
-  • The Tools of Good Works — RB 4’s seventy-two instruments, one card a day, shareable as an image
-  • The Medal — letters, blessing (reserved to a priest), litany, and history
+  What you get
+  • Today’s reading on a quiet, breviary-like page
+  • Benedict’s house: the Rule on the thrice-yearly Benedictine calendar, a lay-scaled Hours, Lectio over the day’s passage, Gregory’s Life of Benedict, the Tools of Good Works, and the Medal
+  • The other houses: the book they left, cut for the year, and the practice that belongs to that life — de Sales’ Bouquet, Kempis’ Cell, Ignatius’ Examen, Serra’s journey and twenty-one missions
+  • Read Through, if you’d rather take the book as written
+  • Offline-first. No account.
 
-  Offline-first. No account. No subscription in this version. Depth is optional; the house is the app.
+  One-time unlocks per house, or All Saints for the whole hallway. No subscription. Depth is optional; the house is the app.
 
   An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by any monastery, abbey, congregation, or religious order.
 
-# iOS only. Do not repeat words from name or subtitle.
-keywords: benedict,rule,lectio,hours,catholic,formation,breviary,gregory,kempis
+# iOS only. Do not repeat words from name/subtitle.
+keywords: benedict,rule,lectio,hours,catholic,formation,breviary,gregory,kempis,teresa,ignatius,serra
 
 release_notes: >-
-  First release. The hallway is open. Benedict’s house: Rule, Hours, Lectio, Life,
-  Tools of Good Works, and the Medal.
+  The hallway is open. Seventeen houses, Benedict through Serra. Today’s reading
+  is already waiting. One-time unlocks; no subscription.
 
 support_url: https://daddoodev.pro
 marketing_url: https://daddoodev.pro

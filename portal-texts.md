@@ -46,7 +46,7 @@ Display names never prefix *St.* / *Saint* unless the person is actually canoniz
 | Kind | Saint |
 | Daily text | *Introduction to the Devout Life*, 366 × 1 (shipped). |
 | Translator | **Anonymous.** Rivingtons 1876, *Library of Spiritual Works for English Catholics* (“A New Translation”). Title page names no translator. CCEL hosts this text. **Not Mackey.** Not Ryan (1950). CLEAR — 1876. |
-| Also CLEAR | Mackey *Treatise on the Love of God* (1884), *Letters* (1894), *Conferences* (1906) — Letters module uses Mackey. |
+| Also CLEAR | Mackey *Treatise on the Love of God* (1884) — year 2 of Today. *Letters* (1894) — Letters module. *Conferences* (1906). |
 | Anchor | Bouquet (select-to-keep). |
 | Never-list | Salesian, Visitation, Don Bosco. |
 
@@ -87,7 +87,7 @@ Cadence below is a **guess**. Playbook: print `cadence_candidates` on a real cou
 | --- | --- |
 | Kind | Saint |
 | Daily text | **Sayings of Light and Love** (and kindred maxims: Precautions, Counsels), David Lewis (1864 / 1889). Atomic — one saying a day, do not bundle to fatten the word count. |
-| Not the daily cut | *Ascent*, *Dark Night*, *Canticle*, *Flame* (~275k). A later shelf if wanted — not the opening daily unit. A 300-word slice of the Ascent is close to meaningless. |
+| Not the daily cut | *Ascent*, *Dark Night*, *Canticle*, *Flame* (~275k). Shelf of whole chapters — not the opening daily unit. A 300-word slice of the Ascent is close to meaningless. |
 | Cadence | **366 × 1**, unique year. Real count 16,270 words (~43/saying); 8 overflow pieces in the index. |
 | Do not use | Kavanaugh–Rodriguez ICS (1964–). |
 | Never-list | Carmelite, OCD, Discalced emblem. |

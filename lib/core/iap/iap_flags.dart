@@ -34,7 +34,7 @@ abstract final class IapFlags {
   static const francisProductId = 'francis_companion';
 
   static const johnCrossEntitlementId = 'john-cross_companion';
-  static const johnCrossProductId = 'john-cross_companion';
+  static const johnCrossProductId = 'john_cross_companion';
 
   static const gregoryEntitlementId = 'gregory_companion';
   static const gregoryProductId = 'gregory_companion';
@@ -43,7 +43,7 @@ abstract final class IapFlags {
   static const augustineProductId = 'augustine_companion';
 
   static const teresaAvilaEntitlementId = 'teresa-avila_companion';
-  static const teresaAvilaProductId = 'teresa-avila_companion';
+  static const teresaAvilaProductId = 'teresa_avila_companion';
 
   static const ignatiusEntitlementId = 'ignatius_companion';
   static const ignatiusProductId = 'ignatius_companion';
@@ -72,6 +72,7 @@ abstract final class IapFlags {
   /// Bundle entitlement covering every open house. Scaffolded now so
   /// individual SKUs can later grant this without a migration fight.
   static const allSaintsEntitlementId = 'all_saints';
+  static const allSaintsProductId = 'all_saints';
 
   /// Pass at build time when enabling IAP:
   /// `--dart-define=REVENUECAT_API_KEY=appl_...` (iOS) or `goog_...` (Android).

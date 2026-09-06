@@ -6,6 +6,7 @@ import 'package:dailycompany/data/models/francis_admonition.dart';
 import 'package:dailycompany/data/models/francis_canticle.dart';
 import 'package:dailycompany/data/models/francis_story.dart';
 import 'package:dailycompany/data/models/john_precaution.dart';
+import 'package:dailycompany/data/models/john_treatise.dart';
 import 'package:dailycompany/data/models/ignatius_content.dart';
 import 'package:dailycompany/data/models/place_saint.dart';
 import 'package:dailycompany/data/models/kempis_admonition.dart';
@@ -47,7 +48,10 @@ final cycleCalendarProvider = FutureProvider.family<CycleCalendar, String>((
   ref,
   portalId,
 ) async {
-  return CycleCalendar.load(portalId);
+  final year = portalId == 'desales'
+      ? ref.watch(settingsProvider.select((s) => s.desalesCycleYear))
+      : 1;
+  return CycleCalendar.load(portalId, cycleYear: year);
 });
 
 final desalesCalendarProvider = FutureProvider<CycleCalendar>((ref) async {
@@ -92,6 +96,10 @@ final francisCanticleProvider = FutureProvider<FrancisCanticle>((ref) async {
 
 final johnPrecautionsProvider = FutureProvider<JohnPrecautions>((ref) async {
   return JohnPrecautions.loadFromAssets();
+});
+
+final johnTreatisesProvider = FutureProvider<JohnTreatises>((ref) async {
+  return JohnTreatises.loadFromAssets();
 });
 
 final ignatiusRulesProvider = FutureProvider<IgnatiusRules>((ref) async {
@@ -279,6 +287,7 @@ class AppSettings {
     this.dailyTrack = DailyTrack.life,
     this.lifeTrackStart = '',
     this.desalesAspirationsEnabled = false,
+    this.desalesCycleYear = 1,
     this.aspirationTimes = const {},
     this.readThroughByPortal = const {},
     this.readThroughCursorByPortal = const {},
@@ -335,6 +344,9 @@ class AppSettings {
 
   /// de Sales only — three or four light "aspiration" reminders a day.
   final bool desalesAspirationsEnabled;
+
+  /// 1 = Devout Life, 2 = Treatise on the Love of God.
+  final int desalesCycleYear;
 
   /// Slot id (`a1`, `a2`, `a3`) → `HH:mm`. Missing keys fall back to
   /// [AspirationScheduler.defaultTimes].
@@ -438,6 +450,13 @@ class AppSettings {
 
   int get desalesReadThroughCursor => readThroughCursorFor('desales');
 
+  String cycleSettingsKey(String portalId) {
+    if (portalId == 'desales' && desalesCycleYear == 2) {
+      return 'desales:treatise';
+    }
+    return portalId;
+  }
+
   DateTime get lifeStart {
     if (lifeTrackStart.isEmpty) {
       final n = DateTime.now();
@@ -481,6 +500,7 @@ class AppSettings {
     DailyTrack? dailyTrack,
     String? lifeTrackStart,
     bool? desalesAspirationsEnabled,
+    int? desalesCycleYear,
     Map<String, String>? aspirationTimes,
     Map<String, bool>? readThroughByPortal,
     Map<String, int>? readThroughCursorByPortal,
@@ -519,6 +539,7 @@ class AppSettings {
     lifeTrackStart: lifeTrackStart ?? this.lifeTrackStart,
     desalesAspirationsEnabled:
         desalesAspirationsEnabled ?? this.desalesAspirationsEnabled,
+    desalesCycleYear: desalesCycleYear ?? this.desalesCycleYear,
     aspirationTimes: aspirationTimes ?? this.aspirationTimes,
     readThroughByPortal: readThroughByPortal ?? this.readThroughByPortal,
     readThroughCursorByPortal:
@@ -599,6 +620,7 @@ class SettingsController extends StateNotifier<AppSettings> {
       lifeTrackStart: lifeStart,
       desalesAspirationsEnabled:
           prefs.getBool('desalesAspirationsEnabled') ?? false,
+      desalesCycleYear: (prefs.getInt('desalesCycleYear') ?? 1).clamp(1, 2),
       aspirationTimes: aspTimes,
       readThroughByPortal: _loadReadThroughMap(prefs),
       readThroughCursorByPortal: _loadReadThroughCursorMap(prefs),
@@ -702,6 +724,13 @@ class SettingsController extends StateNotifier<AppSettings> {
       'readThroughCursorByPortal',
       jsonEncode(next),
     );
+  }
+
+  Future<void> setDesalesCycleYear(int year) async {
+    final next = year.clamp(1, 2);
+    if (state.desalesCycleYear == next) return;
+    state = state.copyWith(desalesCycleYear: next);
+    (await SharedPreferences.getInstance()).setInt('desalesCycleYear', next);
   }
 
   Future<void> setDesalesAspirationsEnabled(bool v) async {

@@ -54,8 +54,9 @@ class CycleIndexScreen extends ConsumerWidget {
   ) {
     final settings = ref.read(settingsProvider);
     final notifier = ref.read(settingsProvider.notifier);
-    if (settings.readThroughFor(calendar.portalId)) {
-      notifier.setReadThroughCursor(calendar.portalId, entry.id);
+    final key = settings.cycleSettingsKey(calendar.portalId);
+    if (settings.readThroughFor(key)) {
+      notifier.setReadThroughCursor(key, entry.id);
     } else {
       final now = DateTime.now();
       final date = calendar.dateForEntry(entry.id, now.year) ??
@@ -63,8 +64,8 @@ class CycleIndexScreen extends ConsumerWidget {
       if (date != null) {
         ref.read(selectedDayProvider.notifier).state = date;
       } else {
-        notifier.setReadThrough(calendar.portalId, true);
-        notifier.setReadThroughCursor(calendar.portalId, entry.id);
+        notifier.setReadThrough(key, true);
+        notifier.setReadThroughCursor(key, entry.id);
       }
     }
     context.pop();

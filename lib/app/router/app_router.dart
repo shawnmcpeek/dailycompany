@@ -25,6 +25,7 @@ import 'package:dailycompany/features/francis/francis_stories_screen.dart';
 import 'package:dailycompany/features/gregory/gregory_practice_screen.dart';
 import 'package:dailycompany/features/john_cross/john_practice_screen.dart';
 import 'package:dailycompany/features/john_cross/john_precautions_screen.dart';
+import 'package:dailycompany/features/john_cross/john_treatises_screen.dart';
 import 'package:dailycompany/features/kempis/kempis_admonitions_screen.dart';
 import 'package:dailycompany/features/kempis/kempis_practice_screen.dart';
 import 'package:dailycompany/features/liguori/liguori_practice_screen.dart';
@@ -542,6 +543,45 @@ StatefulShellBranch _cycleBranch(String portalId, String module) {
           ),
         ],
       );
+    case 'treatises':
+      return StatefulShellBranch(
+        initialLocation: PortalRoutes.treatises(portalId),
+        routes: [
+          GoRoute(
+            path: '/p/:portalId/treatises',
+            pageBuilder: (context, state) => PageTurn.of(
+              key: state.pageKey,
+              child: const Scaffold(
+                body: SafeArea(child: JohnTreatisesScreen()),
+              ),
+            ),
+            routes: [
+              GoRoute(
+                path: ':work',
+                pageBuilder: (context, state) => PageTurn.of(
+                  key: state.pageKey,
+                  child: JohnTreatiseWorkScreen(
+                    workId: state.pathParameters['work']!,
+                  ),
+                ),
+                routes: [
+                  GoRoute(
+                    path: ':book/:chapter',
+                    pageBuilder: (context, state) => PageTurn.of(
+                      key: state.pageKey,
+                      child: JohnTreatiseChapterScreen(
+                        workId: state.pathParameters['work']!,
+                        book: int.parse(state.pathParameters['book']!),
+                        chapter: int.parse(state.pathParameters['chapter']!),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      );
     case 'discernment':
       return StatefulShellBranch(
         initialLocation: PortalRoutes.discernment(portalId),
@@ -795,6 +835,11 @@ class AppShell extends ConsumerWidget {
         icon: Icon(Icons.list_alt_outlined),
         selectedIcon: Icon(Icons.list_alt),
         label: 'Cautions',
+      ),
+      'treatises' => const NavigationDestination(
+        icon: Icon(Icons.auto_stories_outlined),
+        selectedIcon: Icon(Icons.auto_stories),
+        label: 'Treatises',
       ),
       'discernment' => const NavigationDestination(
         icon: Icon(Icons.list_alt_outlined),

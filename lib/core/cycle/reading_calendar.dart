@@ -18,7 +18,6 @@ class RuleReading {
     required this.textEn,
     required this.textLa,
     this.commentary,
-    this.audioKeyEn,
   });
 
   final int id;
@@ -32,7 +31,6 @@ class RuleReading {
   final String textEn;
   final String textLa;
   final String? commentary;
-  final String? audioKeyEn;
 
   factory RuleReading.fromJson(Map<String, dynamic> json) {
     return RuleReading(
@@ -48,7 +46,6 @@ class RuleReading {
       textEn: json['textEn'] as String,
       textLa: json['textLa'] as String,
       commentary: json['commentary'] as String?,
-      audioKeyEn: json['audioKeyEn'] as String?,
     );
   }
 }

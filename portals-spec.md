@@ -47,7 +47,7 @@ Date-keyed, repeating, identical to what Benedict already runs. `DailyEntry.date
 | Augustine | 366 | 1 | 1 |
 | Teresa | 366 | 1 | 1 |
 
-No new lookup code for any of these. Benedict's existing `byDate` map and its 366-day coverage test cover the whole set. John of the Cross opens on the *Sayings* (366 unique days; overflow in the index), not a two-year treatise cut. A `cycleYear` arm remains available if a later shelf actually needs two years.
+No new lookup code for any of these. Benedict's existing `byDate` map and its 366-day coverage test cover the whole set. John of the Cross opens on the *Sayings* (366 unique days; overflow in the index), not a two-year treatise cut. de Sales uses a `cycleYear` switch for the Treatise as year 2 of Today.
 
 **Leap day.** Emit 366 keys. In common years, merge `02-29` into `02-28` and stack the two portions with a hairline divider. You already have this code path for Benedict's Feb 24.
 
@@ -331,7 +331,7 @@ Once portal 3 exists, add **"Daily Company — All Saints", $14.99**. Scaffold t
 | --- | --- | --- |
 | *Introduction to the Devout Life*, anonymous Rivingtons 1876 (*Library of Spiritual Works for English Catholics*) | Primary display text | PD — 1876. Not Mackey. |
 | *Letters to Persons in the World*, Mackey (1892) | Letters module | PD — Mackey d. 1906 |
-| *Treatise on the Love of God*, Mackey (1884) | Reserved for a possible year 2 | PD |
+| *Treatise on the Love of God*, Mackey (1884) | Year 2 of Today | PD |
 
 **Do not use:** John K. Ryan (1950, Image/Doubleday — the best-selling English text and therefore the tempting one); Michael Day (Burns & Oates, 1956); Armind Nazareth; any TAN or Sophia Institute edition's apparatus, notes, or chapter titles.
 

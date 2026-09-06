@@ -115,4 +115,37 @@ void main() {
     expect(all, isNot(contains('dark night of the soul')));
     expect(all, isNot(contains('ascent of mount carmel')));
   });
+
+  test('treatises ship as a shelf of four Lewis works', () {
+    final raw = jsonDecode(
+      File('assets/content/john-cross/treatises.json').readAsStringSync(),
+    ) as Map<String, dynamic>;
+    expect(raw['translator'], contains('Lewis'));
+    final books = (raw['books'] as List).cast<Map<String, dynamic>>();
+    expect(books.map((b) => b['id']), [
+      'ascent',
+      'dark-night',
+      'canticle',
+      'flame',
+    ]);
+    for (final book in books) {
+      final parts = (book['parts'] as List).cast<Map<String, dynamic>>();
+      expect(parts, isNotEmpty, reason: book['id'] as String);
+      var chapters = 0;
+      var words = 0;
+      for (final part in parts) {
+        for (final ch in (part['chapters'] as List).cast<Map<String, dynamic>>()) {
+          chapters += 1;
+          final text = ch['textEn'] as String;
+          expect(text.trim(), isNotEmpty, reason: '${book['id']} ${ch['chapter']}');
+          words += text.split(RegExp(r'\s+')).length;
+        }
+      }
+      expect(chapters, greaterThanOrEqualTo(4), reason: book['id'] as String);
+      expect(words, greaterThan(20000), reason: book['id'] as String);
+    }
+    final blob = jsonEncode(raw).toLowerCase();
+    expect(blob, isNot(contains('kavanaugh')));
+    expect(blob, isNot(contains('allison peers')));
+  });
 }

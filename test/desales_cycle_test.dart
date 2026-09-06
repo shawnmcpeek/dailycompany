@@ -101,4 +101,28 @@ void main() {
     }
     expect(seenParts, [1, 2, 3, 4, 5]);
   });
+
+  test('treatise year is its own 366 and does not pollute Devout Life', () {
+    final treatise = CycleCalendar.fromJson(
+      jsonDecode(
+        File('assets/content/desales/treatise_entries.json').readAsStringSync(),
+      ) as Map<String, dynamic>,
+      jsonDecode(
+        File('assets/content/desales/treatise_calendar.json').readAsStringSync(),
+      ) as Map<String, dynamic>,
+      portalId: 'desales',
+      divisionOverride: 'Book',
+    );
+    expect(treatise.entries.length, 366);
+    expect(treatise.divisionNoun, 'Book');
+    expect(treatise.resolveIdsFor(DateTime(2025, 12, 31)), [365, 366]);
+    expect(treatise.resolveIdsFor(DateTime(2024, 12, 31)), [366]);
+    expect(treatise.entries.first.part, 1);
+    expect(treatise.entries.last.part, 12);
+    final devout = calendar.entries.map((e) => e.textEn).join();
+    final love = treatise.entries.map((e) => e.textEn).join();
+    expect(devout, isNot(equals(love)));
+    expect(love.toLowerCase(), contains('theotimus'));
+    expect(love, isNot(contains('John K. Ryan')));
+  });
 }

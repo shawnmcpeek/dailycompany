@@ -180,6 +180,13 @@ class _DesalesSources extends StatelessWidget {
           body: PortalRegistry.desales.provenanceParagraphs.join('\n\n'),
         ),
         const _SourceBlock(
+          title: 'Treatise on the Love of God',
+          body:
+              'Dom Henry Benedict Mackey (Burns & Oates, 1884). A second '
+              'constructed year on Today, not mixed into the Devout Life. '
+              'Not John K. Ryan (1950).',
+        ),
+        const _SourceBlock(
           title: 'Letters',
           body:
               'Letters to Persons in the World, from the public-domain English '
@@ -383,7 +390,15 @@ class _JohnCrossSources extends StatelessWidget {
               'The Complete Works of Saint John of the Cross, translated by '
               'David Lewis, volume 2 (Longman, Green, Longman, Roberts & Green, '
               '1864): the Instructions and Cautions, and the Spiritual Maxims. '
-              'One saying a day. The treatises are not this year.',
+              'One saying a day.',
+        ),
+        const _SourceBlock(
+          title: 'Treatises',
+          body:
+              'The same Lewis 1864 Complete Works. Volume 1: Ascent of Mount '
+              'Carmel and the Obscure Night of the Soul. Volume 2: Spiritual '
+              'Canticle and Living Flame of Love. A shelf of whole chapters, '
+              'not a daily cut. OCR is lightly cleaned.',
         ),
         _SourceBlock(
           title: PortalRegistry.johnCross.provenanceTitle,
@@ -393,9 +408,8 @@ class _JohnCrossSources extends StatelessWidget {
         ChromeLabel('Not used'),
         const SizedBox(height: 10),
         Text(
-          'Kavanaugh–Rodriguez (ICS, 1964–). Any Carmelite or OCD apparatus, '
-          'notes, or chapter titles. The Ascent, Dark Night, Spiritual Canticle, '
-          'and Living Flame are a later shelf.',
+          'Kavanaugh–Rodriguez (ICS, 1964–). E. Allison Peers. Any Carmelite '
+          'or OCD apparatus, notes, or chapter titles.',
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         const SizedBox(height: 28),
