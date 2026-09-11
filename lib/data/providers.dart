@@ -11,6 +11,7 @@ import 'package:dailycompany/data/models/ignatius_content.dart';
 import 'package:dailycompany/data/models/place_saint.dart';
 import 'package:dailycompany/data/models/kempis_admonition.dart';
 import 'package:dailycompany/data/models/liguori_manner.dart';
+import 'package:dailycompany/data/models/work_shelf.dart';
 import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
 import 'package:dailycompany/core/diagnostics/journal_failure_reporter.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
@@ -22,6 +23,7 @@ import 'package:dailycompany/core/notifications/cycle_reminder_scheduler.dart';
 import 'package:dailycompany/core/notifications/visit_scheduler.dart';
 import 'package:dailycompany/data/content_catalog.dart';
 import 'package:dailycompany/data/isar/app_isar.dart';
+import 'package:dailycompany/core/widget/bouquet_widget.dart';
 import 'package:dailycompany/data/isar/bouquet.dart';
 import 'package:dailycompany/data/isar/lectio_journal_entry.dart';
 import 'package:dailycompany/data/isar/reading_completion.dart';
@@ -100,6 +102,13 @@ final johnPrecautionsProvider = FutureProvider<JohnPrecautions>((ref) async {
 
 final johnTreatisesProvider = FutureProvider<JohnTreatises>((ref) async {
   return JohnTreatises.loadFromAssets();
+});
+
+final workShelfProvider = FutureProvider.family<WorkShelf, String>((
+  ref,
+  path,
+) async {
+  return WorkShelf.load(path);
 });
 
 final ignatiusRulesProvider = FutureProvider<IgnatiusRules>((ref) async {
@@ -1346,6 +1355,12 @@ final bouquetProvider = StateNotifierProvider<BouquetController, List<Bouquet>>(
   },
 );
 
+final lastYearBouquetProvider =
+    FutureProvider.family<Bouquet?, DateTime>((ref, day) {
+  ref.watch(bouquetProvider);
+  return ref.read(bouquetProvider.notifier).fromLastYear(day);
+});
+
 class BouquetController extends StateNotifier<List<Bouquet>> {
   BouquetController(this._isar, this._ref) : super(const []) {
     _load();
@@ -1365,6 +1380,7 @@ class BouquetController extends StateNotifier<List<Bouquet>> {
         .sortByCreatedAtDesc()
         .findAll();
     state = rows;
+    await _syncWidget();
   }
 
   Future<void> keep(DateTime day, String text) async {
@@ -1379,6 +1395,14 @@ class BouquetController extends StateNotifier<List<Bouquet>> {
       await _isar.bouquets.put(row);
     });
     await _load();
+  }
+
+  Future<void> _syncWidget() async {
+    if (_ref.read(currentPortalIdProvider) != 'desales') return;
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final kept = forToday(today);
+    await BouquetWidget.sync(text: kept?.text ?? '');
   }
 
   /// The line kept today, if any — pins to the top of Today.

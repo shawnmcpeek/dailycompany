@@ -2,6 +2,7 @@ import 'package:dailycompany/app/router/portal_routes.dart';
 import 'package:dailycompany/app/theme/palette.dart';
 import 'package:dailycompany/core/cycle/cycle_calendar.dart';
 import 'package:dailycompany/core/haptics/bell_haptics.dart';
+import 'package:dailycompany/core/iap/iap_controller.dart';
 import 'package:dailycompany/data/isar/bouquet.dart';
 import 'package:dailycompany/data/models/portal.dart';
 import 'package:dailycompany/data/providers.dart';
@@ -64,6 +65,7 @@ class CycleTodayScreen extends ConsumerWidget {
     final dateLabel = DateFormat('EEEE, MMMM d').format(day);
     final enableBouquet =
         portalId == 'desales' && settings.desalesCycleYear == 1;
+    final ignatiusFreeToday = portalId == 'ignatius';
 
     return calendarAsync.when(
       loading: () => const EmptyLoading(),
@@ -127,8 +129,14 @@ class CycleTodayScreen extends ConsumerWidget {
               ],
               const SizedBox(height: 16),
               if (!readThrough && enableBouquet) _BouquetPin(day: day),
-              if (!unlocked)
-                const _LockedBlock()
+              if (portalId == 'kempis' && day.month == 7 && day.day == 25)
+                const _KempisCommemoration(),
+              if (!unlocked &&
+                  !(ignatiusFreeToday &&
+                      entries.every(
+                        (e) => IapController.ignatiusChapterFree(e.chapter),
+                      )))
+                _LockedBlock(portalId: portalId)
               else ...[
                 for (var i = 0; i < entries.length; i++) ...[
                   if (i > 0) ...[
@@ -299,7 +307,9 @@ class _ReadThroughNav extends ConsumerWidget {
 }
 
 class _LockedBlock extends StatelessWidget {
-  const _LockedBlock();
+  const _LockedBlock({this.portalId});
+
+  final String? portalId;
 
   @override
   Widget build(BuildContext context) {
@@ -312,7 +322,10 @@ class _LockedBlock extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Text(
-          'Today’s reading is waiting. The free practice stays open.',
+          portalId == 'ignatius'
+              ? 'The first three chapters of the Autobiography stay open. '
+                  'The free Examen stays open.'
+              : 'Today’s reading is waiting. The free practice stays open.',
           style: Theme.of(context).textTheme.bodyMedium,
         ),
         const SizedBox(height: 20),
@@ -325,6 +338,29 @@ class _LockedBlock extends StatelessWidget {
   }
 }
 
+class _KempisCommemoration extends StatelessWidget {
+  const _KempisCommemoration();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          ChromeLabel('This day'),
+          const SizedBox(height: 8),
+          Text(
+            'Thomas à Kempis died on this day in 1471. The Cell is his '
+            'own instruction. There is no feast-driven accent.',
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _BouquetPin extends ConsumerWidget {
   const _BouquetPin({required this.day});
 
@@ -333,6 +369,7 @@ class _BouquetPin extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bouquets = ref.watch(bouquetProvider);
+    final lastYear = ref.watch(lastYearBouquetProvider(day)).valueOrNull;
     Bouquet? kept;
     for (final b in bouquets) {
       if (b.dateKey == BouquetController.keyFor(day) &&
@@ -343,21 +380,34 @@ class _BouquetPin extends ConsumerWidget {
         break;
       }
     }
-    if (kept == null) return const SizedBox.shrink();
+    if (kept == null && lastYear == null) return const SizedBox.shrink();
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ChromeLabel('Your bouquet'),
-          const SizedBox(height: 8),
-          Text(
-            kept.text,
-            style: Theme.of(
-              context,
-            ).textTheme.bodyLarge?.copyWith(fontStyle: FontStyle.italic),
-          ),
+          if (kept != null) ...[
+            ChromeLabel('Your bouquet'),
+            const SizedBox(height: 8),
+            Text(
+              kept.text,
+              style: Theme.of(
+                context,
+              ).textTheme.bodyLarge?.copyWith(fontStyle: FontStyle.italic),
+            ),
+          ],
+          if (lastYear != null) ...[
+            if (kept != null) const SizedBox(height: 20),
+            ChromeLabel('A year ago'),
+            const SizedBox(height: 8),
+            Text(
+              lastYear.text,
+              style: Theme.of(
+                context,
+              ).textTheme.bodyLarge?.copyWith(fontStyle: FontStyle.italic),
+            ),
+          ],
         ],
       ),
     );

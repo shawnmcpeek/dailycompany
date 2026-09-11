@@ -48,6 +48,23 @@ abstract final class PortalRoutes {
     int chapter,
   ) => '/p/$portalId/treatises/$work/$book/$chapter';
 
+  static String conferences(String portalId) => '/p/$portalId/conferences';
+  static String works(String portalId) => '/p/$portalId/works';
+  static String homilies(String portalId) => '/p/$portalId/homilies';
+  static String moralia(String portalId) => '/p/$portalId/moralia';
+
+  static String shelfRoot(String portalId, String module) =>
+      '/p/$portalId/$module';
+  static String shelfWork(String portalId, String module, String work) =>
+      '/p/$portalId/$module/$work';
+  static String shelfChapter(
+    String portalId,
+    String module,
+    String work,
+    int book,
+    int chapter,
+  ) => '/p/$portalId/$module/$work/$book/$chapter';
+
   static String discernment(String portalId) => '/p/$portalId/discernment';
   static String discernmentRule(String portalId, int chapter) =>
       '/p/$portalId/discernment/$chapter';

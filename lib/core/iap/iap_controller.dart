@@ -346,4 +346,8 @@ class IapController extends StateNotifier<IapState> {
 
   static bool lifeChapterFree(int chapter) =>
       chapter <= IapFlags.freeLifeChapterMax;
+
+  /// Autobiography chapters 1–3 stay readable without Companion.
+  static bool ignatiusChapterFree(int chapter) =>
+      chapter >= 1 && chapter <= IapFlags.freeIgnatiusChapterMax;
 }

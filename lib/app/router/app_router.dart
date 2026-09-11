@@ -38,6 +38,7 @@ import 'package:dailycompany/features/cycle/simple_practice_screen.dart';
 import 'package:dailycompany/features/serra/serra_journey_screen.dart';
 import 'package:dailycompany/features/serra/serra_missions_screen.dart';
 import 'package:dailycompany/features/serra/serra_practice_screen.dart';
+import 'package:dailycompany/features/shelf/work_shelf_screen.dart';
 import 'package:dailycompany/features/lectio/lectio_screen.dart';
 import 'package:dailycompany/features/life/life_screen.dart';
 import 'package:dailycompany/features/medal/medal_screen.dart';
@@ -365,6 +366,61 @@ StatefulShellRoute _cycleShell(String portalId) {
   );
 }
 
+StatefulShellBranch _shelfBranch(
+  String portalId,
+  String module, {
+  required String paywallHint,
+}) {
+  final asset = 'assets/content/$portalId/$module.json';
+  return StatefulShellBranch(
+    initialLocation: PortalRoutes.shelfRoot(portalId, module),
+    routes: [
+      GoRoute(
+        path: '/p/:portalId/$module',
+        pageBuilder: (context, state) => PageTurn.of(
+          key: state.pageKey,
+          child: Scaffold(
+            body: SafeArea(
+              child: WorkShelfScreen(
+                assetPath: asset,
+                module: module,
+                paywallHint: paywallHint,
+              ),
+            ),
+          ),
+        ),
+        routes: [
+          GoRoute(
+            path: ':work',
+            pageBuilder: (context, state) => PageTurn.of(
+              key: state.pageKey,
+              child: WorkShelfBookScreen(
+                assetPath: asset,
+                module: module,
+                workId: state.pathParameters['work']!,
+              ),
+            ),
+            routes: [
+              GoRoute(
+                path: ':book/:chapter',
+                pageBuilder: (context, state) => PageTurn.of(
+                  key: state.pageKey,
+                  child: WorkShelfChapterScreen(
+                    assetPath: asset,
+                    workId: state.pathParameters['work']!,
+                    book: int.parse(state.pathParameters['book']!),
+                    chapter: int.parse(state.pathParameters['chapter']!),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
 StatefulShellBranch _cycleBranch(String portalId, String module) {
   switch (module) {
     case 'meditations':
@@ -438,6 +494,13 @@ StatefulShellBranch _cycleBranch(String portalId, String module) {
         ],
       );
     case 'letters':
+      if (portalId != 'desales') {
+        return _shelfBranch(
+          portalId,
+          'letters',
+          paywallHint: 'The letters come with Companion.',
+        );
+      }
       return StatefulShellBranch(
         initialLocation: PortalRoutes.letters(portalId),
         routes: [
@@ -463,6 +526,36 @@ StatefulShellBranch _cycleBranch(String portalId, String module) {
             ],
           ),
         ],
+      );
+    case 'conferences':
+      return _shelfBranch(
+        portalId,
+        'conferences',
+        paywallHint: 'The Conferences come with the Devout Life.',
+      );
+    case 'works':
+      return _shelfBranch(
+        portalId,
+        'works',
+        paywallHint: 'These works come with the Visits.',
+      );
+    case 'homilies':
+      return _shelfBranch(
+        portalId,
+        'homilies',
+        paywallHint: 'The homilies come with the Confessions.',
+      );
+    case 'moralia':
+      return _shelfBranch(
+        portalId,
+        'moralia',
+        paywallHint: 'The Moralia come with the Pastoral Rule.',
+      );
+    case 'life':
+      return _shelfBranch(
+        portalId,
+        'life',
+        paywallHint: 'The Life comes with Companion.',
       );
     case 'admonitions':
       return StatefulShellBranch(
@@ -820,6 +913,31 @@ class AppShell extends ConsumerWidget {
         icon: Icon(Icons.mail_outline),
         selectedIcon: Icon(Icons.mail),
         label: 'Letters',
+      ),
+      'conferences' => const NavigationDestination(
+        icon: Icon(Icons.forum_outlined),
+        selectedIcon: Icon(Icons.forum),
+        label: 'Conferences',
+      ),
+      'works' => const NavigationDestination(
+        icon: Icon(Icons.auto_stories_outlined),
+        selectedIcon: Icon(Icons.auto_stories),
+        label: 'Works',
+      ),
+      'homilies' => const NavigationDestination(
+        icon: Icon(Icons.auto_stories_outlined),
+        selectedIcon: Icon(Icons.auto_stories),
+        label: 'Homilies',
+      ),
+      'moralia' => const NavigationDestination(
+        icon: Icon(Icons.auto_stories_outlined),
+        selectedIcon: Icon(Icons.auto_stories),
+        label: 'Moralia',
+      ),
+      'life' => const NavigationDestination(
+        icon: Icon(Icons.auto_stories_outlined),
+        selectedIcon: Icon(Icons.auto_stories),
+        label: 'Life',
       ),
       'admonitions' => const NavigationDestination(
         icon: Icon(Icons.list_alt_outlined),

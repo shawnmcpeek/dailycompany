@@ -14,6 +14,10 @@ abstract final class ReadingRoutes {
     'treatises',
     'discernment',
     'missions',
+    'conferences',
+    'works',
+    'homilies',
+    'moralia',
   };
 
   static List<String> parts(String route) =>

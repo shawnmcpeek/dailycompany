@@ -105,7 +105,7 @@ abstract final class PortalRegistry {
         'endorsed by, or produced by the Salesians of Don Bosco, the '
         'Order of the Visitation, any Salesian or Visitandine province '
         'or house, or any shrine or publisher associated with them.',
-    modules: ['today', 'meditations', 'practice', 'letters'],
+    modules: ['today', 'meditations', 'practice', 'letters', 'conferences'],
     unlockSku: 'desales_companion',
   );
 
@@ -163,7 +163,7 @@ abstract final class PortalRegistry {
         'Holy Redeemer, Liguori Publications, any Redemptorist '
         'province or house, or any shrine or publisher associated '
         'with them.',
-    modules: ['today', 'practice'],
+    modules: ['today', 'practice', 'works'],
     unlockSku: 'liguori_companion',
   );
 
@@ -208,7 +208,7 @@ abstract final class PortalRegistry {
           'Each saying stands alone — we do not bundle them to fill '
           'the page. The treatises sit on their own shelf — Ascent, '
           'Dark Night, Spiritual Canticle, Living Flame — not cut '
-          'into the daily sayings. Two closing pieces sit in the '
+          'into the daily sayings. Eight closing pieces sit in the '
           'index, off the calendar.',
       'The text itself is unaltered — David Lewis’s 1864 translation '
           'of the Precautions, Spiritual Maxims, and the four '
@@ -248,7 +248,7 @@ abstract final class PortalRegistry {
         'An independent app from Daddoo Dev. Not affiliated with, '
         'endorsed by, or produced by any diocese, papal household, '
         'or publisher associated with Gregory the Great.',
-    modules: ['today', 'practice'],
+    modules: ['today', 'practice', 'moralia'],
     unlockSku: 'gregory_companion',
   );
 
@@ -277,7 +277,7 @@ abstract final class PortalRegistry {
         'endorsed by, or produced by the Order of Saint Augustine, '
         'any Augustinian province or house, or any shrine or '
         'publisher associated with them.',
-    modules: ['today', 'practice'],
+    modules: ['today', 'practice', 'homilies'],
     unlockSku: 'augustine_companion',
   );
 
@@ -305,7 +305,7 @@ abstract final class PortalRegistry {
         'endorsed by, or produced by the Order of Discalced Carmelites, '
         'any Carmelite province or house, ICS Publications, or any '
         'shrine or publisher associated with them.',
-    modules: ['today', 'practice'],
+    modules: ['today', 'practice', 'life'],
     unlockSku: 'teresa_avila_companion',
   );
 
@@ -331,7 +331,7 @@ abstract final class PortalRegistry {
         'An independent app from Daddoo Dev. Not affiliated with, endorsed '
         'by, or produced by the Society of Jesus, any Jesuit province or '
         'house, or any Ignatian retreat centre or publisher.',
-    modules: ['today', 'practice', 'discernment', 'exercises'],
+    modules: ['today', 'practice', 'discernment', 'exercises', 'letters'],
     unlockSku: 'ignatius_companion',
   );
 
@@ -358,7 +358,7 @@ abstract final class PortalRegistry {
         'province or house, the shrine at Lisieux, the Office Central de '
         'Lisieux, ICS Publications, or any shrine or publisher associated '
         'with them.',
-    modules: ['today', 'practice'],
+    modules: ['today', 'practice', 'letters'],
     unlockSku: 'therese_companion',
   );
 

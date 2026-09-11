@@ -37,7 +37,7 @@ Display names never prefix *St.* / *Saint* unless the person is actually canoniz
 | Short months | Visits 29–31 simply do not occur. **Do not merge.** |
 | Anchor | The Visit (manner + spiritual communion + remain). |
 | Never-list | Redemptorist, Congregation of the Most Holy Redeemer, order emblem, **Liguori Publications**. "CSsR" only in the translator credit. |
-| Also CLEAR | Grimm *Uniformity with God's Will*, *Preparation for Death* — side path, not the daily slot. |
+| Also CLEAR | Grimm *Uniformity with God's Will* (Centenary Vol. II, as *Conformity to the Will of God*) and *Preparation for Death* (Centenary Vol. I) — Works shelf, not the daily slot. |
 
 ### Francis de Sales — `desales` — VERIFY
 
@@ -46,7 +46,7 @@ Display names never prefix *St.* / *Saint* unless the person is actually canoniz
 | Kind | Saint |
 | Daily text | *Introduction to the Devout Life*, 366 × 1 (shipped). |
 | Translator | **Anonymous.** Rivingtons 1876, *Library of Spiritual Works for English Catholics* (“A New Translation”). Title page names no translator. CCEL hosts this text. **Not Mackey.** Not Ryan (1950). CLEAR — 1876. |
-| Also CLEAR | Mackey *Treatise on the Love of God* (1884) — year 2 of Today. *Letters* (1894) — Letters module. *Conferences* (1906). |
+| Also CLEAR | Mackey *Treatise on the Love of God* (1884) — year 2 of Today. *Letters* (1894) — Letters module. Gasquet & Mackey *Conferences* (1906) — Conferences shelf. |
 | Anchor | Bouquet (select-to-keep). |
 | Never-list | Salesian, Visitation, Don Bosco. |
 
@@ -58,7 +58,7 @@ Display names never prefix *St.* / *Saint* unless the person is actually canoniz
 | Daily text | *The Imitation of Christ*, Rev. William Benham (1886), Gutenberg #1653. Benham d. 1910. All four books, including Book IV. |
 | Cadence | **366 × 1** (shipped). 114 chapters, 59,423 words. Not Benedict's 122 × 3. |
 | Anchor | The Cell (I.20), unguided silence. |
-| Commemoration | Death 25 July 1471 — optional later; no feast-driven accent now (accent is by book). |
+| Commemoration | Death 25 July 1471 — a quiet note on Today. No feast-driven accent (accent is by book). |
 | Do not use | Croft & Bolton (1940, Image); Knox; Creasy; Tylenda; TAN / Sophia apparatus or chapter titles. |
 | Never-list | Canons Regular of St. Augustine, Windesheim, Brothers of the Common Life, shrine/publisher brands. "St." / "Saint" on this name. |
 | Authorship | Received attribution. One sentence in Sources is enough. |
@@ -100,7 +100,7 @@ Cadence below is a **guess**. Playbook: print `cadence_candidates` on a real cou
 | Daily text | *Book of Pastoral Rule*, James Barmby, NPNF II.12 (1895). |
 | Cadence | **183 × 2.00**. Real count 64,649 words (~353/entry). |
 | Do not recut | *Dialogues* Book II already ships as Benedict's Life. **Cross-link the same JSON; do not duplicate.** |
-| Optional later | *Moralia* selections (Library of the Fathers, 1844–50) — editorial selection, not a mechanical cut. Homilies if needed. |
+| Also CLEAR | *Moralia* — Library of the Fathers (1844). Prefatory epistle and Books I–V. Editorial opening, not the thirty-five books. |
 | Never-list | None active (predates the orders). |
 
 ### Augustine of Hippo — `augustine` — CLEAR
@@ -110,7 +110,7 @@ Cadence below is a **guess**. Playbook: print `cadence_candidates` on a real cou
 | Kind | Saint |
 | Daily text | *Confessions* I–X, E. B. Pusey (1838). XI–XIII as appendix / Read Through, not the daily year. |
 | Cadence | **366 × 1** for I–X after a real count (79,569 words, ~217/day). XI–XIII are a 100-entry appendix, not calendar days. |
-| Also CLEAR | Homilies on 1 John (Browne, NPNF I.7, 1888); selected sermons (MacMullen, NPNF I.6, 1888). |
+| Also CLEAR | Homilies on 1 John (Browne, NPNF I.7, 1888) and Sermons on Selected Lessons (MacMullen, NPNF I.6, 1888) — Homilies shelf. |
 | Do not use | *City of God* as the daily book. |
 | Note | Pusey is dense. Clear, and the portal most likely to draw "hard to read" reviews. |
 | Never-list | Augustinian, OSA. |
@@ -120,7 +120,8 @@ Cadence below is a **guess**. Playbook: print `cadence_candidates` on a real cou
 | | |
 | --- | --- |
 | Kind | Saint |
-| Daily text | *Way of Perfection* + *Interior Castle*, Benedictines of Stanbrook / Benedict Zimmerman (1911–12). *Life*, David Lewis (1870), if the year needs a third work. |
+| Daily text | *Way of Perfection* + *Interior Castle*, Benedictines of Stanbrook / Benedict Zimmerman (1911–12). |
+| Also CLEAR | *Life*, David Lewis — Life shelf, not recut into the year. |
 | Cadence | **366 × 1** after a real count (104,096 words, ~284/day). Accent by mansion. Never split a dwelling across an entry. |
 | Do not use | E. Allison Peers (1946–); ICS Kavanaugh–Rodriguez. Peers is the one a casual search will offer. |
 | Anchor | Recollection timer. |
@@ -134,7 +135,7 @@ The `ProgramSpine` exception. Full module table and director note: `portals-spec
 | --- | --- |
 | Kind | Saint |
 | Program text | *Spiritual Exercises*, Elder Mullan SJ (1909 / 1914 Kenedy). Mullan d. 1925. |
-| Also CLEAR | Autobiography, J. F. X. O'Conor SJ (1900); Letters, Rickaby (1914). Autograph Spanish for parallel. |
+| Also CLEAR | Autobiography, J. F. X. O'Conor SJ (1900). Letters, D. F. O'Leary / Alban Goodier (Manresa Press / Herder, 1914). Autograph Spanish for parallel. |
 | Cadence | Autobiography **60 × 6.1**. Exercises **210** sequential. 22 rules modulo. |
 | Anchor | Examen (short form is the point). |
 | Do not use | Puhl (1951); Ganss; Fleming; Loyola Press / IJS apparatus. |
@@ -149,7 +150,7 @@ The `ProgramSpine` exception. Full module table and director note: `portals-spec
 | Daily text | *Story of a Soul*, Thomas N. Taylor (1912) of the **1898 Pauline** *Histoire d'une Âme*. |
 | The cost | This is the historically famous edited text, not the 1956 manuscript restoration. State that in provenance, unhedged. |
 | Do not use | 1956 *Manuscrits autobiographiques*; Clarke ICS (1975); Knox (1958); any translation of the critical edition. French parallel must be 1898, not a modern manuscript text. |
-| Cadence | **366 × 1**. Real count 88,561 words (~242/day). Letters and prayers from this CLEAR edition. |
+| Cadence | **366 × 1**. Real count 88,561 words (~242/day). Letters and prayers from this CLEAR edition sit on the Letters shelf. |
 | Never-list | Carmelite, OCD, Lisieux shrine photography and Office Central de Lisieux imagery. |
 
 ### Catherine of Siena — `catherine` — CLEAR
@@ -218,6 +219,8 @@ The `ProgramSpine` exception. Full module table and director note: `portals-spec
 ## Still in the hallway
 
 None. The writer houses are open. Serra is the first Place house.
+
+Desert / monastic expansion (Cassian’s field, not opened): `desert-texts.md`. All or nothing per writer — no leftover shelf. Do not start a house from that list until it is named here and the playbook is filled.
 
 ---
 

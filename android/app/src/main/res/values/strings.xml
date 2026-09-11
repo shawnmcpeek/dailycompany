@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bouquet_widget_label">Bouquet</string>
+    <string name="bouquet_widget_empty_label">Bouquet</string>
+    <string name="bouquet_widget_empty">Keep a line from Today.</string>
+    <string name="bouquet_widget_description">The line you kept from the Devout Life.</string>
+</resources>

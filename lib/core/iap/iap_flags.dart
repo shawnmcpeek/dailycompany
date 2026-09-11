@@ -81,4 +81,7 @@ abstract final class IapFlags {
 
   /// Free Life episodes: Prologue (0) + chapters 1–5.
   static const freeLifeChapterMax = 5;
+
+  /// Ignatius Autobiography: first three chapters stay free.
+  static const freeIgnatiusChapterMax = 3;
 }

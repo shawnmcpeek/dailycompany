@@ -45,7 +45,7 @@ Hallway `open` is automatic once `PortalRegistry.byId(id)` is non-null. Add the 
 | Disclaimer | Spec §7, naming the Congregation of the Most Holy Redeemer and Liguori Publications. |
 | Anchor | The Visit. |
 | Haptics | One Visit reminder. |
-| Modules | Free: The Visit. Unlock: 31 daily Visits + Read Through. SKU `liguori_companion`. |
+| Modules | Free: The Visit. Unlock: 31 daily Visits + Works shelf + Read Through. SKU `liguori_companion`. |
 | Accent | Fixed `LiguoriAccent.visit`. |
 
 ### Filled — `francis`
@@ -77,12 +77,12 @@ Hallway `open` is automatic once `PortalRegistry.byId(id)` is non-null. Add the 
 | Provenance | `constructed` |
 | Cadence | **366 × 1**, unique year. 374 natural sayings (~16,270 words, ~43/saying); 8 closing pieces sit in the index. Atomic — one saying a day, never bundled. |
 | Primary text | David Lewis, *Complete Works* vol. 2 (Longman, 1864): Precautions and Spiritual Maxims. |
-| Do not use | Kavanaugh–Rodriguez ICS (1964–). Treatises are a later shelf. |
+| Do not use | Kavanaugh–Rodriguez ICS (1964–). Treatises ship as a shelf of whole chapters. |
 | Never-list | Carmelite, OCD, Discalced emblem. |
 | Disclaimer | Spec §7, naming the Order of Discalced Carmelites and ICS Publications. |
 | Anchor | Sit with today’s saying. Free: Precautions. |
 | Haptics | One optional saying reminder, off by default. |
-| Modules | Free: Precautions + Practice. Unlock: sayings + Read Through. SKU `john-cross_companion`. |
+| Modules | Free: Precautions + Practice. Unlock: sayings + treatises shelf + Read Through. SKU `john-cross_companion`. |
 | Accent | Fixed `JohnCrossAccent.night`. |
 
 ### Filled — `gregory`
@@ -100,7 +100,7 @@ Hallway `open` is automatic once `PortalRegistry.byId(id)` is non-null. Add the 
 | Disclaimer | Spec §7, naming no diocese or papal household. |
 | Anchor | Sit with today’s counsel. |
 | Haptics | One optional Pastoral Rule reminder, off by default. |
-| Modules | Free: Practice. Unlock: the Rule twice a year + Read Through. SKU `gregory_companion`. |
+| Modules | Free: Practice. Unlock: the Rule twice a year + Moralia (epistle + Books I–V) + Read Through. SKU `gregory_companion`. |
 | Accent | Fixed `GregoryAccent.stone`. |
 
 ### Filled — `augustine`
@@ -118,7 +118,7 @@ Hallway `open` is automatic once `PortalRegistry.byId(id)` is non-null. Add the 
 | Disclaimer | Spec §7, naming the Order of Saint Augustine. |
 | Anchor | Evening reading. |
 | Haptics | One optional evening reminder, off by default. Default 21:00. |
-| Modules | Free: Evening. Unlock: I–X through the year + appendix from the index + Read Through. SKU `augustine_companion`. |
+| Modules | Free: Evening. Unlock: I–X through the year + appendix from the index + Homilies shelf + Read Through. SKU `augustine_companion`. |
 | Accent | Fixed `AugustineAccent.hearth`. |
 
 ### Filled — `teresa-avila`
@@ -136,7 +136,7 @@ Hallway `open` is automatic once `PortalRegistry.byId(id)` is non-null. Add the 
 | Disclaimer | Spec §7, naming the Order of Discalced Carmelites and ICS Publications. |
 | Anchor | Recollection timer (quotes from the Way). |
 | Haptics | One optional recollection reminder, off by default. |
-| Modules | Free: Recollection. Unlock: Way + Castle through the year + Read Through. SKU `teresa-avila_companion`. |
+| Modules | Free: Recollection. Unlock: Way + Castle through the year + Life shelf + Read Through. SKU `teresa-avila_companion`. |
 | Accent | `TeresaAccent.forPart` — Way, then mansions 1–7. |
 
 ### Filled — `ignatius`
@@ -153,7 +153,7 @@ Hallway `open` is automatic once `PortalRegistry.byId(id)` is non-null. Add the 
 | Never-list | Jesuit, Society of Jesus, IHS emblem. |
 | Disclaimer | Spec §7 / §10. |
 | Anchor | Examen (short form is the point). Two reminders: 12:30 and 21:00. |
-| Modules | Free: Examen, 22 rules, prayers. Unlock: Autobiography + 210-day program. SKU `ignatius_companion`. |
+| Modules | Free: Examen, 22 rules, prayers, Autobiography chapters 1–3. Unlock: the rest of the Autobiography + 210-day program + Letters. SKU `ignatius_companion`. |
 | Accent | `IgnatiusAccent.forPart` — disposition / four Weeks. |
 
 ### Filled — `therese`
@@ -170,7 +170,7 @@ Hallway `open` is automatic once `PortalRegistry.byId(id)` is non-null. Add the 
 | Never-list | Carmelite, OCD, Lisieux shrine, Office Central de Lisieux. |
 | Disclaimer | Spec §7, naming Discalced Carmelites, Lisieux, ICS. |
 | Anchor | The Little Way offering (her act of oblation). |
-| Modules | Free: Offering. Unlock: the year + Read Through. SKU `therese_companion`. |
+| Modules | Free: Offering. Unlock: the year + Letters shelf + Read Through. SKU `therese_companion`. |
 | Accent | Fixed `ThereseAccent.rose`. |
 
 ### Filled — `catherine`

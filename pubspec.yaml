@@ -1,7 +1,7 @@
 name: dailycompany
 description: "Daily Company — keep company with a saint and their writing."
 publish_to: 'none'
-version: 1.1.8+8
+version: 1.1.9+9
 
 environment:
   sdk: ^3.12.0
@@ -25,6 +25,7 @@ dependencies:
   sentry_flutter: ^9.6.0
   package_info_plus: ^10.2.1
   flutter_svg: ^2.3.0
+  home_widget: ^0.8.1
 
 dev_dependencies:
   flutter_test:

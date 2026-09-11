@@ -1,5 +1,3 @@
-import 'dart:ui' show FontFeature;
-
 import 'package:dailycompany/app/theme/palette.dart';
 import 'package:dailycompany/app/theme/parchment.dart';
 import 'package:flutter/material.dart';
@@ -73,26 +71,25 @@ ThemeData themeForReadingSurface({
   final resolved = switch (surface) {
     'paper' => 'paper',
     'compline' => 'compline',
-    'system' =>
-      platformBrightness == Brightness.dark ? 'compline' : 'vellum',
+    'system' => platformBrightness == Brightness.dark ? 'compline' : 'vellum',
     _ => 'vellum',
   };
   return switch (resolved) {
     'paper' => buildPaperTheme(
-        accent: accent,
-        fontScale: fontScale,
-        boldReading: boldReading,
-      ),
+      accent: accent,
+      fontScale: fontScale,
+      boldReading: boldReading,
+    ),
     'compline' => buildComplineTheme(
-        accent: accent,
-        fontScale: fontScale,
-        boldReading: boldReading,
-      ),
+      accent: accent,
+      fontScale: fontScale,
+      boldReading: boldReading,
+    ),
     _ => buildVellumTheme(
-        accent: accent,
-        fontScale: fontScale,
-        boldReading: boldReading,
-      ),
+      accent: accent,
+      fontScale: fontScale,
+      boldReading: boldReading,
+    ),
   };
 }
 
@@ -112,13 +109,13 @@ ThemeData _base({
   final readingWeight = boldReading ? FontWeight.w600 : FontWeight.w400;
 
   TextStyle reading(double size, {double height = 1.7}) => TextStyle(
-        fontFamily: 'EBGaramond',
-        fontSize: size * scale,
-        height: height,
-        fontWeight: readingWeight,
-        color: ink,
-        fontFeatures: const [FontFeature.oldstyleFigures()],
-      );
+    fontFamily: 'EBGaramond',
+    fontSize: size * scale,
+    height: height,
+    fontWeight: readingWeight,
+    color: ink,
+    fontFeatures: const [FontFeature.oldstyleFigures()],
+  );
 
   final base = ThemeData(
     useMaterial3: true,

@@ -192,6 +192,13 @@ class _DesalesSources extends StatelessWidget {
               'Letters to Persons in the World, from the public-domain English '
               'text used in this house. Selections, not the complete correspondence.',
         ),
+        const _SourceBlock(
+          title: 'Conferences',
+          body:
+              'The Spiritual Conferences, translated from the Annecy text of 1895 '
+              'under the supervision of Abbot Gasquet and Canon Mackey (Burns & '
+              'Oates, 1906). A shelf of the twenty-one conferences as they stand.',
+        ),
         const SizedBox(height: 20),
         ChromeLabel('Not used'),
         const SizedBox(height: 10),
@@ -241,6 +248,12 @@ class _KempisSources extends StatelessWidget {
               '(Gerson, Gersen, Hilton); this house follows the received '
               'attribution.',
         ),
+        const _SourceBlock(
+          title: '25 July',
+          body:
+              'Thomas à Kempis died 25 July 1471. Today carries a quiet note on '
+              'that date. There is no feast-driven accent.',
+        ),
         _SourceBlock(
           title: PortalRegistry.kempis.provenanceTitle,
           body: PortalRegistry.kempis.provenanceParagraphs.join('\n\n'),
@@ -289,6 +302,14 @@ class _LiguoriSources extends StatelessWidget {
               'the 1887 printing (archive.org alphonsusworks06alfouoft). '
               'Grimm died 1891 — public domain. Not a Liguori Publications '
               'edition.',
+        ),
+        const _SourceBlock(
+          title: 'Works',
+          body:
+              'Conformity to the Will of God, from Volume II of Grimm’s Complete '
+              'Ascetical Works (Benziger, 1887), and Preparation for Death, Volume I '
+              'of the same Centenary Edition (1926 reprint of Grimm). A shelf — not '
+              'the daily Visits.',
         ),
         _SourceBlock(
           title: PortalRegistry.liguori.provenanceTitle,
@@ -446,6 +467,14 @@ class _GregorySources extends StatelessWidget {
               'Publishing Co., 1895). Dialogues Book II already ships as '
               'Benedict’s Life and is not recut here.',
         ),
+        const _SourceBlock(
+          title: 'Moralia',
+          body:
+              'Morals on the Book of Job, Library of the Fathers (Oxford, 1844), '
+              'James Bliss and Charles Marriott. The prefatory epistle to Leander '
+              'and Books I–V — an editorial opening of the Moralia, not the '
+              'thirty-five books.',
+        ),
         _SourceBlock(
           title: PortalRegistry.gregory.provenanceTitle,
           body: PortalRegistry.gregory.provenanceParagraphs.join('\n\n'),
@@ -491,6 +520,14 @@ class _AugustineSources extends StatelessWidget {
               'an appendix, reachable from the index and Read Through. '
               'Not City of God.',
         ),
+        const _SourceBlock(
+          title: 'Homilies',
+          body:
+              'Ten Homilies on the First Epistle of John, translated by H. Browne, '
+              'Nicene and Post-Nicene Fathers, First Series, Volume 7 (1888). '
+              'Sermons on Selected Lessons of the New Testament, translated by '
+              'R. G. MacMullen, NPNF I.6 (1888).',
+        ),
         _SourceBlock(
           title: PortalRegistry.augustine.provenanceTitle,
           body: PortalRegistry.augustine.provenanceParagraphs.join('\n\n'),
@@ -534,6 +571,13 @@ class _TeresaSources extends StatelessWidget {
               'the autograph by the Benedictines of Stanbrook, revised with '
               'notes by Benedict Zimmerman (Thomas Baker, 1911–12; the 1921 '
               'Baker impression of the same translation). Not Peers. Not ICS.',
+        ),
+        const _SourceBlock(
+          title: 'Life',
+          body:
+              'The Life of St. Teresa of Jesus, translated by David Lewis '
+              '(Thomas Baker, 1904 impression of the Lewis translation). A shelf '
+              'of the book as written — not recut into the Way and Castle year.',
         ),
         _SourceBlock(
           title: PortalRegistry.teresaAvila.provenanceTitle,
@@ -583,6 +627,13 @@ class _IgnatiusSources extends StatelessWidget {
               'Autograph or in Mullan and is not included. Not Puhl, Ganss, '
               'or Fleming.',
         ),
+        const _SourceBlock(
+          title: 'Letters',
+          body:
+              'Letters and Instructions of St. Ignatius Loyola, Volume I (1524–1547), '
+              'translated by D. F. O’Leary, selected and edited by Alban Goodier '
+              '(Manresa Press / Herder, 1914). The 1914 English letters book.',
+        ),
         _SourceBlock(
           title: PortalRegistry.ignatius.provenanceTitle,
           body: PortalRegistry.ignatius.provenanceParagraphs.join('\n\n'),
@@ -629,7 +680,8 @@ class _ThereseSources extends StatelessWidget {
               'Histoire d’une Âme — the historically famous edited Thérèse, '
               'not the 1956 manuscript restoration, not Clarke ICS, and not '
               'Knox. Poems in the Gutenberg file are Susan L. Emery’s and '
-              'are not shipped.',
+              'are not shipped. Letters and prayers from this edition sit on '
+              'their own shelf.',
         ),
         _SourceBlock(
           title: PortalRegistry.therese.provenanceTitle,

@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="ic_launcher_background">#8A1D1D</color>
+    <color name="vellum_bg">#F3EDE1</color>
+    <color name="vellum_ink">#211D1A</color>
+    <color name="vellum_secondary">#6E655A</color>
 </resources>

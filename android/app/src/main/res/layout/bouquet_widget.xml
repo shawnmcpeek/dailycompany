@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bouquet_widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/vellum_bg"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/bouquet_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:letterSpacing="0.12"
+        android:text="@string/bouquet_widget_label"
+        android:textAllCaps="true"
+        android:textColor="@color/vellum_secondary"
+        android:textSize="11sp" />
+
+    <TextView
+        android:id="@+id/bouquet_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/eb_garamond_regular"
+        android:maxLines="6"
+        android:text="@string/bouquet_widget_empty"
+        android:textColor="@color/vellum_ink"
+        android:textSize="16sp" />
+</LinearLayout>

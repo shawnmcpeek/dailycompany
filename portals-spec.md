@@ -475,7 +475,7 @@ Not a legal disclaimer. It's the honest description of the product, and this aud
 
 ### 10.5 Sources
 
-*Spiritual Exercises*, trans. Elder Mullan SJ (1909) — PD, Mullan d. 1925; literal from the Autograph, keeps Ignatius's numbering. *Autobiography*, trans. J. F. X. O'Conor SJ (1900) — PD. *Letters and Instructions*, trans. Rickaby SJ (1914) — PD. Autograph Spanish for side-by-side — PD.
+*Spiritual Exercises*, trans. Elder Mullan SJ (1909) — PD, Mullan d. 1925; literal from the Autograph, keeps Ignatius's numbering. *Autobiography*, trans. J. F. X. O'Conor SJ (1900) — PD. *Letters and Instructions*, trans. D. F. O'Leary, selected by Alban Goodier (Manresa Press / Herder, 1914) — PD. Autograph Spanish for side-by-side — PD.
 
 **Do not use:** Puhl (1951, Loyola Press — still in copyright and still the best-selling English text); Ganss (1992, IJS); Fleming (1978/1996); any Loyola Press or IJS apparatus.
 
