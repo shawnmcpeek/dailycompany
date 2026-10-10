@@ -100,8 +100,9 @@ class _SerraMissionsScreenState extends ConsumerState<SerraMissionsScreen> {
             ),
             const SizedBox(height: 8),
             Text(
-              'Tap a pin to read it. Step founding order to see the zigzag up '
-              'and down the coast — the faint line is the Camino, south to north.',
+              'Tap a pin to read it. Pinch to look closer along the coast. '
+              'Step founding order to see the zigzag — the faint line is the '
+              'Camino, south to north.',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     fontStyle: FontStyle.italic,
                   ),

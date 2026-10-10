@@ -107,6 +107,13 @@ final class BellHapticsController {
       return try CHHapticPattern(events: [
         transient(time: 0.00, intensity: 0.18, sharpness: 0.25),
       ], parameters: [])
+    case "angelus":
+      // Three slower peals — the Angelus, not Vespers.
+      return try CHHapticPattern(events: [
+        transient(time: 0.00, intensity: 0.55, sharpness: 0.28),
+        transient(time: 0.22, intensity: 0.50, sharpness: 0.26),
+        transient(time: 0.44, intensity: 0.45, sharpness: 0.24),
+      ], parameters: [])
     default:
       return try CHHapticPattern(events: [
         transient(time: 0.00, intensity: 0.40, sharpness: 0.40),

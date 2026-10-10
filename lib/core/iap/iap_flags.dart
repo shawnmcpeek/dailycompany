@@ -1,7 +1,6 @@
-/// Master switch for store billing. Leave `false` until RevenueCat keys +
-/// products are live. While false, everything stays unlocked.
+/// Master switch for store billing. While false, everything stays unlocked.
 abstract final class IapFlags {
-  static const enabled = false;
+  static const enabled = true;
 
   /// RevenueCat entitlement identifier — Benedict's Oblate unlock.
   static const entitlementId = 'oblate';
@@ -74,10 +73,18 @@ abstract final class IapFlags {
   static const allSaintsEntitlementId = 'all_saints';
   static const allSaintsProductId = 'all_saints';
 
-  /// Pass at build time when enabling IAP:
-  /// `--dart-define=REVENUECAT_API_KEY=appl_...` (iOS) or `goog_...` (Android).
-  /// For a single key across platforms, use RC's public SDK key for that store build.
+  /// Optional override. Otherwise the public SDK key for this store is used.
   static const apiKey = String.fromEnvironment('REVENUECAT_API_KEY');
+
+  static const appleApiKey = String.fromEnvironment(
+    'REVENUECAT_APPLE_API_KEY',
+    defaultValue: 'appl_jdmGaDWwQuPRjJxjnZOfZYRNErM',
+  );
+
+  static const googleApiKey = String.fromEnvironment(
+    'REVENUECAT_GOOGLE_API_KEY',
+    defaultValue: 'goog_ULoXgURVzGrxAFLokjNHtMfLcsb',
+  );
 
   /// Free Life episodes: Prologue (0) + chapters 1–5.
   static const freeLifeChapterMax = 5;

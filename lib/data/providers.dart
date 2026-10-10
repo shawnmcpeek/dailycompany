@@ -306,6 +306,7 @@ class AppSettings {
     this.liguoriVisitTime = '12:00',
     this.francisCanticleEnabled = false,
     this.francisCanticleTime = '07:00',
+    this.serraAngelusEnabled = false,
     this.cycleReminderEnabled = const {},
     this.cycleReminderTime = const {},
     this.ignatiusProgramStart = '',
@@ -385,6 +386,9 @@ class AppSettings {
 
   /// `HH:mm` for the Canticle notification. Default 07:00.
   final String francisCanticleTime;
+
+  /// Serra — Angelus on the office-bell scheduler, dawn / noon / evening.
+  final bool serraAngelusEnabled;
 
   /// Optional daily reminder, keyed by portal id. Off by default.
   final Map<String, bool> cycleReminderEnabled;
@@ -519,6 +523,7 @@ class AppSettings {
     String? liguoriVisitTime,
     bool? francisCanticleEnabled,
     String? francisCanticleTime,
+    bool? serraAngelusEnabled,
     Map<String, bool>? cycleReminderEnabled,
     Map<String, String>? cycleReminderTime,
     String? ignatiusProgramStart,
@@ -560,6 +565,7 @@ class AppSettings {
     francisCanticleEnabled:
         francisCanticleEnabled ?? this.francisCanticleEnabled,
     francisCanticleTime: francisCanticleTime ?? this.francisCanticleTime,
+    serraAngelusEnabled: serraAngelusEnabled ?? this.serraAngelusEnabled,
     cycleReminderEnabled: cycleReminderEnabled ?? this.cycleReminderEnabled,
     cycleReminderTime: cycleReminderTime ?? this.cycleReminderTime,
     ignatiusProgramStart: ignatiusProgramStart ?? this.ignatiusProgramStart,
@@ -639,6 +645,7 @@ class SettingsController extends StateNotifier<AppSettings> {
       liguoriVisitTime: prefs.getString('liguoriVisitTime') ?? '12:00',
       francisCanticleEnabled: prefs.getBool('francisCanticleEnabled') ?? false,
       francisCanticleTime: prefs.getString('francisCanticleTime') ?? '07:00',
+      serraAngelusEnabled: prefs.getBool('serraAngelusEnabled') ?? false,
       cycleReminderEnabled: _loadBoolMap(prefs, 'cycleReminderEnabled'),
       cycleReminderTime: _loadStringMap(prefs, 'cycleReminderTime'),
       ignatiusProgramStart: prefs.getString('ignatiusProgramStart') ?? '',
@@ -833,6 +840,11 @@ class SettingsController extends StateNotifier<AppSettings> {
       'francisCanticleTime',
       next,
     );
+  }
+
+  Future<void> setSerraAngelusEnabled(bool v) async {
+    state = state.copyWith(serraAngelusEnabled: v);
+    (await SharedPreferences.getInstance()).setBool('serraAngelusEnabled', v);
   }
 
   Future<void> setCycleReminderEnabled(String portalId, bool v) async {

@@ -165,6 +165,15 @@ final serraCompanionUnlockedProvider = Provider<bool>((ref) {
 class IapController extends StateNotifier<IapState> {
   IapController() : super(const IapState());
 
+  static String get _sdkKey {
+    if (IapFlags.apiKey.isNotEmpty) return IapFlags.apiKey;
+    return switch (defaultTargetPlatform) {
+      TargetPlatform.iOS || TargetPlatform.macOS => IapFlags.appleApiKey,
+      TargetPlatform.android => IapFlags.googleApiKey,
+      _ => '',
+    };
+  }
+
   Future<void> bootstrap() async {
     if (!IapFlags.enabled) {
       state = const IapState(
@@ -193,18 +202,19 @@ class IapController extends StateNotifier<IapState> {
       return;
     }
 
-    if (IapFlags.apiKey.isEmpty) {
-      state = const IapState(ready: true, error: 'REVENUECAT_API_KEY missing');
-      return;
-    }
-
     if (kIsWeb) {
       state = const IapState(ready: true, error: 'IAP not available on web');
       return;
     }
 
+    final sdkKey = _sdkKey;
+    if (sdkKey.isEmpty) {
+      state = const IapState(ready: true, error: 'REVENUECAT_API_KEY missing');
+      return;
+    }
+
     try {
-      await Purchases.configure(PurchasesConfiguration(IapFlags.apiKey));
+      await Purchases.configure(PurchasesConfiguration(sdkKey));
       Purchases.addCustomerInfoUpdateListener(_onCustomerInfo);
       await refresh();
       await _loadOfferings();

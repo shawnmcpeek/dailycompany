@@ -3,7 +3,8 @@ import 'package:dailycompany/data/models/place_saint.dart';
 import 'package:flutter/material.dart';
 
 /// Offline California with the twenty-one missions. Equirectangular, no tiles.
-class CaliforniaMissionsMap extends StatelessWidget {
+/// Pinch to look closer along the coast; pan only once zoomed so the page still scrolls.
+class CaliforniaMissionsMap extends StatefulWidget {
   const CaliforniaMissionsMap({
     super.key,
     required this.stops,
@@ -62,39 +63,73 @@ class CaliforniaMissionsMap extends StatelessWidget {
   }
 
   @override
+  State<CaliforniaMissionsMap> createState() => _CaliforniaMissionsMapState();
+}
+
+class _CaliforniaMissionsMapState extends State<CaliforniaMissionsMap> {
+  final _transform = TransformationController();
+  var _panning = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _transform.addListener(_onTransform);
+  }
+
+  void _onTransform() {
+    final pan = _transform.value.getMaxScaleOnAxis() > 1.01;
+    if (pan != _panning) setState(() => _panning = pan);
+  }
+
+  @override
+  void dispose() {
+    _transform.removeListener(_onTransform);
+    _transform.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final byOrder = {for (final s in stops) s.order: s};
+    final byOrder = {for (final s in widget.stops) s.order: s};
     return AspectRatio(
       aspectRatio: 0.72,
       child: LayoutBuilder(
         builder: (context, constraints) {
           final size = Size(constraints.maxWidth, constraints.maxHeight);
-          return GestureDetector(
-            onTapDown: (details) {
-              PlaceStop? hit;
-              var best = 22.0;
-              for (final s in stops) {
-                final p = project(s.lat, s.lon, size);
-                final d = (p - details.localPosition).distance;
-                if (d < best) {
-                  best = d;
-                  hit = s;
-                }
-              }
-              if (hit != null) onSelect(hit);
-            },
-            child: CustomPaint(
-              size: size,
-              painter: _MapPainter(
-                stops: stops,
-                byOrder: byOrder,
-                unlocked: unlocked,
-                selectedOrder: selectedOrder,
-                outlineColor: Theme.of(context).dividerColor,
-                ink: Theme.of(context).colorScheme.onSurface,
-                adobe: SerraAccent.adobe,
-                lasuen: SerraAccent.lasuen,
-                last: SerraAccent.last,
+          return ClipRect(
+            child: InteractiveViewer(
+              transformationController: _transform,
+              minScale: 1,
+              maxScale: 6,
+              panEnabled: _panning,
+              child: GestureDetector(
+                onTapDown: (details) {
+                  PlaceStop? hit;
+                  var best = 22.0;
+                  for (final s in widget.stops) {
+                    final p = CaliforniaMissionsMap.project(s.lat, s.lon, size);
+                    final d = (p - details.localPosition).distance;
+                    if (d < best) {
+                      best = d;
+                      hit = s;
+                    }
+                  }
+                  if (hit != null) widget.onSelect(hit);
+                },
+                child: CustomPaint(
+                  size: size,
+                  painter: _MapPainter(
+                    stops: widget.stops,
+                    byOrder: byOrder,
+                    unlocked: widget.unlocked,
+                    selectedOrder: widget.selectedOrder,
+                    outlineColor: Theme.of(context).dividerColor,
+                    ink: Theme.of(context).colorScheme.onSurface,
+                    adobe: SerraAccent.adobe,
+                    lasuen: SerraAccent.lasuen,
+                    last: SerraAccent.last,
+                  ),
+                ),
               ),
             ),
           );

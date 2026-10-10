@@ -73,6 +73,30 @@ class ReadingBody extends StatelessWidget {
   }
 }
 
+/// Quiet square likeness for hallway rows. Same size on every house.
+class HousePortrait extends StatelessWidget {
+  const HousePortrait({super.key, required this.asset});
+
+  final String asset;
+
+  static const double size = 48;
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(2),
+      child: Image.asset(
+        asset,
+        width: size,
+        height: size,
+        fit: BoxFit.cover,
+        filterQuality: FilterQuality.medium,
+        gaplessPlayback: true,
+      ),
+    );
+  }
+}
+
 /// Full-width hub destination — reads as navigation, not a checklist item.
 class HubNavButton extends StatelessWidget {
   const HubNavButton({
@@ -81,12 +105,14 @@ class HubNavButton extends StatelessWidget {
     required this.subtitle,
     this.onPressed,
     this.actionLabel = 'Open',
+    this.portraitAsset,
   });
 
   final String title;
   final String subtitle;
   final VoidCallback? onPressed;
   final String actionLabel;
+  final String? portraitAsset;
 
   @override
   Widget build(BuildContext context) {
@@ -104,6 +130,10 @@ class HubNavButton extends StatelessWidget {
       ),
       child: Row(
         children: [
+          if (portraitAsset != null) ...[
+            HousePortrait(asset: portraitAsset!),
+            const SizedBox(width: 12),
+          ],
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,

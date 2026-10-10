@@ -101,6 +101,8 @@ abstract final class SharedNotifications {
     if (payload.startsWith('office:')) {
       final officeId = payload.substring('office:'.length);
       GoRouter.of(ctx).go(PortalRoutes.office(portalId, officeId));
+    } else if (payload == 'angelus') {
+      GoRouter.of(ctx).go(PortalRoutes.practice('serra'));
     } else if (payload == 'aspiration') {
       GoRouter.of(ctx).go(PortalRoutes.today(portalId));
     } else if (payload == 'cell' ||

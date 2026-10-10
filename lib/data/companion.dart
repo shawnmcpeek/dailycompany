@@ -24,6 +24,8 @@ class Companion {
         HouseKind.saint => work,
       };
 
+  String get portraitAsset => 'assets/companions/$id.jpg';
+
   /// True once this house has a [SaintPortal] in the registry.
   bool get open => PortalRegistry.byId(id) != null;
 }

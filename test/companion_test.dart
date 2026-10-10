@@ -1,4 +1,5 @@
 import 'package:dailycompany/data/companion.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -72,5 +73,14 @@ void main() {
     expect(serra.kind, HouseKind.place);
     expect(serra.hallwaySubtitle, startsWith('Place ·'));
     expect(serra.hallwaySubtitle, contains('California Missions'));
+  });
+
+  test('every house portrait is bundled', () async {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    for (final house in Companions.all) {
+      expect(house.portraitAsset, 'assets/companions/${house.id}.jpg');
+      final data = await rootBundle.load(house.portraitAsset);
+      expect(data.lengthInBytes, greaterThan(0), reason: house.id);
+    }
   });
 }

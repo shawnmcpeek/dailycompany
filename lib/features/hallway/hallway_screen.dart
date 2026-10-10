@@ -38,6 +38,7 @@ class HallwayScreen extends ConsumerWidget {
               HubNavButton(
                 title: house.name,
                 subtitle: house.hallwaySubtitle,
+                portraitAsset: house.portraitAsset,
                 actionLabel: chosen?.id == house.id ? 'Here' : 'Enter',
                 onPressed: () async {
                   await ref
@@ -65,6 +66,7 @@ class HallwayScreen extends ConsumerWidget {
               HubNavButton(
                 title: house.name,
                 subtitle: house.hallwaySubtitle,
+                portraitAsset: house.portraitAsset,
                 actionLabel: 'Soon',
               ),
               const SizedBox(height: 10),

@@ -2,7 +2,15 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:vibration/vibration.dart';
 
-enum BellKind { little, major, compline, lectioTick, complete, aspiration }
+enum BellKind {
+  little,
+  major,
+  compline,
+  lectioTick,
+  complete,
+  aspiration,
+  angelus,
+}
 
 abstract final class BellHaptics {
   static const _channel = MethodChannel('pro.daddoodev.dailycompany/haptics');
@@ -37,6 +45,13 @@ abstract final class BellHaptics {
       case BellKind.aspiration:
         // One soft tap, low amplitude — a glance, not a summons.
         await HapticFeedback.lightImpact();
+      case BellKind.angelus:
+        // Three slower peals — distinct from the Hours' triple.
+        await HapticFeedback.mediumImpact();
+        await Future<void>.delayed(const Duration(milliseconds: 200));
+        await HapticFeedback.mediumImpact();
+        await Future<void>.delayed(const Duration(milliseconds: 200));
+        await HapticFeedback.mediumImpact();
     }
   }
 
