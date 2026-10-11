@@ -25,7 +25,6 @@ dependencies:
   sentry_flutter: ^9.6.0
   package_info_plus: ^10.2.1
   flutter_svg: ^2.3.0
-  home_widget: ^0.8.1
 
 dev_dependencies:
   flutter_test:
