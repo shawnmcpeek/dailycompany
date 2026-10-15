@@ -26,6 +26,9 @@ class SourcesScreen extends ConsumerWidget {
       'scupoli' => const _NamedSources(portalId: 'scupoli'),
       'lawrence' => const _NamedSources(portalId: 'lawrence'),
       'cassian' => const _NamedSources(portalId: 'cassian'),
+      'desert-fathers' => const _NamedSources(portalId: 'desert-fathers'),
+      'newman' => const _NamedSources(portalId: 'newman'),
+      'bernard' => const _NamedSources(portalId: 'bernard'),
       'serra' => const _SerraSources(),
       _ => const _BenedictSources(),
     };
@@ -757,6 +760,43 @@ class _NamedSources extends StatelessWidget {
               'not On the Incarnation.',
           'The Institutes. On the Incarnation against Nestorius. Invented '
               'English for the two conferences Gibson left untranslated.',
+        ),
+      'desert-fathers' => (
+          'The Paradise of the Fathers',
+          'The Paradise or Garden of the Holy Fathers, translated by '
+              'E. A. Wallis Budge from the Syriac (Chatto & Windus, 1907), '
+              'both volumes: the Life of Anthony, Palladius, the Rule of '
+              'Pachomius, Jerome’s histories, and the Sayings of the Fathers. '
+              'What will not fit the year sits in the index.',
+          'Helen Waddell, The Desert Fathers (1936). Benedicta Ward, The '
+              'Sayings of the Desert Fathers (1975). Lazarus Moore. A partial '
+              'Budge. Cassian’s Institutes belong to Cassian’s house, not this one.',
+        ),
+      'newman' => (
+          'Parochial and Plain Sermons',
+          'Parochial and Plain Sermons, eight volumes, 191 sermons, '
+              'Newman’s own English (Rivingtons 1868; Longmans reprints of '
+              'the same sermons; Project Gutenberg #24256 and #24284 for '
+              'volumes VII–VIII). What will not fit the year sits in the '
+              'index. Meditations and Devotions, edited by William P. Neville '
+              '(Longmans, 1893). Verses on Various Occasions (Burns, Oates, '
+              '1868), including The Pillar of the Cloud. Apologia pro Vita '
+              'Sua, The Idea of a University, An Essay in Aid of a Grammar of '
+              'Assent, and An Essay on the Development of Christian Doctrine '
+              'are on the Works shelf.',
+          'Those four books as a daily cut. newmanreader.org apparatus.',
+        ),
+      'bernard' => (
+          'Sermons',
+          'Life and Works of Saint Bernard, Abbot of Clairvaux, translated '
+              'by Samuel J. Eales (John Hodges, 1889–96): volume III, Sermons '
+              'for the Ecclesiastical Year; volume IV, eighty-six sermons on '
+              'the Song of Songs. Letters from volumes I–II on the Works '
+              'shelf. On Loving God, translated by Mrs. Patmore (1881). What '
+              'will not fit the year sits in the index.',
+          'The letters as a daily cut. On the New Knighthood (no verified '
+              'public-domain English here). Cistercian Publications. Bruno '
+              'Scott James, The Letters of St. Bernard of Clairvaux (1953).',
         ),
       _ => ('Daily text', '', ''),
     };

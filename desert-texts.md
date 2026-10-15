@@ -18,7 +18,7 @@ Sorted by how safe the copyright is.
 | --- | --- | --- |
 | John Cassian, *Institutes* + 24 *Conferences* | Edgar Gibson, NPNF 2nd series vol. 11 (1894) | Anchor text. Conferences already ship. Completing the house is the *Institutes* from this same volume — not a leftover shelf. Gibson never translated XII and XXII. |
 | Athanasius, *Life of Antony* | NPNF2 vol. 4 (1892) | |
-| *Sayings of the Desert Fathers* | Budge, *The Paradise of the Fathers* (1907), from the Syriac | The whole Budge, including *Historia Monachorum* material. Latin *Verba Seniorum* in Migne PL 73 if a parallel is wanted. |
+| *Sayings of the Desert Fathers* | Budge, *The Paradise of the Fathers* (1907), from the Syriac | **Open as `desert-fathers`.** The whole Budge, including *Historia Monachorum* material. Latin *Verba Seniorum* in Migne PL 73 if a parallel is wanted. |
 | Pseudo-Macarius, *Fifty Spiritual Homilies* | A. J. Mason, SPCK 1921 | Thomas Haywood’s 1721 *Primitive Morality* is PD but scarce, and the English is rough. Prefer Mason. |
 | Isaac of Nineveh, *Mystic Treatises* | Wensinck, Amsterdam 1923 | |
 | Palladius, *Lausiac History* | Lowther Clarke, SPCK 1918 | The whole Clarke. Lives more than teaching — still the house, not a leftover. |

@@ -111,7 +111,15 @@ abstract final class SharedNotifications {
         payload == 'saying' ||
         payload == 'pastoral' ||
         payload == 'evening' ||
-        payload == 'recollection') {
+        payload == 'recollection' ||
+        payload == 'elder' ||
+        payload == 'requests' ||
+        payload == 'offering' ||
+        payload == 'combat' ||
+        payload == 'presence' ||
+        payload == 'kindly' ||
+        payload == 'love' ||
+        payload == 'word') {
       GoRouter.of(ctx).go(PortalRoutes.practice(portalId));
     }
   }

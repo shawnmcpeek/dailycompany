@@ -44,6 +44,9 @@ void main() {
     'scupoli',
     'lawrence',
     'cassian',
+    'desert-fathers',
+    'newman',
+    'bernard',
   ]) {
     group(id, () {
       final calendar = loadHouse(id);

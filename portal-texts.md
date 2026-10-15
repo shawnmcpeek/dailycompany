@@ -214,13 +214,50 @@ The `ProgramSpine` exception. Full module table and director note: `portals-spec
 | Prayers | Alabado (Engelhardt Spanish), Angelus (traditional), Franciscan Crown (opt-in). |
 | Never-list | Tibesar *Writings*; Geiger 1955; Hackel; contemporary mission photographs. OFM / Serra International as affiliation. |
 
+### John Henry Newman — `newman` — CLEAR
+
+| | |
+| --- | --- |
+| Kind | Saint (canonized 2019). Hallway never prefixes *St.* |
+| Daily text | *Parochial and Plain Sermons*, eight volumes, **191** sermons. Newman’s own English. Rivingtons 1868 (`parochialandp01newmuoft` and siblings); a second Longmans/Rivingtons scan compared so no sermon is glued or dropped; Gutenberg #24256 / #24284 for vols VII–VIII. |
+| Cadence | **366 × 1** + appendix. ~280 words/entry. |
+| Shelf | *Meditations and Devotions*, ed. William P. Neville (Longmans, 1893; Neville d. 1905). *Verses on Various Occasions* (Burns, Oates, 1868), including *The Pillar of the Cloud* (Lead, Kindly Light). *Apologia pro Vita Sua*; *The Idea of a University*; *An Essay in Aid of a Grammar of Assent*; *An Essay on the Development of Christian Doctrine* — Newman’s English, not the daily cut. |
+| Anchor | Lead, kindly Light — three stanzas. |
+| Do not use | *Apologia*; *Idea of a University*; *Grammar of Assent*; *Essay on Development* as the daily book. newmanreader.org. |
+| Never-list | Birmingham Oratory, Congregation of the Oratory, Newman shrine brands. |
+
+### Bernard of Clairvaux — `bernard` — CLEAR
+
+| | |
+| --- | --- |
+| Kind | Saint. Hallway never prefixes *St.* |
+| Daily text | Samuel J. Eales, *Life and Works of Saint Bernard* (John Hodges, 1889–96; Eales d. 1896). **Vol. IV** eighty-six sermons on the Song of Songs; **vol. III** *Sermons for the Ecclesiastical Year* (De Tempore). Real count **362,541** words, cut to **885** entries. **366 × 1** + **519** appendix. Letters in vols I–II are not the daily cut. |
+| Cadence | **366 × 1** + appendix. ~280 words/entry. |
+| Shelf | *On Loving God*, trans. Mrs. Patmore, preface Coventry Patmore (1881). Letters from Eales vols I–II. |
+| Anchor | Four degrees of love. |
+| Do not use | Cistercian Publications. Bruno Scott James, *The Letters of St. Bernard of Clairvaux* (1953). *On the New Knighthood* — no verified PD English in hand (Greenia 1977 is in-copyright). |
+| Never-list | Cistercian Order, Cistercian Publications, Templar Rule. |
+
+---
+
+### Desert Fathers — `desert-fathers` — CLEAR
+
+| | |
+| --- | --- |
+| Kind | Saints (the Egyptian elders as a company). Hallway never prefixes *St.* |
+| Daily text | E. A. Wallis Budge, *The Paradise or Garden of the Holy Fathers* (Chatto & Windus, 1907), both volumes, from the Syriac. Budge d. 1934; 1907 is US PD. The whole named edition: lives, *Historia Monachorum* material, and the Questions and Answers of the Holy Fathers. Real count **360,529** words, cut to **1,162** entries. **366 × 1** + **796** appendix. |
+| Cadence | **366 × 1** + appendix. ~280 words/entry. |
+| Anchor | Abba, give me a word. |
+| Do not use | Helen Waddell 1936. Benedicta Ward 1975. Lazarus Moore. |
+| Never-list | Coptic Orthodox Church as affiliation. Monasteries of Scetis / Wadi Natrun as brands. St Catherine’s Monastery. |
+
 ---
 
 ## Still in the hallway
 
-None. The writer houses are open. Serra is the first Place house.
+None. Serra is the Place house. Newman, Bernard, and the Desert Fathers are open.
 
-Desert / monastic expansion (Cassian’s field, not opened): `desert-texts.md`. All or nothing per writer — no leftover shelf. Do not start a house from that list until it is named here and the playbook is filled.
+Further desert / monastic writers (Cassian’s field, not opened): `desert-texts.md`. All or nothing per writer — no leftover shelf. Do not start a house from that list until it is named here and the playbook is filled. Completing Cassian is still the *Institutes* from Gibson, not this house.
 
 ---
 
@@ -244,6 +281,9 @@ Desert / monastic expansion (Cassian’s field, not opened): `desert-texts.md`. 
 | `scupoli` | Rivingtons anonymous 1875 | CLEAR |
 | `lawrence` | Revell, translated from the French | CLEAR |
 | `cassian` | Gibson NPNF II.11 1894 | CLEAR (shipped) |
+| `newman` | Newman PPS 1868/Longmans/Gutenberg (191 sermons); Neville 1893; Verses 1868; Apologia; Idea; Grammar; Development | CLEAR (shipped) |
+| `bernard` | Eales 1889–96 vols I–IV (letters on the shelf); Patmore 1881 | CLEAR (shipped) |
 | `serra` | Palóu/Williams 1913; Portolá/Smith–Teggart 1909; Engelhardt | CLEAR (shipped) |
+| `desert-fathers` | Budge, *Paradise of the Holy Fathers*, 1907, both volumes | CLEAR (shipped) |
 
 Foreign first publication after 1900: confirm a US printing of the same edition (Benziger / Kenedy co-pubs are typical). Record the copy in `portal.json`.

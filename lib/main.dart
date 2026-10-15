@@ -71,7 +71,10 @@ class DailyCompanyApp extends ConsumerWidget {
         portalId == 'montfort' ||
         portalId == 'scupoli' ||
         portalId == 'lawrence' ||
-        portalId == 'cassian') {
+        portalId == 'cassian' ||
+        portalId == 'desert-fathers' ||
+        portalId == 'newman' ||
+        portalId == 'bernard') {
       if (portalId == 'ignatius') {
         final program =
             ref.watch(ignatiusProgramProvider).valueOrNull;

@@ -22,6 +22,9 @@ void main() {
       'scupoli',
       'lawrence',
       'cassian',
+      'desert-fathers',
+      'newman',
+      'bernard',
       'serra',
     });
     expect(Companions.byId('benedict')?.open, isTrue);
@@ -40,6 +43,9 @@ void main() {
     expect(Companions.byId('scupoli')?.open, isTrue);
     expect(Companions.byId('lawrence')?.open, isTrue);
     expect(Companions.byId('cassian')?.open, isTrue);
+    expect(Companions.byId('desert-fathers')?.open, isTrue);
+    expect(Companions.byId('newman')?.open, isTrue);
+    expect(Companions.byId('bernard')?.open, isTrue);
     expect(Companions.byId('serra')?.open, isTrue);
   });
 

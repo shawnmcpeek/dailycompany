@@ -1,3 +1,4 @@
+import 'package:dailycompany/core/iap/companion_feast.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
 import 'package:dailycompany/core/iap/iap_flags.dart';
 import 'package:dailycompany/data/models/portal.dart';
@@ -102,6 +103,32 @@ _Copy _copyFor(String id) => switch (id) {
           productId: IapFlags.cassianProductId,
           entitlementId: IapFlags.cassianEntitlementId,
         ),
+      'desert-fathers' => const _Copy(
+          includes:
+              'Includes the Paradise of the Fathers through the year, the '
+              'rest from the index, and Read Through.',
+          staysFree: 'A word stays free.',
+          productId: IapFlags.desertFathersProductId,
+          entitlementId: IapFlags.desertFathersEntitlementId,
+        ),
+      'newman' => const _Copy(
+          includes:
+              'Includes the Parochial and Plain Sermons through the year, '
+              'the rest from the index, Meditations, Verses, the Apologia, '
+              'the Idea of a University, the Grammar of Assent, the Essay '
+              'on Development, and Read Through.',
+          staysFree: 'Lead, kindly Light stays free.',
+          productId: IapFlags.newmanProductId,
+          entitlementId: IapFlags.newmanEntitlementId,
+        ),
+      'bernard' => const _Copy(
+          includes:
+              'Includes the sermons through the year, On Loving God, the '
+              'letters, and Read Through.',
+          staysFree: 'The four degrees stay free.',
+          productId: IapFlags.bernardProductId,
+          entitlementId: IapFlags.bernardEntitlementId,
+        ),
       'serra' => const _Copy(
           includes:
               'Includes Lasuén’s nine and the last three missions.',
@@ -157,6 +184,7 @@ class CycleCompanionPaywallScreen extends ConsumerWidget {
                 .purchaseCompanion(copy.productId, copy.entitlementId),
             purchaseLabel: 'Unlock Companion · $price',
             unlockedMessage: 'Companion unlocked. Thank you.',
+            feastLine: CompanionFeast.line(portalId),
           ),
         const SizedBox(height: 28),
         const SectionRule(),

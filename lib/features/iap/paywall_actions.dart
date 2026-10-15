@@ -11,11 +11,15 @@ class PaywallActions extends ConsumerStatefulWidget {
     required this.onPurchase,
     required this.purchaseLabel,
     this.unlockedMessage = 'Unlocked. Thank you.',
+    this.feastLine,
   });
 
   final Future<bool> Function() onPurchase;
   final String purchaseLabel;
   final String unlockedMessage;
+
+  /// Set on the house's feast / commemoration. Does not change Play's price.
+  final String? feastLine;
 
   @override
   ConsumerState<PaywallActions> createState() => _PaywallActionsState();
@@ -51,11 +55,20 @@ class _PaywallActionsState extends ConsumerState<PaywallActions> {
   @override
   Widget build(BuildContext context) {
     final iap = ref.watch(iapControllerProvider);
-    final allPrice = iap.priceLabels[IapFlags.allSaintsProductId] ?? '\$14.99';
+    final allPrice = iap.priceLabels[IapFlags.allSaintsProductId] ?? '\$19.99';
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        if (widget.feastLine != null) ...[
+          Text(
+            widget.feastLine!,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontStyle: FontStyle.italic,
+                ),
+          ),
+          const SizedBox(height: 12),
+        ],
         FilledButton(
           onPressed: _busy
               ? null

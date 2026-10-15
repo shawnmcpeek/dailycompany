@@ -1,3 +1,4 @@
+import 'package:dailycompany/core/iap/companion_feast.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
 import 'package:dailycompany/core/iap/iap_flags.dart';
 import 'package:dailycompany/features/iap/paywall_actions.dart';
@@ -49,6 +50,7 @@ class DesalesCompanionPaywallScreen extends ConsumerWidget {
                 .purchaseDesalesCompanion(),
             purchaseLabel: 'Unlock Companion · $price',
             unlockedMessage: 'Companion unlocked. Thank you.',
+            feastLine: CompanionFeast.line('desales'),
           ),
         const SizedBox(height: 28),
         const SectionRule(),

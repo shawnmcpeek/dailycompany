@@ -1,3 +1,4 @@
+import 'package:dailycompany/core/iap/companion_feast.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
 import 'package:dailycompany/core/iap/iap_flags.dart';
 import 'package:dailycompany/features/iap/paywall_actions.dart';
@@ -47,6 +48,7 @@ class OblatePaywallScreen extends ConsumerWidget {
                 ref.read(iapControllerProvider.notifier).purchaseOblate(),
             purchaseLabel: 'Unlock Oblate · $price',
             unlockedMessage: 'Oblate unlocked. Thank you.',
+            feastLine: CompanionFeast.line('benedict'),
           ),
         const SizedBox(height: 28),
         const SectionRule(),

@@ -1,3 +1,4 @@
+import 'package:dailycompany/app/router/app_router.dart';
 import 'package:dailycompany/data/companion.dart';
 import 'package:dailycompany/data/providers.dart';
 import 'package:dailycompany/data/reading_memory.dart';
@@ -79,10 +80,16 @@ class BookmarksScreen extends ConsumerWidget {
     WidgetRef ref,
     SavedPlace place,
   ) async {
+    final container = ProviderScope.containerOf(context);
     await ref.read(readingMemoryProvider.notifier).prepareJump(place);
     final current = ref.read(currentPortalIdProvider);
     if (current != place.portalId) {
-      await ref.read(settingsProvider.notifier).setCompanion(place.portalId);
+      enterPortal(
+        container,
+        portalId: place.portalId,
+        route: place.route,
+      );
+      return;
     }
     if (!context.mounted) return;
     context.go(place.route);

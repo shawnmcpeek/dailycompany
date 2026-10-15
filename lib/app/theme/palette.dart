@@ -6,6 +6,7 @@ abstract final class Paper {
   static const ink = Color(0xFF1F1B18);
   static const secondary = Color(0xFF6A635A);
   static const rule = Color(0xFFE0D6C6);
+  static const edge = Color(0xFFA99A84);
   static const gold = Color(0xFFA8802C);
 }
 
@@ -15,6 +16,7 @@ abstract final class Vellum {
   static const ink = Color(0xFF211D1A);
   static const secondary = Color(0xFF6E655A);
   static const rule = Color(0xFFD9CFBE);
+  static const edge = Color(0xFFA29179);
   static const gold = Color(0xFFA8802C);
 }
 
@@ -24,6 +26,7 @@ abstract final class Compline {
   static const ink = Color(0xFFE6DCCB);
   static const secondary = Color(0xFF9C9084);
   static const rule = Color(0xFF332D26);
+  static const edge = Color(0xFF766C62);
   static const gold = Color(0xFFC9A14E);
 }
 
@@ -167,6 +170,21 @@ abstract final class CassianAccent {
   static const desert = Color(0xFF8A7048);
 }
 
+/// Night in Scetis — cooler than [CassianAccent] sand.
+abstract final class DesertFathersAccent {
+  static const scete = Color(0xFF3C5348);
+}
+
+abstract final class NewmanAccent {
+  static const oxford = Color(0xFF3F5368);
+}
+
+/// Cistercian undyed wool — distinct from [LawrenceAccent] hearth
+/// and [AugustineAccent] hearth.
+abstract final class BernardAccent {
+  static const wool = Color(0xFF8A7A58);
+}
+
 /// Fixed accent — mission adobe. Distinct from [AugustineAccent] hearth
 /// and [LawrenceAccent] hearth.
 abstract final class SerraAccent {
@@ -191,6 +209,9 @@ Color portalAccent(String portalId, int part) => switch (portalId) {
       'scupoli' => ScupoliAccent.steel,
       'lawrence' => LawrenceAccent.hearth,
       'cassian' => CassianAccent.desert,
+      'desert-fathers' => DesertFathersAccent.scete,
+      'newman' => NewmanAccent.oxford,
+      'bernard' => BernardAccent.wool,
       'serra' => SerraAccent.adobe,
       _ => CycleAccent.winter,
     };

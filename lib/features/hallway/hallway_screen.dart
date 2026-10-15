@@ -5,7 +5,6 @@ import 'package:dailycompany/data/providers.dart';
 import 'package:dailycompany/shared/widgets/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class HallwayScreen extends ConsumerWidget {
   const HallwayScreen({super.key});
@@ -40,21 +39,10 @@ class HallwayScreen extends ConsumerWidget {
                 subtitle: house.hallwaySubtitle,
                 portraitAsset: house.portraitAsset,
                 actionLabel: chosen?.id == house.id ? 'Here' : 'Enter',
-                onPressed: () async {
-                  await ref
-                      .read(settingsProvider.notifier)
-                      .setCompanion(house.id);
-                  if (context.mounted) {
-                    context.go(
-                      portalLandingRoute(
-                        house.id,
-                        lastRoute: ref
-                            .read(settingsProvider)
-                            .lastReadingRouteFor(house.id),
-                      ),
-                    );
-                  }
-                },
+                onPressed: () => enterPortal(
+                  ProviderScope.containerOf(context),
+                  portalId: house.id,
+                ),
               ),
               const SizedBox(height: 10),
             ],

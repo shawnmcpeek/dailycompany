@@ -482,6 +482,88 @@ abstract final class PortalRegistry {
     unlockSku: 'cassian_companion',
   );
 
+  static const newman = SaintPortal(
+    id: 'newman',
+    displayName: 'John Henry Newman',
+    tagline: 'Heart speaks to heart.',
+    provenance: CycleProvenance.constructed,
+    provenanceTitle: 'About this reading cycle',
+    provenanceParagraphs: [
+      'This year-long cycle was made for this app. Newman did not '
+          'arrange the Parochial and Plain Sermons to be read a page a '
+          'day, and no edition assigns these passages to these dates.',
+      'The text itself is unaltered — Newman’s English, eight volumes, '
+          '191 sermons (Rivingtons 1868 and Longmans reprints of the same '
+          'sermons). What will not fit the year sits in the index. The '
+          'Apologia, the Idea of a University, the Grammar of Assent, and '
+          'the Essay on Development are on the Works shelf, not the daily '
+          'book. Meditations and Verses sit there with them.',
+      'If you’d rather read the sermons straight through, turn on '
+          'Read Through under the reading.',
+    ],
+    disclaimer:
+        'An independent app from Daddoo Dev. Not affiliated with, endorsed '
+        'by, or produced by the Birmingham Oratory, the Congregation of the '
+        'Oratory, any Newman shrine, or any publisher associated with them.',
+    modules: ['today', 'practice', 'works'],
+    unlockSku: 'newman_companion',
+  );
+
+  static const bernard = SaintPortal(
+    id: 'bernard',
+    displayName: 'Bernard of Clairvaux',
+    tagline: 'Love is sufficient of itself.',
+    provenance: CycleProvenance.constructed,
+    provenanceTitle: 'About this reading cycle',
+    provenanceParagraphs: [
+      'This year-long cycle was made for this app. Bernard did not '
+          'arrange these sermons to be read a page a day, and no edition '
+          'assigns these passages to these dates.',
+      'The text itself is unaltered — Samuel J. Eales’s English in Life '
+          'and Works of Saint Bernard: the Song of Songs (vol. IV) and '
+          'the liturgical sermons of vol. III. What will not fit the year '
+          'sits in the index. The letters sit on the Works shelf with On '
+          'Loving God, not on the calendar. On the New Knighthood is not '
+          'included.',
+      'If you’d rather read the sermons straight through, turn on '
+          'Read Through under the reading.',
+    ],
+    disclaimer:
+        'An independent app from Daddoo Dev. Not affiliated with, endorsed '
+        'by, or produced by the Cistercian Order, any Cistercian abbey, '
+        'Cistercian Publications, or any shrine or publisher associated '
+        'with them.',
+    modules: ['today', 'practice', 'works'],
+    unlockSku: 'bernard_companion',
+  );
+
+  static const desertFathers = SaintPortal(
+    id: 'desert-fathers',
+    displayName: 'Desert Fathers',
+    tagline: 'Abba, give me a word.',
+    provenance: CycleProvenance.constructed,
+    provenanceTitle: 'About this reading cycle',
+    provenanceParagraphs: [
+      'This year-long cycle was made for this app. The elders did not '
+          'arrange The Paradise of the Fathers to be read a page a day, '
+          'and no edition assigns these passages to these dates.',
+      'The text itself is unaltered — E. A. Wallis Budge’s 1907 English '
+          'from the Syriac, both volumes: the Life of Anthony, Palladius, '
+          'the Rule of Pachomius, Jerome’s histories, and the Sayings. '
+          'What will not fit the year sits in the index. Helen Waddell '
+          'and Benedicta Ward are not used.',
+      'If you’d rather read the Paradise straight through, turn on '
+          'Read Through under the reading.',
+    ],
+    disclaimer:
+        'An independent app from Daddoo Dev. Not affiliated with, endorsed '
+        'by, or produced by the Coptic Orthodox Church, the monasteries of '
+        'Egypt, St Catherine’s Monastery, or any shrine or publisher '
+        'associated with them.',
+    modules: ['today', 'practice'],
+    unlockSku: 'desert_fathers_companion',
+  );
+
   static const serra = SaintPortal(
     id: 'serra',
     displayName: 'Junípero Serra',
@@ -526,6 +608,9 @@ abstract final class PortalRegistry {
     scupoli,
     lawrence,
     cassian,
+    desertFathers,
+    newman,
+    bernard,
     serra,
   ];
 

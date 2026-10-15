@@ -65,8 +65,17 @@ abstract final class IapFlags {
   static const cassianEntitlementId = 'cassian_companion';
   static const cassianProductId = 'cassian_companion';
 
+  static const desertFathersEntitlementId = 'desert-fathers_companion';
+  static const desertFathersProductId = 'desert_fathers_companion';
+
   static const serraEntitlementId = 'serra_companion';
   static const serraProductId = 'serra_companion';
+
+  static const newmanEntitlementId = 'newman_companion';
+  static const newmanProductId = 'newman_companion';
+
+  static const bernardEntitlementId = 'bernard_companion';
+  static const bernardProductId = 'bernard_companion';
 
   /// Bundle entitlement covering every open house. Scaffolded now so
   /// individual SKUs can later grant this without a migration fight.

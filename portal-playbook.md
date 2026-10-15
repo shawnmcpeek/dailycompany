@@ -25,7 +25,7 @@ Fill this decision record. Do not start a pipeline until the PD source and trans
 | Disclaimer | Verbatim, store + About. Template in spec §7. |
 | Anchor | The free practice that is this house's Compline. Different interaction from every other house. |
 | Haptics | The rhythm *is* the characterization. Do not reuse Benedict's six bells or de Sales' jittered aspirations unless that is actually this saint's day. |
-| Modules + tiers | Free vs unlock. One SKU, `$4.99` one-time, `id_companion`. |
+| Modules + tiers | Practice free. Today: 7 morning pages per house, then unlock. Read Through paid. One SKU, `$4.99` one-time, `id_companion`. |
 | Accent driver | Part / book / mansion / fixed. New hues, distinct from `CycleAccent` and `DesalesAccent`. |
 
 Hallway `open` is automatic once `PortalRegistry.byId(id)` is non-null. Add the `Companion` row first if the house is not already in `lib/data/companion.dart`.
@@ -267,6 +267,59 @@ Hallway `open` is automatic once `PortalRegistry.byId(id)` is non-null. Add the 
 | Modules | Free: journey, Act I (Serra’s nine), prayers. Unlock: Acts II–III. SKU `serra_companion`. |
 | Accent | Fixed `SerraAccent.adobe`. Drop cap on the journey is liturgical color of the day. |
 | Map | Offline CustomPainter, California outline + 21 pins + Camino polyline. Tap a pin for the planned mission reading. No tiles, no photos, no geofencing. |
+
+### Filled — `desert-fathers`
+
+| | |
+| --- | --- |
+| `id` | `desert-fathers` |
+| Display | Desert Fathers |
+| Tagline | *Abba, give me a word.* |
+| Provenance | `constructed` |
+| Cadence | **366 × 1** + appendix. Whole Budge 1907. |
+| Primary text | E. A. Wallis Budge, *The Paradise or Garden of the Holy Fathers* (Chatto & Windus, 1907), vols I–II, from the Syriac. |
+| Do not use | Waddell 1936. Ward 1975. Lazarus Moore. Partial Budge. |
+| Never-list | Coptic Orthodox Church as affiliation. Scetis / Wadi Natrun brands. St Catherine’s Monastery. |
+| Disclaimer | Spec §7, naming the Coptic Orthodox Church and the monasteries of Egypt. |
+| Anchor | Abba, give me a word. |
+| SKU | `desert_fathers_companion` |
+| Accent | Fixed `DesertFathersAccent.cell`. |
+
+### Filled — `newman`
+
+| | |
+| --- | --- |
+| `id` | `newman` |
+| Display | John Henry Newman |
+| Tagline | *Heart speaks to heart.* |
+| Provenance | `constructed` |
+| Cadence | **366 × 1** + 1,553 appendix. Real count 789,749 words (~280/entry). 191 PPS sermons. All eight volumes kept. |
+| Primary text | Newman, *Parochial and Plain Sermons*, Rivingtons 1868 / Longmans reprints / Gutenberg VII–VIII. Two scans compared; contents list is 191. |
+| Shelf | Neville 1893 *Meditations and Devotions*; Burns Oates 1868 *Verses* (Lead, Kindly Light). Apologia; Idea of a University; Grammar of Assent; Development of Christian Doctrine. |
+| Do not use | Apologia; Idea; Grammar; Development as daily. newmanreader.org. |
+| Never-list | Birmingham Oratory, Congregation of the Oratory. |
+| Disclaimer | Spec §7, naming the Oratory and Newman shrines. |
+| Anchor | Lead, kindly Light (three stanzas). |
+| SKU | `newman_companion` |
+| Accent | Fixed `NewmanAccent.oxford`. |
+
+### Filled — `bernard`
+
+| | |
+| --- | --- |
+| `id` | `bernard` |
+| Display | Bernard of Clairvaux |
+| Tagline | *Love is sufficient of itself.* |
+| Provenance | `constructed` |
+| Cadence | **366 × 1** + 519 appendix. Real count 362,541 words (~280/entry). Vol. III liturgical sermons + vol. IV Cantica. |
+| Primary text | Eales, *Life and Works*, vols III–IV (Hodges, 1889–96). |
+| Shelf | Mrs. Patmore, *On Loving God* (1881). Letters from Eales vols I–II. |
+| Do not use | Letters as daily. Cistercian Publications. Scott James 1953. New Knighthood (no PD English in hand). |
+| Never-list | Cistercian Order, Cistercian Publications. |
+| Disclaimer | Spec §7, naming the Cistercians and Cistercian Publications. |
+| Anchor | Four degrees of love. |
+| SKU | `bernard_companion` |
+| Accent | Fixed `BernardAccent.wool`. |
 
 ---
 

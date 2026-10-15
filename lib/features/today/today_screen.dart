@@ -2,6 +2,7 @@ import 'package:dailycompany/app/router/portal_routes.dart';
 import 'package:dailycompany/core/cycle/life_track.dart';
 import 'package:dailycompany/core/haptics/bell_haptics.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
+import 'package:dailycompany/core/iap/today_sample.dart';
 import 'package:dailycompany/core/liturgical/liturgical_color.dart';
 import 'package:dailycompany/data/models/portal.dart';
 import 'package:dailycompany/data/providers.dart';
@@ -43,9 +44,31 @@ class TodayScreen extends ConsumerWidget {
               )
             : null;
         final numberedLife = catalog.life.where((e) => e.chapter > 0).length;
+        final dateKey = TodaySample.dateKey(day);
+        final sampled = settings.sampledTodayDatesFor(portal.id);
+        final lifeChapterFree = life != null &&
+            IapController.lifeChapterFree(life.chapter);
         final lifeLocked = life != null &&
-            !unlocked &&
-            !IapController.lifeChapterFree(life.chapter);
+            !TodaySample.allows(
+              unlocked: unlocked,
+              sampled: sampled,
+              dateKey: dateKey,
+              alreadyFree: lifeChapterFree,
+            );
+        if (life != null &&
+            TodaySample.shouldRecord(
+              unlocked: unlocked,
+              sampled: sampled,
+              dateKey: dateKey,
+              alreadyFree: lifeChapterFree,
+            )) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            ref.read(settingsProvider.notifier).noteSampledToday(
+                  portal.id,
+                  dateKey,
+                );
+          });
+        }
         final showRule = track.includesRule;
         final accent = catalog.calendar.accentFor(day);
         final litColor = LiturgicalColorResolver.forDay(day);
@@ -302,14 +325,16 @@ class _ReadingBlockState extends ConsumerState<_ReadingBlock> {
           runSpacing: 8,
           children: [
             if (_hasCommentary)
-              ActionChip(
-                label: const Text('Commentary'),
+              ChromeOutlinedButton(
+                label: 'Commentary',
+                selected: _showCommentary,
                 onPressed: () =>
                     setState(() => _showCommentary = !_showCommentary),
               ),
             if (_hasLatin)
-              ActionChip(
-                label: Text(_showLatin ? 'Hide Latin' : 'Latin'),
+              ChromeOutlinedButton(
+                label: 'Latin',
+                selected: _showLatin,
                 onPressed: () {
                   final unlocked = ref.read(oblateUnlockedProvider);
                   if (!unlocked) {
@@ -319,13 +344,13 @@ class _ReadingBlockState extends ConsumerState<_ReadingBlock> {
                   setState(() => _showLatin = !_showLatin);
                 },
               ),
-            ActionChip(
-              label: const Text('Lectio'),
+            ChromeOutlinedButton(
+              label: 'Lectio',
               onPressed: () => context
                   .push(PortalRoutes.lectio(ref.read(currentPortalIdProvider))),
             ),
-            ActionChip(
-              label: const Text('Mark read'),
+            ChromeOutlinedButton(
+              label: 'Mark read',
               onPressed: () async {
                 final day = ref.read(selectedDayProvider);
                 await ref.read(completionProvider.notifier).markRead(

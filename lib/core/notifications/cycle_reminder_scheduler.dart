@@ -140,6 +140,33 @@ class CycleReminderScheduler {
       payload: 'elder',
       title: 'The elder',
     ),
+    'desert-fathers': CycleReminderSpec(
+      portalId: 'desert-fathers',
+      channelId: 'desert_word',
+      channelName: 'A word',
+      channelDesc: 'Hour of the word',
+      notifId: 2001,
+      payload: 'word',
+      title: 'Abba, give me a word',
+    ),
+    'newman': CycleReminderSpec(
+      portalId: 'newman',
+      channelId: 'newman_light',
+      channelName: 'Kindly Light',
+      channelDesc: 'Hour of the kindly Light',
+      notifId: 1801,
+      payload: 'kindly',
+      title: 'Lead, kindly Light',
+    ),
+    'bernard': CycleReminderSpec(
+      portalId: 'bernard',
+      channelId: 'bernard_love',
+      channelName: 'The four degrees',
+      channelDesc: 'Hour of love',
+      notifId: 1901,
+      payload: 'love',
+      title: 'Love is sufficient of itself',
+    ),
   };
 
   FlutterLocalNotificationsPlugin get _plugin => SharedNotifications.plugin;

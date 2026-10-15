@@ -155,6 +155,27 @@ final cassianCompanionUnlockedProvider = Provider<bool>((ref) {
       iap.has(IapFlags.allSaintsEntitlementId);
 });
 
+final newmanCompanionUnlockedProvider = Provider<bool>((ref) {
+  if (!IapFlags.enabled) return true;
+  final iap = ref.watch(iapControllerProvider);
+  return iap.has(IapFlags.newmanEntitlementId) ||
+      iap.has(IapFlags.allSaintsEntitlementId);
+});
+
+final bernardCompanionUnlockedProvider = Provider<bool>((ref) {
+  if (!IapFlags.enabled) return true;
+  final iap = ref.watch(iapControllerProvider);
+  return iap.has(IapFlags.bernardEntitlementId) ||
+      iap.has(IapFlags.allSaintsEntitlementId);
+});
+
+final desertFathersCompanionUnlockedProvider = Provider<bool>((ref) {
+  if (!IapFlags.enabled) return true;
+  final iap = ref.watch(iapControllerProvider);
+  return iap.has(IapFlags.desertFathersEntitlementId) ||
+      iap.has(IapFlags.allSaintsEntitlementId);
+});
+
 final serraCompanionUnlockedProvider = Provider<bool>((ref) {
   if (!IapFlags.enabled) return true;
   final iap = ref.watch(iapControllerProvider);
@@ -195,6 +216,9 @@ class IapController extends StateNotifier<IapState> {
           IapFlags.scupoliEntitlementId,
           IapFlags.lawrenceEntitlementId,
           IapFlags.cassianEntitlementId,
+          IapFlags.desertFathersEntitlementId,
+          IapFlags.newmanEntitlementId,
+          IapFlags.bernardEntitlementId,
           IapFlags.serraEntitlementId,
           IapFlags.allSaintsEntitlementId,
         },
@@ -255,6 +279,9 @@ class IapController extends StateNotifier<IapState> {
           IapFlags.scupoliEntitlementId,
           IapFlags.lawrenceEntitlementId,
           IapFlags.cassianEntitlementId,
+          IapFlags.desertFathersEntitlementId,
+          IapFlags.newmanEntitlementId,
+          IapFlags.bernardEntitlementId,
           IapFlags.serraEntitlementId,
           IapFlags.allSaintsEntitlementId,
         },

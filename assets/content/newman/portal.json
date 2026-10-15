@@ -1,0 +1,21 @@
+{
+  "id": "newman",
+  "displayName": "John Henry Newman",
+  "tagline": "Heart speaks to heart.",
+  "provenance": "constructed",
+  "spine": {
+    "type": "cycle",
+    "note": "A constructed year through Newman’s Parochial and Plain Sermons, eight volumes, 191 sermons (Rivingtons 1868 and Longmans reprints; vols VII–VIII from Project Gutenberg). Overflow sits in the index. The Apologia, the Idea of a University, the Grammar of Assent, and the Essay on Development sit on the Works shelf, not on the calendar. 366 readings through the year. 1553 further readings sit in the index, not on the calendar.",
+    "entries": 366,
+    "repeatsPerYear": 1.0
+  },
+  "anchor": null,
+  "modules": [
+    "today",
+    "practice",
+    "works"
+  ],
+  "disclaimer": "An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by the Birmingham Oratory, the Congregation of the Oratory, any Newman shrine, or any publisher associated with them.",
+  "unlockSku": "newman_companion",
+  "sourceNote": "Parochial and Plain Sermons, eight volumes, 191 sermons, Newman’s English (Rivingtons 1868; Longmans reprints of the same sermons; Gutenberg #24256 and #24284 for vols VII–VIII). Meditations and Devotions, ed. William P. Neville (Longmans, 1893). Verses on Various Occasions (Burns, Oates, 1868), including The Pillar of the Cloud (Lead, Kindly Light). Apologia pro Vita Sua; The Idea of a University; An Essay in Aid of a Grammar of Assent; An Essay on the Development of Christian Doctrine — Newman’s English, on the Works shelf. Not newmanreader.org apparatus."
+}

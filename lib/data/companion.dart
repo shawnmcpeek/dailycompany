@@ -110,6 +110,21 @@ abstract final class Companions {
     ),
     Companion(id: 'cassian', name: 'John Cassian', work: 'The Conferences'),
     Companion(
+      id: 'desert-fathers',
+      name: 'Desert Fathers',
+      work: 'The Paradise of the Fathers',
+    ),
+    Companion(
+      id: 'newman',
+      name: 'John Henry Newman',
+      work: 'Parochial and Plain Sermons',
+    ),
+    Companion(
+      id: 'bernard',
+      name: 'Bernard of Clairvaux',
+      work: 'Sermons on the Song of Songs',
+    ),
+    Companion(
       id: 'serra',
       name: 'Junípero Serra',
       work: 'The California Missions',

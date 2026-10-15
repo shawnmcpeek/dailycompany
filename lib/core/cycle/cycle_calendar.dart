@@ -69,6 +69,9 @@ class CycleCalendar {
         'kempis' || 'augustine' || 'gregory' => 'Book',
         'john-cross' => 'Saying',
         'cassian' => 'Conference',
+        'newman' => 'Volume',
+        'bernard' => 'Sermon',
+        'desert-fathers' => 'Book',
         _ => 'Part',
       };
 
@@ -82,7 +85,7 @@ class CycleCalendar {
       return 'Saying ${entry.id} of $dailyCount';
     }
     if (isAppendix(entry)) {
-      return 'Appendix · Book ${entry.part} · Chapter ${entry.chapter}';
+      return 'Appendix · $divisionNoun ${entry.part} · ${entry.chapterTitle}';
     }
     if (portalId == 'teresa-avila') {
       return '${entry.partTitle} · Chapter ${entry.chapter}';
@@ -95,7 +98,7 @@ class CycleCalendar {
 
   String progressLabel(CycleEntry entry, {required bool readThrough}) {
     if (isAppendix(entry)) {
-      return 'Appendix · Book ${entry.part} · Chapter ${entry.chapter}';
+      return 'Appendix · $divisionNoun ${entry.part} · ${entry.chapterTitle}';
     }
     if (portalId == 'liguori') {
       return 'Visit ${entry.id} of ${entries.length}';

@@ -96,6 +96,57 @@ def write_cycle_assets(
     print(f"wrote {assets} ({len(entries)} entries)")
 
 
+def emit_appendix_year(
+    *,
+    parts: list[dict],
+    assets: Path,
+    review: Path,
+    translator: str,
+    portal: dict,
+    target_words: int = 280,
+) -> list[dict]:
+    """Cut the whole corpus; first 366 days are unique, the rest sit off-calendar."""
+    print(f"\nappendix year: cut at ~{target_words} words/entry")
+    entries = cut(parts, target_words=target_words)
+    fill_stub_titles(entries)
+    assert_round_trip(entries, parts)
+    n = len(entries)
+    if n < 366:
+        raise SystemExit(f"appendix year expected ≥366 entries, got {n}")
+    for e in entries[366:]:
+        flags = list(e.get("flags") or [])
+        if "appendix" not in flags:
+            flags.append("appendix")
+        e["flags"] = flags
+    daily = 366
+    by_date_common, by_date_leap = map_unique(daily)
+    note = portal.get("spine", {}).get("note", "")
+    extra = (
+        f"{daily} readings through the year. "
+        f"{n - daily} further readings sit in the index, not on the calendar."
+    )
+    portal["spine"] = {
+        **portal.get("spine", {}),
+        "type": "cycle",
+        "entries": daily,
+        "repeatsPerYear": 1.0,
+        "note": (note + " " + extra).strip() if note else extra,
+    }
+    write_cycle_assets(
+        assets=assets,
+        review=review,
+        entries=entries,
+        by_date_common=by_date_common,
+        by_date_leap=by_date_leap,
+        translator=translator,
+        portal=portal,
+        target_words=target_words,
+        daily_entries=daily,
+    )
+    print(f"{n} entries ({daily} daily + {n - daily} appendix)")
+    return entries
+
+
 def emit_cut_cycle(
     *,
     parts: list[dict],
@@ -105,12 +156,26 @@ def emit_cut_cycle(
     portal: dict,
     prefer_unique: bool = True,
     modulo_if_thin: bool = True,
+    overflow_appendix: bool = False,
 ) -> list[dict]:
     total_words = sum(
         words(" ".join(c["paragraphs"])) for p in parts for c in p["chapters"]
     )
     print("=== cadence candidates ===")
     cadence_candidates(total_words)
+
+    # A corpus too large for 366×1 at the 150–500 band keeps every paragraph
+    # by parking overflow off the calendar (Augustine / John of the Cross).
+    if overflow_appendix and total_words / 366 > 500:
+        target = max(250, min(400, round(total_words / max(1, round(total_words / 280)))))
+        return emit_appendix_year(
+            parts=parts,
+            assets=assets,
+            review=review,
+            translator=translator,
+            portal=portal,
+            target_words=target,
+        )
 
     entries: list[dict]
     target: int
@@ -141,6 +206,16 @@ def emit_cut_cycle(
                 target_words=target,
             )
             return entries
+        if overflow_appendix and n > 366:
+            print(f"unique year missed ({n}); keeping overflow as appendix")
+            return emit_appendix_year(
+                parts=parts,
+                assets=assets,
+                review=review,
+                translator=translator,
+                portal=portal,
+                target_words=target,
+            )
         print(f"unique year missed ({n}); falling back to modulo")
 
     # Thin corpus, or unique-year search missed: pack toward the 150–400 band, then modulo.

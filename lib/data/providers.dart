@@ -15,6 +15,7 @@ import 'package:dailycompany/data/models/work_shelf.dart';
 import 'package:dailycompany/core/diagnostics/diagnostics_log.dart';
 import 'package:dailycompany/core/diagnostics/journal_failure_reporter.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
+import 'package:dailycompany/core/iap/today_sample.dart';
 import 'package:dailycompany/core/notifications/aspiration_scheduler.dart';
 import 'package:dailycompany/core/notifications/bell_scheduler.dart';
 import 'package:dailycompany/core/notifications/canticle_scheduler.dart';
@@ -146,6 +147,9 @@ final cycleUnlockedProvider = Provider<bool>((ref) {
     'scupoli' => ref.watch(scupoliCompanionUnlockedProvider),
     'lawrence' => ref.watch(lawrenceCompanionUnlockedProvider),
     'cassian' => ref.watch(cassianCompanionUnlockedProvider),
+    'desert-fathers' => ref.watch(desertFathersCompanionUnlockedProvider),
+    'newman' => ref.watch(newmanCompanionUnlockedProvider),
+    'bernard' => ref.watch(bernardCompanionUnlockedProvider),
     'serra' => ref.watch(serraCompanionUnlockedProvider),
     _ => false,
   };
@@ -313,6 +317,7 @@ class AppSettings {
     this.ignatiusElapsedWhenPaused = 0,
     this.ignatiusDirectorAcked = false,
     this.lastReadingRouteByPortal = const {},
+    this.sampledTodayDatesByPortal = const {},
   });
 
   /// False until SharedPreferences have been read.
@@ -404,11 +409,18 @@ class AppSettings {
   /// Last resumable reading path per house, so re-entering opens that page.
   final Map<String, String> lastReadingRouteByPortal;
 
+  /// Cycle dates (`MM-DD`) opened as a Today sample, keyed by portal id.
+  /// Seven distinct mornings per house; no countdown.
+  final Map<String, List<String>> sampledTodayDatesByPortal;
+
   String? lastReadingRouteFor(String portalId) {
     final route = lastReadingRouteByPortal[portalId];
     if (route == null || route.isEmpty) return null;
     return route;
   }
+
+  List<String> sampledTodayDatesFor(String portalId) =>
+      List<String>.from(sampledTodayDatesByPortal[portalId] ?? const <String>[]);
 
   static const reminderDefaults = <String, String>{
     'john-cross': '07:00',
@@ -423,6 +435,9 @@ class AppSettings {
     'scupoli': '07:00',
     'lawrence': '08:00',
     'cassian': '08:00',
+    'desert-fathers': '08:00',
+    'newman': '08:00',
+    'bernard': '08:00',
   };
 
   bool reminderEnabledFor(String portalId) =>
@@ -530,6 +545,7 @@ class AppSettings {
     int? ignatiusElapsedWhenPaused,
     bool? ignatiusDirectorAcked,
     Map<String, String>? lastReadingRouteByPortal,
+    Map<String, List<String>>? sampledTodayDatesByPortal,
   }) => AppSettings(
     ready: ready ?? this.ready,
     onboardingComplete: onboardingComplete ?? this.onboardingComplete,
@@ -574,6 +590,8 @@ class AppSettings {
     ignatiusDirectorAcked: ignatiusDirectorAcked ?? this.ignatiusDirectorAcked,
     lastReadingRouteByPortal:
         lastReadingRouteByPortal ?? this.lastReadingRouteByPortal,
+    sampledTodayDatesByPortal:
+        sampledTodayDatesByPortal ?? this.sampledTodayDatesByPortal,
   );
 }
 
@@ -653,6 +671,10 @@ class SettingsController extends StateNotifier<AppSettings> {
           prefs.getInt('ignatiusElapsedWhenPaused') ?? 0,
       ignatiusDirectorAcked: prefs.getBool('ignatiusDirectorAcked') ?? false,
       lastReadingRouteByPortal: _loadStringMap(prefs, 'lastReadingRouteByPortal'),
+      sampledTodayDatesByPortal: _loadStringListMap(
+        prefs,
+        'sampledTodayDatesByPortal',
+      ),
     );
   }
 
@@ -942,6 +964,23 @@ class SettingsController extends StateNotifier<AppSettings> {
     );
   }
 
+  Future<void> noteSampledToday(String portalId, String dateKey) async {
+    if (dateKey.isEmpty) return;
+    final current = state.sampledTodayDatesFor(portalId);
+    if (current.contains(dateKey)) return;
+    if (current.length >= TodaySample.daysPerHouse) return;
+    final next = {
+      for (final e in state.sampledTodayDatesByPortal.entries)
+        e.key: List<String>.from(e.value),
+    };
+    next[portalId] = [...current, dateKey];
+    state = state.copyWith(sampledTodayDatesByPortal: next);
+    (await SharedPreferences.getInstance()).setString(
+      'sampledTodayDatesByPortal',
+      jsonEncode(next),
+    );
+  }
+
   Future<void> setLectioMinutes({
     int? lectio,
     int? meditatio,
@@ -983,6 +1022,19 @@ Map<String, String> _loadStringMap(SharedPreferences prefs, String key) {
   if (raw == null) return {};
   final decoded = jsonDecode(raw) as Map<String, dynamic>;
   return {for (final e in decoded.entries) e.key: e.value as String};
+}
+
+Map<String, List<String>> _loadStringListMap(
+  SharedPreferences prefs,
+  String key,
+) {
+  final raw = prefs.getString(key);
+  if (raw == null) return {};
+  final decoded = jsonDecode(raw) as Map<String, dynamic>;
+  return {
+    for (final e in decoded.entries)
+      e.key: (e.value as List<dynamic>).map((v) => '$v').toList(),
+  };
 }
 
 Map<String, bool> _loadReadThroughMap(SharedPreferences prefs) {

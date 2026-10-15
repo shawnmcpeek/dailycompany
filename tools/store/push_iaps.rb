@@ -16,45 +16,55 @@ UNLOCK = "A one-time unlock. No subscription."
 
 PRODUCTS = [
   { sku: "benedict_daily_oblate", name: "Oblate",
-    play: "Unlocks the rest of Benedict’s house." },
+    play: "Unlocks the rest of Benedict’s house.", feast: "07-11" },
   { sku: "desales_companion", name: "Companion — de Sales",
-    play: "Year-long Devout Life, Letters, Read Through." },
+    play: "Year-long Devout Life, Letters, Read Through.", feast: "01-24" },
   { sku: "kempis_companion", name: "Companion — Kempis",
-    play: "Imitation of Christ cycle and Read Through." },
+    play: "Imitation of Christ cycle and Read Through.", feast: "07-25" },
   { sku: "liguori_companion", name: "Companion — Liguori",
-    play: "The thirty-one Visits and Read Through." },
+    play: "The thirty-one Visits and Read Through.", feast: "08-01" },
   { sku: "francis_companion", name: "Companion — Francis",
-    play: "Writings, Little Flowers, Read Through." },
+    play: "Writings, Little Flowers, Read Through.", feast: "10-04" },
   { sku: "john_cross_companion", name: "Companion — John Cross",
-    play: "Sayings on a repeating cycle and Read Through." },
+    play: "Sayings on a repeating cycle and Read Through.", feast: "12-14" },
   { sku: "gregory_companion", name: "Companion — Gregory",
-    play: "Pastoral Rule twice a year and Read Through." },
+    play: "Pastoral Rule twice a year and Read Through.", feast: "09-03" },
   { sku: "augustine_companion", name: "Companion — Augustine",
-    play: "Confessions through the year and Read Through." },
+    play: "Confessions through the year and Read Through.", feast: "08-28" },
   { sku: "teresa_avila_companion", name: "Companion — Teresa",
-    play: "Way of Perfection, Interior Castle, Read Through." },
+    play: "Way of Perfection, Interior Castle, Read Through.", feast: "10-15" },
   { sku: "ignatius_companion", name: "Companion — Ignatius",
-    play: "Autobiography, Exercises, Read Through." },
+    play: "Autobiography, Exercises, Read Through.", feast: "07-31" },
   { sku: "therese_companion", name: "Companion — Thérèse",
-    play: "Story of a Soul through the year and Read Through." },
+    play: "Story of a Soul through the year and Read Through.", feast: "10-01" },
   { sku: "catherine_companion", name: "Companion — Catherine",
-    play: "The Dialogue through the year and Read Through." },
+    play: "The Dialogue through the year and Read Through.", feast: "04-29" },
   { sku: "montfort_companion", name: "Companion — Montfort",
-    play: "True Devotion through the year and Read Through." },
+    play: "True Devotion through the year and Read Through.", feast: "04-28" },
   { sku: "scupoli_companion", name: "Companion — Scupoli",
-    play: "Spiritual Combat through the year and Read Through." },
+    play: "Spiritual Combat through the year and Read Through.", feast: "11-28" },
   { sku: "lawrence_companion", name: "Companion — Lawrence",
-    play: "Conversations and letters, Read Through." },
+    play: "Conversations and letters, Read Through.", feast: "02-12" },
   { sku: "cassian_companion", name: "Companion — Cassian",
-    play: "Conferences through the year and Read Through." },
+    play: "Conferences through the year and Read Through.", feast: "07-23" },
+  { sku: "desert_fathers_companion", name: "Companion — Desert Fathers",
+    play: "Paradise of the Fathers through the year.", feast: "01-17" },
+  { sku: "newman_companion", name: "Companion — Newman",
+    play: "Parochial and Plain Sermons through the year.", feast: "10-09" },
+  { sku: "bernard_companion", name: "Companion — Bernard",
+    play: "Sermons through the year, On Loving God, letters.", feast: "08-20" },
   { sku: "serra_companion", name: "Companion — Serra",
-    play: "Lasuén’s nine and the last three missions." },
+    play: "Lasuén’s nine and the last three missions.", feast: "07-01" },
   { sku: "all_saints", name: "Daily Company — All Saints",
-    play: "Every open house. One-time.", usd: 14.99 },
+    play: "Every open house. One-time.", usd: 19.99 },
 ].freeze
 
 def usd_for(product)
   product[:usd] || 4.99
+end
+
+def eur_for(usd)
+  { 19.99 => 17.99, 4.99 => 4.49 }.fetch(usd) { 4.49 }
 end
 
 def micros(product)
@@ -248,7 +258,7 @@ class Play
           new_regions_config: AP::OneTimeProductPurchaseOptionNewRegionsConfig.new(
             availability: "AVAILABLE",
             usd_price: money(usd, "USD"),
-            eur_price: money(usd == 14.99 ? 13.99 : 4.49, "EUR"),
+            eur_price: money(eur_for(usd), "EUR"),
           ),
           regional_pricing_and_availability_configs: [
             AP::OneTimeProductPurchaseOptionRegionalPricingAndAvailabilityConfig.new(

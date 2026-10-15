@@ -1,0 +1,20 @@
+{
+  "id": "desert-fathers",
+  "displayName": "Desert Fathers",
+  "tagline": "Abba, give me a word.",
+  "provenance": "constructed",
+  "spine": {
+    "type": "cycle",
+    "note": "A constructed year through E. A. Wallis Budge’s 1907 English of The Paradise or Garden of the Holy Fathers, both volumes, from the Syriac. The whole named edition: the Life of Anthony, Palladius, the Rule of Pachomius, Jerome’s histories, and the Sayings. Overflow sits in the index. Not Waddell. Not Ward. 366 readings through the year. 796 further readings sit in the index, not on the calendar.",
+    "entries": 366,
+    "repeatsPerYear": 1.0
+  },
+  "anchor": null,
+  "modules": [
+    "today",
+    "practice"
+  ],
+  "disclaimer": "An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by the Coptic Orthodox Church, the monasteries of Egypt, St Catherine’s Monastery, or any shrine or publisher associated with them.",
+  "unlockSku": "desert-fathers_companion",
+  "sourceNote": "The Paradise or Garden of the Holy Fathers, translated by E. A. Wallis Budge from the Syriac (Chatto & Windus, 1907), both volumes. Internet Archive paradiseorgarden01anan and paradiseorgarden02anan. The whole named edition. Not Helen Waddell (1936). Not Benedicta Ward (1975)."
+}

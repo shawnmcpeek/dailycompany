@@ -1,0 +1,21 @@
+{
+  "id": "bernard",
+  "displayName": "Bernard of Clairvaux",
+  "tagline": "Love is sufficient of itself.",
+  "provenance": "constructed",
+  "spine": {
+    "type": "cycle",
+    "note": "A constructed year through Samuel J. Eales’s English of the sermons: the Song of Songs (Life and Works vol. IV) and the liturgical sermons of vol. III. Overflow sits in the index. The letters sit on the Works shelf, not on the calendar. On the New Knighthood is not included. 366 readings through the year. 519 further readings sit in the index, not on the calendar.",
+    "entries": 366,
+    "repeatsPerYear": 1.0
+  },
+  "anchor": null,
+  "modules": [
+    "today",
+    "practice",
+    "works"
+  ],
+  "disclaimer": "An independent app from Daddoo Dev. Not affiliated with, endorsed by, or produced by the Cistercian Order, any Cistercian abbey, Cistercian Publications, or any shrine or publisher associated with them.",
+  "unlockSku": "bernard_companion",
+  "sourceNote": "Life and Works of Saint Bernard, Abbot of Clairvaux, trans. Samuel J. Eales (John Hodges, 1889–96): vol. III, Sermons for the Ecclesiastical Year; vol. IV, Sermons on the Song of Songs. On Loving God, translated by Mrs. Patmore, preface by Coventry Patmore (1881). Letters from Eales vols I–II on the Works shelf. Not Cistercian Publications. Not the 1953 Scott James Letters. De Laude Novae Militiae is not shipped."
+}

@@ -3,6 +3,7 @@ import 'package:dailycompany/app/theme/palette.dart';
 import 'package:dailycompany/core/cycle/cycle_calendar.dart';
 import 'package:dailycompany/core/haptics/bell_haptics.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
+import 'package:dailycompany/core/iap/today_sample.dart';
 import 'package:dailycompany/data/isar/bouquet.dart';
 import 'package:dailycompany/data/models/portal.dart';
 import 'package:dailycompany/data/providers.dart';
@@ -65,7 +66,8 @@ class CycleTodayScreen extends ConsumerWidget {
     final dateLabel = DateFormat('EEEE, MMMM d').format(day);
     final enableBouquet =
         portalId == 'desales' && settings.desalesCycleYear == 1;
-    final ignatiusFreeToday = portalId == 'ignatius';
+    final dateKey = TodaySample.dateKey(day);
+    final sampled = settings.sampledTodayDatesFor(portalId);
 
     return calendarAsync.when(
       loading: () => const EmptyLoading(),
@@ -79,6 +81,28 @@ class CycleTodayScreen extends ConsumerWidget {
             : calendar.resolveFor(day);
         if (entries.isEmpty) {
           return const Center(child: Text('No reading for this day.'));
+        }
+
+        final ignatiusFree = portalId == 'ignatius' &&
+            entries.every((e) => IapController.ignatiusChapterFree(e.chapter));
+        final todayOpen = TodaySample.allows(
+          unlocked: unlocked,
+          sampled: sampled,
+          dateKey: dateKey,
+          alreadyFree: ignatiusFree,
+        );
+        if (TodaySample.shouldRecord(
+          unlocked: unlocked,
+          sampled: sampled,
+          dateKey: dateKey,
+          alreadyFree: ignatiusFree,
+        )) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            ref.read(settingsProvider.notifier).noteSampledToday(
+                  portalId,
+                  dateKey,
+                );
+          });
         }
 
         final route = PortalRoutes.today(portalId);
@@ -131,11 +155,7 @@ class CycleTodayScreen extends ConsumerWidget {
               if (!readThrough && enableBouquet) _BouquetPin(day: day),
               if (portalId == 'kempis' && day.month == 7 && day.day == 25)
                 const _KempisCommemoration(),
-              if (!unlocked &&
-                  !(ignatiusFreeToday &&
-                      entries.every(
-                        (e) => IapController.ignatiusChapterFree(e.chapter),
-                      )))
+              if (!todayOpen)
                 _LockedBlock(portalId: portalId)
               else ...[
                 for (var i = 0; i < entries.length; i++) ...[
@@ -163,17 +183,19 @@ class CycleTodayScreen extends ConsumerWidget {
                 const SizedBox(height: 20),
                 _MarkRead(day: day, readingId: entries.first.id),
                 const SizedBox(height: 24),
-                if (readThrough)
+                if (unlocked && readThrough)
                   _ReadThroughNav(
                     portalId: cycleKey,
                     cursor: cursor,
                     total: calendar.entries.length,
                   ),
-                const SizedBox(height: 12),
-                _ReadThroughToggle(
-                  portalId: cycleKey,
-                  readThrough: readThrough,
-                ),
+                if (unlocked) ...[
+                  const SizedBox(height: 12),
+                  _ReadThroughToggle(
+                    portalId: cycleKey,
+                    readThrough: readThrough,
+                  ),
+                ],
               ],
             ],
           ),
@@ -193,8 +215,8 @@ class _MarkRead extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Align(
       alignment: Alignment.centerLeft,
-      child: ActionChip(
-        label: const Text('Mark read'),
+      child: ChromeOutlinedButton(
+        label: 'Mark read',
         onPressed: () async {
           await ref
               .read(completionProvider.notifier)

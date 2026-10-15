@@ -146,6 +146,94 @@ _PracticeCopy _copyFor(String portalId) => switch (portalId) {
           reminderLabel: 'Hour of the conference',
           defaultHour: 8,
         ),
+      'newman' => const _PracticeCopy(
+          title: 'Kindly Light',
+          intro:
+              'Heart speaks to heart. Three stanzas of The Pillar of the '
+              'Cloud — Lead, kindly Light — as he wrote them at sea in 1833.',
+          timerLabel: 'Lead, kindly Light',
+          timerIntro: 'Two minutes on each stanza. His order.',
+          movements: [
+            TimerMovement(
+              label: 'The gloom',
+              prompt:
+                  'Lead, kindly Light, amid the encircling gloom, '
+                  'Lead Thou me on. The night is dark, and I am far from home; '
+                  'Lead Thou me on. Keep Thou my feet; I do not ask to see '
+                  'the distant scene — one step enough for me.',
+              seconds: 120,
+            ),
+            TimerMovement(
+              label: 'Not ever thus',
+              prompt:
+                  'I was not ever thus, nor prayed that Thou shouldst lead me on. '
+                  'I loved to choose and see my path; but now, Lead Thou me on. '
+                  'I loved the garish day, and, spite of fears, pride ruled my will: '
+                  'remember not past years.',
+              seconds: 120,
+            ),
+            TimerMovement(
+              label: 'Till the night is gone',
+              prompt:
+                  'So long Thy power hath blest me, sure it still will lead me on, '
+                  'o’er moor and fen, o’er crag and torrent, till the night is gone; '
+                  'and with the morn those angel faces smile, which I have loved '
+                  'long since, and lost awhile.',
+              seconds: 120,
+            ),
+          ],
+          reminderLabel: 'Hour of the kindly Light',
+          defaultHour: 8,
+        ),
+      'desert-fathers' => const _PracticeCopy(
+          title: 'A word',
+          intro:
+              'Abba, give me a word. Sit with one sentence from today’s '
+              'reading. Do not add another.',
+          timerLabel: 'The word',
+          timerIntro: 'Ten minutes. One word.',
+          movements: [
+            TimerMovement(
+              label: 'The word',
+              prompt: 'Abba, give me a word.',
+              seconds: 600,
+            ),
+          ],
+          reminderLabel: 'Hour of the word',
+          defaultHour: 8,
+        ),
+      'bernard' => const _PracticeCopy(
+          title: 'The four degrees',
+          intro:
+              'Love is sufficient of itself. Four degrees from On Loving God: '
+              'we begin with ourselves, and are drawn toward God.',
+          timerLabel: 'The four degrees',
+          timerIntro: 'Two minutes each. His order, not a method invented here.',
+          movements: [
+            TimerMovement(
+              label: 'Self for self',
+              prompt: 'Man loves himself for his own sake.',
+              seconds: 120,
+            ),
+            TimerMovement(
+              label: 'God for self',
+              prompt: 'Man loves God for his own sake.',
+              seconds: 120,
+            ),
+            TimerMovement(
+              label: 'God for God',
+              prompt: 'Man loves God for God’s sake.',
+              seconds: 120,
+            ),
+            TimerMovement(
+              label: 'Self for God',
+              prompt: 'Man loves himself for God’s sake.',
+              seconds: 120,
+            ),
+          ],
+          reminderLabel: 'Hour of love',
+          defaultHour: 8,
+        ),
       _ => const _PracticeCopy(
           title: 'Practice',
           intro: 'Today’s practice.',

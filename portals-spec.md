@@ -78,6 +78,8 @@ The rule: **`entries × repeats ≈ 365`, chosen so daily length lands in 250–
 | **Scupoli** | *Spiritual Combat* + Supplement | 53.9k | **120 × 3.05** | ~449 |
 | **Lawrence** | Conversations + letters | 10.7k | **19 × ~19.3** | ~562 |
 | **Cassian** | *Conferences* I–XXIV except XII, XXII | 160k | **366 × 1** | ~438 |
+| **Newman** | *Parochial and Plain Sermons* I–VIII | 765k | **366 × 1** + 1,494 appendix | ~280 |
+| **Bernard** | Eales vol. III De Tempore + vol. IV Cantica | 363k | **366 × 1** + 519 appendix | ~280 |
 | Benedict | *Rule* | ~40k | 122 × 3 | ~330 |
 
 Word counts are estimates from page counts and want verifying — have `01_fetch.py` print a real count per source before anyone commits to a cadence.
@@ -315,15 +317,17 @@ Three or four a day, user-set, default 10:00 / 14:00 / 17:00, **jittered ±10 mi
 | --- | --- | --- |
 | Practice | Bouquet, Morning Exercise, Evening Examination | free |
 | Meditations | Part I's ten meditations, standalone guided | free |
-| Today | the 365-day cycle | unlock |
+| Today | the 365-day cycle | 7 morning pages, then unlock |
 | Letters | selections from *Letters to Persons in the World* | unlock |
 | Read Through | continuous mode | unlock |
+
+Today’s sample is **seven distinct cycle dates per house**. Reopening the same date does not spend another. No countdown. Read Through stays paid. Practice stays free. This is the pattern for every constructed Today, not de Sales alone.
 
 Part I's ten meditations (creation, the end for which we are made, God's gifts, sin, death, judgment, hell, paradise, the choice of paradise, the choice of the devout life) are self-contained, are explicitly the "begin here," and make a strong free tier that stands on its own.
 
 **"Companion — de Sales", $4.99 one-time,** sku `desales_companion`.
 
-Once portal 3 exists, add **"Daily Company — All Saints", $14.99**. Scaffold the entitlement id `all_saints` when touching IAP — retrofitting it after users hold individual SKUs is unpleasant.
+Once portal 3 exists, add **"Daily Company — All Saints", $19.99**. Scaffold the entitlement id `all_saints` when touching IAP — retrofitting it after users hold individual SKUs is unpleasant.
 
 ### 8.5 Sources
 
@@ -396,7 +400,7 @@ Book I ascesis → slate. Book II inner life → umber. Book III dialogue → mu
 | --- | --- | --- |
 | Practice | The Cell | free |
 | Admonitions | Book I's 25 chapters, as written, indexed | free |
-| Today | the 366-day cycle of Books I–IV | unlock |
+| Today | the 366-day cycle of Books I–IV | 7 morning pages, then unlock |
 | Read Through | continuous mode | unlock |
 
 No Latin, no Life, no second corpus (letters, soliloquies) in this opening. Book I is the "begin here" — complete in itself, the famous short book.
@@ -500,6 +504,9 @@ Editions, do-not-use, and identity never-lists: `portal-texts.md`. Cadence for e
 | **Scupoli** | **120 × 3.05** | *Spiritual Combat* + Supplement, Rivingtons 1875 anonymous | The combat | Writer, never “St.” Path of Paradise skipped (scan not clean). |
 | **Lawrence** | **19 × ~19.3** | Conversations and letters, Revell from the French | Remain in the presence | Writer, never “St.” Natural units, repeating — do not pad. |
 | **Cassian** | **366 × 1** | *Conferences*, Gibson NPNF II.11 1894 | Sit with the elder | Conferences I–XXIV except XII and XXII (Gibson left them untranslated). Not the Institutes. |
+| **Newman** | **366 × 1** + appendix | *Parochial and Plain Sermons*, Newman (Rivingtons 1868 / Gutenberg VII–VIII), 191 sermons | Lead, kindly Light | All eight volumes kept; overflow in the index. Apologia, Idea, Grammar, and Development on the Works shelf with Meditations (Neville 1893) and Verses (1868). |
+| **Bernard** | **366 × 1** + appendix | Eales vols III–IV (1889–96) | Four degrees of love | Liturgical sermons + 86 Cantica. On Loving God (Patmore 1881) and Eales letters on a shelf. Not the letters as daily. Not New Knighthood. |
+| **Desert Fathers** | **366 × 1** + appendix | Budge, *Paradise of the Holy Fathers* (1907), both volumes | Abba, give me a word | Whole named edition. Not Waddell. Not Ward. Cassian stays his own house. |
 
 Public-domain status is jurisdiction-specific and I'm not a lawyer — the caveat closing the Benedict spec applies to every row above, the Thérèse row especially.
 

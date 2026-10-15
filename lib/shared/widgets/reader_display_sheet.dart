@@ -8,6 +8,7 @@ Future<void> showReaderDisplaySheet(BuildContext context) {
   return showModalBottomSheet<void>(
     context: context,
     showDragHandle: true,
+    isScrollControlled: true,
     builder: (context) => const ReaderDisplaySheet(),
   );
 }
@@ -23,77 +24,85 @@ class ReaderDisplaySheet extends ConsumerWidget {
     final ink = Theme.of(context).colorScheme.onSurface;
     final rule = Theme.of(context).dividerColor;
 
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 4, 24, 32),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Text(
-            'Reading display',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          const SizedBox(height: 16),
-          ChromeLabel('Page color'),
-          const SizedBox(height: 12),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _Swatch(
-                label: 'Paper',
-                fill: Paper.bg,
-                border: Paper.rule,
-                selected: settings.themeMode == 'paper',
-                onTap: () => ctrl.setThemeMode('paper'),
-              ),
-              _Swatch(
-                label: 'Vellum',
-                fill: Vellum.bg,
-                border: Vellum.rule,
-                selected: settings.themeMode == 'vellum',
-                onTap: () => ctrl.setThemeMode('vellum'),
-              ),
-              _Swatch(
-                label: 'Compline',
-                fill: Compline.bg,
-                border: Compline.rule,
-                selected: settings.themeMode == 'compline',
-                onTap: () => ctrl.setThemeMode('compline'),
-              ),
-              _Swatch(
-                label: 'System',
-                fill: rule,
-                border: ink.withValues(alpha: 0.35),
-                selected: settings.themeMode == 'system',
-                onTap: () => ctrl.setThemeMode('system'),
-                system: true,
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          ChromeLabel('Text size'),
-          Row(
-            children: [
-              const Text('A', style: TextStyle(fontFamily: 'EBGaramond', fontSize: 14)),
-              Expanded(
-                child: Slider(
-                  value: settings.fontScale,
-                  min: 0.85,
-                  max: 1.45,
-                  divisions: 12,
-                  onChanged: ctrl.setFontScale,
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(24, 4, 24, 24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'Reading display',
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            const SizedBox(height: 16),
+            ChromeLabel('Page color'),
+            const SizedBox(height: 12),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                _Swatch(
+                  label: 'Paper',
+                  fill: Paper.bg,
+                  border: Paper.rule,
+                  selected: settings.themeMode == 'paper',
+                  onTap: () => ctrl.setThemeMode('paper'),
                 ),
-              ),
-              const Text('A', style: TextStyle(fontFamily: 'EBGaramond', fontSize: 22)),
-            ],
-          ),
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            title: const Text('Bold reading text'),
-            value: settings.boldReading,
-            onChanged: ctrl.setBoldReading,
-          ),
-        ],
+                _Swatch(
+                  label: 'Vellum',
+                  fill: Vellum.bg,
+                  border: Vellum.rule,
+                  selected: settings.themeMode == 'vellum',
+                  onTap: () => ctrl.setThemeMode('vellum'),
+                ),
+                _Swatch(
+                  label: 'Compline',
+                  fill: Compline.bg,
+                  border: Compline.rule,
+                  selected: settings.themeMode == 'compline',
+                  onTap: () => ctrl.setThemeMode('compline'),
+                ),
+                _Swatch(
+                  label: 'System',
+                  fill: rule,
+                  border: ink.withValues(alpha: 0.35),
+                  selected: settings.themeMode == 'system',
+                  onTap: () => ctrl.setThemeMode('system'),
+                  system: true,
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            ChromeLabel('Text size'),
+            Row(
+              children: [
+                const Text(
+                  'A',
+                  style: TextStyle(fontFamily: 'EBGaramond', fontSize: 14),
+                ),
+                Expanded(
+                  child: Slider(
+                    value: settings.fontScale,
+                    min: 0.85,
+                    max: 1.45,
+                    divisions: 12,
+                    onChanged: ctrl.setFontScale,
+                  ),
+                ),
+                const Text(
+                  'A',
+                  style: TextStyle(fontFamily: 'EBGaramond', fontSize: 22),
+                ),
+              ],
+            ),
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('Bold reading text'),
+              value: settings.boldReading,
+              onChanged: ctrl.setBoldReading,
+            ),
+          ],
+        ),
       ),
     );
   }

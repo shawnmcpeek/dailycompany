@@ -70,6 +70,23 @@ String portalLandingRoute(String portalId, {String? lastRoute}) {
   return PortalRoutes.today(portalId);
 }
 
+/// Enter a house. [routerProvider] watches the chosen portal and rebuilds
+/// the whole [GoRouter], which disposes the hallway's context — so the
+/// destination has to be the new router's [GoRouter.initialLocation] and a
+/// post-frame [GoRouter.go], not `context.go` on the old tree.
+void enterPortal(
+  ProviderContainer container, {
+  required String portalId,
+  String? route,
+}) {
+  final last = container.read(settingsProvider).lastReadingRouteFor(portalId);
+  final dest = route ?? portalLandingRoute(portalId, lastRoute: last);
+  container.read(settingsProvider.notifier).setCompanion(portalId);
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    container.read(routerProvider).go(dest);
+  });
+}
+
 final routerProvider = Provider<GoRouter>((ref) {
   final refresh = ValueNotifier(0);
   ref.listen<AppSettings>(settingsProvider, (prev, next) {
@@ -85,11 +102,22 @@ final routerProvider = Provider<GoRouter>((ref) {
   // over the previous portal's. A full navigation reset on switch is the
   // right behaviour here: leaving one saint's house for another's is a
   // fresh start, not a sub-navigation within the same shell.
+  //
+  // That rebuild used to start at /hallway, so the first Enter tap only
+  // chose the house; the second tap actually went in. Start at the house
+  // when one is already chosen.
   final portalId = ref.watch(currentPortalIdProvider);
+  final settings = ref.read(settingsProvider);
+  final start = settings.companionId.isEmpty
+      ? '/hallway'
+      : portalLandingRoute(
+          portalId,
+          lastRoute: settings.lastReadingRouteFor(portalId),
+        );
 
   return GoRouter(
     navigatorKey: rootNavigatorKey,
-    initialLocation: '/hallway',
+    initialLocation: start,
     refreshListenable: refresh,
     redirect: (context, state) {
       final settings = ref.read(settingsProvider);
@@ -256,6 +284,9 @@ final routerProvider = Provider<GoRouter>((ref) {
               id == 'scupoli' ||
               id == 'lawrence' ||
               id == 'cassian' ||
+              id == 'desert-fathers' ||
+              id == 'newman' ||
+              id == 'bernard' ||
               id == 'serra') {
             child = CycleCompanionPaywallScreen(portalId: id!);
             title = 'Companion';
@@ -480,7 +511,10 @@ StatefulShellBranch _cycleBranch(String portalId, String module) {
                   id == 'montfort' ||
                   id == 'scupoli' ||
                   id == 'lawrence' ||
-                  id == 'cassian') {
+                  id == 'cassian' ||
+                  id == 'desert-fathers' ||
+                  id == 'newman' ||
+                  id == 'bernard') {
                 body = SimplePracticeScreen(portalId: id);
               } else {
                 body = const DesalesPracticeScreen();
@@ -537,7 +571,12 @@ StatefulShellBranch _cycleBranch(String portalId, String module) {
       return _shelfBranch(
         portalId,
         'works',
-        paywallHint: 'These works come with the Visits.',
+        paywallHint: switch (portalId) {
+          'liguori' => 'These works come with the Visits.',
+          'newman' => 'The Works shelf comes with Companion.',
+          'bernard' => 'The Works shelf comes with Companion.',
+          _ => 'These works come with Companion.',
+        },
       );
     case 'homilies':
       return _shelfBranch(
@@ -884,6 +923,27 @@ class AppShell extends ConsumerWidget {
         icon: Icon(Icons.spa_outlined),
         selectedIcon: Icon(Icons.spa),
         label: 'Elder',
+      );
+    }
+    if (module == 'practice' && portalId == 'desert-fathers') {
+      return const NavigationDestination(
+        icon: Icon(Icons.spa_outlined),
+        selectedIcon: Icon(Icons.spa),
+        label: 'Word',
+      );
+    }
+    if (module == 'practice' && portalId == 'newman') {
+      return const NavigationDestination(
+        icon: Icon(Icons.spa_outlined),
+        selectedIcon: Icon(Icons.spa),
+        label: 'Kindly Light',
+      );
+    }
+    if (module == 'practice' && portalId == 'bernard') {
+      return const NavigationDestination(
+        icon: Icon(Icons.spa_outlined),
+        selectedIcon: Icon(Icons.spa),
+        label: 'Love',
       );
     }
     if (module == 'practice' && portalId == 'serra') {

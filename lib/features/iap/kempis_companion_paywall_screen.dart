@@ -1,3 +1,4 @@
+import 'package:dailycompany/core/iap/companion_feast.dart';
 import 'package:dailycompany/core/iap/iap_controller.dart';
 import 'package:dailycompany/core/iap/iap_flags.dart';
 import 'package:dailycompany/data/models/portal.dart';
@@ -47,6 +48,7 @@ class KempisCompanionPaywallScreen extends ConsumerWidget {
                 .purchaseKempisCompanion(),
             purchaseLabel: 'Unlock Companion · $price',
             unlockedMessage: 'Companion unlocked. Thank you.',
+            feastLine: CompanionFeast.line('kempis'),
           ),
         const SizedBox(height: 28),
         const SectionRule(),

@@ -1,7 +1,7 @@
 name: dailycompany
 description: "Daily Company — keep company with a saint and their writing."
 publish_to: 'none'
-version: 1.1.10+10
+version: 1.1.11+11
 
 environment:
   sdk: ^3.12.0
@@ -62,6 +62,9 @@ flutter:
     - assets/content/scupoli/
     - assets/content/lawrence/
     - assets/content/cassian/
+    - assets/content/desert-fathers/
+    - assets/content/newman/
+    - assets/content/bernard/
     - assets/content/serra/
     - assets/companions/
     - assets/branding/

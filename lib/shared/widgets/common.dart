@@ -1,3 +1,4 @@
+import 'package:dailycompany/app/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class SectionRule extends StatelessWidget {
@@ -97,6 +98,34 @@ class HousePortrait extends StatelessWidget {
   }
 }
 
+/// Reading-page action. Same outline as Previous / Next. Toggles pass
+/// [selected] for the nav-bar's 12% accent wash.
+///
+/// Parked (do not implement until asked): drop these boxes; Latin /
+/// Commentary as small-caps text with a middot; Lectio as a text link;
+/// only Mark read stays outlined.
+class ChromeOutlinedButton extends StatelessWidget {
+  const ChromeOutlinedButton({
+    super.key,
+    required this.label,
+    required this.onPressed,
+    this.selected = false,
+  });
+
+  final String label;
+  final VoidCallback? onPressed;
+  final bool selected;
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      onPressed: onPressed,
+      style: selected ? outlinedChromeSelected(context) : null,
+      child: Text(label),
+    );
+  }
+}
+
 /// Full-width hub destination — reads as navigation, not a checklist item.
 class HubNavButton extends StatelessWidget {
   const HubNavButton({
@@ -116,7 +145,6 @@ class HubNavButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final rule = Theme.of(context).dividerColor;
     final secondary = Theme.of(context).textTheme.bodySmall?.color;
 
     return OutlinedButton(
@@ -124,7 +152,6 @@ class HubNavButton extends StatelessWidget {
       style: OutlinedButton.styleFrom(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.fromLTRB(18, 16, 14, 16),
-        side: BorderSide(color: rule),
         foregroundColor: Theme.of(context).colorScheme.onSurface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
       ),

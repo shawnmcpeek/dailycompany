@@ -13,6 +13,7 @@ ThemeData buildPaperTheme({
     ink: Paper.ink,
     secondary: Paper.secondary,
     rule: Paper.rule,
+    edge: Paper.edge,
     gold: Paper.gold,
     accent: accent,
     fontScale: fontScale,
@@ -32,6 +33,7 @@ ThemeData buildVellumTheme({
     ink: Vellum.ink,
     secondary: Vellum.secondary,
     rule: Vellum.rule,
+    edge: Vellum.edge,
     gold: Vellum.gold,
     accent: accent,
     fontScale: fontScale,
@@ -51,6 +53,7 @@ ThemeData buildComplineTheme({
     ink: Compline.ink,
     secondary: Compline.secondary,
     rule: Compline.rule,
+    edge: Compline.edge,
     gold: Compline.gold,
     accent: accent,
     fontScale: fontScale,
@@ -99,6 +102,7 @@ ThemeData _base({
   required Color ink,
   required Color secondary,
   required Color rule,
+  required Color edge,
   required Color gold,
   required Color accent,
   required double fontScale,
@@ -132,6 +136,8 @@ ThemeData _base({
       onError: bg,
       surface: bg,
       onSurface: ink,
+      outline: edge,
+      outlineVariant: rule,
     ),
     dividerColor: rule,
     dialogTheme: DialogThemeData(backgroundColor: bg),
@@ -199,7 +205,7 @@ ThemeData _base({
     ),
     chipTheme: ChipThemeData(
       backgroundColor: Colors.transparent,
-      side: BorderSide(color: rule),
+      side: BorderSide(color: edge, width: 1.5),
       labelStyle: TextStyle(
         fontFamily: 'IBMPlexSans',
         fontSize: 12,
@@ -211,7 +217,7 @@ ThemeData _base({
     outlinedButtonTheme: OutlinedButtonThemeData(
       style: OutlinedButton.styleFrom(
         foregroundColor: ink,
-        side: BorderSide(color: rule),
+        side: BorderSide(color: edge, width: 1.5),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
         textStyle: const TextStyle(
           fontFamily: 'IBMPlexSans',
@@ -237,4 +243,14 @@ ThemeData _base({
     iconTheme: IconThemeData(color: secondary, size: 22),
   );
   return base;
+}
+
+/// Overlay for an outlined control that is currently on (Latin, Commentary).
+/// Same 12% accent wash as the navigation-bar indicator — not a filled CTA.
+ButtonStyle outlinedChromeSelected(BuildContext context) {
+  final accent = Theme.of(context).colorScheme.primary;
+  return OutlinedButton.styleFrom(
+    backgroundColor: accent.withValues(alpha: 0.12),
+    side: BorderSide(color: accent.withValues(alpha: 0.8), width: 1.5),
+  );
 }
