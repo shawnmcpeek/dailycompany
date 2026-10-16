@@ -1,7 +1,7 @@
 name: dailycompany
 description: "Daily Company — keep company with a saint and their writing."
 publish_to: 'none'
-version: 1.1.11+11
+version: 1.1.12+12
 
 environment:
   sdk: ^3.12.0
